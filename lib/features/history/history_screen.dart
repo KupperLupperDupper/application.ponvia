@@ -330,6 +330,8 @@ class _TrendChart extends StatelessWidget {
   Widget build(BuildContext context) {
     final ponvia = Theme.of(context).extension<PonviaColors>()!;
     final scheme = Theme.of(context).colorScheme;
+    final axisDate =
+        DateFormat.MMMd(Localizations.localeOf(context).languageCode);
     final chrono = entries.reversed.toList();
     final values = [
       for (final e in chrono) WeightConverter.fromKg(e.weightKg, unit),
@@ -370,14 +372,15 @@ class _TrendChart extends StatelessWidget {
           leftTitles: AxisTitles(
             sideTitles: SideTitles(
               showTitles: true,
-              reservedSize: 34,
+              reservedSize: 44,
               interval: yInterval,
-              getTitlesWidget: (value, meta) => Text(
-                value.toStringAsFixed(yDecimals),
-                style: Theme.of(context)
-                    .textTheme
-                    .labelSmall
-                    ?.copyWith(color: scheme.onSurfaceVariant, letterSpacing: 0),
+              getTitlesWidget: (value, meta) => SideTitleWidget(
+                meta: meta,
+                child: Text(
+                  value.toStringAsFixed(yDecimals),
+                  style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                      color: scheme.onSurfaceVariant, letterSpacing: 0),
+                ),
               ),
             ),
           ),
@@ -389,10 +392,11 @@ class _TrendChart extends StatelessWidget {
               getTitlesWidget: (value, meta) {
                 final dt = DateTime.fromMillisecondsSinceEpoch(
                     (value + minXms).toInt());
-                return Padding(
-                  padding: const EdgeInsets.only(top: Insets.xs),
+                return SideTitleWidget(
+                  meta: meta,
+                  fitInside: SideTitleFitInsideData.fromTitleMeta(meta),
                   child: Text(
-                    dateFmt.date(dt),
+                    axisDate.format(dt),
                     style: Theme.of(context).textTheme.labelSmall?.copyWith(
                         color: scheme.onSurfaceVariant, letterSpacing: 0),
                   ),
