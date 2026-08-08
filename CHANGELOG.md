@@ -23,6 +23,10 @@ history — update the **Unreleased** section as you work, and cut it into a ver
   now renders in Manrope; no runtime font fetching.
 - Fixed the launcher app name to “Ponvia” (was lowercase `ponvia`) on Android and iOS.
 - Verified on-device (OnePlus): onboarding, navigation, DB, theme, and font all render.
+- App icon (adaptive: mint mark on `#1F6A5C`) and native splash (light: green plate on
+  brand green; dark: mint plate on `#0E1412`; Android-12 icon splash) generated from the
+  design assets via flutter_launcher_icons + flutter_native_splash. Splash verified
+  on-device; icon verified inside the built APK.
 
 <!--
 When cutting a release, move Unreleased items under a version heading, e.g.:

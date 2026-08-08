@@ -57,6 +57,8 @@ dev_dependencies:
   flutter_lints: ^6.0.0
   build_runner: ^2.15.1
   drift_dev: ^2.34.0
+  flutter_launcher_icons: ^0.14.4
+  flutter_native_splash: ^2.4.8
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -106,3 +108,32 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/to/font-from-package
+
+# --- App icon generation (run: dart run flutter_launcher_icons) ---
+# Source assets from design/handoff/assets, staged under assets/icon.
+flutter_launcher_icons:
+  android: true
+  ios: true
+  image_path: "assets/icon/icon-master-1024.png"
+  adaptive_icon_background: "#1F6A5C"
+  adaptive_icon_foreground: "assets/icon/adaptive-foreground.png"
+  min_sdk_android: 21
+  remove_alpha_ios: true
+  background_color_ios: "#1F6A5C"
+
+# --- Splash screen generation (run: dart run flutter_native_splash:create) ---
+# Light = green plate on brand green; dark = mint plate on near-black surface.
+# Android 12+ shows the adaptive foreground (mark) on the window background color.
+flutter_native_splash:
+  color: "#1F6A5C"
+  color_dark: "#0E1412"
+  image: "assets/splash/splash-logo-light.png"
+  image_dark: "assets/splash/splash-logo-dark.png"
+  android_12:
+    color: "#1F6A5C"
+    color_dark: "#0E1412"
+    image: "assets/splash/android12-icon.png"
+    image_dark: "assets/splash/android12-icon.png"
+  android: true
+  ios: true
+  web: false
