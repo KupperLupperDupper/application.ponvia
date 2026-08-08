@@ -9,6 +9,11 @@ history — update the **Unreleased** section as you work, and cut it into a ver
 
 ## [Unreleased]
 
+## [0.1.1] - 2026-08-09
+### Fixed
+- Goals swipe-to-delete: the red delete surface now sits flush behind the card as you
+  swipe, instead of appearing as a separate rounded block with a gap ("hard cut").
+
 ## [0.1.0] - 2026-08-08
 First release — a private, offline weight tracker for Android (iOS-capable; not yet
 built). Everything stays on your device: no accounts, no cloud, no network.

@@ -47,27 +47,21 @@ class GoalsScreen extends ConsumerWidget {
               for (final g in goals)
                 Padding(
                   padding: const EdgeInsets.only(bottom: Insets.cardGap),
-                  child: ClipRRect(
-                    // Clip the background + card to the card's shape so the red
-                    // fills fully behind it during the swipe.
-                    borderRadius:
-                        BorderRadius.circular(g.id == closest?.id ? 28 : 24),
-                    child: Dismissible(
-                      key: ValueKey(g.id ?? g.createdAt.toIso8601String()),
-                      direction: DismissDirection.endToStart,
-                      background: _deleteBackground(context),
-                      onDismissed: (_) => _delete(context, ref, g),
-                      child: _GoalCard(
-                        goal: g,
-                        fmt: fmt,
-                        dateFmt: dateFmt,
-                        unit: settings.unit,
-                        currentKg: currentKg,
-                        startKg: startKg,
-                        highlighted: g.id == closest?.id,
-                        onTap: () => _showGoalDialog(context, ref, settings.unit,
-                            existing: g),
-                      ),
+                  child: _SwipeToDelete(
+                    dismissKey:
+                        ValueKey(g.id ?? g.createdAt.toIso8601String()),
+                    radius: g.id == closest?.id ? 28 : 24,
+                    onDismissed: () => _delete(context, ref, g),
+                    child: _GoalCard(
+                      goal: g,
+                      fmt: fmt,
+                      dateFmt: dateFmt,
+                      unit: settings.unit,
+                      currentKg: currentKg,
+                      startKg: startKg,
+                      highlighted: g.id == closest?.id,
+                      onTap: () => _showGoalDialog(context, ref, settings.unit,
+                          existing: g),
                     ),
                   ),
                 ),
@@ -77,14 +71,6 @@ class GoalsScreen extends ConsumerWidget {
       ),
     );
   }
-
-  Widget _deleteBackground(BuildContext context) => Container(
-        color: Theme.of(context).colorScheme.errorContainer,
-        alignment: Alignment.centerRight,
-        padding: const EdgeInsets.only(right: Insets.xl),
-        child: Icon(Icons.delete_outline,
-            color: Theme.of(context).colorScheme.onErrorContainer),
-      );
 
   void _delete(BuildContext context, WidgetRef ref, Goal g) {
     final l10n = AppLocalizations.of(context);
@@ -196,6 +182,54 @@ class GoalsScreen extends ConsumerWidget {
         achievedAt: existing.achievedAt,
       ));
     }
+  }
+}
+
+/// Swipe-to-delete that keeps the red delete surface as a single full-bleed
+/// layer *behind* the card (not a separate rounded shape beside it), so the red
+/// is revealed flush with the card edge as you swipe — no gap, no hard cut.
+class _SwipeToDelete extends StatelessWidget {
+  const _SwipeToDelete({
+    required this.dismissKey,
+    required this.radius,
+    required this.onDismissed,
+    required this.child,
+  });
+
+  final Key dismissKey;
+  final double radius;
+  final VoidCallback onDismissed;
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    final scheme = Theme.of(context).colorScheme;
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(radius),
+      child: Stack(
+        children: [
+          // Full-bleed red under the whole card; the sliding card sits on top,
+          // so whatever it uncovers is red — flush by construction.
+          Positioned.fill(
+            child: Container(
+              color: scheme.errorContainer,
+              alignment: Alignment.centerRight,
+              padding: const EdgeInsets.only(right: Insets.xl),
+              child: Icon(Icons.delete_outline,
+                  color: scheme.onErrorContainer),
+            ),
+          ),
+          Dismissible(
+            key: dismissKey,
+            direction: DismissDirection.endToStart,
+            // The red is the Stack layer above; Dismissible needs none of its own.
+            background: const SizedBox.shrink(),
+            onDismissed: (_) => onDismissed(),
+            child: child,
+          ),
+        ],
+      ),
+    );
   }
 }
 
