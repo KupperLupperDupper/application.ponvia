@@ -14,6 +14,11 @@ history — update the **Unreleased** section as you work, and cut it into a ver
 - Design system delivered into `design/handoff/`: filled `DESIGN_SYSTEM.md` + `tokens.json`,
   per-screen `DESIGN_SPEC.md`, mockup canvas, and brand/icon/splash assets. Seed `#1F6A5C`,
   Manrope type, bottom-tab navigation, neutral delta colors, `st + lb` stone.
+- M1 scaffold + data layer: Flutter app (`io.github.kupperlupperdupper.ponvia`) with
+  Riverpod, go_router bottom-tab shell + onboarding gate, Material 3 theme from tokens,
+  Drift (weights + goals) + shared_preferences settings, kg/lb/st conversion, JSON+CSV
+  import/export, functional Home/Log/History/Goals/Settings screens, and unit + widget
+  tests. `flutter analyze` clean; 15 tests pass; debug APK builds.
 
 <!--
 When cutting a release, move Unreleased items under a version heading, e.g.:

@@ -20,18 +20,25 @@ Legend: ☐ not started · ◐ in progress · ☑ done
 brief is self-contained enough to paste into the design tool; agents load without errors.
 No Dart code yet.
 
-## M1 — Scaffold + data layer ☐
+## M1 — Scaffold + data layer ◐ (on-device run pending)
 **Deliverables**
-- `flutter create` project (id `io.github.kupperlupperdupper.ponvia`), folder structure
-  per ARCHITECTURE, lint + analysis options.
-- Riverpod + go_router wired; Material 3 theme skeleton; native splash.
-- Drift schema (`weight_entries`, `goals`) + DAOs; `SettingsStore` over shared_preferences.
-- Unit conversion (kg/lb/st) + formatters; closest-goal logic.
-- JSON + CSV import/export.
-- Unit tests (conversion, goal selection, backup round-trip); `scripts/check`.
+- ☑ `flutter create` project (id `io.github.kupperlupperdupper.ponvia`), folder structure
+  per ARCHITECTURE, analysis options (excludes generated files).
+- ☑ Riverpod (no codegen — ADR-013) + go_router (bottom-tab shell + onboarding gate) wired;
+  Material 3 theme built from `design/handoff/tokens.json` (light/dark + `PonviaColors`
+  extension). Native splash deferred to M3 with onboarding.
+- ☑ Drift schema (`weight_entries`, `goals`) + repositories; `SettingsStore` over
+  shared_preferences.
+- ☑ Unit conversion (kg/lb/st) + formatters; closest-goal logic.
+- ☑ JSON + CSV import/export (codec + service).
+- ☑ Functional screens: Home (hero + delta + goal), Log, History (list + swipe-delete),
+  Goals (add/highlight/delete), Settings (theme/unit/language, export, clear).
+- ☑ Unit tests (conversion, goal selection, backup round-trip) + Home widget test;
+  `scripts/check.sh`.
 
-**DoD:** App builds and runs on the OnePlus (`flutter run -d 6eb5eb45`) with a plain UI;
-`flutter analyze` clean; tests green. Release workflow can now produce an APK on a tag.
+**DoD:** ☑ `flutter analyze` clean · ☑ tests green (15) · ☑ debug APK builds. ☐ On-device
+smoke test on the OnePlus (`flutter run -d 6eb5eb45`) — pending phone connection. Release
+workflow can now produce an APK on a tag.
 
 ## M2 — Core screens (functional, pre-design styling) ☐
 **Deliverables:** Home (last-weight hero + delta + mini-trend), Log/Edit weight, History

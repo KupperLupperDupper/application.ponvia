@@ -1,0 +1,40 @@
+import 'dart:io';
+
+import 'package:drift/drift.dart';
+import 'package:drift/native.dart';
+import 'package:path/path.dart' as p;
+import 'package:path_provider/path_provider.dart';
+
+import 'tables.dart';
+
+part 'database.g.dart';
+
+/// Ponvia's local SQLite database. Domain data only (weights, goals); scalar
+/// settings live in shared_preferences. Room is intentionally left for future
+/// calorie tables without reworking these.
+@DriftDatabase(tables: [WeightEntries, Goals])
+class AppDatabase extends _$AppDatabase {
+  AppDatabase([QueryExecutor? executor]) : super(executor ?? _openConnection());
+
+  /// Test constructor for an in-memory database.
+  AppDatabase.forTesting(super.executor);
+
+  @override
+  int get schemaVersion => 1;
+
+  /// Removes all domain data (used by "clear all data" and import-replace).
+  Future<void> clearAllData() async {
+    await transaction(() async {
+      await delete(weightEntries).go();
+      await delete(goals).go();
+    });
+  }
+}
+
+QueryExecutor _openConnection() {
+  return LazyDatabase(() async {
+    final dir = await getApplicationDocumentsDirectory();
+    final file = File(p.join(dir.path, 'ponvia.sqlite'));
+    return NativeDatabase.createInBackground(file);
+  });
+}

@@ -1,0 +1,219 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import '../../app/providers.dart';
+import '../../app/theme/ponvia_colors.dart';
+import '../../app/theme/typography.dart';
+import '../../core/formatting/date_formatter.dart';
+import '../../core/formatting/weight_formatter.dart';
+import '../../core/ui/spacing.dart';
+import '../../domain/models/weight_entry.dart';
+import 'home_shell.dart';
+
+/// The weight-first dashboard. M1 build: hero last weight, delta vs previous,
+/// and the highlighted goal. Visual polish + sparkline arrive with the design
+/// pass (M5).
+class HomeScreen extends ConsumerWidget {
+  const HomeScreen({super.key});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final settings = ref.watch(settingsControllerProvider);
+    final entriesAsync = ref.watch(entriesProvider);
+    final closest = ref.watch(closestGoalProvider);
+    final fmt = WeightFormatter(settings.unit, locale: settings.localeCode);
+
+    return Scaffold(
+      appBar: AppBar(title: const Text('Ponvia')),
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: () => openLogWeight(context),
+        icon: const Icon(Icons.add),
+        label: const Text('Log weight'),
+      ),
+      body: entriesAsync.when(
+        loading: () => const Center(child: CircularProgressIndicator()),
+        error: (e, _) => Center(child: Text('Something went wrong.\n$e')),
+        data: (entries) {
+          if (entries.isEmpty) return const _EmptyHome();
+          final latest = entries.first;
+          final deltaKg =
+              entries.length >= 2 ? latest.weightKg - entries[1].weightKg : null;
+          return ListView(
+            padding: const EdgeInsets.all(Insets.screenH),
+            children: [
+              _HeroCard(entry: latest, fmt: fmt, deltaKg: deltaKg),
+              if (closest != null) ...[
+                const SizedBox(height: Insets.cardGap),
+                _GoalCard(
+                  targetKg: closest.targetWeightKg,
+                  currentKg: latest.weightKg,
+                  label: closest.label,
+                  fmt: fmt,
+                ),
+              ],
+            ],
+          );
+        },
+      ),
+    );
+  }
+}
+
+class _HeroCard extends StatelessWidget {
+  const _HeroCard({required this.entry, required this.fmt, this.deltaKg});
+
+  final WeightEntry entry;
+  final WeightFormatter fmt;
+  final double? deltaKg;
+
+  @override
+  Widget build(BuildContext context) {
+    final scheme = Theme.of(context).colorScheme;
+    final ponvia = Theme.of(context).extension<PonviaColors>()!;
+    final dateFmt = PonviaDateFormatter();
+    final daysAgo = PonviaDateFormatter.daysAgo(entry.timestamp, DateTime.now());
+    final when = daysAgo == 0
+        ? 'Today'
+        : daysAgo == 1
+            ? 'Yesterday'
+            : dateFmt.date(entry.timestamp);
+
+    return Card(
+      child: Padding(
+        padding: const EdgeInsets.all(Insets.cardPadding),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text('Latest weight',
+                style: Theme.of(context).textTheme.labelLarge),
+            const SizedBox(height: Insets.sm),
+            FittedBox(
+              fit: BoxFit.scaleDown,
+              alignment: Alignment.centerLeft,
+              child: Text(
+                fmt.value(entry.weightKg),
+                style: PonviaTypography.heroWeight.copyWith(color: scheme.onSurface),
+              ),
+            ),
+            const SizedBox(height: Insets.sm),
+            Row(
+              children: [
+                Text(when, style: Theme.of(context).textTheme.bodyLarge),
+                if (deltaKg != null) ...[
+                  const SizedBox(width: Insets.md),
+                  _DeltaChip(deltaKg: deltaKg!, fmt: fmt, ponvia: ponvia),
+                ],
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _DeltaChip extends StatelessWidget {
+  const _DeltaChip({
+    required this.deltaKg,
+    required this.fmt,
+    required this.ponvia,
+  });
+
+  final double deltaKg;
+  final WeightFormatter fmt;
+  final PonviaColors ponvia;
+
+  @override
+  Widget build(BuildContext context) {
+    final (color, icon) = deltaKg < 0
+        ? (ponvia.deltaDown, Icons.arrow_downward)
+        : deltaKg > 0
+            ? (ponvia.deltaUp, Icons.arrow_upward)
+            : (ponvia.deltaFlat, Icons.remove);
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Icon(icon, size: 18, color: color),
+        const SizedBox(width: Insets.xs),
+        Text(
+          fmt.delta(deltaKg),
+          style: Theme.of(context)
+              .textTheme
+              .labelLarge
+              ?.copyWith(color: color),
+        ),
+      ],
+    );
+  }
+}
+
+class _GoalCard extends StatelessWidget {
+  const _GoalCard({
+    required this.targetKg,
+    required this.currentKg,
+    required this.fmt,
+    this.label,
+  });
+
+  final double targetKg;
+  final double currentKg;
+  final String? label;
+  final WeightFormatter fmt;
+
+  @override
+  Widget build(BuildContext context) {
+    final remainingKg = (targetKg - currentKg).abs();
+    final direction = targetKg < currentKg ? 'to lose' : 'to gain';
+    return Card(
+      child: Padding(
+        padding: const EdgeInsets.all(Insets.cardPadding),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                const Icon(Icons.flag, size: 20),
+                const SizedBox(width: Insets.sm),
+                Text(label ?? 'Closest goal',
+                    style: Theme.of(context).textTheme.titleMedium),
+              ],
+            ),
+            const SizedBox(height: Insets.sm),
+            Text('Target ${fmt.withUnit(targetKg)}',
+                style: Theme.of(context).textTheme.bodyLarge),
+            Text('${fmt.withUnit(remainingKg)} $direction',
+                style: Theme.of(context).textTheme.bodyLarge),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _EmptyHome extends StatelessWidget {
+  const _EmptyHome();
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.all(Insets.xxl),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const Icon(Icons.monitor_weight_outlined, size: 64),
+            const SizedBox(height: Insets.lg),
+            Text('No weight logged yet',
+                style: Theme.of(context).textTheme.titleMedium),
+            const SizedBox(height: Insets.sm),
+            Text(
+              'Tap “Log weight” to record your first entry.',
+              textAlign: TextAlign.center,
+              style: Theme.of(context).textTheme.bodyLarge,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}

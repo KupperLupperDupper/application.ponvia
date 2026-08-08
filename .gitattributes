@@ -1,0 +1,21 @@
+# Normalize line endings: store text as LF in the repo, check out native.
+* text=auto
+
+# Scripts that must keep specific endings
+*.bat        text eol=crlf
+*.ps1        text eol=crlf
+gradlew      text eol=lf
+*.sh         text eol=lf
+
+# Binary assets (never diff/normalize)
+*.png        binary
+*.jpg        binary
+*.jpeg       binary
+*.gif        binary
+*.ico        binary
+*.ttf        binary
+*.otf        binary
+*.jks        binary
+*.keystore   binary
+*.apk        binary
+*.aab        binary

@@ -104,3 +104,22 @@ alternatives rejected**. Newest decisions can be appended over time.
 - **Dependency note:** The workflow references `flutter build apk`, so it only succeeds
   once the M1 scaffold (`pubspec.yaml` + Android project) exists and a `v*` tag is pushed.
   Until then it is inert.
+
+## ADR-013 — Riverpod without code generation (M1)
+- **Decision:** Use hand-written Riverpod providers (`Provider`, `NotifierProvider`,
+  `StreamProvider`) instead of `riverpod_generator`.
+- **Rationale:** At M1, `riverpod_generator` (analyzer ^13) could not co-resolve with
+  `drift_dev` (analyzer <3 transitively via the test toolchain) — version solving failed.
+  Drift's codegen is mandatory; Riverpod's is optional. The non-codegen API is fully
+  supported in Riverpod 3.x and providers are an implementation detail, so this is
+  reversible later without reworking call sites. Supersedes the codegen mention in
+  ARCHITECTURE §4 / ADR-002.
+- **Rejected:** Pinning older Riverpod/analyzer (would hold back Drift), dropping Drift
+  codegen (impossible).
+
+## ADR-014 — Disable Kotlin incremental compilation on this machine
+- **Decision:** Set `kotlin.incremental=false` in `android/gradle.properties`.
+- **Rationale:** `compileDebugKotlin` repeatedly crashed with "Could not close incremental
+  caches … *.tab" on this Windows dev box (file-locking on `build/`, likely AV). Disabling
+  incremental compilation is slightly slower but builds reliably. Harmless on CI.
+- **Rejected:** Excluding `build/` from AV (not always possible), retрy loops (didn't help).
