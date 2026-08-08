@@ -11,6 +11,9 @@ history — update the **Unreleased** section as you work, and cut it into a ver
 ### Added
 - M0 foundation: product spec, architecture, decision log, milestones, design handoff
   brief/system, six specialized agents, and the Android release workflow.
+- Design system delivered into `design/handoff/`: filled `DESIGN_SYSTEM.md` + `tokens.json`,
+  per-screen `DESIGN_SPEC.md`, mockup canvas, and brand/icon/splash assets. Seed `#1F6A5C`,
+  Manrope type, bottom-tab navigation, neutral delta colors, `st + lb` stone.
 
 <!--
 When cutting a release, move Unreleased items under a version heading, e.g.:

@@ -1,41 +1,53 @@
-# Design Handoff — drop zone
+# Design Handoff — DELIVERED
 
-This folder receives the output of the **Claude design** step (see
-[../DESIGN_BRIEF.md](../DESIGN_BRIEF.md)). The design session produces the files below;
-you place them here, and the Flutter build (M5) consumes them via
+The Claude design step delivered on 2026-08-08. This folder now holds the real design
+system. The Flutter build (M5, and theme setup from M1) consumes it via
 [../HANDOFF.md](../HANDOFF.md).
 
-> The design session runs in the browser and can't write to this disk directly. You bring
-> its output here (download/paste). The brief instructs it to emit these exact files.
-
-## Expected contents
+## Contents (as delivered)
 
 ```
 design/handoff/
-  DESIGN_SYSTEM.md     ← Claude design generates this: the FILLED token set
-                          (real hex/sizes/etc.), following the template in
-                          ../DESIGN_SYSTEM.md. This is the canonical source for
-                          the Flutter theme.
-  tokens.json          ← same tokens, machine-readable (optional but preferred)
-  rationale.md         ← one-paragraph palette/mood rationale (optional)
-  mockups/             ← screen mockups: PNG or HTML
-                          naming: <screen>.<theme>[.<lang>][.<unit>].png
-                          e.g. home.light.png, home.dark.da.png, home.light.st.png,
-                               onboarding.light.en.png, log.dark.png, ...
+  DESIGN_SYSTEM.md   FILLED token set — colors (light/dark M3 roles), typography
+                     (Manrope), spacing, radii, elevation, motion, icons, charts,
+                     nav model. Canonical source for the Flutter theme.
+  tokens.json        Machine-readable mirror of the tokens (colors, type, spacing,
+                     radii, elevation, motion, icons, charts, layout, navigation).
+  DESIGN_SPEC.md     Per-screen implementation spec (all 8 screens, states, exact
+                     values). "Where HTML and tokens disagree, the tokens win."
+  rationale.md       Palette + mood rationale.
+  mockups/
+    Ponvia.dc.html   High-fidelity visual reference — 8 screens at 390×844 in light &
+                     dark, Home + Onboarding also in Danish and kg/lb/st. Open in a
+                     browser. It is a *spec*, not code to port.
+    support.js       Runtime for the canvas above (loaded via ./support.js).
   assets/
-    icon/              ← app icon master 1024×1024 + adaptive fg/bg (Android)
-    splash/            ← splash logo, light + dark
-    fonts/             ← font files (if self-hosted) + license
-    illustrations/     ← optional empty-state art
+    icon-master-1024.png             app icon master (1024×1024, 22% radius)
+    android-adaptive-foreground.png  Android adaptive icon foreground
+    android-adaptive-background.png  Android adaptive icon background (#1F6A5C)
+    splash-logo-light.png            splash mark, light (512×512)
+    splash-logo-dark.png             splash mark, dark (512×512)
+    FONTS-LICENSE.md                 font licensing (Manrope / JetBrains Mono, OFL 1.1)
 ```
 
-## Relationship to `../DESIGN_SYSTEM.md`
-- `../DESIGN_SYSTEM.md` is the **template / contract** — it defines *which* tokens must
-  exist (the `‹fill in›` skeleton). Keep it as the spec.
-- `handoff/DESIGN_SYSTEM.md` is the **filled version** the design step produces. At M5,
-  this filled file is the one the theme is built from; the template stays as the checklist.
+## Key decisions baked in
+- **Brand/seed:** sea-green `#1F6A5C` (light) / `#8ED8C4` (dark). Warm-neutral greys.
+- **Type:** Manrope (OFL) for all UI; tabular figures for numbers; `heroWeight` 72sp/800.
+- **Navigation:** M3 bottom `NavigationBar`, 4 tabs — Home / History / Goals / Settings.
+  Logging is a **modal bottom sheet** from an extended FAB on Home (plain FAB on Goals),
+  never a tab. Notifications is a pushed route under Settings.
+- **Delta semantics (neutral-informative):** down = brand green, up = muted ochre
+  (`#8A6238` / `#E0BC88`), always paired with an arrow icon + word. No good/bad coloring.
+- **Stone** renders as composite `st + lb` (hero drops to 64sp past 6 glyphs).
 
-## What "ready to implement" means
-See the checklist in [../HANDOFF.md](../HANDOFF.md) §1. In short: `handoff/DESIGN_SYSTEM.md`
-has every value filled, mockups cover all screens in light+dark (Home+Onboarding also in
-en+da and kg/lb/st), and the `assets/` are delivered.
+## ⚠️ Fonts are NOT bundled as binaries
+Only `FONTS-LICENSE.md` shipped — no `.ttf` files. The mockups load Manrope + Material
+Symbols Rounded + JetBrains Mono from Google Fonts. For the app (M1), bundle **Manrope**
+locally (download the OFL TTFs into `assets/fonts/`) or use the `google_fonts` package, and
+use the `material_symbols_icons` package (or bundle the variable font) for the icons.
+Keep `FONTS-LICENSE.md` with whatever is shipped.
+
+## Relationship to `../DESIGN_SYSTEM.md`
+`../DESIGN_SYSTEM.md` is the blank **template/contract** (the checklist of required
+tokens). The filled, authoritative version is **this folder's `DESIGN_SYSTEM.md`** — build
+the theme from it. `DESIGN_SPEC.md` is the screen-by-screen detail on top of the tokens.

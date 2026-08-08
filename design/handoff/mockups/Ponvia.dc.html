@@ -1,0 +1,1642 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="design_doc_mode" content="canvas">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0&display=block" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#EEF1F0;}
+a{color:#1F6A5C;text-decoration:none;}
+a:hover{color:#134A40;}
+</style>
+</helmet>
+
+<section style="padding:72px 72px 120px;display:flex;flex-direction:column;gap:80px;background:#EEF1F0;font-family:Manrope,sans-serif;color:#171D1B">
+
+  <header style="display:flex;flex-direction:column;gap:24px;max-width:900px">
+    <div style="display:flex;align-items:center;gap:20px">
+      <div style="width:72px;height:72px;border-radius:22px;background:#1F6A5C;display:flex;align-items:center;justify-content:center;position:relative">
+        
+        <div style="position:absolute;left:16%;right:16%;bottom:18%;height:10%;border-radius:999px;background:#8ED8C4"></div>
+        <div style="position:absolute;left:45%;width:10%;bottom:32%;height:28%;border-radius:999px;background:#8ED8C4"></div>
+        <div style="position:absolute;left:36%;width:28%;aspect-ratio:1;bottom:58%;border-radius:50%;background:#B3EEDD"></div>
+      
+      </div>
+      <div style="display:flex;flex-direction:column;gap:4px">
+        <div style="font-size:44px;font-weight:800;letter-spacing:-0.03em;line-height:1">Ponvia</div>
+        <div style="font-size:14px;font-weight:500;color:#59635F;letter-spacing:0.02em">Weight tracking that stays out of your way</div>
+      </div>
+    </div>
+    <p style="margin:0;font-size:16px;line-height:1.6;color:#3C4643;max-width:720px;text-wrap:pretty">Material 3, phone-first (390×844). Every screen below is shown in light and dark; Home and Onboarding also in Danish and across kg / lb / st. Tokens are in <a href="DESIGN_SYSTEM.md">DESIGN_SYSTEM.md</a> and <a href="tokens.json">tokens.json</a>.</p>
+    <div style="display:flex;gap:12px;flex-wrap:wrap">
+      <div style="display:flex;flex-direction:column;gap:6px"><div style="width:96px;height:56px;border-radius:12px;background:#1F6A5C"></div><span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#59635F">#1F6A5C</span></div>
+      <div style="display:flex;flex-direction:column;gap:6px"><div style="width:96px;height:56px;border-radius:12px;background:#B3EEDD"></div><span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#59635F">#B3EEDD</span></div>
+      <div style="display:flex;flex-direction:column;gap:6px"><div style="width:96px;height:56px;border-radius:12px;background:#8ED8C4"></div><span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#59635F">#8ED8C4</span></div>
+      <div style="display:flex;flex-direction:column;gap:6px"><div style="width:96px;height:56px;border-radius:12px;background:#8A6238"></div><span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#59635F">#8A6238</span></div>
+      <div style="display:flex;flex-direction:column;gap:6px"><div style="width:96px;height:56px;border-radius:12px;background:#0E1412"></div><span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#59635F">#0E1412</span></div>
+      <div style="display:flex;flex-direction:column;gap:6px"><div style="width:96px;height:56px;border-radius:12px;background:#F6F8F7;border:1px solid #D3DBD8"></div><span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#59635F">#F6F8F7</span></div>
+    </div>
+  </header>
+
+  <div data-screen-label="Splash" style="display:flex;flex-direction:column;gap:24px">
+    <h2 style="margin:0;font-size:26px;font-weight:700;letter-spacing:-0.02em">1 · Splash</h2>
+    <div style="display:flex;gap:40px;flex-wrap:wrap">
+
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <div style="--bg:#1F6A5C;--on:#FFFFFF;position:relative;width:390px;height:844px;border-radius:36px;overflow:hidden;background:var(--bg);color:var(--on);font-family:Manrope,sans-serif;box-shadow:0 12px 32px rgba(16,32,28,.14)">
+          <div style="height:44px;display:flex;align-items:center;justify-content:space-between;padding:0 26px;font-size:13px;font-weight:600;opacity:.9"><span>9:41</span><span style="font-family:'Material Symbols Rounded';font-size:16px">signal_cellular_alt wifi battery_full</span></div>
+          <div style="height:700px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:28px">
+            <div style="width:112px;height:112px;border-radius:34px;background:#175449;position:relative">
+              
+        <div style="position:absolute;left:16%;right:16%;bottom:18%;height:10%;border-radius:999px;background:#8ED8C4"></div>
+        <div style="position:absolute;left:45%;width:10%;bottom:32%;height:28%;border-radius:999px;background:#8ED8C4"></div>
+        <div style="position:absolute;left:36%;width:28%;aspect-ratio:1;bottom:58%;border-radius:50%;background:#B3EEDD"></div>
+      
+            </div>
+            <div style="font-size:38px;font-weight:800;letter-spacing:-0.03em">Ponvia</div>
+          </div>
+          <div style="position:absolute;bottom:38px;left:0;right:0;text-align:center;font-size:13px;font-weight:500;color:#B3EEDD">All data stays on your device</div>
+        </div>
+        <span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#59635F">splash.light.png</span>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <div style="--bg:#0E1412;--on:#DEE4E1;position:relative;width:390px;height:844px;border-radius:36px;overflow:hidden;background:var(--bg);color:var(--on);font-family:Manrope,sans-serif;box-shadow:0 12px 32px rgba(16,32,28,.14)">
+          <div style="height:44px;display:flex;align-items:center;justify-content:space-between;padding:0 26px;font-size:13px;font-weight:600;opacity:.9"><span>9:41</span><span style="font-family:'Material Symbols Rounded';font-size:16px">signal_cellular_alt wifi battery_full</span></div>
+          <div style="height:700px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:28px">
+            <div style="width:112px;height:112px;border-radius:34px;background:#8ED8C4;position:relative">
+              
+        <div style="position:absolute;left:16%;right:16%;bottom:18%;height:10%;border-radius:999px;background:#14544A"></div>
+        <div style="position:absolute;left:45%;width:10%;bottom:32%;height:28%;border-radius:999px;background:#14544A"></div>
+        <div style="position:absolute;left:36%;width:28%;aspect-ratio:1;bottom:58%;border-radius:50%;background:#0E3B33"></div>
+      
+            </div>
+            <div style="font-size:38px;font-weight:800;letter-spacing:-0.03em">Ponvia</div>
+          </div>
+          <div style="position:absolute;bottom:38px;left:0;right:0;text-align:center;font-size:13px;font-weight:500;color:#8ED8C4">All data stays on your device</div>
+        </div>
+        <span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#59635F">splash.dark.png</span>
+      </div>
+
+    </div>
+  </div>
+
+  <div data-screen-label="Onboarding" style="display:flex;flex-direction:column;gap:24px">
+    <h2 style="margin:0;font-size:26px;font-weight:700;letter-spacing:-0.02em">2 · Onboarding — first run</h2>
+    <p style="margin:-8px 0 0;font-size:15px;color:#59635F;max-width:720px">Five steps, every one skippable. Progress bar + “Skip” persist in the top bar; the primary action is always bottom-right within thumb reach.</p>
+    <div style="display:flex;gap:40px;flex-wrap:wrap">
+
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <div style="--bg:#F6F8F7;--surf:#FFFFFF;--surf2:#EAEFEC;--on:#171D1B;--dim:#59635F;--out:#D3DBD8;--pri:#1F6A5C;--onpri:#FFFFFF;--pric:#B3EEDD;--onpric:#00201A;position:relative;width:390px;height:844px;border-radius:36px;overflow:hidden;background:var(--bg);color:var(--on);font-family:Manrope,sans-serif;box-shadow:0 12px 32px rgba(16,32,28,.14)">
+          <div style="height:44px;display:flex;align-items:center;justify-content:space-between;padding:0 26px;font-size:13px;font-weight:600"><span>9:41</span><span style="font-family:'Material Symbols Rounded';font-size:16px">signal_cellular_alt wifi battery_full</span></div>
+          <div style="padding:60px 24px 0;display:flex;flex-direction:column;align-items:center;gap:32px">
+            <div style="width:96px;height:96px;border-radius:30px;background:var(--pri);position:relative">
+              
+        <div style="position:absolute;left:16%;right:16%;bottom:18%;height:10%;border-radius:999px;background:#8ED8C4"></div>
+        <div style="position:absolute;left:45%;width:10%;bottom:32%;height:28%;border-radius:999px;background:#8ED8C4"></div>
+        <div style="position:absolute;left:36%;width:28%;aspect-ratio:1;bottom:58%;border-radius:50%;background:#B3EEDD"></div>
+      
+            </div>
+            <div style="display:flex;flex-direction:column;gap:12px;text-align:center">
+              <h1 style="margin:0;font-size:32px;font-weight:800;letter-spacing:-0.02em;line-height:1.15">Welcome to Ponvia</h1>
+              <p style="margin:0;font-size:16px;line-height:1.55;color:var(--dim);text-wrap:pretty">Log your weight in seconds and watch the trend take shape. No account, no cloud — everything stays on this phone.</p>
+            </div>
+          </div>
+          <div style="position:absolute;left:24px;right:24px;bottom:36px;display:flex;flex-direction:column;gap:12px">
+            <button style="height:56px;border:none;border-radius:28px;background:var(--pri);color:var(--onpri);font-family:inherit;font-size:16px;font-weight:700">Get started</button>
+            <button style="height:48px;border:none;border-radius:24px;background:transparent;color:var(--pri);font-family:inherit;font-size:15px;font-weight:600">I’ll set this up later</button>
+          </div>
+        </div>
+        <span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#59635F">onboarding-welcome.light.png</span>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <div style="--bg:#F6F8F7;--surf:#FFFFFF;--surf2:#EAEFEC;--on:#171D1B;--dim:#59635F;--out:#D3DBD8;--pri:#1F6A5C;--onpri:#FFFFFF;--pric:#B3EEDD;--onpric:#00201A;position:relative;width:390px;height:844px;border-radius:36px;overflow:hidden;background:var(--bg);color:var(--on);font-family:Manrope,sans-serif;box-shadow:0 12px 32px rgba(16,32,28,.14)">
+          <div style="height:44px;display:flex;align-items:center;justify-content:space-between;padding:0 26px;font-size:13px;font-weight:600"><span>9:41</span><span style="font-family:'Material Symbols Rounded';font-size:16px">signal_cellular_alt wifi battery_full</span></div>
+          <div style="padding:8px 24px 0;display:flex;align-items:center;justify-content:space-between;height:56px">
+            <span style="font-family:'Material Symbols Rounded';font-size:24px;width:48px;height:48px;display:flex;align-items:center">arrow_back</span>
+            <button style="border:none;background:transparent;color:var(--pri);font-family:inherit;font-size:15px;font-weight:600;height:48px;padding:0 12px">Skip</button>
+          </div>
+          <div style="padding:0 24px;display:flex;flex-direction:column;gap:8px">
+            <div style="height:4px;border-radius:2px;background:var(--surf2);overflow:hidden"><div style="width:20%;height:100%;background:var(--pri);border-radius:2px"></div></div>
+            <span style="font-size:12px;font-weight:600;color:var(--dim);letter-spacing:.04em">STEP 1 OF 5</span>
+          </div>
+          <div style="padding:28px 24px 0;display:flex;flex-direction:column;gap:8px">
+            <h1 style="margin:0;font-size:28px;font-weight:800;letter-spacing:-0.02em">Choose your language</h1>
+            <p style="margin:0;font-size:15px;line-height:1.5;color:var(--dim)">You can change this any time in Settings.</p>
+          </div>
+          <div style="padding:28px 16px 0;display:flex;flex-direction:column;gap:8px">
+            <div style="display:flex;align-items:center;gap:16px;height:64px;padding:0 16px;border-radius:20px;background:var(--pric);color:var(--onpric)">
+              <span style="font-family:'Material Symbols Rounded';font-size:24px">radio_button_checked</span>
+              <div style="display:flex;flex-direction:column"><span style="font-size:16px;font-weight:700">English</span><span style="font-size:13px;opacity:.75">English (United States)</span></div>
+            </div>
+            <div style="display:flex;align-items:center;gap:16px;height:64px;padding:0 16px;border-radius:20px;color:var(--on)">
+              <span style="font-family:'Material Symbols Rounded';font-size:24px;color:var(--dim)">radio_button_unchecked</span>
+              <div style="display:flex;flex-direction:column"><span style="font-size:16px;font-weight:600">Dansk</span><span style="font-size:13px;color:var(--dim)">Danish (Denmark)</span></div>
+            </div>
+          </div>
+          <div style="position:absolute;left:24px;right:24px;bottom:36px;display:flex;justify-content:flex-end">
+            <button style="height:56px;padding:0 32px;border:none;border-radius:28px;background:var(--pri);color:var(--onpri);font-family:inherit;font-size:16px;font-weight:700">Continue</button>
+          </div>
+        </div>
+        <span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#59635F">onboarding-language.light.png</span>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <div style="--bg:#F6F8F7;--surf:#FFFFFF;--surf2:#EAEFEC;--on:#171D1B;--dim:#59635F;--out:#D3DBD8;--pri:#1F6A5C;--onpri:#FFFFFF;--pric:#B3EEDD;--onpric:#00201A;position:relative;width:390px;height:844px;border-radius:36px;overflow:hidden;background:var(--bg);color:var(--on);font-family:Manrope,sans-serif;box-shadow:0 12px 32px rgba(16,32,28,.14)">
+          <div style="height:44px;display:flex;align-items:center;justify-content:space-between;padding:0 26px;font-size:13px;font-weight:600"><span>9:41</span><span style="font-family:'Material Symbols Rounded';font-size:16px">signal_cellular_alt wifi battery_full</span></div>
+          <div style="padding:8px 24px 0;display:flex;align-items:center;justify-content:space-between;height:56px">
+            <span style="font-family:'Material Symbols Rounded';font-size:24px;width:48px;height:48px;display:flex;align-items:center">arrow_back</span>
+            <button style="border:none;background:transparent;color:var(--pri);font-family:inherit;font-size:15px;font-weight:600;height:48px;padding:0 12px">Skip</button>
+          </div>
+          <div style="padding:0 24px;display:flex;flex-direction:column;gap:8px">
+            <div style="height:4px;border-radius:2px;background:var(--surf2);overflow:hidden"><div style="width:40%;height:100%;background:var(--pri);border-radius:2px"></div></div>
+            <span style="font-size:12px;font-weight:600;color:var(--dim);letter-spacing:.04em">STEP 2 OF 5</span>
+          </div>
+          <div style="padding:28px 24px 0;display:flex;flex-direction:column;gap:8px">
+            <h1 style="margin:0;font-size:28px;font-weight:800;letter-spacing:-0.02em">Pick a theme</h1>
+            <p style="margin:0;font-size:15px;line-height:1.5;color:var(--dim)">System follows your phone’s day/night setting.</p>
+          </div>
+          <div style="padding:28px 24px 0;display:grid;grid-template-columns:repeat(3,1fr);gap:12px">
+            <div style="display:flex;flex-direction:column;align-items:center;gap:10px;padding:16px 8px;border-radius:20px;background:var(--pric);color:var(--onpric);border:2px solid var(--pri)">
+              <div style="width:52px;height:80px;border-radius:12px;background:linear-gradient(105deg,#FFFFFF 50%,#0E1412 50%);border:1px solid var(--out)"></div>
+              <span style="font-size:14px;font-weight:700">System</span>
+            </div>
+            <div style="display:flex;flex-direction:column;align-items:center;gap:10px;padding:16px 8px;border-radius:20px;background:var(--surf);border:1px solid var(--out)">
+              <div style="width:52px;height:80px;border-radius:12px;background:#FFFFFF;border:1px solid var(--out)"></div>
+              <span style="font-size:14px;font-weight:600">Light</span>
+            </div>
+            <div style="display:flex;flex-direction:column;align-items:center;gap:10px;padding:16px 8px;border-radius:20px;background:var(--surf);border:1px solid var(--out)">
+              <div style="width:52px;height:80px;border-radius:12px;background:#0E1412"></div>
+              <span style="font-size:14px;font-weight:600">Dark</span>
+            </div>
+          </div>
+          <div style="position:absolute;left:24px;right:24px;bottom:36px;display:flex;justify-content:space-between;align-items:center">
+            <button style="height:48px;padding:0 16px;border:none;background:transparent;color:var(--pri);font-family:inherit;font-size:15px;font-weight:600">Back</button>
+            <button style="height:56px;padding:0 32px;border:none;border-radius:28px;background:var(--pri);color:var(--onpri);font-family:inherit;font-size:16px;font-weight:700">Continue</button>
+          </div>
+        </div>
+        <span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#59635F">onboarding-theme.light.png</span>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <div style="--bg:#F6F8F7;--surf:#FFFFFF;--surf2:#EAEFEC;--on:#171D1B;--dim:#59635F;--out:#D3DBD8;--pri:#1F6A5C;--onpri:#FFFFFF;--pric:#B3EEDD;--onpric:#00201A;position:relative;width:390px;height:844px;border-radius:36px;overflow:hidden;background:var(--bg);color:var(--on);font-family:Manrope,sans-serif;box-shadow:0 12px 32px rgba(16,32,28,.14)">
+          <div style="height:44px;display:flex;align-items:center;justify-content:space-between;padding:0 26px;font-size:13px;font-weight:600"><span>9:41</span><span style="font-family:'Material Symbols Rounded';font-size:16px">signal_cellular_alt wifi battery_full</span></div>
+          <div style="padding:8px 24px 0;display:flex;align-items:center;justify-content:space-between;height:56px">
+            <span style="font-family:'Material Symbols Rounded';font-size:24px;width:48px;height:48px;display:flex;align-items:center">arrow_back</span>
+            <button style="border:none;background:transparent;color:var(--pri);font-family:inherit;font-size:15px;font-weight:600;height:48px;padding:0 12px">Skip</button>
+          </div>
+          <div style="padding:0 24px;display:flex;flex-direction:column;gap:8px">
+            <div style="height:4px;border-radius:2px;background:var(--surf2);overflow:hidden"><div style="width:60%;height:100%;background:var(--pri);border-radius:2px"></div></div>
+            <span style="font-size:12px;font-weight:600;color:var(--dim);letter-spacing:.04em">STEP 3 OF 5</span>
+          </div>
+          <div style="padding:28px 24px 0;display:flex;flex-direction:column;gap:8px">
+            <h1 style="margin:0;font-size:28px;font-weight:800;letter-spacing:-0.02em">Which unit do you weigh in?</h1>
+            <p style="margin:0;font-size:15px;line-height:1.5;color:var(--dim)">Existing entries are converted, never rewritten.</p>
+          </div>
+          <div style="padding:28px 24px 0;display:flex;flex-direction:column;gap:24px">
+            <div style="display:flex;height:48px;border-radius:24px;border:1px solid var(--out);overflow:hidden">
+              <div style="flex:1;display:flex;align-items:center;justify-content:center;gap:6px;background:var(--pric);color:var(--onpric);font-size:15px;font-weight:700"><span style="font-family:'Material Symbols Rounded';font-size:18px">check</span>kg</div>
+              <div style="flex:1;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:600;border-left:1px solid var(--out)">lb</div>
+              <div style="flex:1;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:600;border-left:1px solid var(--out)">st</div>
+            </div>
+            <div style="padding:24px;border-radius:24px;background:var(--surf);border:1px solid var(--out);display:flex;flex-direction:column;gap:6px;align-items:center">
+              <span style="font-size:12px;font-weight:600;color:var(--dim);letter-spacing:.04em">PREVIEW</span>
+              <div style="display:flex;align-items:baseline;gap:8px;font-variant-numeric:tabular-nums"><span style="font-size:56px;font-weight:800;letter-spacing:-0.03em">82.4</span><span style="font-size:22px;font-weight:600;color:var(--dim)">kg</span></div>
+            </div>
+          </div>
+          <div style="position:absolute;left:24px;right:24px;bottom:36px;display:flex;justify-content:space-between;align-items:center">
+            <button style="height:48px;padding:0 16px;border:none;background:transparent;color:var(--pri);font-family:inherit;font-size:15px;font-weight:600">Back</button>
+            <button style="height:56px;padding:0 32px;border:none;border-radius:28px;background:var(--pri);color:var(--onpri);font-family:inherit;font-size:16px;font-weight:700">Continue</button>
+          </div>
+        </div>
+        <span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#59635F">onboarding-unit.light.png</span>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <div style="--bg:#F6F8F7;--surf:#FFFFFF;--surf2:#EAEFEC;--on:#171D1B;--dim:#59635F;--out:#D3DBD8;--pri:#1F6A5C;--onpri:#FFFFFF;--pric:#B3EEDD;--onpric:#00201A;position:relative;width:390px;height:844px;border-radius:36px;overflow:hidden;background:var(--bg);color:var(--on);font-family:Manrope,sans-serif;box-shadow:0 12px 32px rgba(16,32,28,.14)">
+          <div style="height:44px;display:flex;align-items:center;justify-content:space-between;padding:0 26px;font-size:13px;font-weight:600"><span>9:41</span><span style="font-family:'Material Symbols Rounded';font-size:16px">signal_cellular_alt wifi battery_full</span></div>
+          <div style="padding:8px 24px 0;display:flex;align-items:center;justify-content:space-between;height:56px">
+            <span style="font-family:'Material Symbols Rounded';font-size:24px;width:48px;height:48px;display:flex;align-items:center">arrow_back</span>
+            <button style="border:none;background:transparent;color:var(--pri);font-family:inherit;font-size:15px;font-weight:600;height:48px;padding:0 12px">Skip</button>
+          </div>
+          <div style="padding:0 24px;display:flex;flex-direction:column;gap:8px">
+            <div style="height:4px;border-radius:2px;background:var(--surf2);overflow:hidden"><div style="width:80%;height:100%;background:var(--pri);border-radius:2px"></div></div>
+            <span style="font-size:12px;font-weight:600;color:var(--dim);letter-spacing:.04em">STEP 4 OF 5 · OPTIONAL</span>
+          </div>
+          <div style="padding:28px 24px 0;display:flex;flex-direction:column;gap:8px">
+            <h1 style="margin:0;font-size:28px;font-weight:800;letter-spacing:-0.02em">Add your first weight</h1>
+            <p style="margin:0;font-size:15px;line-height:1.5;color:var(--dim)">Gives your trend a starting point. You can skip it.</p>
+          </div>
+          <div style="padding:32px 24px 0;display:flex;flex-direction:column;align-items:center;gap:12px">
+            <div style="display:flex;align-items:baseline;gap:10px;font-variant-numeric:tabular-nums">
+              <span style="font-size:76px;font-weight:800;letter-spacing:-0.04em;line-height:1">82.4</span>
+              <span style="font-size:26px;font-weight:600;color:var(--dim)">kg</span>
+            </div>
+            <div style="width:200px;height:2px;background:var(--pri);border-radius:1px"></div>
+            <span style="font-size:14px;color:var(--dim)">Today · 08:14</span>
+          </div>
+          <div style="position:absolute;left:0;right:0;bottom:150px;padding:0 20px;display:grid;grid-template-columns:repeat(3,1fr);gap:8px;font-size:24px;font-weight:600;text-align:center">
+            <div style="height:56px;line-height:56px">1</div><div style="height:56px;line-height:56px">2</div><div style="height:56px;line-height:56px">3</div>
+            <div style="height:56px;line-height:56px">4</div><div style="height:56px;line-height:56px">5</div><div style="height:56px;line-height:56px">6</div>
+            <div style="height:56px;line-height:56px">7</div><div style="height:56px;line-height:56px">8</div><div style="height:56px;line-height:56px">9</div>
+            <div style="height:56px;line-height:56px">.</div><div style="height:56px;line-height:56px">0</div><div style="height:56px;line-height:56px;font-family:'Material Symbols Rounded';font-size:24px">backspace</div>
+          </div>
+          <div style="position:absolute;left:24px;right:24px;bottom:36px;display:flex;justify-content:space-between;align-items:center">
+            <button style="height:48px;padding:0 16px;border:none;background:transparent;color:var(--pri);font-family:inherit;font-size:15px;font-weight:600">Skip for now</button>
+            <button style="height:56px;padding:0 32px;border:none;border-radius:28px;background:var(--pri);color:var(--onpri);font-family:inherit;font-size:16px;font-weight:700">Save</button>
+          </div>
+        </div>
+        <span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#59635F">onboarding-first-weight.light.png</span>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <div style="--bg:#F6F8F7;--surf:#FFFFFF;--surf2:#EAEFEC;--on:#171D1B;--dim:#59635F;--out:#D3DBD8;--pri:#1F6A5C;--onpri:#FFFFFF;--pric:#B3EEDD;--onpric:#00201A;position:relative;width:390px;height:844px;border-radius:36px;overflow:hidden;background:var(--bg);color:var(--on);font-family:Manrope,sans-serif;box-shadow:0 12px 32px rgba(16,32,28,.14)">
+          <div style="height:44px;display:flex;align-items:center;justify-content:space-between;padding:0 26px;font-size:13px;font-weight:600"><span>9:41</span><span style="font-family:'Material Symbols Rounded';font-size:16px">signal_cellular_alt wifi battery_full</span></div>
+          <div style="padding:8px 24px 0;display:flex;align-items:center;justify-content:space-between;height:56px">
+            <span style="font-family:'Material Symbols Rounded';font-size:24px;width:48px;height:48px;display:flex;align-items:center">arrow_back</span>
+            <button style="border:none;background:transparent;color:var(--pri);font-family:inherit;font-size:15px;font-weight:600;height:48px;padding:0 12px">Skip</button>
+          </div>
+          <div style="padding:0 24px;display:flex;flex-direction:column;gap:8px">
+            <div style="height:4px;border-radius:2px;background:var(--surf2);overflow:hidden"><div style="width:100%;height:100%;background:var(--pri);border-radius:2px"></div></div>
+            <span style="font-size:12px;font-weight:600;color:var(--dim);letter-spacing:.04em">STEP 5 OF 5 · OPTIONAL</span>
+          </div>
+          <div style="padding:28px 24px 0;display:flex;flex-direction:column;gap:8px">
+            <h1 style="margin:0;font-size:28px;font-weight:800;letter-spacing:-0.02em">A gentle reminder?</h1>
+            <p style="margin:0;font-size:15px;line-height:1.5;color:var(--dim)">One quiet nudge, on your schedule.</p>
+          </div>
+          <div style="padding:24px 16px 0;display:flex;flex-direction:column;gap:8px">
+            <div style="display:flex;align-items:center;justify-content:space-between;height:64px;padding:0 16px;border-radius:20px;background:var(--surf);border:1px solid var(--out)">
+              <div style="display:flex;align-items:center;gap:16px"><span style="font-family:'Material Symbols Rounded';font-size:24px;color:var(--pri)">notifications</span><span style="font-size:16px;font-weight:600">Weigh-in reminder</span></div>
+              <div style="width:52px;height:32px;border-radius:16px;background:var(--pri);display:flex;align-items:center;justify-content:flex-end;padding:0 4px"><div style="width:24px;height:24px;border-radius:50%;background:#FFFFFF"></div></div>
+            </div>
+            <div style="display:flex;gap:8px;padding:8px 0 0">
+              <div style="height:40px;padding:0 18px;border-radius:20px;background:var(--pric);color:var(--onpric);font-size:14px;font-weight:700;display:flex;align-items:center">Daily</div>
+              <div style="height:40px;padding:0 18px;border-radius:20px;border:1px solid var(--out);font-size:14px;font-weight:600;display:flex;align-items:center">Weekly</div>
+              <div style="height:40px;padding:0 18px;border-radius:20px;border:1px solid var(--out);font-size:14px;font-weight:600;display:flex;align-items:center">Monthly</div>
+            </div>
+            <div style="margin-top:8px;display:flex;align-items:center;justify-content:space-between;height:64px;padding:0 16px;border-radius:20px;background:var(--surf);border:1px solid var(--out)">
+              <div style="display:flex;align-items:center;gap:16px"><span style="font-family:'Material Symbols Rounded';font-size:24px;color:var(--dim)">schedule</span><span style="font-size:16px;font-weight:600">Time</span></div>
+              <span style="font-size:16px;font-weight:700;font-variant-numeric:tabular-nums;color:var(--pri)">07:30</span>
+            </div>
+          </div>
+          <div style="position:absolute;left:24px;right:24px;bottom:36px;display:flex;justify-content:space-between;align-items:center">
+            <button style="height:48px;padding:0 16px;border:none;background:transparent;color:var(--pri);font-family:inherit;font-size:15px;font-weight:600">Not now</button>
+            <button style="height:56px;padding:0 32px;border:none;border-radius:28px;background:var(--pri);color:var(--onpri);font-family:inherit;font-size:16px;font-weight:700">Continue</button>
+          </div>
+        </div>
+        <span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#59635F">onboarding-reminder.light.png</span>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <div style="--bg:#F6F8F7;--surf:#FFFFFF;--surf2:#EAEFEC;--on:#171D1B;--dim:#59635F;--out:#D3DBD8;--pri:#1F6A5C;--onpri:#FFFFFF;--pric:#B3EEDD;--onpric:#00201A;position:relative;width:390px;height:844px;border-radius:36px;overflow:hidden;background:var(--bg);color:var(--on);font-family:Manrope,sans-serif;box-shadow:0 12px 32px rgba(16,32,28,.14)">
+          <div style="height:44px;display:flex;align-items:center;justify-content:space-between;padding:0 26px;font-size:13px;font-weight:600"><span>9:41</span><span style="font-family:'Material Symbols Rounded';font-size:16px">signal_cellular_alt wifi battery_full</span></div>
+          <div style="padding:80px 24px 0;display:flex;flex-direction:column;align-items:center;gap:28px">
+            <div style="width:96px;height:96px;border-radius:48px;background:var(--pric);color:var(--onpric);display:flex;align-items:center;justify-content:center"><span style="font-family:'Material Symbols Rounded';font-size:48px">check</span></div>
+            <div style="display:flex;flex-direction:column;gap:12px;text-align:center">
+              <h1 style="margin:0;font-size:32px;font-weight:800;letter-spacing:-0.02em">You’re all set</h1>
+              <p style="margin:0;font-size:16px;line-height:1.55;color:var(--dim)">Ponvia is ready. Your first entry is already on the chart.</p>
+            </div>
+            <div style="width:100%;padding:20px;border-radius:24px;background:var(--surf);border:1px solid var(--out);display:flex;flex-direction:column;gap:14px">
+              <div style="display:flex;align-items:center;justify-content:space-between;font-size:15px"><span style="color:var(--dim)">Language</span><span style="font-weight:700">English</span></div>
+              <div style="display:flex;align-items:center;justify-content:space-between;font-size:15px"><span style="color:var(--dim)">Theme</span><span style="font-weight:700">System</span></div>
+              <div style="display:flex;align-items:center;justify-content:space-between;font-size:15px"><span style="color:var(--dim)">Unit</span><span style="font-weight:700">Kilograms (kg)</span></div>
+              <div style="display:flex;align-items:center;justify-content:space-between;font-size:15px"><span style="color:var(--dim)">Reminder</span><span style="font-weight:700">Daily · 07:30</span></div>
+            </div>
+          </div>
+          <div style="position:absolute;left:24px;right:24px;bottom:36px">
+            <button style="width:100%;height:56px;border:none;border-radius:28px;background:var(--pri);color:var(--onpri);font-family:inherit;font-size:16px;font-weight:700">Start tracking</button>
+          </div>
+        </div>
+        <span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#59635F">onboarding-done.light.png</span>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <div style="--bg:#0E1412;--surf:#161D1B;--surf2:#1F2724;--on:#DEE4E1;--dim:#A6B0AC;--out:#333C39;--pri:#8ED8C4;--onpri:#00382F;--pric:#005046;--onpric:#B3EEDD;position:relative;width:390px;height:844px;border-radius:36px;overflow:hidden;background:var(--bg);color:var(--on);font-family:Manrope,sans-serif;box-shadow:0 12px 32px rgba(16,32,28,.14)">
+          <div style="height:44px;display:flex;align-items:center;justify-content:space-between;padding:0 26px;font-size:13px;font-weight:600"><span>9:41</span><span style="font-family:'Material Symbols Rounded';font-size:16px">signal_cellular_alt wifi battery_full</span></div>
+          <div style="padding:8px 24px 0;display:flex;align-items:center;justify-content:space-between;height:56px">
+            <span style="font-family:'Material Symbols Rounded';font-size:24px;width:48px;height:48px;display:flex;align-items:center">arrow_back</span>
+            <button style="border:none;background:transparent;color:var(--pri);font-family:inherit;font-size:15px;font-weight:600;height:48px;padding:0 12px">Skip</button>
+          </div>
+          <div style="padding:0 24px;display:flex;flex-direction:column;gap:8px">
+            <div style="height:4px;border-radius:2px;background:var(--surf2);overflow:hidden"><div style="width:20%;height:100%;background:var(--pri);border-radius:2px"></div></div>
+            <span style="font-size:12px;font-weight:600;color:var(--dim);letter-spacing:.04em">STEP 1 OF 5</span>
+          </div>
+          <div style="padding:28px 24px 0;display:flex;flex-direction:column;gap:8px">
+            <h1 style="margin:0;font-size:28px;font-weight:800;letter-spacing:-0.02em">Choose your language</h1>
+            <p style="margin:0;font-size:15px;line-height:1.5;color:var(--dim)">You can change this any time in Settings.</p>
+          </div>
+          <div style="padding:28px 16px 0;display:flex;flex-direction:column;gap:8px">
+            <div style="display:flex;align-items:center;gap:16px;height:64px;padding:0 16px;border-radius:20px;background:var(--pric);color:var(--onpric)">
+              <span style="font-family:'Material Symbols Rounded';font-size:24px">radio_button_checked</span>
+              <div style="display:flex;flex-direction:column"><span style="font-size:16px;font-weight:700">English</span><span style="font-size:13px;opacity:.75">English (United States)</span></div>
+            </div>
+            <div style="display:flex;align-items:center;gap:16px;height:64px;padding:0 16px;border-radius:20px">
+              <span style="font-family:'Material Symbols Rounded';font-size:24px;color:var(--dim)">radio_button_unchecked</span>
+              <div style="display:flex;flex-direction:column"><span style="font-size:16px;font-weight:600">Dansk</span><span style="font-size:13px;color:var(--dim)">Danish (Denmark)</span></div>
+            </div>
+          </div>
+          <div style="position:absolute;left:24px;right:24px;bottom:36px;display:flex;justify-content:flex-end">
+            <button style="height:56px;padding:0 32px;border:none;border-radius:28px;background:var(--pri);color:var(--onpri);font-family:inherit;font-size:16px;font-weight:700">Continue</button>
+          </div>
+        </div>
+        <span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#59635F">onboarding-language.dark.png</span>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <div style="--bg:#F6F8F7;--surf:#FFFFFF;--surf2:#EAEFEC;--on:#171D1B;--dim:#59635F;--out:#D3DBD8;--pri:#1F6A5C;--onpri:#FFFFFF;--pric:#B3EEDD;--onpric:#00201A;position:relative;width:390px;height:844px;border-radius:36px;overflow:hidden;background:var(--bg);color:var(--on);font-family:Manrope,sans-serif;box-shadow:0 12px 32px rgba(16,32,28,.14)">
+          <div style="height:44px;display:flex;align-items:center;justify-content:space-between;padding:0 26px;font-size:13px;font-weight:600"><span>9:41</span><span style="font-family:'Material Symbols Rounded';font-size:16px">signal_cellular_alt wifi battery_full</span></div>
+          <div style="padding:60px 24px 0;display:flex;flex-direction:column;align-items:center;gap:32px">
+            <div style="width:96px;height:96px;border-radius:30px;background:var(--pri);position:relative">
+              
+        <div style="position:absolute;left:16%;right:16%;bottom:18%;height:10%;border-radius:999px;background:#8ED8C4"></div>
+        <div style="position:absolute;left:45%;width:10%;bottom:32%;height:28%;border-radius:999px;background:#8ED8C4"></div>
+        <div style="position:absolute;left:36%;width:28%;aspect-ratio:1;bottom:58%;border-radius:50%;background:#B3EEDD"></div>
+      
+            </div>
+            <div style="display:flex;flex-direction:column;gap:12px;text-align:center">
+              <h1 style="margin:0;font-size:32px;font-weight:800;letter-spacing:-0.02em;line-height:1.15">Velkommen til Ponvia</h1>
+              <p style="margin:0;font-size:16px;line-height:1.55;color:var(--dim);text-wrap:pretty">Registrér din vægt på få sekunder, og se udviklingen tage form. Ingen konto, ingen sky — alt bliver på denne telefon.</p>
+            </div>
+          </div>
+          <div style="position:absolute;left:24px;right:24px;bottom:36px;display:flex;flex-direction:column;gap:12px">
+            <button style="height:56px;border:none;border-radius:28px;background:var(--pri);color:var(--onpri);font-family:inherit;font-size:16px;font-weight:700">Kom i gang</button>
+            <button style="height:48px;border:none;border-radius:24px;background:transparent;color:var(--pri);font-family:inherit;font-size:15px;font-weight:600">Jeg opsætter det senere</button>
+          </div>
+        </div>
+        <span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#59635F">onboarding-welcome.light.da.png</span>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <div style="--bg:#F6F8F7;--surf:#FFFFFF;--surf2:#EAEFEC;--on:#171D1B;--dim:#59635F;--out:#D3DBD8;--pri:#1F6A5C;--onpri:#FFFFFF;--pric:#B3EEDD;--onpric:#00201A;position:relative;width:390px;height:844px;border-radius:36px;overflow:hidden;background:var(--bg);color:var(--on);font-family:Manrope,sans-serif;box-shadow:0 12px 32px rgba(16,32,28,.14)">
+          <div style="height:44px;display:flex;align-items:center;justify-content:space-between;padding:0 26px;font-size:13px;font-weight:600"><span>9:41</span><span style="font-family:'Material Symbols Rounded';font-size:16px">signal_cellular_alt wifi battery_full</span></div>
+          <div style="padding:8px 24px 0;display:flex;align-items:center;justify-content:space-between;height:56px">
+            <span style="font-family:'Material Symbols Rounded';font-size:24px;width:48px;height:48px;display:flex;align-items:center">arrow_back</span>
+            <button style="border:none;background:transparent;color:var(--pri);font-family:inherit;font-size:15px;font-weight:600;height:48px;padding:0 12px">Spring over</button>
+          </div>
+          <div style="padding:0 24px;display:flex;flex-direction:column;gap:8px">
+            <div style="height:4px;border-radius:2px;background:var(--surf2);overflow:hidden"><div style="width:60%;height:100%;background:var(--pri);border-radius:2px"></div></div>
+            <span style="font-size:12px;font-weight:600;color:var(--dim);letter-spacing:.04em">TRIN 3 AF 5</span>
+          </div>
+          <div style="padding:28px 24px 0;display:flex;flex-direction:column;gap:8px">
+            <h1 style="margin:0;font-size:28px;font-weight:800;letter-spacing:-0.02em;line-height:1.2">Hvilken vægtenhed bruger du?</h1>
+            <p style="margin:0;font-size:15px;line-height:1.5;color:var(--dim)">Eksisterende registreringer bliver omregnet, aldrig ændret.</p>
+          </div>
+          <div style="padding:28px 24px 0;display:flex;flex-direction:column;gap:24px">
+            <div style="display:flex;height:48px;border-radius:24px;border:1px solid var(--out);overflow:hidden">
+              <div style="flex:1;display:flex;align-items:center;justify-content:center;gap:6px;background:var(--pric);color:var(--onpric);font-size:15px;font-weight:700"><span style="font-family:'Material Symbols Rounded';font-size:18px">check</span>kg</div>
+              <div style="flex:1;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:600;border-left:1px solid var(--out)">lb</div>
+              <div style="flex:1;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:600;border-left:1px solid var(--out)">st</div>
+            </div>
+            <div style="padding:24px;border-radius:24px;background:var(--surf);border:1px solid var(--out);display:flex;flex-direction:column;gap:6px;align-items:center">
+              <span style="font-size:12px;font-weight:600;color:var(--dim);letter-spacing:.04em">FORHÅNDSVISNING</span>
+              <div style="display:flex;align-items:baseline;gap:8px;font-variant-numeric:tabular-nums"><span style="font-size:56px;font-weight:800;letter-spacing:-0.03em">82,4</span><span style="font-size:22px;font-weight:600;color:var(--dim)">kg</span></div>
+            </div>
+          </div>
+          <div style="position:absolute;left:24px;right:24px;bottom:36px;display:flex;justify-content:space-between;align-items:center">
+            <button style="height:48px;padding:0 16px;border:none;background:transparent;color:var(--pri);font-family:inherit;font-size:15px;font-weight:600">Tilbage</button>
+            <button style="height:56px;padding:0 28px;border:none;border-radius:28px;background:var(--pri);color:var(--onpri);font-family:inherit;font-size:16px;font-weight:700">Fortsæt</button>
+          </div>
+        </div>
+        <span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#59635F">onboarding-unit.light.da.png</span>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <div style="--bg:#0E1412;--surf:#161D1B;--surf2:#1F2724;--on:#DEE4E1;--dim:#A6B0AC;--out:#333C39;--pri:#8ED8C4;--onpri:#00382F;--pric:#005046;--onpric:#B3EEDD;position:relative;width:390px;height:844px;border-radius:36px;overflow:hidden;background:var(--bg);color:var(--on);font-family:Manrope,sans-serif;box-shadow:0 12px 32px rgba(16,32,28,.14)">
+          <div style="height:44px;display:flex;align-items:center;justify-content:space-between;padding:0 26px;font-size:13px;font-weight:600"><span>9:41</span><span style="font-family:'Material Symbols Rounded';font-size:16px">signal_cellular_alt wifi battery_full</span></div>
+          <div style="padding:80px 24px 0;display:flex;flex-direction:column;align-items:center;gap:28px">
+            <div style="width:96px;height:96px;border-radius:48px;background:var(--pric);color:var(--onpric);display:flex;align-items:center;justify-content:center"><span style="font-family:'Material Symbols Rounded';font-size:48px">check</span></div>
+            <div style="display:flex;flex-direction:column;gap:12px;text-align:center">
+              <h1 style="margin:0;font-size:32px;font-weight:800;letter-spacing:-0.02em">Du er klar</h1>
+              <p style="margin:0;font-size:16px;line-height:1.55;color:var(--dim)">Ponvia er sat op. Din første registrering er allerede på grafen.</p>
+            </div>
+            <div style="width:100%;padding:20px;border-radius:24px;background:var(--surf);border:1px solid var(--out);display:flex;flex-direction:column;gap:14px">
+              <div style="display:flex;align-items:center;justify-content:space-between;font-size:15px"><span style="color:var(--dim)">Sprog</span><span style="font-weight:700">Dansk</span></div>
+              <div style="display:flex;align-items:center;justify-content:space-between;font-size:15px"><span style="color:var(--dim)">Tema</span><span style="font-weight:700">System</span></div>
+              <div style="display:flex;align-items:center;justify-content:space-between;font-size:15px"><span style="color:var(--dim)">Enhed</span><span style="font-weight:700">Kilogram (kg)</span></div>
+              <div style="display:flex;align-items:center;justify-content:space-between;font-size:15px"><span style="color:var(--dim)">Påmindelse</span><span style="font-weight:700">Dagligt · 07.30</span></div>
+            </div>
+          </div>
+          <div style="position:absolute;left:24px;right:24px;bottom:36px">
+            <button style="width:100%;height:56px;border:none;border-radius:28px;background:var(--pri);color:var(--onpri);font-family:inherit;font-size:16px;font-weight:700">Begynd at registrere</button>
+          </div>
+        </div>
+        <span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#59635F">onboarding-done.dark.da.png</span>
+      </div>
+
+    </div>
+  </div>
+
+  <div data-screen-label="Home" style="display:flex;flex-direction:column;gap:24px">
+    <h2 style="margin:0;font-size:26px;font-weight:700;letter-spacing:-0.02em">3 · Home — the hero screen</h2>
+    <p style="margin:-8px 0 0;font-size:15px;color:#59635F;max-width:760px">Latest weight owns the top third. Delta is neutral-informative: arrow icon + word + amount, in a warm/cool neutral pair rather than red/green. The dashed slot below the goal card is reserved for a second metric (calories) — adding it pushes nothing off-screen.</p>
+    <div style="display:flex;gap:40px;flex-wrap:wrap">
+
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <div style="--bg:#F6F8F7;--surf:#FFFFFF;--surf2:#EAEFEC;--on:#171D1B;--dim:#59635F;--out:#D3DBD8;--pri:#1F6A5C;--onpri:#FFFFFF;--pric:#B3EEDD;--onpric:#00201A;--down:#1F6A5C;--nav:#FFFFFF;position:relative;width:390px;height:844px;border-radius:36px;overflow:hidden;background:var(--bg);color:var(--on);font-family:Manrope,sans-serif;box-shadow:0 12px 32px rgba(16,32,28,.14)">
+          <div style="height:44px;display:flex;align-items:center;justify-content:space-between;padding:0 26px;font-size:13px;font-weight:600"><span>9:41</span><span style="font-family:'Material Symbols Rounded';font-size:16px">signal_cellular_alt wifi battery_full</span></div>
+          <div style="height:56px;padding:0 12px 0 24px;display:flex;align-items:center;justify-content:space-between">
+            <span style="font-size:22px;font-weight:800;letter-spacing:-0.02em">Ponvia</span>
+            <span style="font-family:'Material Symbols Rounded';font-size:24px;width:48px;height:48px;display:flex;align-items:center;justify-content:center;color:var(--dim)">settings</span>
+          </div>
+          <div style="padding:8px 16px 0;display:flex;flex-direction:column;gap:12px">
+            <div style="padding:24px 20px 16px;border-radius:28px;background:var(--surf);border:1px solid var(--out);display:flex;flex-direction:column;gap:16px">
+              <span style="font-size:13px;font-weight:700;color:var(--dim);letter-spacing:.06em">LATEST WEIGHT</span>
+              <div style="display:flex;align-items:baseline;gap:10px;font-variant-numeric:tabular-nums">
+                <span style="font-size:76px;font-weight:800;letter-spacing:-0.04em;line-height:.95">82.4</span>
+                <span style="font-size:26px;font-weight:600;color:var(--dim)">kg</span>
+              </div>
+              <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+                <span style="font-size:15px;font-weight:600;color:var(--dim)">Today · 08:14</span>
+                <div style="display:flex;align-items:center;gap:6px;height:32px;padding:0 12px;border-radius:16px;background:var(--pric);color:var(--onpric)">
+                  <span style="font-family:'Material Symbols Rounded';font-size:18px">arrow_downward</span>
+                  <span style="font-size:14px;font-weight:700;font-variant-numeric:tabular-nums">Down 0.6 kg</span>
+                </div>
+              </div>
+              <div style="margin-top:4px">
+                <svg viewBox="0 0 320 68" style="width:100%;height:68px;display:block">
+                  <polygon points="0,44 45,38 90,42 135,30 180,33 225,20 270,24 315,12 315,68 0,68" fill="#B3EEDD" opacity=".55"></polygon>
+                  <polyline points="0,44 45,38 90,42 135,30 180,33 225,20 270,24 315,12" fill="none" stroke="#1F6A5C" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"></polyline>
+                  <circle cx="315" cy="12" r="4.5" fill="#1F6A5C"></circle>
+                </svg>
+                <div style="display:flex;justify-content:space-between;font-size:12px;font-weight:600;color:var(--dim);margin-top:4px"><span>Last 14 days</span><span>−1.8 kg</span></div>
+              </div>
+            </div>
+
+            <div style="padding:18px 20px;border-radius:24px;background:var(--surf);border:1px solid var(--out);display:flex;flex-direction:column;gap:12px">
+              <div style="display:flex;align-items:center;justify-content:space-between">
+                <div style="display:flex;align-items:center;gap:10px"><span style="font-family:'Material Symbols Rounded';font-size:20px;color:var(--pri)">flag</span><span style="font-size:15px;font-weight:700">Goal · 78.0 kg</span></div>
+                <span style="font-size:14px;font-weight:700;color:var(--pri);font-variant-numeric:tabular-nums">4.4 kg to go</span>
+              </div>
+              <div style="height:10px;border-radius:5px;background:var(--surf2);overflow:hidden"><div style="width:62%;height:100%;border-radius:5px;background:var(--pri)"></div></div>
+              <span style="font-size:13px;color:var(--dim)">62% of the way from 89.9 kg</span>
+            </div>
+
+            <div style="height:76px;border-radius:24px;border:1.5px dashed var(--out);display:flex;align-items:center;justify-content:center;gap:8px;color:var(--dim)">
+              <span style="font-family:'Material Symbols Rounded';font-size:20px">add_circle</span>
+              <span style="font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.02em">slot — second metric (calories)</span>
+            </div>
+          </div>
+
+          <div style="position:absolute;right:16px;bottom:104px;height:56px;padding:0 20px;border-radius:20px;background:var(--pri);color:var(--onpri);display:flex;align-items:center;gap:10px;box-shadow:0 6px 16px rgba(31,106,92,.32)">
+            <span style="font-family:'Material Symbols Rounded';font-size:24px">add</span>
+            <span style="font-size:16px;font-weight:700">Log weight</span>
+          </div>
+
+          <div style="position:absolute;left:0;right:0;bottom:0;height:88px;background:var(--nav);border-top:1px solid var(--out);display:flex;align-items:flex-start;justify-content:space-around;padding-top:12px">
+            <div style="display:flex;flex-direction:column;align-items:center;gap:4px;min-width:64px"><div style="padding:4px 20px;border-radius:16px;background:var(--pric);color:var(--onpric)"><span style="font-family:'Material Symbols Rounded';font-size:24px;display:block">home</span></div><span style="font-size:12px;font-weight:700">Home</span></div>
+            <div style="display:flex;flex-direction:column;align-items:center;gap:4px;min-width:64px;color:var(--dim)"><div style="padding:4px 20px"><span style="font-family:'Material Symbols Rounded';font-size:24px;display:block">show_chart</span></div><span style="font-size:12px;font-weight:600">History</span></div>
+            <div style="display:flex;flex-direction:column;align-items:center;gap:4px;min-width:64px;color:var(--dim)"><div style="padding:4px 20px"><span style="font-family:'Material Symbols Rounded';font-size:24px;display:block">flag</span></div><span style="font-size:12px;font-weight:600">Goals</span></div>
+            <div style="display:flex;flex-direction:column;align-items:center;gap:4px;min-width:64px;color:var(--dim)"><div style="padding:4px 20px"><span style="font-family:'Material Symbols Rounded';font-size:24px;display:block">settings</span></div><span style="font-size:12px;font-weight:600">Settings</span></div>
+          </div>
+        </div>
+        <span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#59635F">home.light.kg.png</span>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <div style="--bg:#0E1412;--surf:#161D1B;--surf2:#1F2724;--on:#DEE4E1;--dim:#A6B0AC;--out:#333C39;--pri:#8ED8C4;--onpri:#00382F;--pric:#005046;--onpric:#B3EEDD;--nav:#161D1B;position:relative;width:390px;height:844px;border-radius:36px;overflow:hidden;background:var(--bg);color:var(--on);font-family:Manrope,sans-serif;box-shadow:0 12px 32px rgba(16,32,28,.14)">
+          <div style="height:44px;display:flex;align-items:center;justify-content:space-between;padding:0 26px;font-size:13px;font-weight:600"><span>9:41</span><span style="font-family:'Material Symbols Rounded';font-size:16px">signal_cellular_alt wifi battery_full</span></div>
+          <div style="height:56px;padding:0 12px 0 24px;display:flex;align-items:center;justify-content:space-between">
+            <span style="font-size:22px;font-weight:800;letter-spacing:-0.02em">Ponvia</span>
+            <span style="font-family:'Material Symbols Rounded';font-size:24px;width:48px;height:48px;display:flex;align-items:center;justify-content:center;color:var(--dim)">settings</span>
+          </div>
+          <div style="padding:8px 16px 0;display:flex;flex-direction:column;gap:12px">
+            <div style="padding:24px 20px 16px;border-radius:28px;background:var(--surf);border:1px solid var(--out);display:flex;flex-direction:column;gap:16px">
+              <span style="font-size:13px;font-weight:700;color:var(--dim);letter-spacing:.06em">LATEST WEIGHT</span>
+              <div style="display:flex;align-items:baseline;gap:10px;font-variant-numeric:tabular-nums">
+                <span style="font-size:76px;font-weight:800;letter-spacing:-0.04em;line-height:.95">82.4</span>
+                <span style="font-size:26px;font-weight:600;color:var(--dim)">kg</span>
+              </div>
+              <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+                <span style="font-size:15px;font-weight:600;color:var(--dim)">Today · 08:14</span>
+                <div style="display:flex;align-items:center;gap:6px;height:32px;padding:0 12px;border-radius:16px;background:var(--pric);color:var(--onpric)">
+                  <span style="font-family:'Material Symbols Rounded';font-size:18px">arrow_downward</span>
+                  <span style="font-size:14px;font-weight:700;font-variant-numeric:tabular-nums">Down 0.6 kg</span>
+                </div>
+              </div>
+              <div style="margin-top:4px">
+                <svg viewBox="0 0 320 68" style="width:100%;height:68px;display:block">
+                  <polygon points="0,44 45,38 90,42 135,30 180,33 225,20 270,24 315,12 315,68 0,68" fill="#005046" opacity=".7"></polygon>
+                  <polyline points="0,44 45,38 90,42 135,30 180,33 225,20 270,24 315,12" fill="none" stroke="#8ED8C4" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"></polyline>
+                  <circle cx="315" cy="12" r="4.5" fill="#8ED8C4"></circle>
+                </svg>
+                <div style="display:flex;justify-content:space-between;font-size:12px;font-weight:600;color:var(--dim);margin-top:4px"><span>Last 14 days</span><span>−1.8 kg</span></div>
+              </div>
+            </div>
+
+            <div style="padding:18px 20px;border-radius:24px;background:var(--surf);border:1px solid var(--out);display:flex;flex-direction:column;gap:12px">
+              <div style="display:flex;align-items:center;justify-content:space-between">
+                <div style="display:flex;align-items:center;gap:10px"><span style="font-family:'Material Symbols Rounded';font-size:20px;color:var(--pri)">flag</span><span style="font-size:15px;font-weight:700">Goal · 78.0 kg</span></div>
+                <span style="font-size:14px;font-weight:700;color:var(--pri);font-variant-numeric:tabular-nums">4.4 kg to go</span>
+              </div>
+              <div style="height:10px;border-radius:5px;background:var(--surf2);overflow:hidden"><div style="width:62%;height:100%;border-radius:5px;background:var(--pri)"></div></div>
+              <span style="font-size:13px;color:var(--dim)">62% of the way from 89.9 kg</span>
+            </div>
+
+            <div style="height:76px;border-radius:24px;border:1.5px dashed var(--out);display:flex;align-items:center;justify-content:center;gap:8px;color:var(--dim)">
+              <span style="font-family:'Material Symbols Rounded';font-size:20px">add_circle</span>
+              <span style="font-family:'JetBrains Mono',monospace;font-size:12px">slot — second metric (calories)</span>
+            </div>
+          </div>
+
+          <div style="position:absolute;right:16px;bottom:104px;height:56px;padding:0 20px;border-radius:20px;background:var(--pri);color:var(--onpri);display:flex;align-items:center;gap:10px;box-shadow:0 6px 16px rgba(0,0,0,.4)">
+            <span style="font-family:'Material Symbols Rounded';font-size:24px">add</span>
+            <span style="font-size:16px;font-weight:700">Log weight</span>
+          </div>
+
+          <div style="position:absolute;left:0;right:0;bottom:0;height:88px;background:var(--nav);border-top:1px solid var(--out);display:flex;align-items:flex-start;justify-content:space-around;padding-top:12px">
+            <div style="display:flex;flex-direction:column;align-items:center;gap:4px;min-width:64px"><div style="padding:4px 20px;border-radius:16px;background:var(--pric);color:var(--onpric)"><span style="font-family:'Material Symbols Rounded';font-size:24px;display:block">home</span></div><span style="font-size:12px;font-weight:700">Home</span></div>
+            <div style="display:flex;flex-direction:column;align-items:center;gap:4px;min-width:64px;color:var(--dim)"><div style="padding:4px 20px"><span style="font-family:'Material Symbols Rounded';font-size:24px;display:block">show_chart</span></div><span style="font-size:12px;font-weight:600">History</span></div>
+            <div style="display:flex;flex-direction:column;align-items:center;gap:4px;min-width:64px;color:var(--dim)"><div style="padding:4px 20px"><span style="font-family:'Material Symbols Rounded';font-size:24px;display:block">flag</span></div><span style="font-size:12px;font-weight:600">Goals</span></div>
+            <div style="display:flex;flex-direction:column;align-items:center;gap:4px;min-width:64px;color:var(--dim)"><div style="padding:4px 20px"><span style="font-family:'Material Symbols Rounded';font-size:24px;display:block">settings</span></div><span style="font-size:12px;font-weight:600">Settings</span></div>
+          </div>
+        </div>
+        <span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#59635F">home.dark.kg.png</span>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <div style="--bg:#F6F8F7;--surf:#FFFFFF;--surf2:#EAEFEC;--on:#171D1B;--dim:#59635F;--out:#D3DBD8;--pri:#1F6A5C;--onpri:#FFFFFF;--pric:#B3EEDD;--onpric:#00201A;--nav:#FFFFFF;position:relative;width:390px;height:844px;border-radius:36px;overflow:hidden;background:var(--bg);color:var(--on);font-family:Manrope,sans-serif;box-shadow:0 12px 32px rgba(16,32,28,.14)">
+          <div style="height:44px;display:flex;align-items:center;justify-content:space-between;padding:0 26px;font-size:13px;font-weight:600"><span>9:41</span><span style="font-family:'Material Symbols Rounded';font-size:16px">signal_cellular_alt wifi battery_full</span></div>
+          <div style="height:56px;padding:0 12px 0 24px;display:flex;align-items:center;justify-content:space-between">
+            <span style="font-size:22px;font-weight:800;letter-spacing:-0.02em">Ponvia</span>
+            <span style="font-family:'Material Symbols Rounded';font-size:24px;width:48px;height:48px;display:flex;align-items:center;justify-content:center;color:var(--dim)">settings</span>
+          </div>
+          <div style="padding:8px 16px 0;display:flex;flex-direction:column;gap:12px">
+            <div style="padding:24px 20px 16px;border-radius:28px;background:var(--surf);border:1px solid var(--out);display:flex;flex-direction:column;gap:16px">
+              <span style="font-size:13px;font-weight:700;color:var(--dim);letter-spacing:.06em">LATEST WEIGHT</span>
+              <div style="display:flex;align-items:baseline;gap:10px;font-variant-numeric:tabular-nums">
+                <span style="font-size:72px;font-weight:800;letter-spacing:-0.04em;line-height:.95">181.7</span>
+                <span style="font-size:26px;font-weight:600;color:var(--dim)">lb</span>
+              </div>
+              <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+                <span style="font-size:15px;font-weight:600;color:var(--dim)">Today · 08:14</span>
+                <div style="display:flex;align-items:center;gap:6px;height:32px;padding:0 12px;border-radius:16px;background:var(--pric);color:var(--onpric)">
+                  <span style="font-family:'Material Symbols Rounded';font-size:18px">arrow_downward</span>
+                  <span style="font-size:14px;font-weight:700;font-variant-numeric:tabular-nums">Down 1.3 lb</span>
+                </div>
+              </div>
+              <div style="margin-top:4px">
+                <svg viewBox="0 0 320 68" style="width:100%;height:68px;display:block">
+                  <polygon points="0,44 45,38 90,42 135,30 180,33 225,20 270,24 315,12 315,68 0,68" fill="#B3EEDD" opacity=".55"></polygon>
+                  <polyline points="0,44 45,38 90,42 135,30 180,33 225,20 270,24 315,12" fill="none" stroke="#1F6A5C" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"></polyline>
+                  <circle cx="315" cy="12" r="4.5" fill="#1F6A5C"></circle>
+                </svg>
+                <div style="display:flex;justify-content:space-between;font-size:12px;font-weight:600;color:var(--dim);margin-top:4px"><span>Last 14 days</span><span>−4.0 lb</span></div>
+              </div>
+            </div>
+            <div style="padding:18px 20px;border-radius:24px;background:var(--surf);border:1px solid var(--out);display:flex;flex-direction:column;gap:12px">
+              <div style="display:flex;align-items:center;justify-content:space-between">
+                <div style="display:flex;align-items:center;gap:10px"><span style="font-family:'Material Symbols Rounded';font-size:20px;color:var(--pri)">flag</span><span style="font-size:15px;font-weight:700">Goal · 172.0 lb</span></div>
+                <span style="font-size:14px;font-weight:700;color:var(--pri);font-variant-numeric:tabular-nums">9.7 lb to go</span>
+              </div>
+              <div style="height:10px;border-radius:5px;background:var(--surf2);overflow:hidden"><div style="width:62%;height:100%;border-radius:5px;background:var(--pri)"></div></div>
+              <span style="font-size:13px;color:var(--dim)">62% of the way from 198.2 lb</span>
+            </div>
+            <div style="height:76px;border-radius:24px;border:1.5px dashed var(--out);display:flex;align-items:center;justify-content:center;gap:8px;color:var(--dim)">
+              <span style="font-family:'Material Symbols Rounded';font-size:20px">add_circle</span>
+              <span style="font-family:'JetBrains Mono',monospace;font-size:12px">slot — second metric (calories)</span>
+            </div>
+          </div>
+          <div style="position:absolute;right:16px;bottom:104px;height:56px;padding:0 20px;border-radius:20px;background:var(--pri);color:var(--onpri);display:flex;align-items:center;gap:10px;box-shadow:0 6px 16px rgba(31,106,92,.32)">
+            <span style="font-family:'Material Symbols Rounded';font-size:24px">add</span><span style="font-size:16px;font-weight:700">Log weight</span>
+          </div>
+          <div style="position:absolute;left:0;right:0;bottom:0;height:88px;background:var(--nav);border-top:1px solid var(--out);display:flex;align-items:flex-start;justify-content:space-around;padding-top:12px">
+            <div style="display:flex;flex-direction:column;align-items:center;gap:4px;min-width:64px"><div style="padding:4px 20px;border-radius:16px;background:var(--pric);color:var(--onpric)"><span style="font-family:'Material Symbols Rounded';font-size:24px;display:block">home</span></div><span style="font-size:12px;font-weight:700">Home</span></div>
+            <div style="display:flex;flex-direction:column;align-items:center;gap:4px;min-width:64px;color:var(--dim)"><div style="padding:4px 20px"><span style="font-family:'Material Symbols Rounded';font-size:24px;display:block">show_chart</span></div><span style="font-size:12px;font-weight:600">History</span></div>
+            <div style="display:flex;flex-direction:column;align-items:center;gap:4px;min-width:64px;color:var(--dim)"><div style="padding:4px 20px"><span style="font-family:'Material Symbols Rounded';font-size:24px;display:block">flag</span></div><span style="font-size:12px;font-weight:600">Goals</span></div>
+            <div style="display:flex;flex-direction:column;align-items:center;gap:4px;min-width:64px;color:var(--dim)"><div style="padding:4px 20px"><span style="font-family:'Material Symbols Rounded';font-size:24px;display:block">settings</span></div><span style="font-size:12px;font-weight:600">Settings</span></div>
+          </div>
+        </div>
+        <span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#59635F">home.light.lb.png</span>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <div style="--bg:#F6F8F7;--surf:#FFFFFF;--surf2:#EAEFEC;--on:#171D1B;--dim:#59635F;--out:#D3DBD8;--pri:#1F6A5C;--onpri:#FFFFFF;--pric:#B3EEDD;--onpric:#00201A;--nav:#FFFFFF;position:relative;width:390px;height:844px;border-radius:36px;overflow:hidden;background:var(--bg);color:var(--on);font-family:Manrope,sans-serif;box-shadow:0 12px 32px rgba(16,32,28,.14)">
+          <div style="height:44px;display:flex;align-items:center;justify-content:space-between;padding:0 26px;font-size:13px;font-weight:600"><span>9:41</span><span style="font-family:'Material Symbols Rounded';font-size:16px">signal_cellular_alt wifi battery_full</span></div>
+          <div style="height:56px;padding:0 12px 0 24px;display:flex;align-items:center;justify-content:space-between">
+            <span style="font-size:22px;font-weight:800;letter-spacing:-0.02em">Ponvia</span>
+            <span style="font-family:'Material Symbols Rounded';font-size:24px;width:48px;height:48px;display:flex;align-items:center;justify-content:center;color:var(--dim)">settings</span>
+          </div>
+          <div style="padding:8px 16px 0;display:flex;flex-direction:column;gap:12px">
+            <div style="padding:24px 20px 16px;border-radius:28px;background:var(--surf);border:1px solid var(--out);display:flex;flex-direction:column;gap:16px">
+              <span style="font-size:13px;font-weight:700;color:var(--dim);letter-spacing:.06em">LATEST WEIGHT</span>
+              <div style="display:flex;align-items:baseline;gap:6px;font-variant-numeric:tabular-nums;flex-wrap:wrap">
+                <span style="font-size:64px;font-weight:800;letter-spacing:-0.04em;line-height:.95">12</span>
+                <span style="font-size:24px;font-weight:600;color:var(--dim)">st</span>
+                <span style="font-size:64px;font-weight:800;letter-spacing:-0.04em;line-height:.95;margin-left:6px">13.7</span>
+                <span style="font-size:24px;font-weight:600;color:var(--dim)">lb</span>
+              </div>
+              <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+                <span style="font-size:15px;font-weight:600;color:var(--dim)">Today · 08:14</span>
+                <div style="display:flex;align-items:center;gap:6px;height:32px;padding:0 12px;border-radius:16px;background:var(--pric);color:var(--onpric)">
+                  <span style="font-family:'Material Symbols Rounded';font-size:18px">arrow_downward</span>
+                  <span style="font-size:14px;font-weight:700;font-variant-numeric:tabular-nums">Down 1.3 lb</span>
+                </div>
+              </div>
+              <div style="margin-top:4px">
+                <svg viewBox="0 0 320 68" style="width:100%;height:68px;display:block">
+                  <polygon points="0,44 45,38 90,42 135,30 180,33 225,20 270,24 315,12 315,68 0,68" fill="#B3EEDD" opacity=".55"></polygon>
+                  <polyline points="0,44 45,38 90,42 135,30 180,33 225,20 270,24 315,12" fill="none" stroke="#1F6A5C" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"></polyline>
+                  <circle cx="315" cy="12" r="4.5" fill="#1F6A5C"></circle>
+                </svg>
+                <div style="display:flex;justify-content:space-between;font-size:12px;font-weight:600;color:var(--dim);margin-top:4px"><span>Last 14 days</span><span>−4.0 lb</span></div>
+              </div>
+            </div>
+            <div style="padding:18px 20px;border-radius:24px;background:var(--surf);border:1px solid var(--out);display:flex;flex-direction:column;gap:12px">
+              <div style="display:flex;align-items:center;justify-content:space-between">
+                <div style="display:flex;align-items:center;gap:10px"><span style="font-family:'Material Symbols Rounded';font-size:20px;color:var(--pri)">flag</span><span style="font-size:15px;font-weight:700">Goal · 12 st 4 lb</span></div>
+                <span style="font-size:14px;font-weight:700;color:var(--pri);font-variant-numeric:tabular-nums">9.7 lb to go</span>
+              </div>
+              <div style="height:10px;border-radius:5px;background:var(--surf2);overflow:hidden"><div style="width:62%;height:100%;border-radius:5px;background:var(--pri)"></div></div>
+              <span style="font-size:13px;color:var(--dim)">62% of the way from 14 st 2.2 lb</span>
+            </div>
+            <div style="height:76px;border-radius:24px;border:1.5px dashed var(--out);display:flex;align-items:center;justify-content:center;gap:8px;color:var(--dim)">
+              <span style="font-family:'Material Symbols Rounded';font-size:20px">add_circle</span>
+              <span style="font-family:'JetBrains Mono',monospace;font-size:12px">slot — second metric (calories)</span>
+            </div>
+          </div>
+          <div style="position:absolute;right:16px;bottom:104px;height:56px;padding:0 20px;border-radius:20px;background:var(--pri);color:var(--onpri);display:flex;align-items:center;gap:10px;box-shadow:0 6px 16px rgba(31,106,92,.32)">
+            <span style="font-family:'Material Symbols Rounded';font-size:24px">add</span><span style="font-size:16px;font-weight:700">Log weight</span>
+          </div>
+          <div style="position:absolute;left:0;right:0;bottom:0;height:88px;background:var(--nav);border-top:1px solid var(--out);display:flex;align-items:flex-start;justify-content:space-around;padding-top:12px">
+            <div style="display:flex;flex-direction:column;align-items:center;gap:4px;min-width:64px"><div style="padding:4px 20px;border-radius:16px;background:var(--pric);color:var(--onpric)"><span style="font-family:'Material Symbols Rounded';font-size:24px;display:block">home</span></div><span style="font-size:12px;font-weight:700">Home</span></div>
+            <div style="display:flex;flex-direction:column;align-items:center;gap:4px;min-width:64px;color:var(--dim)"><div style="padding:4px 20px"><span style="font-family:'Material Symbols Rounded';font-size:24px;display:block">show_chart</span></div><span style="font-size:12px;font-weight:600">History</span></div>
+            <div style="display:flex;flex-direction:column;align-items:center;gap:4px;min-width:64px;color:var(--dim)"><div style="padding:4px 20px"><span style="font-family:'Material Symbols Rounded';font-size:24px;display:block">flag</span></div><span style="font-size:12px;font-weight:600">Goals</span></div>
+            <div style="display:flex;flex-direction:column;align-items:center;gap:4px;min-width:64px;color:var(--dim)"><div style="padding:4px 20px"><span style="font-family:'Material Symbols Rounded';font-size:24px;display:block">settings</span></div><span style="font-size:12px;font-weight:600">Settings</span></div>
+          </div>
+        </div>
+        <span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#59635F">home.light.st.png</span>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <div style="--bg:#F6F8F7;--surf:#FFFFFF;--surf2:#EAEFEC;--on:#171D1B;--dim:#59635F;--out:#D3DBD8;--pri:#1F6A5C;--onpri:#FFFFFF;--pric:#B3EEDD;--onpric:#00201A;--nav:#FFFFFF;position:relative;width:390px;height:844px;border-radius:36px;overflow:hidden;background:var(--bg);color:var(--on);font-family:Manrope,sans-serif;box-shadow:0 12px 32px rgba(16,32,28,.14)">
+          <div style="height:44px;display:flex;align-items:center;justify-content:space-between;padding:0 26px;font-size:13px;font-weight:600"><span>9:41</span><span style="font-family:'Material Symbols Rounded';font-size:16px">signal_cellular_alt wifi battery_full</span></div>
+          <div style="height:56px;padding:0 12px 0 24px;display:flex;align-items:center;justify-content:space-between">
+            <span style="font-size:22px;font-weight:800;letter-spacing:-0.02em">Ponvia</span>
+            <span style="font-family:'Material Symbols Rounded';font-size:24px;width:48px;height:48px;display:flex;align-items:center;justify-content:center;color:var(--dim)">settings</span>
+          </div>
+          <div style="padding:8px 16px 0;display:flex;flex-direction:column;gap:12px">
+            <div style="padding:24px 20px 16px;border-radius:28px;background:var(--surf);border:1px solid var(--out);display:flex;flex-direction:column;gap:16px">
+              <span style="font-size:13px;font-weight:700;color:var(--dim);letter-spacing:.06em">SENESTE VÆGT</span>
+              <div style="display:flex;align-items:baseline;gap:10px;font-variant-numeric:tabular-nums">
+                <span style="font-size:76px;font-weight:800;letter-spacing:-0.04em;line-height:.95">82,4</span>
+                <span style="font-size:26px;font-weight:600;color:var(--dim)">kg</span>
+              </div>
+              <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+                <span style="font-size:15px;font-weight:600;color:var(--dim)">I dag · 08.14</span>
+                <div style="display:flex;align-items:center;gap:6px;height:32px;padding:0 12px;border-radius:16px;background:var(--pric);color:var(--onpric)">
+                  <span style="font-family:'Material Symbols Rounded';font-size:18px">arrow_downward</span>
+                  <span style="font-size:14px;font-weight:700;font-variant-numeric:tabular-nums">Ned 0,6 kg</span>
+                </div>
+              </div>
+              <div style="margin-top:4px">
+                <svg viewBox="0 0 320 68" style="width:100%;height:68px;display:block">
+                  <polygon points="0,44 45,38 90,42 135,30 180,33 225,20 270,24 315,12 315,68 0,68" fill="#B3EEDD" opacity=".55"></polygon>
+                  <polyline points="0,44 45,38 90,42 135,30 180,33 225,20 270,24 315,12" fill="none" stroke="#1F6A5C" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"></polyline>
+                  <circle cx="315" cy="12" r="4.5" fill="#1F6A5C"></circle>
+                </svg>
+                <div style="display:flex;justify-content:space-between;font-size:12px;font-weight:600;color:var(--dim);margin-top:4px"><span>Seneste 14 dage</span><span>−1,8 kg</span></div>
+              </div>
+            </div>
+            <div style="padding:18px 20px;border-radius:24px;background:var(--surf);border:1px solid var(--out);display:flex;flex-direction:column;gap:12px">
+              <div style="display:flex;align-items:center;justify-content:space-between;gap:8px">
+                <div style="display:flex;align-items:center;gap:10px"><span style="font-family:'Material Symbols Rounded';font-size:20px;color:var(--pri)">flag</span><span style="font-size:15px;font-weight:700">Mål · 78,0 kg</span></div>
+                <span style="font-size:14px;font-weight:700;color:var(--pri);font-variant-numeric:tabular-nums;white-space:nowrap">4,4 kg tilbage</span>
+              </div>
+              <div style="height:10px;border-radius:5px;background:var(--surf2);overflow:hidden"><div style="width:62%;height:100%;border-radius:5px;background:var(--pri)"></div></div>
+              <span style="font-size:13px;color:var(--dim);text-wrap:pretty">62 % af vejen fra 89,9 kg</span>
+            </div>
+            <div style="height:76px;border-radius:24px;border:1.5px dashed var(--out);display:flex;align-items:center;justify-content:center;gap:8px;color:var(--dim)">
+              <span style="font-family:'Material Symbols Rounded';font-size:20px">add_circle</span>
+              <span style="font-family:'JetBrains Mono',monospace;font-size:12px">plads — kalorier (senere)</span>
+            </div>
+          </div>
+          <div style="position:absolute;right:16px;bottom:104px;height:56px;padding:0 20px;border-radius:20px;background:var(--pri);color:var(--onpri);display:flex;align-items:center;gap:10px;box-shadow:0 6px 16px rgba(31,106,92,.32)">
+            <span style="font-family:'Material Symbols Rounded';font-size:24px">add</span><span style="font-size:16px;font-weight:700">Registrér vægt</span>
+          </div>
+          <div style="position:absolute;left:0;right:0;bottom:0;height:88px;background:var(--nav);border-top:1px solid var(--out);display:flex;align-items:flex-start;justify-content:space-around;padding-top:12px">
+            <div style="display:flex;flex-direction:column;align-items:center;gap:4px;min-width:64px"><div style="padding:4px 20px;border-radius:16px;background:var(--pric);color:var(--onpric)"><span style="font-family:'Material Symbols Rounded';font-size:24px;display:block">home</span></div><span style="font-size:12px;font-weight:700">Hjem</span></div>
+            <div style="display:flex;flex-direction:column;align-items:center;gap:4px;min-width:64px;color:var(--dim)"><div style="padding:4px 20px"><span style="font-family:'Material Symbols Rounded';font-size:24px;display:block">show_chart</span></div><span style="font-size:12px;font-weight:600">Historik</span></div>
+            <div style="display:flex;flex-direction:column;align-items:center;gap:4px;min-width:64px;color:var(--dim)"><div style="padding:4px 20px"><span style="font-family:'Material Symbols Rounded';font-size:24px;display:block">flag</span></div><span style="font-size:12px;font-weight:600">Mål</span></div>
+            <div style="display:flex;flex-direction:column;align-items:center;gap:4px;min-width:64px;color:var(--dim)"><div style="padding:4px 20px"><span style="font-family:'Material Symbols Rounded';font-size:24px;display:block">settings</span></div><span style="font-size:12px;font-weight:600">Indstillinger</span></div>
+          </div>
+        </div>
+        <span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#59635F">home.light.da.kg.png</span>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <div style="--bg:#F6F8F7;--surf:#FFFFFF;--surf2:#EAEFEC;--on:#171D1B;--dim:#59635F;--out:#D3DBD8;--pri:#1F6A5C;--onpri:#FFFFFF;--pric:#B3EEDD;--onpric:#00201A;--nav:#FFFFFF;position:relative;width:390px;height:844px;border-radius:36px;overflow:hidden;background:var(--bg);color:var(--on);font-family:Manrope,sans-serif;box-shadow:0 12px 32px rgba(16,32,28,.14)">
+          <div style="height:44px;display:flex;align-items:center;justify-content:space-between;padding:0 26px;font-size:13px;font-weight:600"><span>9:41</span><span style="font-family:'Material Symbols Rounded';font-size:16px">signal_cellular_alt wifi battery_full</span></div>
+          <div style="height:56px;padding:0 12px 0 24px;display:flex;align-items:center;justify-content:space-between">
+            <span style="font-size:22px;font-weight:800;letter-spacing:-0.02em">Ponvia</span>
+            <span style="font-family:'Material Symbols Rounded';font-size:24px;width:48px;height:48px;display:flex;align-items:center;justify-content:center;color:var(--dim)">settings</span>
+          </div>
+          <div style="padding:40px 24px 0;display:flex;flex-direction:column;align-items:center;gap:24px;text-align:center">
+            <div style="width:100%;height:180px;border-radius:28px;background:var(--surf2);display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden">
+              <svg viewBox="0 0 320 140" style="width:80%;height:120px">
+                <line x1="0" y1="120" x2="320" y2="120" stroke="#C6D2CD" stroke-width="2"></line>
+                <circle cx="40" cy="96" r="6" fill="#C6D2CD"></circle>
+                <circle cx="140" cy="96" r="6" fill="#C6D2CD"></circle>
+                <circle cx="240" cy="96" r="6" fill="#1F6A5C"></circle>
+              </svg>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:10px">
+              <h2 style="margin:0;font-size:24px;font-weight:800;letter-spacing:-0.02em">No entries yet</h2>
+              <p style="margin:0;font-size:16px;line-height:1.55;color:var(--dim);text-wrap:pretty">Log your weight once and Ponvia starts drawing your trend. It takes about five seconds.</p>
+            </div>
+            <button style="height:56px;padding:0 28px;border:none;border-radius:28px;background:var(--pri);color:var(--onpri);font-family:inherit;font-size:16px;font-weight:700;display:flex;align-items:center;gap:10px">
+              <span style="font-family:'Material Symbols Rounded';font-size:24px">add</span>Log your first weight
+            </button>
+            <div style="width:100%;height:76px;border-radius:24px;border:1.5px dashed var(--out);display:flex;align-items:center;justify-content:center;gap:8px;color:var(--dim)">
+              <span style="font-family:'Material Symbols Rounded';font-size:20px">add_circle</span>
+              <span style="font-family:'JetBrains Mono',monospace;font-size:12px">slot — second metric (calories)</span>
+            </div>
+          </div>
+          <div style="position:absolute;left:0;right:0;bottom:0;height:88px;background:var(--nav);border-top:1px solid var(--out);display:flex;align-items:flex-start;justify-content:space-around;padding-top:12px">
+            <div style="display:flex;flex-direction:column;align-items:center;gap:4px;min-width:64px"><div style="padding:4px 20px;border-radius:16px;background:var(--pric);color:var(--onpric)"><span style="font-family:'Material Symbols Rounded';font-size:24px;display:block">home</span></div><span style="font-size:12px;font-weight:700">Home</span></div>
+            <div style="display:flex;flex-direction:column;align-items:center;gap:4px;min-width:64px;color:var(--dim)"><div style="padding:4px 20px"><span style="font-family:'Material Symbols Rounded';font-size:24px;display:block">show_chart</span></div><span style="font-size:12px;font-weight:600">History</span></div>
+            <div style="display:flex;flex-direction:column;align-items:center;gap:4px;min-width:64px;color:var(--dim)"><div style="padding:4px 20px"><span style="font-family:'Material Symbols Rounded';font-size:24px;display:block">flag</span></div><span style="font-size:12px;font-weight:600">Goals</span></div>
+            <div style="display:flex;flex-direction:column;align-items:center;gap:4px;min-width:64px;color:var(--dim)"><div style="padding:4px 20px"><span style="font-family:'Material Symbols Rounded';font-size:24px;display:block">settings</span></div><span style="font-size:12px;font-weight:600">Settings</span></div>
+          </div>
+        </div>
+        <span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#59635F">home-empty.light.png</span>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <div style="--bg:#0E1412;--surf:#161D1B;--surf2:#1F2724;--on:#DEE4E1;--dim:#A6B0AC;--out:#333C39;--pri:#8ED8C4;--onpri:#00382F;--pric:#005046;--onpric:#B3EEDD;--nav:#161D1B;position:relative;width:390px;height:844px;border-radius:36px;overflow:hidden;background:var(--bg);color:var(--on);font-family:Manrope,sans-serif;box-shadow:0 12px 32px rgba(16,32,28,.14)">
+          <div style="height:44px;display:flex;align-items:center;justify-content:space-between;padding:0 26px;font-size:13px;font-weight:600"><span>9:41</span><span style="font-family:'Material Symbols Rounded';font-size:16px">signal_cellular_alt wifi battery_full</span></div>
+          <div style="height:56px;padding:0 12px 0 24px;display:flex;align-items:center;justify-content:space-between">
+            <span style="font-size:22px;font-weight:800;letter-spacing:-0.02em">Ponvia</span>
+            <span style="font-family:'Material Symbols Rounded';font-size:24px;width:48px;height:48px;display:flex;align-items:center;justify-content:center;color:var(--dim)">settings</span>
+          </div>
+          <div style="padding:8px 16px 0;display:flex;flex-direction:column;gap:12px">
+            <div style="padding:24px 20px 16px;border-radius:28px;background:var(--surf);border:1px solid var(--out);display:flex;flex-direction:column;gap:18px">
+              <div style="width:120px;height:14px;border-radius:7px;background:var(--surf2)"></div>
+              <div style="width:230px;height:64px;border-radius:16px;background:var(--surf2)"></div>
+              <div style="display:flex;gap:10px"><div style="width:120px;height:20px;border-radius:10px;background:var(--surf2)"></div><div style="width:110px;height:32px;border-radius:16px;background:var(--surf2)"></div></div>
+              <div style="height:68px;border-radius:14px;background:var(--surf2)"></div>
+            </div>
+            <div style="padding:18px 20px;border-radius:24px;background:var(--surf);border:1px solid var(--out);display:flex;flex-direction:column;gap:14px">
+              <div style="width:180px;height:16px;border-radius:8px;background:var(--surf2)"></div>
+              <div style="height:10px;border-radius:5px;background:var(--surf2)"></div>
+            </div>
+            <div style="padding:12px 0 0;display:flex;align-items:center;gap:10px;justify-content:center;color:var(--dim)">
+              <div style="width:20px;height:20px;border-radius:50%;border:2.5px solid var(--surf2);border-top-color:var(--pri)"></div>
+              <span style="font-size:13px;font-weight:600">Loading your entries…</span>
+            </div>
+          </div>
+          <div style="position:absolute;left:0;right:0;bottom:0;height:88px;background:var(--nav);border-top:1px solid var(--out);display:flex;align-items:flex-start;justify-content:space-around;padding-top:12px">
+            <div style="display:flex;flex-direction:column;align-items:center;gap:4px;min-width:64px"><div style="padding:4px 20px;border-radius:16px;background:var(--pric);color:var(--onpric)"><span style="font-family:'Material Symbols Rounded';font-size:24px;display:block">home</span></div><span style="font-size:12px;font-weight:700">Home</span></div>
+            <div style="display:flex;flex-direction:column;align-items:center;gap:4px;min-width:64px;color:var(--dim)"><div style="padding:4px 20px"><span style="font-family:'Material Symbols Rounded';font-size:24px;display:block">show_chart</span></div><span style="font-size:12px;font-weight:600">History</span></div>
+            <div style="display:flex;flex-direction:column;align-items:center;gap:4px;min-width:64px;color:var(--dim)"><div style="padding:4px 20px"><span style="font-family:'Material Symbols Rounded';font-size:24px;display:block">flag</span></div><span style="font-size:12px;font-weight:600">Goals</span></div>
+            <div style="display:flex;flex-direction:column;align-items:center;gap:4px;min-width:64px;color:var(--dim)"><div style="padding:4px 20px"><span style="font-family:'Material Symbols Rounded';font-size:24px;display:block">settings</span></div><span style="font-size:12px;font-weight:600">Settings</span></div>
+          </div>
+        </div>
+        <span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#59635F">home-loading.dark.png</span>
+      </div>
+
+    </div>
+  </div>
+
+  <div data-screen-label="Log weight" style="display:flex;flex-direction:column;gap:24px">
+    <h2 style="margin:0;font-size:26px;font-weight:700;letter-spacing:-0.02em">4 · Log / edit weight</h2>
+    <p style="margin:-8px 0 0;font-size:15px;color:#59635F;max-width:760px">A modal bottom sheet over Home — no route change, keypad already up, Save reachable by thumb. Date/time defaults to now and is a single tap to change. Two taps from launch to saved.</p>
+    <div style="display:flex;gap:40px;flex-wrap:wrap">
+
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <div style="--bg:#F6F8F7;--surf:#FFFFFF;--surf2:#EAEFEC;--on:#171D1B;--dim:#59635F;--out:#D3DBD8;--pri:#1F6A5C;--onpri:#FFFFFF;--pric:#B3EEDD;--onpric:#00201A;position:relative;width:390px;height:844px;border-radius:36px;overflow:hidden;background:var(--bg);color:var(--on);font-family:Manrope,sans-serif;box-shadow:0 12px 32px rgba(16,32,28,.14)">
+          <div style="height:44px;display:flex;align-items:center;justify-content:space-between;padding:0 26px;font-size:13px;font-weight:600"><span>9:41</span><span style="font-family:'Material Symbols Rounded';font-size:16px">signal_cellular_alt wifi battery_full</span></div>
+          <div style="position:absolute;inset:0;background:rgba(10,20,17,.42)"></div>
+          <div style="position:absolute;left:0;right:0;bottom:0;height:660px;border-radius:28px 28px 0 0;background:var(--surf);box-shadow:0 -8px 32px rgba(10,20,17,.18);display:flex;flex-direction:column">
+            <div style="display:flex;justify-content:center;padding:12px 0 4px"><div style="width:36px;height:4px;border-radius:2px;background:var(--out)"></div></div>
+            <div style="height:56px;padding:0 8px 0 20px;display:flex;align-items:center;justify-content:space-between">
+              <span style="font-size:20px;font-weight:800;letter-spacing:-0.02em">Log weight</span>
+              <span style="font-family:'Material Symbols Rounded';font-size:24px;width:48px;height:48px;display:flex;align-items:center;justify-content:center;color:var(--dim)">close</span>
+            </div>
+            <div style="padding:12px 20px 0;display:flex;flex-direction:column;align-items:center;gap:8px">
+              <div style="display:flex;align-items:baseline;gap:10px;font-variant-numeric:tabular-nums">
+                <span style="font-size:72px;font-weight:800;letter-spacing:-0.04em;line-height:1">82.4</span>
+                <span style="font-size:26px;font-weight:600;color:var(--dim)">kg</span>
+              </div>
+              <div style="width:220px;height:2px;background:var(--pri);border-radius:1px"></div>
+            </div>
+            <div style="padding:20px 16px 0;display:flex;gap:8px">
+              <div style="flex:1;height:56px;border-radius:16px;background:var(--surf2);display:flex;align-items:center;gap:10px;padding:0 16px">
+                <span style="font-family:'Material Symbols Rounded';font-size:20px;color:var(--dim)">event</span>
+                <div style="display:flex;flex-direction:column"><span style="font-size:11px;font-weight:700;color:var(--dim);letter-spacing:.04em">DATE</span><span style="font-size:15px;font-weight:700">Today</span></div>
+              </div>
+              <div style="flex:1;height:56px;border-radius:16px;background:var(--surf2);display:flex;align-items:center;gap:10px;padding:0 16px">
+                <span style="font-family:'Material Symbols Rounded';font-size:20px;color:var(--dim)">schedule</span>
+                <div style="display:flex;flex-direction:column"><span style="font-size:11px;font-weight:700;color:var(--dim);letter-spacing:.04em">TIME</span><span style="font-size:15px;font-weight:700;font-variant-numeric:tabular-nums">08:14</span></div>
+              </div>
+            </div>
+            <div style="padding:8px 16px 0">
+              <div style="height:56px;border-radius:16px;border:1px solid var(--out);display:flex;align-items:center;gap:10px;padding:0 16px;color:var(--dim)">
+                <span style="font-family:'Material Symbols Rounded';font-size:20px">edit_note</span>
+                <span style="font-size:15px">Add a note (optional)</span>
+              </div>
+            </div>
+            <div style="margin-top:auto;padding:0 12px 0;display:grid;grid-template-columns:repeat(3,1fr);gap:4px;font-size:26px;font-weight:600;text-align:center;color:var(--on)">
+              <div style="height:52px;line-height:52px">1</div><div style="height:52px;line-height:52px">2</div><div style="height:52px;line-height:52px">3</div>
+              <div style="height:52px;line-height:52px">4</div><div style="height:52px;line-height:52px">5</div><div style="height:52px;line-height:52px">6</div>
+              <div style="height:52px;line-height:52px">7</div><div style="height:52px;line-height:52px">8</div><div style="height:52px;line-height:52px">9</div>
+              <div style="height:52px;line-height:52px">.</div><div style="height:52px;line-height:52px">0</div><div style="height:52px;line-height:52px;font-family:'Material Symbols Rounded';font-size:24px;color:var(--dim)">backspace</div>
+            </div>
+            <div style="padding:12px 16px 28px">
+              <button style="width:100%;height:56px;border:none;border-radius:28px;background:var(--pri);color:var(--onpri);font-family:inherit;font-size:16px;font-weight:700">Save</button>
+            </div>
+          </div>
+        </div>
+        <span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#59635F">log.light.png</span>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <div style="--bg:#F6F8F7;--surf:#FFFFFF;--surf2:#EAEFEC;--on:#171D1B;--dim:#59635F;--out:#D3DBD8;--pri:#1F6A5C;--onpri:#FFFFFF;--pric:#B3EEDD;--onpric:#00201A;--err:#BA1A1A;position:relative;width:390px;height:844px;border-radius:36px;overflow:hidden;background:var(--bg);color:var(--on);font-family:Manrope,sans-serif;box-shadow:0 12px 32px rgba(16,32,28,.14)">
+          <div style="height:44px;display:flex;align-items:center;justify-content:space-between;padding:0 26px;font-size:13px;font-weight:600"><span>9:41</span><span style="font-family:'Material Symbols Rounded';font-size:16px">signal_cellular_alt wifi battery_full</span></div>
+          <div style="position:absolute;inset:0;background:rgba(10,20,17,.42)"></div>
+          <div style="position:absolute;left:0;right:0;bottom:0;height:660px;border-radius:28px 28px 0 0;background:var(--surf);box-shadow:0 -8px 32px rgba(10,20,17,.18);display:flex;flex-direction:column">
+            <div style="display:flex;justify-content:center;padding:12px 0 4px"><div style="width:36px;height:4px;border-radius:2px;background:var(--out)"></div></div>
+            <div style="height:56px;padding:0 8px 0 20px;display:flex;align-items:center;justify-content:space-between">
+              <span style="font-size:20px;font-weight:800;letter-spacing:-0.02em">Log weight</span>
+              <span style="font-family:'Material Symbols Rounded';font-size:24px;width:48px;height:48px;display:flex;align-items:center;justify-content:center;color:var(--dim)">close</span>
+            </div>
+            <div style="padding:12px 20px 0;display:flex;flex-direction:column;align-items:center;gap:8px">
+              <div style="display:flex;align-items:baseline;gap:10px;font-variant-numeric:tabular-nums;color:var(--err)">
+                <span style="font-size:72px;font-weight:800;letter-spacing:-0.04em;line-height:1">824</span>
+                <span style="font-size:26px;font-weight:600">kg</span>
+              </div>
+              <div style="width:220px;height:2px;background:var(--err);border-radius:1px"></div>
+              <div style="display:flex;align-items:center;gap:6px;color:var(--err);margin-top:4px">
+                <span style="font-family:'Material Symbols Rounded';font-size:18px">error</span>
+                <span style="font-size:13px;font-weight:600">Enter a weight between 20 and 400 kg</span>
+              </div>
+            </div>
+            <div style="padding:14px 16px 0;display:flex;gap:8px">
+              <div style="flex:1;height:56px;border-radius:16px;background:var(--surf2);display:flex;align-items:center;gap:10px;padding:0 16px">
+                <span style="font-family:'Material Symbols Rounded';font-size:20px;color:var(--dim)">event</span>
+                <div style="display:flex;flex-direction:column"><span style="font-size:11px;font-weight:700;color:var(--dim);letter-spacing:.04em">DATE</span><span style="font-size:15px;font-weight:700">Today</span></div>
+              </div>
+              <div style="flex:1;height:56px;border-radius:16px;background:var(--surf2);display:flex;align-items:center;gap:10px;padding:0 16px">
+                <span style="font-family:'Material Symbols Rounded';font-size:20px;color:var(--dim)">schedule</span>
+                <div style="display:flex;flex-direction:column"><span style="font-size:11px;font-weight:700;color:var(--dim);letter-spacing:.04em">TIME</span><span style="font-size:15px;font-weight:700;font-variant-numeric:tabular-nums">08:14</span></div>
+              </div>
+            </div>
+            <div style="padding:8px 16px 0">
+              <div style="height:56px;border-radius:16px;border:1px solid var(--out);display:flex;align-items:center;gap:10px;padding:0 16px;color:var(--dim)">
+                <span style="font-family:'Material Symbols Rounded';font-size:20px">edit_note</span>
+                <span style="font-size:15px">After morning run</span>
+              </div>
+            </div>
+            <div style="margin-top:auto;padding:0 12px 0;display:grid;grid-template-columns:repeat(3,1fr);gap:4px;font-size:26px;font-weight:600;text-align:center">
+              <div style="height:52px;line-height:52px">1</div><div style="height:52px;line-height:52px">2</div><div style="height:52px;line-height:52px">3</div>
+              <div style="height:52px;line-height:52px">4</div><div style="height:52px;line-height:52px">5</div><div style="height:52px;line-height:52px">6</div>
+              <div style="height:52px;line-height:52px">7</div><div style="height:52px;line-height:52px">8</div><div style="height:52px;line-height:52px">9</div>
+              <div style="height:52px;line-height:52px">.</div><div style="height:52px;line-height:52px">0</div><div style="height:52px;line-height:52px;font-family:'Material Symbols Rounded';font-size:24px;color:var(--dim)">backspace</div>
+            </div>
+            <div style="padding:12px 16px 28px">
+              <button style="width:100%;height:56px;border:none;border-radius:28px;background:var(--surf2);color:var(--dim);font-family:inherit;font-size:16px;font-weight:700">Save</button>
+            </div>
+          </div>
+        </div>
+        <span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#59635F">log-error.light.png</span>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <div style="--bg:#0E1412;--surf:#161D1B;--surf2:#1F2724;--on:#DEE4E1;--dim:#A6B0AC;--out:#333C39;--pri:#8ED8C4;--onpri:#00382F;--pric:#005046;--onpric:#B3EEDD;position:relative;width:390px;height:844px;border-radius:36px;overflow:hidden;background:var(--bg);color:var(--on);font-family:Manrope,sans-serif;box-shadow:0 12px 32px rgba(16,32,28,.14)">
+          <div style="height:44px;display:flex;align-items:center;justify-content:space-between;padding:0 26px;font-size:13px;font-weight:600"><span>9:41</span><span style="font-family:'Material Symbols Rounded';font-size:16px">signal_cellular_alt wifi battery_full</span></div>
+          <div style="position:absolute;inset:0;background:rgba(0,0,0,.6)"></div>
+          <div style="position:absolute;left:0;right:0;bottom:0;height:660px;border-radius:28px 28px 0 0;background:var(--surf);display:flex;flex-direction:column">
+            <div style="display:flex;justify-content:center;padding:12px 0 4px"><div style="width:36px;height:4px;border-radius:2px;background:var(--out)"></div></div>
+            <div style="height:56px;padding:0 8px 0 20px;display:flex;align-items:center;justify-content:space-between">
+              <span style="font-size:20px;font-weight:800;letter-spacing:-0.02em">Edit entry</span>
+              <div style="display:flex;align-items:center">
+                <span style="font-family:'Material Symbols Rounded';font-size:24px;width:48px;height:48px;display:flex;align-items:center;justify-content:center;color:var(--dim)">delete</span>
+                <span style="font-family:'Material Symbols Rounded';font-size:24px;width:48px;height:48px;display:flex;align-items:center;justify-content:center;color:var(--dim)">close</span>
+              </div>
+            </div>
+            <div style="padding:12px 20px 0;display:flex;flex-direction:column;align-items:center;gap:8px">
+              <div style="display:flex;align-items:baseline;gap:10px;font-variant-numeric:tabular-nums">
+                <span style="font-size:72px;font-weight:800;letter-spacing:-0.04em;line-height:1">83.0</span>
+                <span style="font-size:26px;font-weight:600;color:var(--dim)">kg</span>
+              </div>
+              <div style="width:220px;height:2px;background:var(--pri);border-radius:1px"></div>
+            </div>
+            <div style="padding:20px 16px 0;display:flex;gap:8px">
+              <div style="flex:1;height:56px;border-radius:16px;background:var(--surf2);display:flex;align-items:center;gap:10px;padding:0 16px">
+                <span style="font-family:'Material Symbols Rounded';font-size:20px;color:var(--dim)">event</span>
+                <div style="display:flex;flex-direction:column"><span style="font-size:11px;font-weight:700;color:var(--dim);letter-spacing:.04em">DATE</span><span style="font-size:15px;font-weight:700">5 Aug</span></div>
+              </div>
+              <div style="flex:1;height:56px;border-radius:16px;background:var(--surf2);display:flex;align-items:center;gap:10px;padding:0 16px">
+                <span style="font-family:'Material Symbols Rounded';font-size:20px;color:var(--dim)">schedule</span>
+                <div style="display:flex;flex-direction:column"><span style="font-size:11px;font-weight:700;color:var(--dim);letter-spacing:.04em">TIME</span><span style="font-size:15px;font-weight:700;font-variant-numeric:tabular-nums">07:52</span></div>
+              </div>
+            </div>
+            <div style="padding:8px 16px 0">
+              <div style="height:56px;border-radius:16px;border:1px solid var(--pri);display:flex;align-items:center;gap:10px;padding:0 16px">
+                <span style="font-family:'Material Symbols Rounded';font-size:20px;color:var(--pri)">edit_note</span>
+                <span style="font-size:15px">After morning run</span>
+              </div>
+            </div>
+            <div style="margin-top:auto;padding:0 12px 0;display:grid;grid-template-columns:repeat(3,1fr);gap:4px;font-size:26px;font-weight:600;text-align:center">
+              <div style="height:52px;line-height:52px">1</div><div style="height:52px;line-height:52px">2</div><div style="height:52px;line-height:52px">3</div>
+              <div style="height:52px;line-height:52px">4</div><div style="height:52px;line-height:52px">5</div><div style="height:52px;line-height:52px">6</div>
+              <div style="height:52px;line-height:52px">7</div><div style="height:52px;line-height:52px">8</div><div style="height:52px;line-height:52px">9</div>
+              <div style="height:52px;line-height:52px">.</div><div style="height:52px;line-height:52px">0</div><div style="height:52px;line-height:52px;font-family:'Material Symbols Rounded';font-size:24px;color:var(--dim)">backspace</div>
+            </div>
+            <div style="padding:12px 16px 28px">
+              <button style="width:100%;height:56px;border:none;border-radius:28px;background:var(--pri);color:var(--onpri);font-family:inherit;font-size:16px;font-weight:700">Save changes</button>
+            </div>
+          </div>
+        </div>
+        <span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#59635F">log-edit.dark.png</span>
+      </div>
+
+    </div>
+  </div>
+
+  <div data-screen-label="History" style="display:flex;flex-direction:column;gap:24px">
+    <h2 style="margin:0;font-size:26px;font-weight:700;letter-spacing:-0.02em">5 · History</h2>
+    <p style="margin:-8px 0 0;font-size:15px;color:#59635F;max-width:760px">Chart on top, list below, one scroll. The range control is a M3 segmented button; the selected segment carries a check plus the container fill, so selection never rests on colour alone.</p>
+    <div style="display:flex;gap:40px;flex-wrap:wrap">
+
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <div style="--bg:#F6F8F7;--surf:#FFFFFF;--surf2:#EAEFEC;--on:#171D1B;--dim:#59635F;--out:#D3DBD8;--pri:#1F6A5C;--onpri:#FFFFFF;--pric:#B3EEDD;--onpric:#00201A;--up:#8A6238;--nav:#FFFFFF;position:relative;width:390px;height:844px;border-radius:36px;overflow:hidden;background:var(--bg);color:var(--on);font-family:Manrope,sans-serif;box-shadow:0 12px 32px rgba(16,32,28,.14)">
+          <div style="height:44px;display:flex;align-items:center;justify-content:space-between;padding:0 26px;font-size:13px;font-weight:600"><span>9:41</span><span style="font-family:'Material Symbols Rounded';font-size:16px">signal_cellular_alt wifi battery_full</span></div>
+          <div style="height:56px;padding:0 12px 0 24px;display:flex;align-items:center;justify-content:space-between">
+            <span style="font-size:22px;font-weight:800;letter-spacing:-0.02em">History</span>
+            <span style="font-family:'Material Symbols Rounded';font-size:24px;width:48px;height:48px;display:flex;align-items:center;justify-content:center;color:var(--dim)">more_vert</span>
+          </div>
+          <div style="padding:4px 16px 0;display:flex;flex-direction:column;gap:12px">
+            <div style="display:flex;height:40px;border-radius:20px;border:1px solid var(--out);overflow:hidden;font-size:13px;font-weight:600">
+              <div style="flex:1;display:flex;align-items:center;justify-content:center">1W</div>
+              <div style="flex:1.4;display:flex;align-items:center;justify-content:center;gap:4px;background:var(--pric);color:var(--onpric);font-weight:700;border-left:1px solid var(--out);border-right:1px solid var(--out)"><span style="font-family:'Material Symbols Rounded';font-size:16px">check</span>1M</div>
+              <div style="flex:1;display:flex;align-items:center;justify-content:center">3M</div>
+              <div style="flex:1;display:flex;align-items:center;justify-content:center;border-left:1px solid var(--out)">1Y</div>
+              <div style="flex:1;display:flex;align-items:center;justify-content:center;border-left:1px solid var(--out)">All</div>
+            </div>
+            <div style="padding:16px 12px 12px;border-radius:24px;background:var(--surf);border:1px solid var(--out)">
+              <svg viewBox="0 0 330 160" style="width:100%;height:170px;display:block">
+                <line x1="28" y1="20" x2="330" y2="20" stroke="#E4EAE7" stroke-width="1"></line>
+                <line x1="28" y1="60" x2="330" y2="60" stroke="#E4EAE7" stroke-width="1"></line>
+                <line x1="28" y1="100" x2="330" y2="100" stroke="#E4EAE7" stroke-width="1"></line>
+                <line x1="28" y1="140" x2="330" y2="140" stroke="#E4EAE7" stroke-width="1"></line>
+                <text x="0" y="24" font-size="10" fill="#59635F" font-family="Manrope">86</text>
+                <text x="0" y="64" font-size="10" fill="#59635F" font-family="Manrope">84</text>
+                <text x="0" y="104" font-size="10" fill="#59635F" font-family="Manrope">82</text>
+                <text x="0" y="144" font-size="10" fill="#59635F" font-family="Manrope">80</text>
+                <polygon points="36,52 84,64 132,58 180,78 228,72 276,90 320,96 320,140 36,140" fill="#B3EEDD" opacity=".45"></polygon>
+                <polyline points="36,52 84,64 132,58 180,78 228,72 276,90 320,96" fill="none" stroke="#1F6A5C" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"></polyline>
+                <line x1="228" y1="20" x2="228" y2="140" stroke="#1F6A5C" stroke-width="1" stroke-dasharray="3 3"></line>
+                <circle cx="228" cy="72" r="6" fill="#FFFFFF" stroke="#1F6A5C" stroke-width="3"></circle>
+                <rect x="188" y="26" width="84" height="30" rx="8" fill="#1F6A5C"></rect>
+                <text x="198" y="45" font-size="12" fill="#FFFFFF" font-family="Manrope" font-weight="700">83.2 · 28 Jul</text>
+              </svg>
+            </div>
+            <div style="display:flex;flex-direction:column">
+              <span style="font-size:12px;font-weight:700;color:var(--dim);letter-spacing:.06em;padding:6px 8px">AUGUST 2026</span>
+              <div style="display:flex;align-items:center;gap:16px;padding:12px 8px;border-bottom:1px solid var(--out)">
+                <div style="flex:1;display:flex;flex-direction:column;gap:2px"><span style="font-size:16px;font-weight:700">Today · 08:14</span><span style="font-size:13px;color:var(--dim)">After morning run</span></div>
+                <span style="font-size:18px;font-weight:800;font-variant-numeric:tabular-nums">82.4 kg</span>
+                <div style="display:flex;align-items:center;gap:2px;color:var(--pri);min-width:62px;justify-content:flex-end"><span style="font-family:'Material Symbols Rounded';font-size:18px">arrow_downward</span><span style="font-size:14px;font-weight:700;font-variant-numeric:tabular-nums">0.6</span></div>
+              </div>
+              <div style="display:flex;align-items:center;gap:16px;padding:12px 8px;border-bottom:1px solid var(--out)">
+                <div style="flex:1;display:flex;flex-direction:column;gap:2px"><span style="font-size:16px;font-weight:700">Yesterday · 07:58</span></div>
+                <span style="font-size:18px;font-weight:800;font-variant-numeric:tabular-nums">83.0 kg</span>
+                <div style="display:flex;align-items:center;gap:2px;color:var(--up);min-width:62px;justify-content:flex-end"><span style="font-family:'Material Symbols Rounded';font-size:18px">arrow_upward</span><span style="font-size:14px;font-weight:700;font-variant-numeric:tabular-nums">0.2</span></div>
+              </div>
+              <div style="display:flex;align-items:center;gap:16px;padding:12px 8px;border-bottom:1px solid var(--out)">
+                <div style="flex:1;display:flex;flex-direction:column;gap:2px"><span style="font-size:16px;font-weight:700">5 Aug · 07:52</span><span style="font-size:13px;color:var(--dim)">Travel week</span></div>
+                <span style="font-size:18px;font-weight:800;font-variant-numeric:tabular-nums">82.8 kg</span>
+                <div style="display:flex;align-items:center;gap:2px;color:var(--dim);min-width:62px;justify-content:flex-end"><span style="font-family:'Material Symbols Rounded';font-size:18px">remove</span><span style="font-size:14px;font-weight:700;font-variant-numeric:tabular-nums">0.0</span></div>
+              </div>
+            </div>
+          </div>
+          <div style="position:absolute;left:0;right:0;bottom:0;height:88px;background:var(--nav);border-top:1px solid var(--out);display:flex;align-items:flex-start;justify-content:space-around;padding-top:12px">
+            <div style="display:flex;flex-direction:column;align-items:center;gap:4px;min-width:64px;color:var(--dim)"><div style="padding:4px 20px"><span style="font-family:'Material Symbols Rounded';font-size:24px;display:block">home</span></div><span style="font-size:12px;font-weight:600">Home</span></div>
+            <div style="display:flex;flex-direction:column;align-items:center;gap:4px;min-width:64px"><div style="padding:4px 20px;border-radius:16px;background:var(--pric);color:var(--onpric)"><span style="font-family:'Material Symbols Rounded';font-size:24px;display:block">show_chart</span></div><span style="font-size:12px;font-weight:700">History</span></div>
+            <div style="display:flex;flex-direction:column;align-items:center;gap:4px;min-width:64px;color:var(--dim)"><div style="padding:4px 20px"><span style="font-family:'Material Symbols Rounded';font-size:24px;display:block">flag</span></div><span style="font-size:12px;font-weight:600">Goals</span></div>
+            <div style="display:flex;flex-direction:column;align-items:center;gap:4px;min-width:64px;color:var(--dim)"><div style="padding:4px 20px"><span style="font-family:'Material Symbols Rounded';font-size:24px;display:block">settings</span></div><span style="font-size:12px;font-weight:600">Settings</span></div>
+          </div>
+        </div>
+        <span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#59635F">history.light.png</span>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <div style="--bg:#0E1412;--surf:#161D1B;--surf2:#1F2724;--on:#DEE4E1;--dim:#A6B0AC;--out:#333C39;--pri:#8ED8C4;--onpri:#00382F;--pric:#005046;--onpric:#B3EEDD;--up:#E0BC88;--nav:#161D1B;position:relative;width:390px;height:844px;border-radius:36px;overflow:hidden;background:var(--bg);color:var(--on);font-family:Manrope,sans-serif;box-shadow:0 12px 32px rgba(16,32,28,.14)">
+          <div style="height:44px;display:flex;align-items:center;justify-content:space-between;padding:0 26px;font-size:13px;font-weight:600"><span>9:41</span><span style="font-family:'Material Symbols Rounded';font-size:16px">signal_cellular_alt wifi battery_full</span></div>
+          <div style="height:56px;padding:0 12px 0 24px;display:flex;align-items:center;justify-content:space-between">
+            <span style="font-size:22px;font-weight:800;letter-spacing:-0.02em">History</span>
+            <span style="font-family:'Material Symbols Rounded';font-size:24px;width:48px;height:48px;display:flex;align-items:center;justify-content:center;color:var(--dim)">more_vert</span>
+          </div>
+          <div style="padding:4px 16px 0;display:flex;flex-direction:column;gap:12px">
+            <div style="display:flex;height:40px;border-radius:20px;border:1px solid var(--out);overflow:hidden;font-size:13px;font-weight:600">
+              <div style="flex:1;display:flex;align-items:center;justify-content:center">1W</div>
+              <div style="flex:1;display:flex;align-items:center;justify-content:center;border-left:1px solid var(--out)">1M</div>
+              <div style="flex:1.4;display:flex;align-items:center;justify-content:center;gap:4px;background:var(--pric);color:var(--onpric);font-weight:700;border-left:1px solid var(--out);border-right:1px solid var(--out)"><span style="font-family:'Material Symbols Rounded';font-size:16px">check</span>3M</div>
+              <div style="flex:1;display:flex;align-items:center;justify-content:center">1Y</div>
+              <div style="flex:1;display:flex;align-items:center;justify-content:center;border-left:1px solid var(--out)">All</div>
+            </div>
+            <div style="padding:16px 12px 12px;border-radius:24px;background:var(--surf);border:1px solid var(--out)">
+              <svg viewBox="0 0 330 160" style="width:100%;height:170px;display:block">
+                <line x1="28" y1="20" x2="330" y2="20" stroke="#2A3431" stroke-width="1"></line>
+                <line x1="28" y1="60" x2="330" y2="60" stroke="#2A3431" stroke-width="1"></line>
+                <line x1="28" y1="100" x2="330" y2="100" stroke="#2A3431" stroke-width="1"></line>
+                <line x1="28" y1="140" x2="330" y2="140" stroke="#2A3431" stroke-width="1"></line>
+                <text x="0" y="24" font-size="10" fill="#A6B0AC" font-family="Manrope">90</text>
+                <text x="0" y="64" font-size="10" fill="#A6B0AC" font-family="Manrope">87</text>
+                <text x="0" y="104" font-size="10" fill="#A6B0AC" font-family="Manrope">84</text>
+                <text x="0" y="144" font-size="10" fill="#A6B0AC" font-family="Manrope">81</text>
+                <polygon points="36,28 84,40 132,52 180,60 228,84 276,102 320,124 320,140 36,140" fill="#005046" opacity=".65"></polygon>
+                <polyline points="36,28 84,40 132,52 180,60 228,84 276,102 320,124" fill="none" stroke="#8ED8C4" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"></polyline>
+                <circle cx="320" cy="124" r="5" fill="#8ED8C4"></circle>
+              </svg>
+            </div>
+            <div style="display:flex;flex-direction:column">
+              <span style="font-size:12px;font-weight:700;color:var(--dim);letter-spacing:.06em;padding:6px 8px">AUGUST 2026</span>
+              <div style="display:flex;align-items:center;gap:16px;padding:12px 8px;border-bottom:1px solid var(--out)">
+                <div style="flex:1;display:flex;flex-direction:column;gap:2px"><span style="font-size:16px;font-weight:700">Today · 08:14</span><span style="font-size:13px;color:var(--dim)">After morning run</span></div>
+                <span style="font-size:18px;font-weight:800;font-variant-numeric:tabular-nums">82.4 kg</span>
+                <div style="display:flex;align-items:center;gap:2px;color:var(--pri);min-width:62px;justify-content:flex-end"><span style="font-family:'Material Symbols Rounded';font-size:18px">arrow_downward</span><span style="font-size:14px;font-weight:700;font-variant-numeric:tabular-nums">0.6</span></div>
+              </div>
+              <div style="display:flex;align-items:center;gap:16px;padding:12px 8px;border-bottom:1px solid var(--out)">
+                <div style="flex:1;display:flex;flex-direction:column;gap:2px"><span style="font-size:16px;font-weight:700">Yesterday · 07:58</span></div>
+                <span style="font-size:18px;font-weight:800;font-variant-numeric:tabular-nums">83.0 kg</span>
+                <div style="display:flex;align-items:center;gap:2px;color:var(--up);min-width:62px;justify-content:flex-end"><span style="font-family:'Material Symbols Rounded';font-size:18px">arrow_upward</span><span style="font-size:14px;font-weight:700;font-variant-numeric:tabular-nums">0.2</span></div>
+              </div>
+            </div>
+          </div>
+          <div style="position:absolute;left:16px;right:16px;bottom:104px;height:56px;border-radius:12px;background:#E2E6E4;color:#171D1B;display:flex;align-items:center;justify-content:space-between;padding:0 12px 0 16px;box-shadow:0 6px 16px rgba(0,0,0,.4)">
+            <span style="font-size:14px;font-weight:600">Entry deleted</span>
+            <button style="height:40px;padding:0 12px;border:none;background:transparent;color:#1F6A5C;font-family:inherit;font-size:14px;font-weight:800">UNDO</button>
+          </div>
+          <div style="position:absolute;left:0;right:0;bottom:0;height:88px;background:var(--nav);border-top:1px solid var(--out);display:flex;align-items:flex-start;justify-content:space-around;padding-top:12px">
+            <div style="display:flex;flex-direction:column;align-items:center;gap:4px;min-width:64px;color:var(--dim)"><div style="padding:4px 20px"><span style="font-family:'Material Symbols Rounded';font-size:24px;display:block">home</span></div><span style="font-size:12px;font-weight:600">Home</span></div>
+            <div style="display:flex;flex-direction:column;align-items:center;gap:4px;min-width:64px"><div style="padding:4px 20px;border-radius:16px;background:var(--pric);color:var(--onpric)"><span style="font-family:'Material Symbols Rounded';font-size:24px;display:block">show_chart</span></div><span style="font-size:12px;font-weight:700">History</span></div>
+            <div style="display:flex;flex-direction:column;align-items:center;gap:4px;min-width:64px;color:var(--dim)"><div style="padding:4px 20px"><span style="font-family:'Material Symbols Rounded';font-size:24px;display:block">flag</span></div><span style="font-size:12px;font-weight:600">Goals</span></div>
+            <div style="display:flex;flex-direction:column;align-items:center;gap:4px;min-width:64px;color:var(--dim)"><div style="padding:4px 20px"><span style="font-family:'Material Symbols Rounded';font-size:24px;display:block">settings</span></div><span style="font-size:12px;font-weight:600">Settings</span></div>
+          </div>
+        </div>
+        <span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#59635F">history-undo.dark.png</span>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <div style="--bg:#F6F8F7;--surf:#FFFFFF;--surf2:#EAEFEC;--on:#171D1B;--dim:#59635F;--out:#D3DBD8;--pri:#1F6A5C;--onpri:#FFFFFF;--pric:#B3EEDD;--onpric:#00201A;--nav:#FFFFFF;position:relative;width:390px;height:844px;border-radius:36px;overflow:hidden;background:var(--bg);color:var(--on);font-family:Manrope,sans-serif;box-shadow:0 12px 32px rgba(16,32,28,.14)">
+          <div style="height:44px;display:flex;align-items:center;justify-content:space-between;padding:0 26px;font-size:13px;font-weight:600"><span>9:41</span><span style="font-family:'Material Symbols Rounded';font-size:16px">signal_cellular_alt wifi battery_full</span></div>
+          <div style="height:56px;padding:0 12px 0 24px;display:flex;align-items:center;justify-content:space-between">
+            <span style="font-size:22px;font-weight:800;letter-spacing:-0.02em">History</span>
+            <span style="font-family:'Material Symbols Rounded';font-size:24px;width:48px;height:48px;display:flex;align-items:center;justify-content:center;color:var(--dim)">more_vert</span>
+          </div>
+          <div style="padding:4px 16px 0;display:flex;flex-direction:column;gap:12px">
+            <div style="display:flex;height:40px;border-radius:20px;border:1px solid var(--out);overflow:hidden;font-size:13px;font-weight:600;color:#A9B3AF">
+              <div style="flex:1;display:flex;align-items:center;justify-content:center">1W</div>
+              <div style="flex:1;display:flex;align-items:center;justify-content:center;border-left:1px solid var(--out)">1M</div>
+              <div style="flex:1;display:flex;align-items:center;justify-content:center;border-left:1px solid var(--out)">3M</div>
+              <div style="flex:1;display:flex;align-items:center;justify-content:center;border-left:1px solid var(--out)">1Y</div>
+              <div style="flex:1;display:flex;align-items:center;justify-content:center;border-left:1px solid var(--out)">All</div>
+            </div>
+            <div style="margin-top:60px;display:flex;flex-direction:column;align-items:center;text-align:center;gap:20px;padding:0 16px">
+              <div style="width:96px;height:96px;border-radius:48px;background:var(--surf2);display:flex;align-items:center;justify-content:center;color:var(--dim)"><span style="font-family:'Material Symbols Rounded';font-size:44px">show_chart</span></div>
+              <h2 style="margin:0;font-size:22px;font-weight:800;letter-spacing:-0.02em">Nothing to show yet</h2>
+              <p style="margin:0;font-size:15px;line-height:1.55;color:var(--dim);text-wrap:pretty">Your history and trend line appear after your first entry.</p>
+              <button style="height:48px;padding:0 24px;border:1px solid var(--pri);border-radius:24px;background:transparent;color:var(--pri);font-family:inherit;font-size:15px;font-weight:700">Log a weight</button>
+            </div>
+          </div>
+          <div style="position:absolute;left:0;right:0;bottom:0;height:88px;background:var(--nav);border-top:1px solid var(--out);display:flex;align-items:flex-start;justify-content:space-around;padding-top:12px">
+            <div style="display:flex;flex-direction:column;align-items:center;gap:4px;min-width:64px;color:var(--dim)"><div style="padding:4px 20px"><span style="font-family:'Material Symbols Rounded';font-size:24px;display:block">home</span></div><span style="font-size:12px;font-weight:600">Home</span></div>
+            <div style="display:flex;flex-direction:column;align-items:center;gap:4px;min-width:64px"><div style="padding:4px 20px;border-radius:16px;background:var(--pric);color:var(--onpric)"><span style="font-family:'Material Symbols Rounded';font-size:24px;display:block">show_chart</span></div><span style="font-size:12px;font-weight:700">History</span></div>
+            <div style="display:flex;flex-direction:column;align-items:center;gap:4px;min-width:64px;color:var(--dim)"><div style="padding:4px 20px"><span style="font-family:'Material Symbols Rounded';font-size:24px;display:block">flag</span></div><span style="font-size:12px;font-weight:600">Goals</span></div>
+            <div style="display:flex;flex-direction:column;align-items:center;gap:4px;min-width:64px;color:var(--dim)"><div style="padding:4px 20px"><span style="font-family:'Material Symbols Rounded';font-size:24px;display:block">settings</span></div><span style="font-size:12px;font-weight:600">Settings</span></div>
+          </div>
+        </div>
+        <span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#59635F">history-empty.light.png</span>
+      </div>
+
+    </div>
+  </div>
+
+  <div data-screen-label="Goals" style="display:flex;flex-direction:column;gap:24px">
+    <h2 style="margin:0;font-size:26px;font-weight:700;letter-spacing:-0.02em">6 · Goals</h2>
+    <p style="margin:-8px 0 0;font-size:15px;color:#59635F;max-width:760px">The goal nearest your current weight is auto-highlighted: filled primary container, elevation 2, and a “Closest goal” chip — so the emphasis is never colour-only. Direction is stated in words and an arrow, never inferred from hue.</p>
+    <div style="display:flex;gap:40px;flex-wrap:wrap">
+
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <div style="--bg:#F6F8F7;--surf:#FFFFFF;--surf2:#EAEFEC;--on:#171D1B;--dim:#59635F;--out:#D3DBD8;--pri:#1F6A5C;--onpri:#FFFFFF;--pric:#B3EEDD;--onpric:#00201A;--up:#8A6238;--nav:#FFFFFF;position:relative;width:390px;height:844px;border-radius:36px;overflow:hidden;background:var(--bg);color:var(--on);font-family:Manrope,sans-serif;box-shadow:0 12px 32px rgba(16,32,28,.14)">
+          <div style="height:44px;display:flex;align-items:center;justify-content:space-between;padding:0 26px;font-size:13px;font-weight:600"><span>9:41</span><span style="font-family:'Material Symbols Rounded';font-size:16px">signal_cellular_alt wifi battery_full</span></div>
+          <div style="height:56px;padding:0 12px 0 24px;display:flex;align-items:center"><span style="font-size:22px;font-weight:800;letter-spacing:-0.02em">Goals</span></div>
+          <div style="padding:4px 16px 0;display:flex;flex-direction:column;gap:12px">
+            <div style="padding:20px;border-radius:28px;background:var(--pric);color:var(--onpric);display:flex;flex-direction:column;gap:14px;box-shadow:0 4px 14px rgba(31,106,92,.22)">
+              <div style="display:flex;align-items:center;gap:8px">
+                <div style="display:flex;align-items:center;gap:6px;height:28px;padding:0 10px;border-radius:14px;background:var(--pri);color:var(--onpri)"><span style="font-family:'Material Symbols Rounded';font-size:16px">star</span><span style="font-size:12px;font-weight:800;letter-spacing:.02em">CLOSEST GOAL</span></div>
+              </div>
+              <div style="display:flex;align-items:flex-end;justify-content:space-between">
+                <div style="display:flex;align-items:baseline;gap:8px;font-variant-numeric:tabular-nums"><span style="font-size:44px;font-weight:800;letter-spacing:-0.03em;line-height:1">78.0</span><span style="font-size:18px;font-weight:600">kg</span></div>
+                <div style="display:flex;align-items:center;gap:4px"><span style="font-family:'Material Symbols Rounded';font-size:20px">arrow_downward</span><span style="font-size:15px;font-weight:700">4.4 kg to lose</span></div>
+              </div>
+              <div style="height:10px;border-radius:5px;background:rgba(0,32,26,.16);overflow:hidden"><div style="width:62%;height:100%;border-radius:5px;background:var(--pri)"></div></div>
+              <div style="display:flex;justify-content:space-between;font-size:13px;font-weight:600;opacity:.85"><span>Started 89.9 kg · 12 May</span><span>62%</span></div>
+            </div>
+
+            <div style="padding:18px 20px;border-radius:24px;background:var(--surf);border:1px solid var(--out);display:flex;flex-direction:column;gap:12px">
+              <div style="display:flex;align-items:flex-end;justify-content:space-between">
+                <div style="display:flex;align-items:baseline;gap:8px;font-variant-numeric:tabular-nums"><span style="font-size:32px;font-weight:800;letter-spacing:-0.02em;line-height:1">75.0</span><span style="font-size:16px;font-weight:600;color:var(--dim)">kg</span></div>
+                <div style="display:flex;align-items:center;gap:4px;color:var(--dim)"><span style="font-family:'Material Symbols Rounded';font-size:20px">arrow_downward</span><span style="font-size:14px;font-weight:700">7.4 kg to lose</span></div>
+              </div>
+              <div style="height:8px;border-radius:4px;background:var(--surf2);overflow:hidden"><div style="width:46%;height:100%;border-radius:4px;background:var(--pri);opacity:.6"></div></div>
+              <span style="font-size:13px;color:var(--dim)">Long-term goal</span>
+            </div>
+
+            <div style="padding:18px 20px;border-radius:24px;background:var(--surf);border:1px solid var(--out);display:flex;flex-direction:column;gap:12px">
+              <div style="display:flex;align-items:flex-end;justify-content:space-between">
+                <div style="display:flex;align-items:baseline;gap:8px;font-variant-numeric:tabular-nums"><span style="font-size:32px;font-weight:800;letter-spacing:-0.02em;line-height:1">86.0</span><span style="font-size:16px;font-weight:600;color:var(--dim)">kg</span></div>
+                <div style="display:flex;align-items:center;gap:6px;color:var(--pri)"><span style="font-family:'Material Symbols Rounded';font-size:20px">check_circle</span><span style="font-size:14px;font-weight:700">Achieved</span></div>
+              </div>
+              <div style="height:8px;border-radius:4px;background:var(--pric);overflow:hidden"><div style="width:100%;height:100%;border-radius:4px;background:var(--pri)"></div></div>
+              <span style="font-size:13px;color:var(--dim)">Reached 12 Jul · kept for 27 days</span>
+            </div>
+
+            <div style="padding:18px 20px;border-radius:24px;background:var(--surf);border:1px solid var(--out);display:flex;flex-direction:column;gap:12px">
+              <div style="display:flex;align-items:flex-end;justify-content:space-between">
+                <div style="display:flex;align-items:baseline;gap:8px;font-variant-numeric:tabular-nums"><span style="font-size:32px;font-weight:800;letter-spacing:-0.02em;line-height:1">88.0</span><span style="font-size:16px;font-weight:600;color:var(--dim)">kg</span></div>
+                <div style="display:flex;align-items:center;gap:4px;color:var(--up)"><span style="font-family:'Material Symbols Rounded';font-size:20px">arrow_upward</span><span style="font-size:14px;font-weight:700">5.6 kg to gain</span></div>
+              </div>
+              <span style="font-size:13px;color:var(--dim)">Off-season target</span>
+            </div>
+          </div>
+          <div style="position:absolute;right:16px;bottom:104px;width:56px;height:56px;border-radius:18px;background:var(--pri);color:var(--onpri);display:flex;align-items:center;justify-content:center;box-shadow:0 6px 16px rgba(31,106,92,.32)"><span style="font-family:'Material Symbols Rounded';font-size:26px">add</span></div>
+          <div style="position:absolute;left:0;right:0;bottom:0;height:88px;background:var(--nav);border-top:1px solid var(--out);display:flex;align-items:flex-start;justify-content:space-around;padding-top:12px">
+            <div style="display:flex;flex-direction:column;align-items:center;gap:4px;min-width:64px;color:var(--dim)"><div style="padding:4px 20px"><span style="font-family:'Material Symbols Rounded';font-size:24px;display:block">home</span></div><span style="font-size:12px;font-weight:600">Home</span></div>
+            <div style="display:flex;flex-direction:column;align-items:center;gap:4px;min-width:64px;color:var(--dim)"><div style="padding:4px 20px"><span style="font-family:'Material Symbols Rounded';font-size:24px;display:block">show_chart</span></div><span style="font-size:12px;font-weight:600">History</span></div>
+            <div style="display:flex;flex-direction:column;align-items:center;gap:4px;min-width:64px"><div style="padding:4px 20px;border-radius:16px;background:var(--pric);color:var(--onpric)"><span style="font-family:'Material Symbols Rounded';font-size:24px;display:block">flag</span></div><span style="font-size:12px;font-weight:700">Goals</span></div>
+            <div style="display:flex;flex-direction:column;align-items:center;gap:4px;min-width:64px;color:var(--dim)"><div style="padding:4px 20px"><span style="font-family:'Material Symbols Rounded';font-size:24px;display:block">settings</span></div><span style="font-size:12px;font-weight:600">Settings</span></div>
+          </div>
+        </div>
+        <span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#59635F">goals.light.png</span>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <div style="--bg:#0E1412;--surf:#161D1B;--surf2:#1F2724;--on:#DEE4E1;--dim:#A6B0AC;--out:#333C39;--pri:#8ED8C4;--onpri:#00382F;--pric:#005046;--onpric:#B3EEDD;--up:#E0BC88;--nav:#161D1B;position:relative;width:390px;height:844px;border-radius:36px;overflow:hidden;background:var(--bg);color:var(--on);font-family:Manrope,sans-serif;box-shadow:0 12px 32px rgba(16,32,28,.14)">
+          <div style="height:44px;display:flex;align-items:center;justify-content:space-between;padding:0 26px;font-size:13px;font-weight:600"><span>9:41</span><span style="font-family:'Material Symbols Rounded';font-size:16px">signal_cellular_alt wifi battery_full</span></div>
+          <div style="height:56px;padding:0 12px 0 24px;display:flex;align-items:center"><span style="font-size:22px;font-weight:800;letter-spacing:-0.02em">Goals</span></div>
+          <div style="padding:4px 16px 0;display:flex;flex-direction:column;gap:12px">
+            <div style="padding:20px;border-radius:28px;background:var(--pric);color:var(--onpric);display:flex;flex-direction:column;gap:14px;box-shadow:0 4px 14px rgba(0,0,0,.45)">
+              <div style="display:flex;align-items:center;gap:6px;height:28px;padding:0 10px;border-radius:14px;background:var(--pri);color:var(--onpri);align-self:flex-start"><span style="font-family:'Material Symbols Rounded';font-size:16px">star</span><span style="font-size:12px;font-weight:800">CLOSEST GOAL</span></div>
+              <div style="display:flex;align-items:flex-end;justify-content:space-between">
+                <div style="display:flex;align-items:baseline;gap:8px;font-variant-numeric:tabular-nums"><span style="font-size:44px;font-weight:800;letter-spacing:-0.03em;line-height:1">78.0</span><span style="font-size:18px;font-weight:600">kg</span></div>
+                <div style="display:flex;align-items:center;gap:4px"><span style="font-family:'Material Symbols Rounded';font-size:20px">arrow_downward</span><span style="font-size:15px;font-weight:700">4.4 kg to lose</span></div>
+              </div>
+              <div style="height:10px;border-radius:5px;background:rgba(0,0,0,.28);overflow:hidden"><div style="width:62%;height:100%;border-radius:5px;background:var(--pri)"></div></div>
+              <div style="display:flex;justify-content:space-between;font-size:13px;font-weight:600;opacity:.85"><span>Started 89.9 kg · 12 May</span><span>62%</span></div>
+            </div>
+            <div style="padding:18px 20px;border-radius:24px;background:var(--surf);border:1px solid var(--out);display:flex;flex-direction:column;gap:12px">
+              <div style="display:flex;align-items:flex-end;justify-content:space-between">
+                <div style="display:flex;align-items:baseline;gap:8px;font-variant-numeric:tabular-nums"><span style="font-size:32px;font-weight:800;line-height:1">75.0</span><span style="font-size:16px;font-weight:600;color:var(--dim)">kg</span></div>
+                <div style="display:flex;align-items:center;gap:4px;color:var(--dim)"><span style="font-family:'Material Symbols Rounded';font-size:20px">arrow_downward</span><span style="font-size:14px;font-weight:700">7.4 kg to lose</span></div>
+              </div>
+              <div style="height:8px;border-radius:4px;background:var(--surf2);overflow:hidden"><div style="width:46%;height:100%;border-radius:4px;background:var(--pri);opacity:.6"></div></div>
+              <span style="font-size:13px;color:var(--dim)">Long-term goal</span>
+            </div>
+            <div style="padding:18px 20px;border-radius:24px;background:var(--surf);border:1px solid var(--out);display:flex;flex-direction:column;gap:12px">
+              <div style="display:flex;align-items:flex-end;justify-content:space-between">
+                <div style="display:flex;align-items:baseline;gap:8px;font-variant-numeric:tabular-nums"><span style="font-size:32px;font-weight:800;line-height:1">86.0</span><span style="font-size:16px;font-weight:600;color:var(--dim)">kg</span></div>
+                <div style="display:flex;align-items:center;gap:6px;color:var(--pri)"><span style="font-family:'Material Symbols Rounded';font-size:20px">check_circle</span><span style="font-size:14px;font-weight:700">Achieved</span></div>
+              </div>
+              <div style="height:8px;border-radius:4px;background:var(--pric);overflow:hidden"><div style="width:100%;height:100%;border-radius:4px;background:var(--pri)"></div></div>
+              <span style="font-size:13px;color:var(--dim)">Reached 12 Jul · kept for 27 days</span>
+            </div>
+          </div>
+          <div style="position:absolute;right:16px;bottom:104px;width:56px;height:56px;border-radius:18px;background:var(--pri);color:var(--onpri);display:flex;align-items:center;justify-content:center;box-shadow:0 6px 16px rgba(0,0,0,.5)"><span style="font-family:'Material Symbols Rounded';font-size:26px">add</span></div>
+          <div style="position:absolute;left:0;right:0;bottom:0;height:88px;background:var(--nav);border-top:1px solid var(--out);display:flex;align-items:flex-start;justify-content:space-around;padding-top:12px">
+            <div style="display:flex;flex-direction:column;align-items:center;gap:4px;min-width:64px;color:var(--dim)"><div style="padding:4px 20px"><span style="font-family:'Material Symbols Rounded';font-size:24px;display:block">home</span></div><span style="font-size:12px;font-weight:600">Home</span></div>
+            <div style="display:flex;flex-direction:column;align-items:center;gap:4px;min-width:64px;color:var(--dim)"><div style="padding:4px 20px"><span style="font-family:'Material Symbols Rounded';font-size:24px;display:block">show_chart</span></div><span style="font-size:12px;font-weight:600">History</span></div>
+            <div style="display:flex;flex-direction:column;align-items:center;gap:4px;min-width:64px"><div style="padding:4px 20px;border-radius:16px;background:var(--pric);color:var(--onpric)"><span style="font-family:'Material Symbols Rounded';font-size:24px;display:block">flag</span></div><span style="font-size:12px;font-weight:700">Goals</span></div>
+            <div style="display:flex;flex-direction:column;align-items:center;gap:4px;min-width:64px;color:var(--dim)"><div style="padding:4px 20px"><span style="font-family:'Material Symbols Rounded';font-size:24px;display:block">settings</span></div><span style="font-size:12px;font-weight:600">Settings</span></div>
+          </div>
+        </div>
+        <span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#59635F">goals.dark.png</span>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <div style="--bg:#F6F8F7;--surf:#FFFFFF;--surf2:#EAEFEC;--on:#171D1B;--dim:#59635F;--out:#D3DBD8;--pri:#1F6A5C;--onpri:#FFFFFF;--pric:#B3EEDD;--onpric:#00201A;position:relative;width:390px;height:844px;border-radius:36px;overflow:hidden;background:var(--bg);color:var(--on);font-family:Manrope,sans-serif;box-shadow:0 12px 32px rgba(16,32,28,.14)">
+          <div style="height:44px;display:flex;align-items:center;justify-content:space-between;padding:0 26px;font-size:13px;font-weight:600"><span>9:41</span><span style="font-family:'Material Symbols Rounded';font-size:16px">signal_cellular_alt wifi battery_full</span></div>
+          <div style="position:absolute;inset:0;background:rgba(10,20,17,.42)"></div>
+          <div style="position:absolute;left:0;right:0;bottom:0;height:520px;border-radius:28px 28px 0 0;background:var(--surf);display:flex;flex-direction:column">
+            <div style="display:flex;justify-content:center;padding:12px 0 4px"><div style="width:36px;height:4px;border-radius:2px;background:var(--out)"></div></div>
+            <div style="height:56px;padding:0 8px 0 20px;display:flex;align-items:center;justify-content:space-between">
+              <span style="font-size:20px;font-weight:800;letter-spacing:-0.02em">New goal</span>
+              <span style="font-family:'Material Symbols Rounded';font-size:24px;width:48px;height:48px;display:flex;align-items:center;justify-content:center;color:var(--dim)">close</span>
+            </div>
+            <div style="padding:8px 20px 0;display:flex;flex-direction:column;gap:16px">
+              <div style="display:flex;flex-direction:column;gap:6px">
+                <span style="font-size:12px;font-weight:700;color:var(--pri);letter-spacing:.04em">TARGET WEIGHT</span>
+                <div style="height:64px;border-radius:16px;border:2px solid var(--pri);background:var(--surf2);display:flex;align-items:center;justify-content:space-between;padding:0 18px">
+                  <span style="font-size:32px;font-weight:800;font-variant-numeric:tabular-nums">78.0</span>
+                  <span style="font-size:18px;font-weight:600;color:var(--dim)">kg</span>
+                </div>
+              </div>
+              <div style="display:flex;flex-direction:column;gap:6px">
+                <span style="font-size:12px;font-weight:700;color:var(--dim);letter-spacing:.04em">LABEL (OPTIONAL)</span>
+                <div style="height:56px;border-radius:16px;border:1px solid var(--out);display:flex;align-items:center;padding:0 18px;font-size:16px;color:var(--dim)">e.g. Summer goal</div>
+              </div>
+              <div style="display:flex;align-items:center;justify-content:space-between;height:64px;padding:0 4px">
+                <div style="display:flex;flex-direction:column"><span style="font-size:16px;font-weight:700">Direction</span><span style="font-size:13px;color:var(--dim)">Set from your latest weight (82.4 kg)</span></div>
+                <div style="display:flex;align-items:center;gap:4px;height:32px;padding:0 12px;border-radius:16px;background:var(--pric);color:var(--onpric)"><span style="font-family:'Material Symbols Rounded';font-size:18px">arrow_downward</span><span style="font-size:13px;font-weight:700">Lose</span></div>
+              </div>
+              <div style="display:flex;align-items:center;justify-content:space-between;height:56px;padding:0 4px;border-top:1px solid var(--out)">
+                <span style="font-size:16px;font-weight:700">Highlight on Home</span>
+                <div style="width:52px;height:32px;border-radius:16px;background:var(--pri);display:flex;align-items:center;justify-content:flex-end;padding:0 4px"><div style="width:24px;height:24px;border-radius:50%;background:#FFFFFF"></div></div>
+              </div>
+            </div>
+            <div style="margin-top:auto;padding:0 20px 32px;display:flex;gap:12px">
+              <button style="flex:1;height:56px;border:1px solid var(--out);border-radius:28px;background:transparent;color:var(--on);font-family:inherit;font-size:16px;font-weight:700">Cancel</button>
+              <button style="flex:1.4;height:56px;border:none;border-radius:28px;background:var(--pri);color:var(--onpri);font-family:inherit;font-size:16px;font-weight:700">Save goal</button>
+            </div>
+          </div>
+        </div>
+        <span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#59635F">goal-add.light.png</span>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <div style="--bg:#F6F8F7;--surf:#FFFFFF;--surf2:#EAEFEC;--on:#171D1B;--dim:#59635F;--out:#D3DBD8;--pri:#1F6A5C;--onpri:#FFFFFF;--pric:#B3EEDD;--onpric:#00201A;--nav:#FFFFFF;position:relative;width:390px;height:844px;border-radius:36px;overflow:hidden;background:var(--bg);color:var(--on);font-family:Manrope,sans-serif;box-shadow:0 12px 32px rgba(16,32,28,.14)">
+          <div style="height:44px;display:flex;align-items:center;justify-content:space-between;padding:0 26px;font-size:13px;font-weight:600"><span>9:41</span><span style="font-family:'Material Symbols Rounded';font-size:16px">signal_cellular_alt wifi battery_full</span></div>
+          <div style="height:56px;padding:0 12px 0 24px;display:flex;align-items:center"><span style="font-size:22px;font-weight:800;letter-spacing:-0.02em">Goals</span></div>
+          <div style="padding:80px 32px 0;display:flex;flex-direction:column;align-items:center;text-align:center;gap:20px">
+            <div style="width:96px;height:96px;border-radius:48px;background:var(--surf2);display:flex;align-items:center;justify-content:center;color:var(--dim)"><span style="font-family:'Material Symbols Rounded';font-size:44px">flag</span></div>
+            <h2 style="margin:0;font-size:22px;font-weight:800;letter-spacing:-0.02em">No goals yet</h2>
+            <p style="margin:0;font-size:15px;line-height:1.55;color:var(--dim);text-wrap:pretty">A goal turns the number on Home into progress. You can keep several — the closest one is highlighted.</p>
+            <button style="height:56px;padding:0 28px;border:none;border-radius:28px;background:var(--pri);color:var(--onpri);font-family:inherit;font-size:16px;font-weight:700;display:flex;align-items:center;gap:10px"><span style="font-family:'Material Symbols Rounded';font-size:24px">add</span>Add a goal</button>
+          </div>
+          <div style="position:absolute;left:0;right:0;bottom:0;height:88px;background:var(--nav);border-top:1px solid var(--out);display:flex;align-items:flex-start;justify-content:space-around;padding-top:12px">
+            <div style="display:flex;flex-direction:column;align-items:center;gap:4px;min-width:64px;color:var(--dim)"><div style="padding:4px 20px"><span style="font-family:'Material Symbols Rounded';font-size:24px;display:block">home</span></div><span style="font-size:12px;font-weight:600">Home</span></div>
+            <div style="display:flex;flex-direction:column;align-items:center;gap:4px;min-width:64px;color:var(--dim)"><div style="padding:4px 20px"><span style="font-family:'Material Symbols Rounded';font-size:24px;display:block">show_chart</span></div><span style="font-size:12px;font-weight:600">History</span></div>
+            <div style="display:flex;flex-direction:column;align-items:center;gap:4px;min-width:64px"><div style="padding:4px 20px;border-radius:16px;background:var(--pric);color:var(--onpric)"><span style="font-family:'Material Symbols Rounded';font-size:24px;display:block">flag</span></div><span style="font-size:12px;font-weight:700">Goals</span></div>
+            <div style="display:flex;flex-direction:column;align-items:center;gap:4px;min-width:64px;color:var(--dim)"><div style="padding:4px 20px"><span style="font-family:'Material Symbols Rounded';font-size:24px;display:block">settings</span></div><span style="font-size:12px;font-weight:600">Settings</span></div>
+          </div>
+        </div>
+        <span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#59635F">goals-empty.light.png</span>
+      </div>
+
+    </div>
+  </div>
+
+  <div data-screen-label="Settings" style="display:flex;flex-direction:column;gap:24px">
+    <h2 style="margin:0;font-size:26px;font-weight:700;letter-spacing:-0.02em">7 · Settings</h2>
+    <div style="display:flex;gap:40px;flex-wrap:wrap">
+
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <div style="--bg:#F6F8F7;--surf:#FFFFFF;--surf2:#EAEFEC;--on:#171D1B;--dim:#59635F;--out:#D3DBD8;--pri:#1F6A5C;--onpri:#FFFFFF;--pric:#B3EEDD;--onpric:#00201A;--err:#BA1A1A;--nav:#FFFFFF;position:relative;width:390px;height:844px;border-radius:36px;overflow:hidden;background:var(--bg);color:var(--on);font-family:Manrope,sans-serif;box-shadow:0 12px 32px rgba(16,32,28,.14)">
+          <div style="height:44px;display:flex;align-items:center;justify-content:space-between;padding:0 26px;font-size:13px;font-weight:600"><span>9:41</span><span style="font-family:'Material Symbols Rounded';font-size:16px">signal_cellular_alt wifi battery_full</span></div>
+          <div style="height:56px;padding:0 24px;display:flex;align-items:center"><span style="font-size:22px;font-weight:800;letter-spacing:-0.02em">Settings</span></div>
+          <div style="padding:0 8px 96px;display:flex;flex-direction:column">
+            <span style="font-size:12px;font-weight:800;color:var(--pri);letter-spacing:.06em;padding:8px 16px 4px">PREFERENCES</span>
+            <div style="display:flex;align-items:center;gap:16px;height:64px;padding:0 16px;border-radius:16px"><span style="font-family:'Material Symbols Rounded';font-size:24px;color:var(--dim)">language</span><span style="flex:1;font-size:16px;font-weight:600">Language</span><span style="font-size:15px;color:var(--dim)">English</span><span style="font-family:'Material Symbols Rounded';font-size:20px;color:var(--dim)">chevron_right</span></div>
+            <div style="display:flex;align-items:center;gap:16px;height:64px;padding:0 16px;border-radius:16px"><span style="font-family:'Material Symbols Rounded';font-size:24px;color:var(--dim)">contrast</span><span style="flex:1;font-size:16px;font-weight:600">Theme</span><span style="font-size:15px;color:var(--dim)">System</span><span style="font-family:'Material Symbols Rounded';font-size:20px;color:var(--dim)">chevron_right</span></div>
+            <div style="display:flex;align-items:center;gap:16px;height:76px;padding:0 16px;border-radius:16px">
+              <span style="font-family:'Material Symbols Rounded';font-size:24px;color:var(--dim)">scale</span>
+              <span style="flex:1;font-size:16px;font-weight:600">Weight unit</span>
+              <div style="display:flex;height:40px;border-radius:20px;border:1px solid var(--out);overflow:hidden;font-size:13px;font-weight:600">
+                <div style="width:52px;display:flex;align-items:center;justify-content:center;background:var(--pric);color:var(--onpric);font-weight:800">kg</div>
+                <div style="width:44px;display:flex;align-items:center;justify-content:center;border-left:1px solid var(--out)">lb</div>
+                <div style="width:44px;display:flex;align-items:center;justify-content:center;border-left:1px solid var(--out)">st</div>
+              </div>
+            </div>
+            <div style="display:flex;align-items:center;gap:16px;height:64px;padding:0 16px;border-radius:16px"><span style="font-family:'Material Symbols Rounded';font-size:24px;color:var(--dim)">notifications</span><span style="flex:1;font-size:16px;font-weight:600">Notifications</span><span style="font-size:15px;color:var(--dim)">Daily · 07:30</span><span style="font-family:'Material Symbols Rounded';font-size:20px;color:var(--dim)">chevron_right</span></div>
+
+            <span style="font-size:12px;font-weight:800;color:var(--pri);letter-spacing:.06em;padding:10px 16px 4px">DATA</span>
+            <div style="display:flex;align-items:center;gap:16px;height:56px;padding:0 16px"><span style="font-family:'Material Symbols Rounded';font-size:24px;color:var(--dim)">upload</span><span style="flex:1;font-size:16px;font-weight:600">Export data</span><span style="font-size:14px;color:var(--dim)">CSV / JSON</span></div>
+            <div style="display:flex;align-items:center;gap:16px;height:56px;padding:0 16px"><span style="font-family:'Material Symbols Rounded';font-size:24px;color:var(--dim)">download</span><span style="flex:1;font-size:16px;font-weight:600">Import data</span></div>
+            <div style="display:flex;align-items:center;gap:16px;height:56px;padding:0 16px;color:var(--err)"><span style="font-family:'Material Symbols Rounded';font-size:24px">delete_forever</span><span style="flex:1;font-size:16px;font-weight:700">Clear all data</span></div>
+
+            <span style="font-size:12px;font-weight:800;color:var(--pri);letter-spacing:.06em;padding:10px 16px 4px">ABOUT</span>
+            <div style="display:flex;align-items:center;gap:16px;height:52px;padding:0 16px"><span style="font-family:'Material Symbols Rounded';font-size:24px;color:var(--dim)">lock</span><span style="flex:1;font-size:15px;color:var(--dim);text-wrap:pretty">All data stays on your device</span></div>
+            <div style="display:flex;align-items:center;gap:16px;height:52px;padding:0 16px"><span style="font-family:'Material Symbols Rounded';font-size:24px;color:var(--dim)">info</span><span style="flex:1;font-size:16px;font-weight:600">Ponvia</span><span style="font-size:14px;color:var(--dim);font-variant-numeric:tabular-nums">1.0.0 (14)</span></div>
+          </div>
+          <div style="position:absolute;left:0;right:0;bottom:0;height:88px;background:var(--nav);border-top:1px solid var(--out);display:flex;align-items:flex-start;justify-content:space-around;padding-top:12px">
+            <div style="display:flex;flex-direction:column;align-items:center;gap:4px;min-width:64px;color:var(--dim)"><div style="padding:4px 20px"><span style="font-family:'Material Symbols Rounded';font-size:24px;display:block">home</span></div><span style="font-size:12px;font-weight:600">Home</span></div>
+            <div style="display:flex;flex-direction:column;align-items:center;gap:4px;min-width:64px;color:var(--dim)"><div style="padding:4px 20px"><span style="font-family:'Material Symbols Rounded';font-size:24px;display:block">show_chart</span></div><span style="font-size:12px;font-weight:600">History</span></div>
+            <div style="display:flex;flex-direction:column;align-items:center;gap:4px;min-width:64px;color:var(--dim)"><div style="padding:4px 20px"><span style="font-family:'Material Symbols Rounded';font-size:24px;display:block">flag</span></div><span style="font-size:12px;font-weight:600">Goals</span></div>
+            <div style="display:flex;flex-direction:column;align-items:center;gap:4px;min-width:64px"><div style="padding:4px 20px;border-radius:16px;background:var(--pric);color:var(--onpric)"><span style="font-family:'Material Symbols Rounded';font-size:24px;display:block">settings</span></div><span style="font-size:12px;font-weight:700">Settings</span></div>
+          </div>
+        </div>
+        <span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#59635F">settings.light.png</span>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <div style="--bg:#0E1412;--surf:#161D1B;--surf2:#1F2724;--on:#DEE4E1;--dim:#A6B0AC;--out:#333C39;--pri:#8ED8C4;--onpri:#00382F;--pric:#005046;--onpric:#B3EEDD;--err:#FFB4AB;--nav:#161D1B;position:relative;width:390px;height:844px;border-radius:36px;overflow:hidden;background:var(--bg);color:var(--on);font-family:Manrope,sans-serif;box-shadow:0 12px 32px rgba(16,32,28,.14)">
+          <div style="height:44px;display:flex;align-items:center;justify-content:space-between;padding:0 26px;font-size:13px;font-weight:600"><span>9:41</span><span style="font-family:'Material Symbols Rounded';font-size:16px">signal_cellular_alt wifi battery_full</span></div>
+          <div style="height:56px;padding:0 24px;display:flex;align-items:center"><span style="font-size:22px;font-weight:800;letter-spacing:-0.02em">Settings</span></div>
+          <div style="padding:0 8px 96px;display:flex;flex-direction:column">
+            <span style="font-size:12px;font-weight:800;color:var(--pri);letter-spacing:.06em;padding:8px 16px 4px">PREFERENCES</span>
+            <div style="display:flex;align-items:center;gap:16px;height:64px;padding:0 16px"><span style="font-family:'Material Symbols Rounded';font-size:24px;color:var(--dim)">language</span><span style="flex:1;font-size:16px;font-weight:600">Language</span><span style="font-size:15px;color:var(--dim)">Dansk</span><span style="font-family:'Material Symbols Rounded';font-size:20px;color:var(--dim)">chevron_right</span></div>
+            <div style="display:flex;align-items:center;gap:16px;height:64px;padding:0 16px"><span style="font-family:'Material Symbols Rounded';font-size:24px;color:var(--dim)">contrast</span><span style="flex:1;font-size:16px;font-weight:600">Theme</span><span style="font-size:15px;color:var(--dim)">Dark</span><span style="font-family:'Material Symbols Rounded';font-size:20px;color:var(--dim)">chevron_right</span></div>
+            <div style="display:flex;align-items:center;gap:16px;height:76px;padding:0 16px">
+              <span style="font-family:'Material Symbols Rounded';font-size:24px;color:var(--dim)">scale</span>
+              <span style="flex:1;font-size:16px;font-weight:600">Weight unit</span>
+              <div style="display:flex;height:40px;border-radius:20px;border:1px solid var(--out);overflow:hidden;font-size:13px;font-weight:600">
+                <div style="width:44px;display:flex;align-items:center;justify-content:center">kg</div>
+                <div style="width:44px;display:flex;align-items:center;justify-content:center;border-left:1px solid var(--out)">lb</div>
+                <div style="width:52px;display:flex;align-items:center;justify-content:center;border-left:1px solid var(--out);background:var(--pric);color:var(--onpric);font-weight:800">st</div>
+              </div>
+            </div>
+            <div style="display:flex;align-items:center;gap:16px;height:64px;padding:0 16px"><span style="font-family:'Material Symbols Rounded';font-size:24px;color:var(--dim)">notifications</span><span style="flex:1;font-size:16px;font-weight:600">Notifications</span><span style="font-size:15px;color:var(--dim)">Weekly · Wed</span><span style="font-family:'Material Symbols Rounded';font-size:20px;color:var(--dim)">chevron_right</span></div>
+            <span style="font-size:12px;font-weight:800;color:var(--pri);letter-spacing:.06em;padding:16px 16px 6px">DATA</span>
+            <div style="display:flex;align-items:center;gap:16px;height:64px;padding:0 16px"><span style="font-family:'Material Symbols Rounded';font-size:24px;color:var(--dim)">upload</span><span style="flex:1;font-size:16px;font-weight:600">Export data</span><span style="font-size:14px;color:var(--dim)">CSV / JSON</span></div>
+            <div style="display:flex;align-items:center;gap:16px;height:64px;padding:0 16px"><span style="font-family:'Material Symbols Rounded';font-size:24px;color:var(--dim)">download</span><span style="flex:1;font-size:16px;font-weight:600">Import data</span></div>
+            <div style="display:flex;align-items:center;gap:16px;height:64px;padding:0 16px;color:var(--err)"><span style="font-family:'Material Symbols Rounded';font-size:24px">delete_forever</span><span style="flex:1;font-size:16px;font-weight:700">Clear all data</span></div>
+          </div>
+          <div style="position:absolute;inset:0;background:rgba(0,0,0,.55)"></div>
+          <div style="position:absolute;left:24px;right:24px;top:250px;padding:24px;border-radius:28px;background:#232B28;display:flex;flex-direction:column;gap:16px;box-shadow:0 12px 40px rgba(0,0,0,.6)">
+            <span style="font-family:'Material Symbols Rounded';font-size:24px;color:var(--err);align-self:center">delete_forever</span>
+            <h3 style="margin:0;font-size:22px;font-weight:800;text-align:center;letter-spacing:-0.02em">Clear all data?</h3>
+            <p style="margin:0;font-size:15px;line-height:1.55;color:var(--dim);text-align:center;text-wrap:pretty">Every entry, goal and setting on this device will be deleted. This can’t be undone — export first if you want a copy.</p>
+            <div style="display:flex;justify-content:flex-end;gap:8px;margin-top:4px">
+              <button style="height:48px;padding:0 20px;border:none;border-radius:24px;background:transparent;color:var(--pri);font-family:inherit;font-size:15px;font-weight:700">Cancel</button>
+              <button style="height:48px;padding:0 20px;border:none;border-radius:24px;background:var(--err);color:#690005;font-family:inherit;font-size:15px;font-weight:800">Clear data</button>
+            </div>
+          </div>
+        </div>
+        <span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#59635F">settings-clear-dialog.dark.png</span>
+      </div>
+
+    </div>
+  </div>
+
+  <div data-screen-label="Notifications" style="display:flex;flex-direction:column;gap:24px">
+    <h2 style="margin:0;font-size:26px;font-weight:700;letter-spacing:-0.02em">8 · Notification settings</h2>
+    <p style="margin:-8px 0 0;font-size:15px;color:#59635F;max-width:760px">Frequency is a three-way segmented control; the conditional block below it swaps between weekday circles (Weekly) and a day-of-month grid (Monthly), animating height over 250 ms. Time-of-day is always present.</p>
+    <div style="display:flex;gap:40px;flex-wrap:wrap">
+
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <div style="--bg:#F6F8F7;--surf:#FFFFFF;--surf2:#EAEFEC;--on:#171D1B;--dim:#59635F;--out:#D3DBD8;--pri:#1F6A5C;--onpri:#FFFFFF;--pric:#B3EEDD;--onpric:#00201A;position:relative;width:390px;height:844px;border-radius:36px;overflow:hidden;background:var(--bg);color:var(--on);font-family:Manrope,sans-serif;box-shadow:0 12px 32px rgba(16,32,28,.14)">
+          <div style="height:44px;display:flex;align-items:center;justify-content:space-between;padding:0 26px;font-size:13px;font-weight:600"><span>9:41</span><span style="font-family:'Material Symbols Rounded';font-size:16px">signal_cellular_alt wifi battery_full</span></div>
+          <div style="height:56px;padding:0 12px;display:flex;align-items:center;gap:8px"><span style="font-family:'Material Symbols Rounded';font-size:24px;width:48px;height:48px;display:flex;align-items:center;justify-content:center">arrow_back</span><span style="font-size:20px;font-weight:800;letter-spacing:-0.02em">Reminders</span></div>
+          <div style="padding:8px 16px 0;display:flex;flex-direction:column;gap:20px">
+            <div style="display:flex;align-items:center;justify-content:space-between;height:72px;padding:0 20px;border-radius:24px;background:var(--pric);color:var(--onpric)">
+              <div style="display:flex;flex-direction:column"><span style="font-size:16px;font-weight:700">Weigh-in reminder</span><span style="font-size:13px;opacity:.8">Next: Wed 12 Aug, 07:30</span></div>
+              <div style="width:52px;height:32px;border-radius:16px;background:var(--pri);display:flex;align-items:center;justify-content:flex-end;padding:0 4px"><div style="width:24px;height:24px;border-radius:50%;background:#FFFFFF;display:flex;align-items:center;justify-content:center"><span style="font-family:'Material Symbols Rounded';font-size:16px;color:var(--pri)">check</span></div></div>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:10px">
+              <span style="font-size:12px;font-weight:800;color:var(--pri);letter-spacing:.06em">FREQUENCY</span>
+              <div style="display:flex;height:48px;border-radius:24px;border:1px solid var(--out);overflow:hidden;font-size:14px;font-weight:600">
+                <div style="flex:1;display:flex;align-items:center;justify-content:center">Daily</div>
+                <div style="flex:1.3;display:flex;align-items:center;justify-content:center;gap:6px;background:var(--pric);color:var(--onpric);font-weight:800;border-left:1px solid var(--out);border-right:1px solid var(--out)"><span style="font-family:'Material Symbols Rounded';font-size:18px">check</span>Weekly</div>
+                <div style="flex:1;display:flex;align-items:center;justify-content:center">Monthly</div>
+              </div>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:12px">
+              <span style="font-size:12px;font-weight:800;color:var(--pri);letter-spacing:.06em">ON THESE DAYS</span>
+              <div style="display:flex;justify-content:space-between">
+                <div style="width:44px;height:44px;border-radius:22px;border:1px solid var(--out);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700">M</div>
+                <div style="width:44px;height:44px;border-radius:22px;border:1px solid var(--out);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700">T</div>
+                <div style="width:44px;height:44px;border-radius:22px;background:var(--pri);color:var(--onpri);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800">W</div>
+                <div style="width:44px;height:44px;border-radius:22px;border:1px solid var(--out);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700">T</div>
+                <div style="width:44px;height:44px;border-radius:22px;border:1px solid var(--out);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700">F</div>
+                <div style="width:44px;height:44px;border-radius:22px;background:var(--pri);color:var(--onpri);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800">S</div>
+                <div style="width:44px;height:44px;border-radius:22px;border:1px solid var(--out);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700">S</div>
+              </div>
+              <span style="font-size:13px;color:var(--dim)">Wednesday and Saturday selected</span>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:12px">
+              <span style="font-size:12px;font-weight:800;color:var(--pri);letter-spacing:.06em">TIME OF DAY</span>
+              <div style="height:88px;border-radius:24px;background:var(--surf);border:1px solid var(--out);display:flex;align-items:center;justify-content:center;gap:12px">
+                <div style="width:88px;height:60px;border-radius:14px;background:var(--pric);color:var(--onpric);display:flex;align-items:center;justify-content:center;font-size:34px;font-weight:800;font-variant-numeric:tabular-nums">07</div>
+                <span style="font-size:30px;font-weight:800;color:var(--dim)">:</span>
+                <div style="width:88px;height:60px;border-radius:14px;background:var(--surf2);display:flex;align-items:center;justify-content:center;font-size:34px;font-weight:800;font-variant-numeric:tabular-nums">30</div>
+              </div>
+            </div>
+          </div>
+          <div style="position:absolute;left:16px;right:16px;bottom:32px">
+            <button style="width:100%;height:56px;border:none;border-radius:28px;background:var(--pri);color:var(--onpri);font-family:inherit;font-size:16px;font-weight:700">Save reminder</button>
+          </div>
+        </div>
+        <span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#59635F">notifications-weekly.light.png</span>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <div style="--bg:#F6F8F7;--surf:#FFFFFF;--surf2:#EAEFEC;--on:#171D1B;--dim:#59635F;--out:#D3DBD8;--pri:#1F6A5C;--onpri:#FFFFFF;--pric:#B3EEDD;--onpric:#00201A;position:relative;width:390px;height:844px;border-radius:36px;overflow:hidden;background:var(--bg);color:var(--on);font-family:Manrope,sans-serif;box-shadow:0 12px 32px rgba(16,32,28,.14)">
+          <div style="height:44px;display:flex;align-items:center;justify-content:space-between;padding:0 26px;font-size:13px;font-weight:600"><span>9:41</span><span style="font-family:'Material Symbols Rounded';font-size:16px">signal_cellular_alt wifi battery_full</span></div>
+          <div style="height:56px;padding:0 12px;display:flex;align-items:center;gap:8px"><span style="font-family:'Material Symbols Rounded';font-size:24px;width:48px;height:48px;display:flex;align-items:center;justify-content:center">arrow_back</span><span style="font-size:20px;font-weight:800;letter-spacing:-0.02em">Reminders</span></div>
+          <div style="padding:8px 16px 0;display:flex;flex-direction:column;gap:20px">
+            <div style="display:flex;align-items:center;justify-content:space-between;height:72px;padding:0 20px;border-radius:24px;background:var(--pric);color:var(--onpric)">
+              <div style="display:flex;flex-direction:column"><span style="font-size:16px;font-weight:700">Weigh-in reminder</span><span style="font-size:13px;opacity:.8">Next: 1 Sep, 08:00</span></div>
+              <div style="width:52px;height:32px;border-radius:16px;background:var(--pri);display:flex;align-items:center;justify-content:flex-end;padding:0 4px"><div style="width:24px;height:24px;border-radius:50%;background:#FFFFFF;display:flex;align-items:center;justify-content:center"><span style="font-family:'Material Symbols Rounded';font-size:16px;color:var(--pri)">check</span></div></div>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:10px">
+              <span style="font-size:12px;font-weight:800;color:var(--pri);letter-spacing:.06em">FREQUENCY</span>
+              <div style="display:flex;height:48px;border-radius:24px;border:1px solid var(--out);overflow:hidden;font-size:14px;font-weight:600">
+                <div style="flex:1;display:flex;align-items:center;justify-content:center">Daily</div>
+                <div style="flex:1;display:flex;align-items:center;justify-content:center;border-left:1px solid var(--out)">Weekly</div>
+                <div style="flex:1.4;display:flex;align-items:center;justify-content:center;gap:6px;background:var(--pric);color:var(--onpric);font-weight:800;border-left:1px solid var(--out)"><span style="font-family:'Material Symbols Rounded';font-size:18px">check</span>Monthly</div>
+              </div>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:12px">
+              <span style="font-size:12px;font-weight:800;color:var(--pri);letter-spacing:.06em">DAY OF MONTH</span>
+              <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:6px">
+                <div style="height:42px;border-radius:12px;background:var(--pri);color:var(--onpri);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800">1</div>
+                <div style="height:42px;border-radius:12px;background:var(--surf2);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:600">2</div>
+                <div style="height:42px;border-radius:12px;background:var(--surf2);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:600">3</div>
+                <div style="height:42px;border-radius:12px;background:var(--surf2);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:600">4</div>
+                <div style="height:42px;border-radius:12px;background:var(--surf2);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:600">5</div>
+                <div style="height:42px;border-radius:12px;background:var(--surf2);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:600">6</div>
+                <div style="height:42px;border-radius:12px;background:var(--surf2);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:600">7</div>
+                <div style="height:42px;border-radius:12px;background:var(--surf2);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:600">8</div>
+                <div style="height:42px;border-radius:12px;background:var(--surf2);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:600">9</div>
+                <div style="height:42px;border-radius:12px;background:var(--surf2);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:600">10</div>
+                <div style="height:42px;border-radius:12px;background:var(--surf2);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:600">11</div>
+                <div style="height:42px;border-radius:12px;background:var(--surf2);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:600">12</div>
+                <div style="height:42px;border-radius:12px;background:var(--surf2);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:600">13</div>
+                <div style="height:42px;border-radius:12px;background:var(--surf2);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:600">14</div>
+              </div>
+              <div style="display:flex;align-items:center;gap:8px;padding:8px 12px;border-radius:12px;background:var(--surf2);color:var(--dim)">
+                <span style="font-family:'Material Symbols Rounded';font-size:18px">info</span>
+                <span style="font-size:13px;text-wrap:pretty">Months without day 31 fall back to the last day.</span>
+              </div>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:12px">
+              <span style="font-size:12px;font-weight:800;color:var(--pri);letter-spacing:.06em">TIME OF DAY</span>
+              <div style="height:72px;border-radius:24px;background:var(--surf);border:1px solid var(--out);display:flex;align-items:center;justify-content:center;gap:12px">
+                <div style="width:80px;height:52px;border-radius:14px;background:var(--pric);color:var(--onpric);display:flex;align-items:center;justify-content:center;font-size:30px;font-weight:800;font-variant-numeric:tabular-nums">08</div>
+                <span style="font-size:28px;font-weight:800;color:var(--dim)">:</span>
+                <div style="width:80px;height:52px;border-radius:14px;background:var(--surf2);display:flex;align-items:center;justify-content:center;font-size:30px;font-weight:800;font-variant-numeric:tabular-nums">00</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#59635F">notifications-monthly.light.png</span>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <div style="--bg:#F6F8F7;--surf:#FFFFFF;--surf2:#EAEFEC;--on:#171D1B;--dim:#59635F;--out:#D3DBD8;--pri:#1F6A5C;--onpri:#FFFFFF;--pric:#B3EEDD;--onpric:#00201A;--err:#BA1A1A;position:relative;width:390px;height:844px;border-radius:36px;overflow:hidden;background:var(--bg);color:var(--on);font-family:Manrope,sans-serif;box-shadow:0 12px 32px rgba(16,32,28,.14)">
+          <div style="height:44px;display:flex;align-items:center;justify-content:space-between;padding:0 26px;font-size:13px;font-weight:600"><span>9:41</span><span style="font-family:'Material Symbols Rounded';font-size:16px">signal_cellular_alt wifi battery_full</span></div>
+          <div style="height:56px;padding:0 12px;display:flex;align-items:center;gap:8px"><span style="font-family:'Material Symbols Rounded';font-size:24px;width:48px;height:48px;display:flex;align-items:center;justify-content:center">arrow_back</span><span style="font-size:20px;font-weight:800;letter-spacing:-0.02em">Reminders</span></div>
+          <div style="padding:8px 16px 0;display:flex;flex-direction:column;gap:20px">
+            <div style="padding:20px;border-radius:24px;background:#FFDAD6;color:#410002;display:flex;flex-direction:column;gap:14px">
+              <div style="display:flex;align-items:center;gap:10px"><span style="font-family:'Material Symbols Rounded';font-size:24px;color:var(--err)">notifications_off</span><span style="font-size:16px;font-weight:800">Notifications are off</span></div>
+              <p style="margin:0;font-size:14px;line-height:1.55;text-wrap:pretty">Ponvia needs permission from Android to send reminders. Nothing leaves your device — the reminder is scheduled locally.</p>
+              <button style="align-self:flex-start;height:48px;padding:0 20px;border:none;border-radius:24px;background:var(--err);color:#FFFFFF;font-family:inherit;font-size:15px;font-weight:700">Allow notifications</button>
+            </div>
+            <div style="opacity:.38;display:flex;flex-direction:column;gap:20px;pointer-events:none">
+              <div style="display:flex;align-items:center;justify-content:space-between;height:72px;padding:0 20px;border-radius:24px;background:var(--surf2)">
+                <div style="display:flex;flex-direction:column"><span style="font-size:16px;font-weight:700">Weigh-in reminder</span><span style="font-size:13px;color:var(--dim)">Needs permission</span></div>
+                <div style="width:52px;height:32px;border-radius:16px;background:var(--out);display:flex;align-items:center;padding:0 4px"><div style="width:24px;height:24px;border-radius:50%;background:#FFFFFF"></div></div>
+              </div>
+              <div style="display:flex;flex-direction:column;gap:10px">
+                <span style="font-size:12px;font-weight:800;color:var(--dim);letter-spacing:.06em">FREQUENCY</span>
+                <div style="display:flex;height:48px;border-radius:24px;border:1px solid var(--out);overflow:hidden;font-size:14px;font-weight:600;color:var(--dim)">
+                  <div style="flex:1;display:flex;align-items:center;justify-content:center">Daily</div>
+                  <div style="flex:1;display:flex;align-items:center;justify-content:center;border-left:1px solid var(--out)">Weekly</div>
+                  <div style="flex:1;display:flex;align-items:center;justify-content:center;border-left:1px solid var(--out)">Monthly</div>
+                </div>
+              </div>
+              <div style="display:flex;flex-direction:column;gap:10px">
+                <span style="font-size:12px;font-weight:800;color:var(--dim);letter-spacing:.06em">TIME OF DAY</span>
+                <div style="height:72px;border-radius:24px;border:1px solid var(--out);display:flex;align-items:center;justify-content:center;gap:12px;color:var(--dim)">
+                  <div style="width:80px;height:52px;border-radius:14px;background:var(--surf2);display:flex;align-items:center;justify-content:center;font-size:30px;font-weight:800;font-variant-numeric:tabular-nums">07</div>
+                  <span style="font-size:28px;font-weight:800">:</span>
+                  <div style="width:80px;height:52px;border-radius:14px;background:var(--surf2);display:flex;align-items:center;justify-content:center;font-size:30px;font-weight:800;font-variant-numeric:tabular-nums">30</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#59635F">notifications-permission.light.png</span>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <div style="--bg:#0E1412;--surf:#161D1B;--surf2:#1F2724;--on:#DEE4E1;--dim:#A6B0AC;--out:#333C39;--pri:#8ED8C4;--onpri:#00382F;--pric:#005046;--onpric:#B3EEDD;position:relative;width:390px;height:844px;border-radius:36px;overflow:hidden;background:var(--bg);color:var(--on);font-family:Manrope,sans-serif;box-shadow:0 12px 32px rgba(16,32,28,.14)">
+          <div style="height:44px;display:flex;align-items:center;justify-content:space-between;padding:0 26px;font-size:13px;font-weight:600"><span>9:41</span><span style="font-family:'Material Symbols Rounded';font-size:16px">signal_cellular_alt wifi battery_full</span></div>
+          <div style="height:56px;padding:0 12px;display:flex;align-items:center;gap:8px"><span style="font-family:'Material Symbols Rounded';font-size:24px;width:48px;height:48px;display:flex;align-items:center;justify-content:center">arrow_back</span><span style="font-size:20px;font-weight:800;letter-spacing:-0.02em">Påmindelser</span></div>
+          <div style="padding:8px 16px 0;display:flex;flex-direction:column;gap:20px">
+            <div style="display:flex;align-items:center;justify-content:space-between;height:72px;padding:0 20px;border-radius:24px;background:var(--pric);color:var(--onpric)">
+              <div style="display:flex;flex-direction:column"><span style="font-size:16px;font-weight:700">Påmindelse om vejning</span><span style="font-size:13px;opacity:.8">Næste: ons. 12. aug., 07.30</span></div>
+              <div style="width:52px;height:32px;border-radius:16px;background:var(--pri);display:flex;align-items:center;justify-content:flex-end;padding:0 4px"><div style="width:24px;height:24px;border-radius:50%;background:#00382F;display:flex;align-items:center;justify-content:center"><span style="font-family:'Material Symbols Rounded';font-size:16px;color:var(--pri)">check</span></div></div>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:10px">
+              <span style="font-size:12px;font-weight:800;color:var(--pri);letter-spacing:.06em">HYPPIGHED</span>
+              <div style="display:flex;height:48px;border-radius:24px;border:1px solid var(--out);overflow:hidden;font-size:14px;font-weight:600">
+                <div style="flex:1;display:flex;align-items:center;justify-content:center">Dagligt</div>
+                <div style="flex:1.4;display:flex;align-items:center;justify-content:center;gap:6px;background:var(--pric);color:var(--onpric);font-weight:800;border-left:1px solid var(--out);border-right:1px solid var(--out)"><span style="font-family:'Material Symbols Rounded';font-size:18px">check</span>Ugentligt</div>
+                <div style="flex:1.2;display:flex;align-items:center;justify-content:center">Månedligt</div>
+              </div>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:12px">
+              <span style="font-size:12px;font-weight:800;color:var(--pri);letter-spacing:.06em">PÅ DISSE DAGE</span>
+              <div style="display:flex;justify-content:space-between">
+                <div style="width:44px;height:44px;border-radius:22px;border:1px solid var(--out);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700">M</div>
+                <div style="width:44px;height:44px;border-radius:22px;border:1px solid var(--out);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700">T</div>
+                <div style="width:44px;height:44px;border-radius:22px;background:var(--pri);color:var(--onpri);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800">O</div>
+                <div style="width:44px;height:44px;border-radius:22px;border:1px solid var(--out);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700">T</div>
+                <div style="width:44px;height:44px;border-radius:22px;border:1px solid var(--out);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700">F</div>
+                <div style="width:44px;height:44px;border-radius:22px;background:var(--pri);color:var(--onpri);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800">L</div>
+                <div style="width:44px;height:44px;border-radius:22px;border:1px solid var(--out);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700">S</div>
+              </div>
+              <span style="font-size:13px;color:var(--dim)">Onsdag og lørdag er valgt</span>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:12px">
+              <span style="font-size:12px;font-weight:800;color:var(--pri);letter-spacing:.06em">TIDSPUNKT</span>
+              <div style="height:88px;border-radius:24px;background:var(--surf);border:1px solid var(--out);display:flex;align-items:center;justify-content:center;gap:12px">
+                <div style="width:88px;height:60px;border-radius:14px;background:var(--pric);color:var(--onpric);display:flex;align-items:center;justify-content:center;font-size:34px;font-weight:800;font-variant-numeric:tabular-nums">07</div>
+                <span style="font-size:30px;font-weight:800;color:var(--dim)">.</span>
+                <div style="width:88px;height:60px;border-radius:14px;background:var(--surf2);display:flex;align-items:center;justify-content:center;font-size:34px;font-weight:800;font-variant-numeric:tabular-nums">30</div>
+              </div>
+            </div>
+          </div>
+          <div style="position:absolute;left:16px;right:16px;bottom:32px">
+            <button style="width:100%;height:56px;border:none;border-radius:28px;background:var(--pri);color:var(--onpri);font-family:inherit;font-size:16px;font-weight:700">Gem påmindelse</button>
+          </div>
+        </div>
+        <span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#59635F">notifications-weekly.dark.da.png</span>
+      </div>
+
+    </div>
+  </div>
+
+  <div data-screen-label="Components" style="display:flex;flex-direction:column;gap:24px">
+    <h2 style="margin:0;font-size:26px;font-weight:700;letter-spacing:-0.02em">9 · Component &amp; token board</h2>
+    <div style="display:flex;gap:24px;flex-wrap:wrap;align-items:flex-start">
+
+      <div style="width:520px;padding:28px;border-radius:28px;background:#FFFFFF;border:1px solid #D3DBD8;display:flex;flex-direction:column;gap:20px">
+        <h3 style="margin:0;font-size:18px;font-weight:800">Type scale — Manrope</h3>
+        <div style="display:flex;flex-direction:column;gap:14px">
+          <div style="display:flex;align-items:baseline;gap:16px"><span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#59635F;width:110px">heroWeight 72/800</span><span style="font-size:56px;font-weight:800;letter-spacing:-0.04em;line-height:1">82.4</span></div>
+          <div style="display:flex;align-items:baseline;gap:16px"><span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#59635F;width:110px">display 36/800</span><span style="font-size:36px;font-weight:800;letter-spacing:-0.02em">Velkommen</span></div>
+          <div style="display:flex;align-items:baseline;gap:16px"><span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#59635F;width:110px">headline 28/800</span><span style="font-size:28px;font-weight:800;letter-spacing:-0.02em">Screen title</span></div>
+          <div style="display:flex;align-items:baseline;gap:16px"><span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#59635F;width:110px">title 20/700</span><span style="font-size:20px;font-weight:700">Card title</span></div>
+          <div style="display:flex;align-items:baseline;gap:16px"><span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#59635F;width:110px">body 16/400</span><span style="font-size:16px">Primary reading text at sixteen points.</span></div>
+          <div style="display:flex;align-items:baseline;gap:16px"><span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#59635F;width:110px">label 14/700</span><span style="font-size:14px;font-weight:700;letter-spacing:.01em">BUTTONS &amp; CHIPS</span></div>
+        </div>
+      </div>
+
+      <div style="width:420px;padding:28px;border-radius:28px;background:#FFFFFF;border:1px solid #D3DBD8;display:flex;flex-direction:column;gap:20px">
+        <h3 style="margin:0;font-size:18px;font-weight:800">Buttons &amp; chips</h3>
+        <div style="display:flex;flex-wrap:wrap;gap:12px;align-items:center">
+          <button style="height:56px;padding:0 28px;border:none;border-radius:28px;background:#1F6A5C;color:#FFF;font-family:inherit;font-size:16px;font-weight:700">Filled</button>
+          <button style="height:56px;padding:0 28px;border:1px solid #1F6A5C;border-radius:28px;background:transparent;color:#1F6A5C;font-family:inherit;font-size:16px;font-weight:700">Outlined</button>
+          <button style="height:48px;padding:0 16px;border:none;background:transparent;color:#1F6A5C;font-family:inherit;font-size:15px;font-weight:700">Text</button>
+          <button style="height:56px;padding:0 28px;border:none;border-radius:28px;background:#EAEFEC;color:#9AA5A1;font-family:inherit;font-size:16px;font-weight:700">Disabled</button>
+        </div>
+        <div style="display:flex;gap:12px;align-items:center">
+          <div style="height:56px;padding:0 20px;border-radius:20px;background:#1F6A5C;color:#FFF;display:flex;align-items:center;gap:10px;box-shadow:0 6px 16px rgba(31,106,92,.32)"><span style="font-family:'Material Symbols Rounded';font-size:24px">add</span><span style="font-size:16px;font-weight:700">Extended FAB</span></div>
+          <div style="width:56px;height:56px;border-radius:18px;background:#1F6A5C;color:#FFF;display:flex;align-items:center;justify-content:center;box-shadow:0 6px 16px rgba(31,106,92,.32)"><span style="font-family:'Material Symbols Rounded';font-size:26px">add</span></div>
+        </div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+          <div style="height:40px;padding:0 16px;border-radius:20px;background:#B3EEDD;color:#00201A;font-size:14px;font-weight:700;display:flex;align-items:center;gap:6px"><span style="font-family:'Material Symbols Rounded';font-size:18px">check</span>Selected</div>
+          <div style="height:40px;padding:0 16px;border-radius:20px;border:1px solid #D3DBD8;font-size:14px;font-weight:600;display:flex;align-items:center">Unselected</div>
+          <div style="height:32px;padding:0 12px;border-radius:16px;background:#B3EEDD;color:#00201A;font-size:14px;font-weight:700;display:flex;align-items:center;gap:6px"><span style="font-family:'Material Symbols Rounded';font-size:18px">arrow_downward</span>Down 0.6 kg</div>
+          <div style="height:32px;padding:0 12px;border-radius:16px;background:#F3E5D3;color:#3E2E17;font-size:14px;font-weight:700;display:flex;align-items:center;gap:6px"><span style="font-family:'Material Symbols Rounded';font-size:18px">arrow_upward</span>Up 0.2 kg</div>
+          <div style="height:32px;padding:0 12px;border-radius:16px;background:#EAEFEC;color:#59635F;font-size:14px;font-weight:700;display:flex;align-items:center;gap:6px"><span style="font-family:'Material Symbols Rounded';font-size:18px">remove</span>No change</div>
+        </div>
+      </div>
+
+      <div style="width:340px;padding:28px;border-radius:28px;background:#FFFFFF;border:1px solid #D3DBD8;display:flex;flex-direction:column;gap:18px">
+        <h3 style="margin:0;font-size:18px;font-weight:800">Shape &amp; elevation</h3>
+        <div style="display:flex;gap:14px;align-items:flex-end">
+          <div style="display:flex;flex-direction:column;gap:6px;align-items:center"><div style="width:64px;height:64px;border-radius:12px;background:#EAEFEC"></div><span style="font-family:'JetBrains Mono',monospace;font-size:10px;color:#59635F">12 chip</span></div>
+          <div style="display:flex;flex-direction:column;gap:6px;align-items:center"><div style="width:64px;height:64px;border-radius:16px;background:#EAEFEC"></div><span style="font-family:'JetBrains Mono',monospace;font-size:10px;color:#59635F">16 field</span></div>
+          <div style="display:flex;flex-direction:column;gap:6px;align-items:center"><div style="width:64px;height:64px;border-radius:24px;background:#EAEFEC"></div><span style="font-family:'JetBrains Mono',monospace;font-size:10px;color:#59635F">24 card</span></div>
+          <div style="display:flex;flex-direction:column;gap:6px;align-items:center"><div style="width:64px;height:64px;border-radius:28px 28px 0 0;background:#EAEFEC"></div><span style="font-family:'JetBrains Mono',monospace;font-size:10px;color:#59635F">28 sheet</span></div>
+        </div>
+        <div style="display:flex;gap:14px">
+          <div style="width:72px;height:56px;border-radius:16px;background:#FFF;border:1px solid #D3DBD8"></div>
+          <div style="width:72px;height:56px;border-radius:16px;background:#FFF;box-shadow:0 1px 3px rgba(16,32,28,.12)"></div>
+          <div style="width:72px;height:56px;border-radius:16px;background:#FFF;box-shadow:0 4px 14px rgba(16,32,28,.16)"></div>
+          <div style="width:72px;height:56px;border-radius:16px;background:#FFF;box-shadow:0 8px 24px rgba(16,32,28,.2)"></div>
+        </div>
+        <span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#59635F">elevation 0 · 1 · 2 · 3</span>
+      </div>
+
+      <div style="width:420px;padding:28px;border-radius:28px;background:#FFFFFF;border:1px solid #D3DBD8;display:flex;flex-direction:column;gap:18px">
+        <h3 style="margin:0;font-size:18px;font-weight:800">Chart styling</h3>
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#59635F">sparkline — 2.5dp, no axes, area 45%</span>
+          <svg viewBox="0 0 360 60" style="width:100%;height:60px">
+            <polygon points="0,40 51,34 102,38 153,26 204,29 255,18 306,22 356,10 356,60 0,60" fill="#B3EEDD" opacity=".55"></polygon>
+            <polyline points="0,40 51,34 102,38 153,26 204,29 255,18 306,22 356,10" fill="none" stroke="#1F6A5C" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"></polyline>
+            <circle cx="356" cy="10" r="4" fill="#1F6A5C"></circle>
+          </svg>
+          <span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#59635F">full chart — 3dp, 4 grid lines, marker 6dp</span>
+          <svg viewBox="0 0 360 120" style="width:100%;height:120px">
+            <line x1="0" y1="20" x2="360" y2="20" stroke="#E4EAE7"></line>
+            <line x1="0" y1="55" x2="360" y2="55" stroke="#E4EAE7"></line>
+            <line x1="0" y1="90" x2="360" y2="90" stroke="#E4EAE7"></line>
+            <polyline points="10,80 70,66 130,72 190,50 250,58 310,38 350,30" fill="none" stroke="#1F6A5C" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"></polyline>
+            <circle cx="250" cy="58" r="6" fill="#FFFFFF" stroke="#1F6A5C" stroke-width="3"></circle>
+          </svg>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</section>
+
+</x-dc>
+</body>
+</html>

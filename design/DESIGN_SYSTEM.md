@@ -6,8 +6,11 @@ tokens must exist. The Claude design step produces a **filled copy** and you dro
 theme (`lib/app/theme/`) is built from at M5. Keep this template as the checklist —
 anything not captured here won't make it into the app. `HANDOFF.md` explains the mapping.
 
-> Status: **awaiting design.** This file stays as `‹fill in›` blanks (the contract). The
-> real values arrive in `handoff/DESIGN_SYSTEM.md`.
+> Status: **DELIVERED (2026-08-08).** The filled, authoritative tokens are in
+> [`handoff/DESIGN_SYSTEM.md`](handoff/DESIGN_SYSTEM.md) (+ `handoff/tokens.json` and the
+> per-screen `handoff/DESIGN_SPEC.md`). This file stays as the blank contract/checklist.
+> Seed `#1F6A5C`/`#8ED8C4`, Manrope type, bottom-tab nav, `st + lb` stone, neutral delta
+> colors. Build the theme from the handoff copy.
 
 ## 1. Brand
 - App name wordmark: `‹image/spec›`

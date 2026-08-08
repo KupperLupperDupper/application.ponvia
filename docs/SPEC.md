@@ -175,13 +175,20 @@ Each feature lists **acceptance criteria (AC)**. "The app" = Ponvia.
 
 ---
 
-## 6. Open product questions (resolve during design / before the relevant milestone)
+## 6. Open product questions
 
-- Stone display format: composite `st + lb` vs decimal stone. (Design to propose.)
-- Monthly reminder on the 29th–31st in short months: clamp to last day vs skip. (Default:
-  clamp to last day.)
-- Whether the home mini-chart and the full history chart share a component. (Architecture
-  to decide; likely yes.)
-- Exact onboarding length/steps — kept minimal; design proposes final flow.
-- App accent/brand color and logo — owned by the design step; see
-  [../design/DESIGN_BRIEF.md](../design/DESIGN_BRIEF.md).
+Resolved by the design delivery (see [../design/handoff/](../design/handoff/README.md)):
+- ✅ **Stone display format:** composite `st + lb`.
+- ✅ **App accent/brand & logo:** seed `#1F6A5C` (light) / `#8ED8C4` (dark); "weigh-point"
+  mark; Manrope wordmark. Assets in `design/handoff/assets/`.
+- ✅ **Navigation model:** bottom tabs (Home/History/Goals/Settings); logging is a modal
+  sheet from a FAB.
+- ✅ **Delta color semantics:** neutral-informative (down = brand green, up = ochre),
+  always with icon + text — never good/bad.
+
+Still open (decide before the relevant milestone):
+- Monthly reminder on the 29th–31st in short months: **default = clamp to last day**.
+- Whether the home sparkline and the full history chart share one component (likely yes;
+  the design specifies distinct sizes/behaviors but the same line styling).
+- Exact onboarding step count — design shows welcome → language → theme → unit →
+  (optional) first weight → (optional) reminder → "all set".

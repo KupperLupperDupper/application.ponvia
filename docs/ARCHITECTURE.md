@@ -84,16 +84,19 @@ test/                          # unit + widget tests mirroring lib/
 
 ## 5. Navigation (go_router)
 
+**Confirmed by design:** a **bottom `NavigationBar` with 4 destinations** — Home /
+History / Goals / Settings — implemented as a `StatefulShellRoute` (persistent tab state).
+Logging is **not** a tab: it's a **modal bottom sheet** launched from an extended FAB on
+Home (plain FAB on Goals). Notifications is a pushed detail route under Settings.
+
 Routes (names indicative):
 - `/splash` → decides onboarding vs home based on `hasOnboarded`.
 - `/onboarding` → first-run stepper.
-- `/` (home) → dashboard.
-- `/log` (and `/log/:id` for edit) → weight entry form. Also the deep-link target for
-  reminder taps.
-- `/history` → list + chart.
-- `/goals` → list; `/goals/edit/:id?` → editor.
-- `/settings` → settings; nested `/settings/about`, `/settings/data`,
-  `/settings/notifications`.
+- Shell tabs: `/` (home), `/history`, `/goals`, `/settings`.
+- `/log` (and `/log/:id` for edit) → weight-entry **modal sheet**; also the deep-link
+  target for reminder taps.
+- `/goals/edit/:id?` → goal editor.
+- `/settings/notifications`, `/settings/about`, `/settings/data` → pushed detail routes.
 
 A router **redirect** gates onboarding: until `hasOnboarded`, all routes funnel to
 `/onboarding`.
