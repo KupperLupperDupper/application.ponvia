@@ -19,6 +19,10 @@ history — update the **Unreleased** section as you work, and cut it into a ver
   Drift (weights + goals) + shared_preferences settings, kg/lb/st conversion, JSON+CSV
   import/export, functional Home/Log/History/Goals/Settings screens, and unit + widget
   tests. `flutter analyze` clean; 15 tests pass; debug APK builds.
+- Bundled the Manrope typeface (SIL OFL 1.1 variable font) under `assets/fonts/` — the UI
+  now renders in Manrope; no runtime font fetching.
+- Fixed the launcher app name to “Ponvia” (was lowercase `ponvia`) on Android and iOS.
+- Verified on-device (OnePlus): onboarding, navigation, DB, theme, and font all render.
 
 <!--
 When cutting a release, move Unreleased items under a version heading, e.g.:
