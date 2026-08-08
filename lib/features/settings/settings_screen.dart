@@ -21,8 +21,7 @@ String _freqLabel(AppLocalizations l10n, ReminderFrequency f) => switch (f) {
       ReminderFrequency.monthly => l10n.freqMonthly,
     };
 
-/// App settings: theme, unit, language, JSON/CSV export (share sheet) & import
-/// (file picker), and clear-data.
+/// Settings as a grouped list of icon rows (DESIGN_SPEC §7).
 class SettingsScreen extends ConsumerWidget {
   const SettingsScreen({super.key});
 
@@ -30,137 +29,230 @@ class SettingsScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context);
     final settings = ref.watch(settingsControllerProvider);
-    final controller = ref.read(settingsControllerProvider.notifier);
-    final text = Theme.of(context).textTheme;
+    final r = settings.reminder;
+
+    final languageValue = switch (settings.localeCode) {
+      'en' => l10n.languageEnglish,
+      'da' => l10n.languageDanish,
+      _ => l10n.languageSystem,
+    };
+    final themeValue = switch (settings.themeMode) {
+      AppThemeMode.light => l10n.themeLight,
+      AppThemeMode.dark => l10n.themeDark,
+      AppThemeMode.system => l10n.themeSystem,
+    };
+    final notifValue = r.enabled
+        ? l10n.notifSummary(_freqLabel(l10n, r.frequency),
+            TimeOfDay(hour: r.hour, minute: r.minute).format(context))
+        : l10n.notifOff;
 
     return Scaffold(
       appBar: AppBar(title: Text(l10n.navSettings)),
       body: ListView(
-        padding: const EdgeInsets.symmetric(vertical: Insets.sm),
+        padding: const EdgeInsets.fromLTRB(0, Insets.sm, 0, 96),
         children: [
-          _sectionHeader(context, l10n.settingsAppearance),
-          ListTile(
-            title: Text(l10n.settingsTheme),
-            subtitle: Padding(
-              padding: const EdgeInsets.only(top: Insets.sm),
-              child: SegmentedButton<AppThemeMode>(
-                segments: [
-                  ButtonSegment(
-                      value: AppThemeMode.system, label: Text(l10n.themeSystem)),
-                  ButtonSegment(
-                      value: AppThemeMode.light, label: Text(l10n.themeLight)),
-                  ButtonSegment(
-                      value: AppThemeMode.dark, label: Text(l10n.themeDark)),
-                ],
-                selected: {settings.themeMode},
-                onSelectionChanged: (s) => controller.setThemeMode(s.first),
-              ),
+          _Header(l10n.settingsPreferences),
+          _SettingRow(
+            icon: Icons.language,
+            title: l10n.settingsLanguage,
+            trailing: _valueChevron(context, languageValue),
+            onTap: () => _pickLanguage(context, ref, settings.localeCode),
+          ),
+          _SettingRow(
+            icon: Icons.contrast,
+            title: l10n.settingsTheme,
+            trailing: _valueChevron(context, themeValue),
+            onTap: () => _pickTheme(context, ref, settings.themeMode),
+          ),
+          _SettingRow(
+            icon: Icons.scale,
+            title: l10n.settingsUnit,
+            trailing: SegmentedButton<WeightUnit>(
+              style: const ButtonStyle(
+                  visualDensity: VisualDensity.compact,
+                  tapTargetSize: MaterialTapTargetSize.shrinkWrap),
+              segments: const [
+                ButtonSegment(value: WeightUnit.kg, label: Text('kg')),
+                ButtonSegment(value: WeightUnit.lb, label: Text('lb')),
+                ButtonSegment(value: WeightUnit.st, label: Text('st')),
+              ],
+              selected: {settings.unit},
+              showSelectedIcon: false,
+              onSelectionChanged: (s) => ref
+                  .read(settingsControllerProvider.notifier)
+                  .setUnit(s.first),
             ),
           ),
-          ListTile(
-            title: Text(l10n.settingsUnit),
-            subtitle: Padding(
-              padding: const EdgeInsets.only(top: Insets.sm),
-              child: SegmentedButton<WeightUnit>(
-                segments: const [
-                  ButtonSegment(value: WeightUnit.kg, label: Text('kg')),
-                  ButtonSegment(value: WeightUnit.lb, label: Text('lb')),
-                  ButtonSegment(value: WeightUnit.st, label: Text('st')),
-                ],
-                selected: {settings.unit},
-                onSelectionChanged: (s) => controller.setUnit(s.first),
-              ),
-            ),
-          ),
-          ListTile(
-            title: Text(l10n.settingsLanguage),
-            subtitle: Padding(
-              padding: const EdgeInsets.only(top: Insets.sm),
-              child: SegmentedButton<String>(
-                segments: [
-                  ButtonSegment(value: 'system', label: Text(l10n.languageSystem)),
-                  ButtonSegment(value: 'en', label: Text(l10n.languageEnglish)),
-                  ButtonSegment(value: 'da', label: Text(l10n.languageDanish)),
-                ],
-                selected: {settings.localeCode ?? 'system'},
-                onSelectionChanged: (s) =>
-                    controller.setLocale(s.first == 'system' ? null : s.first),
-              ),
-            ),
-          ),
-          ListTile(
-            leading: const Icon(Icons.notifications_outlined),
-            title: Text(l10n.settingsNotifications),
-            subtitle: Text(settings.reminder.enabled
-                ? l10n.notifSummary(
-                    _freqLabel(l10n, settings.reminder.frequency),
-                    TimeOfDay(
-                            hour: settings.reminder.hour,
-                            minute: settings.reminder.minute)
-                        .format(context))
-                : l10n.notifOff),
-            trailing: const Icon(Icons.chevron_right),
+          _SettingRow(
+            icon: Icons.notifications_outlined,
+            title: l10n.settingsNotifications,
+            trailing: _valueChevron(context, notifValue),
             onTap: () => context.push('/reminders'),
           ),
-          _sectionHeader(context, l10n.settingsData),
-          ListTile(
-            leading: const Icon(Icons.upload_outlined),
-            title: Text(l10n.settingsExportJson),
-            subtitle: Text(l10n.settingsExportJsonSub),
-            onTap: () => _export(context, ref, csv: false),
+          _Header(l10n.settingsData),
+          _SettingRow(
+            icon: Icons.upload_outlined,
+            title: l10n.settingsExportData,
+            trailing: Text('CSV / JSON',
+                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                    color: Theme.of(context).colorScheme.onSurfaceVariant)),
+            onTap: () => _exportChooser(context, ref),
           ),
-          ListTile(
-            leading: const Icon(Icons.table_chart_outlined),
-            title: Text(l10n.settingsExportCsv),
-            subtitle: Text(l10n.settingsExportCsvSub),
-            onTap: () => _export(context, ref, csv: true),
-          ),
-          ListTile(
-            leading: const Icon(Icons.download_outlined),
-            title: Text(l10n.settingsImport),
-            subtitle: Text(l10n.settingsImportSub),
+          _SettingRow(
+            icon: Icons.download_outlined,
+            title: l10n.settingsImportData,
             onTap: () => _import(context, ref),
           ),
-          ListTile(
-            leading: Icon(Icons.delete_forever_outlined,
-                color: Theme.of(context).colorScheme.error),
-            title: Text(l10n.settingsClear),
+          _SettingRow(
+            icon: Icons.delete_forever_outlined,
+            title: l10n.settingsClear,
+            error: true,
             onTap: () => _confirmClear(context, ref),
           ),
-          _sectionHeader(context, l10n.settingsAbout),
-          ListTile(
-            leading: const Icon(Icons.info_outline),
-            title: const Text('Ponvia'),
-            subtitle: Text(l10n.settingsVersion('1.0.0')),
+          _Header(l10n.settingsAbout),
+          _SettingRow(
+            icon: Icons.lock_outline,
+            title: l10n.settingsPrivacyBody,
+            subtle: true,
           ),
-          ListTile(
-            leading: const Icon(Icons.lock_outline),
-            title: Text(l10n.settingsPrivacy),
-            subtitle: Text(l10n.settingsPrivacyBody, style: text.bodyMedium),
+          _SettingRow(
+            icon: Icons.info_outline,
+            title: 'Ponvia',
+            trailing: Text(l10n.settingsVersion('1.0.0'),
+                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                    color: Theme.of(context).colorScheme.onSurfaceVariant)),
           ),
         ],
       ),
     );
   }
 
-  Widget _sectionHeader(BuildContext context, String label) {
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(
-          Insets.screenH, Insets.lg, Insets.screenH, Insets.xs),
-      child: Text(
-        label.toUpperCase(),
-        style: Theme.of(context).textTheme.labelSmall?.copyWith(
-              color: Theme.of(context).colorScheme.primary,
+  Widget _valueChevron(BuildContext context, String value) {
+    final scheme = Theme.of(context).colorScheme;
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Text(value,
+            style: Theme.of(context)
+                .textTheme
+                .bodyMedium
+                ?.copyWith(color: scheme.onSurfaceVariant)),
+        const SizedBox(width: Insets.xs),
+        Icon(Icons.chevron_right, size: 20, color: scheme.onSurfaceVariant),
+      ],
+    );
+  }
+
+  Future<void> _pickLanguage(
+      BuildContext context, WidgetRef ref, String? current) async {
+    final l10n = AppLocalizations.of(context);
+    await _pickSheet<String?>(
+      context,
+      title: l10n.settingsLanguage,
+      current: current,
+      options: [
+        (null, l10n.languageSystem),
+        ('en', l10n.languageEnglish),
+        ('da', l10n.languageDanish),
+      ],
+      onSelected: (v) =>
+          ref.read(settingsControllerProvider.notifier).setLocale(v),
+    );
+  }
+
+  Future<void> _pickTheme(
+      BuildContext context, WidgetRef ref, AppThemeMode current) async {
+    final l10n = AppLocalizations.of(context);
+    await _pickSheet<AppThemeMode>(
+      context,
+      title: l10n.settingsTheme,
+      current: current,
+      options: [
+        (AppThemeMode.system, l10n.themeSystem),
+        (AppThemeMode.light, l10n.themeLight),
+        (AppThemeMode.dark, l10n.themeDark),
+      ],
+      onSelected: (v) =>
+          ref.read(settingsControllerProvider.notifier).setThemeMode(v),
+    );
+  }
+
+  Future<void> _pickSheet<T>(
+    BuildContext context, {
+    required String title,
+    required T current,
+    required List<(T, String)> options,
+    required ValueChanged<T> onSelected,
+  }) {
+    return showModalBottomSheet<void>(
+      context: context,
+      showDragHandle: true,
+      builder: (context) => SafeArea(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Padding(
+              padding: const EdgeInsets.fromLTRB(
+                  Insets.xl, 0, Insets.xl, Insets.sm),
+              child: Text(title,
+                  style: Theme.of(context).textTheme.titleLarge),
             ),
+            for (final (value, label) in options)
+              ListTile(
+                title: Text(label),
+                trailing: value == current
+                    ? Icon(Icons.check,
+                        color: Theme.of(context).colorScheme.primary)
+                    : null,
+                onTap: () {
+                  onSelected(value);
+                  Navigator.pop(context);
+                },
+              ),
+            const SizedBox(height: Insets.sm),
+          ],
+        ),
       ),
     );
   }
 
-  Future<void> _export(
-    BuildContext context,
-    WidgetRef ref, {
-    required bool csv,
-  }) async {
+  Future<void> _exportChooser(BuildContext context, WidgetRef ref) {
+    final l10n = AppLocalizations.of(context);
+    return showModalBottomSheet<void>(
+      context: context,
+      showDragHandle: true,
+      builder: (context) => SafeArea(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            ListTile(
+              leading: const Icon(Icons.data_object),
+              title: Text(l10n.settingsExportJson),
+              subtitle: Text(l10n.settingsExportJsonSub),
+              onTap: () {
+                Navigator.pop(context);
+                _export(context, ref, csv: false);
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.table_chart_outlined),
+              title: Text(l10n.settingsExportCsv),
+              subtitle: Text(l10n.settingsExportCsvSub),
+              onTap: () {
+                Navigator.pop(context);
+                _export(context, ref, csv: true);
+              },
+            ),
+            const SizedBox(height: Insets.sm),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Future<void> _export(BuildContext context, WidgetRef ref,
+      {required bool csv}) async {
     final l10n = AppLocalizations.of(context);
     final messenger = ScaffoldMessenger.of(context);
     try {
@@ -208,8 +300,8 @@ class SettingsScreen extends ConsumerWidget {
       if (isJson) {
         final data = await backup.importJson(content, replace: replace);
         messenger.showSnackBar(SnackBar(
-          content: Text(l10n.importedSummary(data.entries.length, data.goals.length)),
-        ));
+            content: Text(l10n.importedSummary(
+                data.entries.length, data.goals.length))));
       } else {
         final n = await backup.importCsv(content, replace: replace);
         messenger.showSnackBar(SnackBar(content: Text(l10n.importedCsv(n))));
@@ -219,7 +311,6 @@ class SettingsScreen extends ConsumerWidget {
     }
   }
 
-  /// Returns true for replace, false for merge, null if cancelled.
   Future<bool?> _askMergeOrReplace(BuildContext context, AppLocalizations l10n) {
     return showDialog<bool>(
       context: context,
@@ -228,17 +319,14 @@ class SettingsScreen extends ConsumerWidget {
         content: Text(l10n.importDialogBody),
         actions: [
           TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: Text(l10n.actionCancel),
-          ),
+              onPressed: () => Navigator.pop(context),
+              child: Text(l10n.actionCancel)),
           TextButton(
-            onPressed: () => Navigator.pop(context, false),
-            child: Text(l10n.importMerge),
-          ),
+              onPressed: () => Navigator.pop(context, false),
+              child: Text(l10n.importMerge)),
           FilledButton(
             style: FilledButton.styleFrom(
-              backgroundColor: Theme.of(context).colorScheme.error,
-            ),
+                backgroundColor: Theme.of(context).colorScheme.error),
             onPressed: () => Navigator.pop(context, true),
             child: Text(l10n.importReplace),
           ),
@@ -256,13 +344,11 @@ class SettingsScreen extends ConsumerWidget {
         content: Text(l10n.clearDialogBody),
         actions: [
           TextButton(
-            onPressed: () => Navigator.pop(context, false),
-            child: Text(l10n.actionCancel),
-          ),
+              onPressed: () => Navigator.pop(context, false),
+              child: Text(l10n.actionCancel)),
           FilledButton(
             style: FilledButton.styleFrom(
-              backgroundColor: Theme.of(context).colorScheme.error,
-            ),
+                backgroundColor: Theme.of(context).colorScheme.error),
             onPressed: () => Navigator.pop(context, true),
             child: Text(l10n.actionDelete),
           ),
@@ -272,5 +358,74 @@ class SettingsScreen extends ConsumerWidget {
     if (confirmed == true) {
       await ref.read(databaseProvider).clearAllData();
     }
+  }
+}
+
+class _Header extends StatelessWidget {
+  const _Header(this.label);
+  final String label;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(
+          Insets.lg, Insets.lg, Insets.lg, Insets.xs),
+      child: Text(
+        label.toUpperCase(),
+        style: Theme.of(context).textTheme.labelSmall?.copyWith(
+              color: Theme.of(context).colorScheme.primary,
+            ),
+      ),
+    );
+  }
+}
+
+class _SettingRow extends StatelessWidget {
+  const _SettingRow({
+    required this.icon,
+    required this.title,
+    this.trailing,
+    this.onTap,
+    this.error = false,
+    this.subtle = false,
+  });
+
+  final IconData icon;
+  final String title;
+  final Widget? trailing;
+  final VoidCallback? onTap;
+  final bool error;
+  final bool subtle;
+
+  @override
+  Widget build(BuildContext context) {
+    final scheme = Theme.of(context).colorScheme;
+    final color = error
+        ? scheme.error
+        : subtle
+            ? scheme.onSurfaceVariant
+            : scheme.onSurface;
+    return InkWell(
+      onTap: onTap,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(
+            horizontal: Insets.lg, vertical: Insets.md),
+        child: Row(
+          children: [
+            Icon(icon,
+                size: 24, color: error ? scheme.error : scheme.onSurfaceVariant),
+            const SizedBox(width: Insets.lg),
+            Expanded(
+              child: Text(title,
+                  style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                        color: color,
+                        fontWeight: error ? FontWeight.w700 : FontWeight.w600,
+                      )),
+            ),
+            ?trailing,
+          ],
+        ),
+      ),
+    );
   }
 }

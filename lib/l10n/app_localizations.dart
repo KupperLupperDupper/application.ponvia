@@ -494,6 +494,24 @@ abstract class AppLocalizations {
   /// **'Appearance'**
   String get settingsAppearance;
 
+  /// No description provided for @settingsPreferences.
+  ///
+  /// In en, this message translates to:
+  /// **'Preferences'**
+  String get settingsPreferences;
+
+  /// No description provided for @settingsExportData.
+  ///
+  /// In en, this message translates to:
+  /// **'Export data'**
+  String get settingsExportData;
+
+  /// No description provided for @settingsImportData.
+  ///
+  /// In en, this message translates to:
+  /// **'Import data'**
+  String get settingsImportData;
+
   /// No description provided for @settingsTheme.
   ///
   /// In en, this message translates to:

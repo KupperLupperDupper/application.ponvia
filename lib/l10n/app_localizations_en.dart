@@ -233,6 +233,15 @@ class AppLocalizationsEn extends AppLocalizations {
   String get settingsAppearance => 'Appearance';
 
   @override
+  String get settingsPreferences => 'Preferences';
+
+  @override
+  String get settingsExportData => 'Export data';
+
+  @override
+  String get settingsImportData => 'Import data';
+
+  @override
   String get settingsTheme => 'Theme';
 
   @override

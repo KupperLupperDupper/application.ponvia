@@ -234,6 +234,15 @@ class AppLocalizationsDa extends AppLocalizations {
   String get settingsAppearance => 'Udseende';
 
   @override
+  String get settingsPreferences => 'Præferencer';
+
+  @override
+  String get settingsExportData => 'Eksportér data';
+
+  @override
+  String get settingsImportData => 'Importér data';
+
+  @override
   String get settingsTheme => 'Tema';
 
   @override

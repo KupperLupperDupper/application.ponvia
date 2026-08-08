@@ -75,6 +75,9 @@
   "actionUndo": "Fortryd",
 
   "settingsAppearance": "Udseende",
+  "settingsPreferences": "Præferencer",
+  "settingsExportData": "Eksportér data",
+  "settingsImportData": "Importér data",
   "settingsTheme": "Tema",
   "themeSystem": "System",
   "themeLight": "Lys",

@@ -88,6 +88,9 @@
   "actionUndo": "Undo",
 
   "settingsAppearance": "Appearance",
+  "settingsPreferences": "Preferences",
+  "settingsExportData": "Export data",
+  "settingsImportData": "Import data",
   "settingsTheme": "Theme",
   "themeSystem": "System",
   "themeLight": "Light",
