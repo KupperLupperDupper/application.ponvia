@@ -1,0 +1,41 @@
+# Flutter / Dart
+.dart_tool/
+.packages
+build/
+.flutter-plugins
+.flutter-plugins-dependencies
+# NOTE: pubspec.lock IS committed for apps (reproducible builds) — do not ignore it.
+.idea/
+*.iml
+.vscode/            # keep local editor config out of the repo
+
+# Generated code is committed on purpose? No — regenerate via build_runner.
+# (If you decide to commit *.g.dart / *.drift.dart, remove these two lines.)
+*.g.dart
+*.freezed.dart
+
+# Android
+android/.gradle/
+android/local.properties
+android/key.properties
+android/app/upload-keystore.jks
+android/**/GeneratedPluginRegistrant.java
+*.keystore
+*.jks
+
+# iOS / macOS
+ios/Pods/
+ios/.symlinks/
+ios/Flutter/Flutter.framework
+ios/Flutter/Flutter.podspec
+**/DerivedData/
+.DS_Store
+
+# Release artifacts
+dist/
+*.apk
+*.aab
+
+# Misc
+*.log
+.env
