@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
+import 'package:timezone/timezone.dart' as tz;
 
 import '../../app/providers.dart';
 import '../../core/ui/spacing.dart';
 import '../../domain/models/reminder_config.dart';
 import '../../l10n/app_localizations.dart';
+import 'reminder_schedule.dart';
 
-/// Weigh-in reminder settings. Functional M4 build (polished in M5).
+/// Weigh-in reminder settings, styled to DESIGN_SPEC §8.
 class NotificationsScreen extends ConsumerStatefulWidget {
   const NotificationsScreen({super.key});
 
@@ -55,26 +57,59 @@ class _NotificationsScreenState extends ConsumerState<NotificationsScreen> {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
-    final config = ref.watch(
-        settingsControllerProvider.select((s) => s.reminder));
+    final locale = Localizations.localeOf(context).languageCode;
+    final config =
+        ref.watch(settingsControllerProvider.select((s) => s.reminder));
     final scheme = Theme.of(context).colorScheme;
+
+    String? nextFire;
+    if (config.enabled) {
+      final next = nextReminderInstance(config, tz.TZDateTime.now(tz.local));
+      nextFire = DateFormat('EEE d MMM · HH:mm', locale).format(next);
+    }
 
     return Scaffold(
       appBar: AppBar(title: Text(l10n.notifTitle)),
       body: ListView(
         padding: const EdgeInsets.all(Insets.screenH),
         children: [
-          Card(
-            color: scheme.primaryContainer,
-            child: SwitchListTile(
-              value: config.enabled,
-              onChanged: (on) => _toggle(on, config),
-              secondary: Icon(Icons.notifications_outlined,
-                  color: scheme.onPrimaryContainer),
-              title: Text(l10n.notifWeighInReminder,
-                  style: TextStyle(
-                      color: scheme.onPrimaryContainer,
-                      fontWeight: FontWeight.w700)),
+          // Master row
+          Container(
+            padding: const EdgeInsets.symmetric(
+                horizontal: Insets.lg, vertical: Insets.xs),
+            decoration: BoxDecoration(
+              color: scheme.primaryContainer,
+              borderRadius: BorderRadius.circular(24),
+            ),
+            child: Row(
+              children: [
+                Icon(Icons.notifications_outlined,
+                    color: scheme.onPrimaryContainer),
+                const SizedBox(width: Insets.lg),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(l10n.notifWeighInReminder,
+                          style: TextStyle(
+                              color: scheme.onPrimaryContainer,
+                              fontWeight: FontWeight.w700,
+                              fontSize: 16)),
+                      if (nextFire != null)
+                        Text(l10n.notifNext(nextFire),
+                            style: TextStyle(
+                                color: scheme.onPrimaryContainer
+                                    .withValues(alpha: 0.8),
+                                fontSize: 13)),
+                    ],
+                  ),
+                ),
+                Switch(
+                  value: config.enabled,
+                  onChanged: (on) => _toggle(on, config),
+                ),
+              ],
             ),
           ),
           if (config.enabled && !_permissionGranted) ...[
@@ -83,7 +118,7 @@ class _NotificationsScreenState extends ConsumerState<NotificationsScreen> {
           ],
           if (config.enabled) ...[
             const SizedBox(height: Insets.xl),
-            _SectionHeader(l10n.notifFrequency),
+            _Header(l10n.notifFrequency),
             SegmentedButton<ReminderFrequency>(
               segments: [
                 ButtonSegment(
@@ -101,44 +136,46 @@ class _NotificationsScreenState extends ConsumerState<NotificationsScreen> {
             ),
             if (config.frequency == ReminderFrequency.weekly) ...[
               const SizedBox(height: Insets.xl),
-              _SectionHeader(l10n.notifDayOfWeek),
-              _WeekdayPicker(
+              _Header(l10n.notifDayOfWeek),
+              _WeekdayCircles(
                 selected: config.weekday,
-                locale: Localizations.localeOf(context).languageCode,
+                locale: locale,
                 onSelected: (w) => _update(config.copyWith(weekday: w)),
+              ),
+              const SizedBox(height: Insets.sm),
+              Text(
+                l10n.notifDaySelected(DateFormat.EEEE(locale)
+                    .format(DateTime(2024, 1, config.weekday))),
+                style: Theme.of(context)
+                    .textTheme
+                    .bodyMedium
+                    ?.copyWith(color: scheme.onSurfaceVariant),
               ),
             ],
             if (config.frequency == ReminderFrequency.monthly) ...[
               const SizedBox(height: Insets.xl),
-              _SectionHeader(l10n.notifDayOfMonth),
-              _DayOfMonthPicker(
+              _Header(l10n.notifDayOfMonth),
+              _DayOfMonthGrid(
                 selected: config.dayOfMonth,
                 onSelected: (d) => _update(config.copyWith(dayOfMonth: d)),
               ),
             ],
             const SizedBox(height: Insets.xl),
-            _SectionHeader(l10n.notifTimeOfDay),
-            Card(
-              child: ListTile(
-                leading: const Icon(Icons.schedule),
-                title: Text(
-                  TimeOfDay(hour: config.hour, minute: config.minute)
-                      .format(context),
-                  style: Theme.of(context).textTheme.titleMedium,
-                ),
-                trailing: const Icon(Icons.edit_outlined),
-                onTap: () async {
-                  final picked = await showTimePicker(
-                    context: context,
-                    initialTime:
-                        TimeOfDay(hour: config.hour, minute: config.minute),
-                  );
-                  if (picked != null) {
-                    await _update(config.copyWith(
-                        hour: picked.hour, minute: picked.minute));
-                  }
-                },
-              ),
+            _Header(l10n.notifTimeOfDay),
+            _TimeCard(
+              hour: config.hour,
+              minute: config.minute,
+              onTap: () async {
+                final picked = await showTimePicker(
+                  context: context,
+                  initialTime:
+                      TimeOfDay(hour: config.hour, minute: config.minute),
+                );
+                if (picked != null) {
+                  await _update(config.copyWith(
+                      hour: picked.hour, minute: picked.minute));
+                }
+              },
             ),
           ],
         ],
@@ -147,30 +184,26 @@ class _NotificationsScreenState extends ConsumerState<NotificationsScreen> {
   }
 }
 
-class _SectionHeader extends StatelessWidget {
-  const _SectionHeader(this.label);
+class _Header extends StatelessWidget {
+  const _Header(this.label);
   final String label;
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(bottom: Insets.sm),
-      child: Text(
-        label.toUpperCase(),
-        style: Theme.of(context).textTheme.labelSmall?.copyWith(
-              color: Theme.of(context).colorScheme.primary,
-            ),
-      ),
+      child: Text(label.toUpperCase(),
+          style: Theme.of(context)
+              .textTheme
+              .labelSmall
+              ?.copyWith(color: Theme.of(context).colorScheme.primary)),
     );
   }
 }
 
-class _WeekdayPicker extends StatelessWidget {
-  const _WeekdayPicker({
-    required this.selected,
-    required this.locale,
-    required this.onSelected,
-  });
+class _WeekdayCircles extends StatelessWidget {
+  const _WeekdayCircles(
+      {required this.selected, required this.locale, required this.onSelected});
 
   final int selected;
   final String locale;
@@ -178,41 +211,126 @@ class _WeekdayPicker extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final fmt = DateFormat.E(locale);
-    // 2024-01-01 is a Monday, so day `i` has weekday `i`.
-    return Wrap(
-      spacing: Insets.sm,
+    final scheme = Theme.of(context).colorScheme;
+    final narrow = DateFormat('EEEEE', locale);
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         for (var w = 1; w <= 7; w++)
-          ChoiceChip(
-            label: Text(fmt.format(DateTime(2024, 1, w))),
-            selected: selected == w,
-            onSelected: (_) => onSelected(w),
+          InkWell(
+            onTap: () => onSelected(w),
+            customBorder: const CircleBorder(),
+            child: Container(
+              width: 44,
+              height: 44,
+              alignment: Alignment.center,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: selected == w ? scheme.primary : null,
+                border: selected == w
+                    ? null
+                    : Border.all(color: scheme.outline),
+              ),
+              child: Text(
+                narrow.format(DateTime(2024, 1, w)),
+                style: TextStyle(
+                  fontWeight: FontWeight.w800,
+                  color: selected == w ? scheme.onPrimary : scheme.onSurface,
+                ),
+              ),
+            ),
           ),
       ],
     );
   }
 }
 
-class _DayOfMonthPicker extends StatelessWidget {
-  const _DayOfMonthPicker({required this.selected, required this.onSelected});
+class _DayOfMonthGrid extends StatelessWidget {
+  const _DayOfMonthGrid({required this.selected, required this.onSelected});
 
   final int selected;
   final ValueChanged<int> onSelected;
 
   @override
   Widget build(BuildContext context) {
-    return Wrap(
-      spacing: Insets.xs,
-      runSpacing: Insets.xs,
+    final scheme = Theme.of(context).colorScheme;
+    return GridView.count(
+      shrinkWrap: true,
+      physics: const NeverScrollableScrollPhysics(),
+      crossAxisCount: 7,
+      mainAxisSpacing: Insets.xs,
+      crossAxisSpacing: Insets.xs,
       children: [
         for (var d = 1; d <= 31; d++)
-          ChoiceChip(
-            label: Text('$d'),
-            selected: selected == d,
-            onSelected: (_) => onSelected(d),
+          InkWell(
+            onTap: () => onSelected(d),
+            borderRadius: BorderRadius.circular(12),
+            child: Container(
+              alignment: Alignment.center,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(12),
+                color: selected == d ? scheme.primary : scheme.surfaceContainer,
+              ),
+              child: Text('$d',
+                  style: TextStyle(
+                      fontWeight: FontWeight.w700,
+                      color:
+                          selected == d ? scheme.onPrimary : scheme.onSurface)),
+            ),
           ),
       ],
+    );
+  }
+}
+
+class _TimeCard extends StatelessWidget {
+  const _TimeCard(
+      {required this.hour, required this.minute, required this.onTap});
+
+  final int hour;
+  final int minute;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final scheme = Theme.of(context).colorScheme;
+    Widget block(String text, Color bg, Color fg) => Container(
+          width: 88,
+          height: 64,
+          alignment: Alignment.center,
+          decoration: BoxDecoration(
+              color: bg, borderRadius: BorderRadius.circular(14)),
+          child: Text(text,
+              style: TextStyle(
+                  fontSize: 34, fontWeight: FontWeight.w800, color: fg)),
+        );
+    return InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(24),
+      child: Container(
+        height: 96,
+        decoration: BoxDecoration(
+            color: scheme.surfaceContainerHighest,
+            borderRadius: BorderRadius.circular(24),
+            border: Border.all(color: scheme.outline)),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            block(hour.toString().padLeft(2, '0'), scheme.primaryContainer,
+                scheme.onPrimaryContainer),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: Insets.md),
+              child: Text(':',
+                  style: TextStyle(
+                      fontSize: 30,
+                      fontWeight: FontWeight.w800,
+                      color: scheme.onSurfaceVariant)),
+            ),
+            block(minute.toString().padLeft(2, '0'), scheme.surfaceContainer,
+                scheme.onSurface),
+          ],
+        ),
+      ),
     );
   }
 }

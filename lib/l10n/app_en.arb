@@ -160,5 +160,9 @@
   "notifPermBody": "Turn on notifications to get local weigh-in reminders.",
   "notifAllow": "Allow notifications",
   "notifPushTitle": "Time to weigh in",
-  "notifPushBody": "Record today's weight in Ponvia."
+  "notifPushBody": "Record today's weight in Ponvia.",
+  "notifNext": "Next: {when}",
+  "@notifNext": { "placeholders": { "when": { "type": "String" } } },
+  "notifDaySelected": "{day} selected",
+  "@notifDaySelected": { "placeholders": { "day": { "type": "String" } } }
 }

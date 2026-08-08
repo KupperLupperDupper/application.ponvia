@@ -865,6 +865,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Record today\'s weight in Ponvia.'**
   String get notifPushBody;
+
+  /// No description provided for @notifNext.
+  ///
+  /// In en, this message translates to:
+  /// **'Next: {when}'**
+  String notifNext(String when);
+
+  /// No description provided for @notifDaySelected.
+  ///
+  /// In en, this message translates to:
+  /// **'{day} selected'**
+  String notifDaySelected(String day);
 }
 
 class _AppLocalizationsDelegate

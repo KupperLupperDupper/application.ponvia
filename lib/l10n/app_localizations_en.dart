@@ -437,4 +437,14 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get notifPushBody => 'Record today\'s weight in Ponvia.';
+
+  @override
+  String notifNext(String when) {
+    return 'Next: $when';
+  }
+
+  @override
+  String notifDaySelected(String day) {
+    return '$day selected';
+  }
 }

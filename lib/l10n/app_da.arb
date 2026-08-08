@@ -140,5 +140,7 @@
   "notifPermBody": "Slå notifikationer til for at få lokale vejningspåmindelser.",
   "notifAllow": "Tillad notifikationer",
   "notifPushTitle": "Tid til at veje dig",
-  "notifPushBody": "Registrér dagens vægt i Ponvia."
+  "notifPushBody": "Registrér dagens vægt i Ponvia.",
+  "notifNext": "Næste: {when}",
+  "notifDaySelected": "{day} valgt"
 }
