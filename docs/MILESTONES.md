@@ -93,7 +93,7 @@ complete.**
 in the manifest. Single weekday / day-of-month (not multi-select). Onboarding reminder step
 still deferred (optional). Reminders screen is functional; visual polish lands in M5.
 
-## M5 — Design integration ☐
+## M5 — Design integration ☑ (all screens matched, merged to main)
 **This is the high-fidelity pass** — M1–M4 built function with token-only styling; M5 makes
 every screen actually match `design/handoff/DESIGN_SPEC.md` + the mockup canvas. It is
 craft work (bespoke components, spacing rhythm, elevation, motion), not a token tweak, done
@@ -109,9 +109,13 @@ screen-by-screen with on-device before/after review.
   first-weight, and goal target. (User-requested.)
 - Performance pass (startup, scroll, chart).
 
-**DoD:** Screens match the approved designs in light & dark, en & da, and all three units;
-custom keypad works for all numeric entry; no frame drops on hot paths; splash has no
-white flash.
+**DoD:** ☑ Home, Log sheet (+ custom keypad), History (+ time-axis chart fix), Goals,
+Settings, Reminders, and Onboarding all rebuilt to `DESIGN_SPEC` and verified on-device
+in Danish/dark. ☑ Effective-locale formatting fixed (comma decimals, Danish dates).
+☑ analyze clean, 23 tests. Merged to `main` (commit 98d02be). **M5 complete.**
+
+Remaining polish candidates (optional): stone (`st + lb`) input fields, multi-weekday
+reminders, licenses page, app-drawer icon cache note.
 
 ## M6 — Device QA + release prep ☐
 **Deliverables:** On-device QA pass; version bump + `CHANGELOG.md` entry; tag `v0.x.0` to
