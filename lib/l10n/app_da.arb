@@ -114,7 +114,10 @@
   "clearDialogTitle": "Ryd målinger og mål?",
   "clearDialogBody": "Dette sletter permanent alle vægtmålinger og mål. Dette kan ikke fortrydes.",
 
-  "onboardWelcomeBody": "Følg din vægt. Alle data bliver på din enhed.",
+  "onboardWelcomeTitle": "Velkommen til Ponvia",
+  "onboardWelcomeBody": "Registrér din vægt på sekunder og se tendensen tage form. Ingen konto, ingen sky — alt bliver på denne telefon.",
+  "onboardStep": "Trin {current} af {total}",
+  "onboardStartTracking": "Begynd at registrere",
   "onboardChooseLanguage": "Vælg dit sprog",
   "onboardPreferredUnit": "Foretrukken enhed",
   "onboardChooseTheme": "Tema",

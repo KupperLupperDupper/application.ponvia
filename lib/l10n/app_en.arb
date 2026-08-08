@@ -133,7 +133,11 @@
   "clearDialogTitle": "Clear entries & goals?",
   "clearDialogBody": "This permanently deletes all weight entries and goals. This cannot be undone.",
 
-  "onboardWelcomeBody": "Track your weight. All data stays on your device.",
+  "onboardWelcomeTitle": "Welcome to Ponvia",
+  "onboardWelcomeBody": "Log your weight in seconds and watch the trend take shape. No account, no cloud — everything stays on this phone.",
+  "onboardStep": "Step {current} of {total}",
+  "@onboardStep": { "placeholders": { "current": { "type": "int" }, "total": { "type": "int" } } },
+  "onboardStartTracking": "Start tracking",
   "onboardChooseLanguage": "Choose your language",
   "onboardPreferredUnit": "Preferred unit",
   "onboardChooseTheme": "Theme",

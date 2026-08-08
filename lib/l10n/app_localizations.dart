@@ -710,11 +710,29 @@ abstract class AppLocalizations {
   /// **'This permanently deletes all weight entries and goals. This cannot be undone.'**
   String get clearDialogBody;
 
+  /// No description provided for @onboardWelcomeTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Welcome to Ponvia'**
+  String get onboardWelcomeTitle;
+
   /// No description provided for @onboardWelcomeBody.
   ///
   /// In en, this message translates to:
-  /// **'Track your weight. All data stays on your device.'**
+  /// **'Log your weight in seconds and watch the trend take shape. No account, no cloud — everything stays on this phone.'**
   String get onboardWelcomeBody;
+
+  /// No description provided for @onboardStep.
+  ///
+  /// In en, this message translates to:
+  /// **'Step {current} of {total}'**
+  String onboardStep(int current, int total);
+
+  /// No description provided for @onboardStartTracking.
+  ///
+  /// In en, this message translates to:
+  /// **'Start tracking'**
+  String get onboardStartTracking;
 
   /// No description provided for @onboardChooseLanguage.
   ///

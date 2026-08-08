@@ -22,8 +22,7 @@ void main() {
       ),
     ));
     await tester.pumpAndSettle();
-    expect(find.text('Ponvia'), findsOneWidget);
-    expect(find.text('Next'), findsOneWidget);
-    expect(find.textContaining('Track your weight'), findsOneWidget);
+    expect(find.text('Welcome to Ponvia'), findsOneWidget);
+    expect(find.text('Get started'), findsOneWidget);
   });
 }

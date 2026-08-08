@@ -355,8 +355,19 @@ class AppLocalizationsEn extends AppLocalizations {
       'This permanently deletes all weight entries and goals. This cannot be undone.';
 
   @override
+  String get onboardWelcomeTitle => 'Welcome to Ponvia';
+
+  @override
   String get onboardWelcomeBody =>
-      'Track your weight. All data stays on your device.';
+      'Log your weight in seconds and watch the trend take shape. No account, no cloud — everything stays on this phone.';
+
+  @override
+  String onboardStep(int current, int total) {
+    return 'Step $current of $total';
+  }
+
+  @override
+  String get onboardStartTracking => 'Start tracking';
 
   @override
   String get onboardChooseLanguage => 'Choose your language';

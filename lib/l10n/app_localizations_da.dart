@@ -356,8 +356,19 @@ class AppLocalizationsDa extends AppLocalizations {
       'Dette sletter permanent alle vægtmålinger og mål. Dette kan ikke fortrydes.';
 
   @override
+  String get onboardWelcomeTitle => 'Velkommen til Ponvia';
+
+  @override
   String get onboardWelcomeBody =>
-      'Følg din vægt. Alle data bliver på din enhed.';
+      'Registrér din vægt på sekunder og se tendensen tage form. Ingen konto, ingen sky — alt bliver på denne telefon.';
+
+  @override
+  String onboardStep(int current, int total) {
+    return 'Trin $current af $total';
+  }
+
+  @override
+  String get onboardStartTracking => 'Begynd at registrere';
 
   @override
   String get onboardChooseLanguage => 'Vælg dit sprog';
