@@ -242,6 +242,54 @@ abstract class AppLocalizations {
   /// **'{amount} to gain'**
   String goalToGain(String amount);
 
+  /// No description provided for @homeDeltaDown.
+  ///
+  /// In en, this message translates to:
+  /// **'Down {amount}'**
+  String homeDeltaDown(String amount);
+
+  /// No description provided for @homeDeltaUp.
+  ///
+  /// In en, this message translates to:
+  /// **'Up {amount}'**
+  String homeDeltaUp(String amount);
+
+  /// No description provided for @homeDeltaFlat.
+  ///
+  /// In en, this message translates to:
+  /// **'No change'**
+  String get homeDeltaFlat;
+
+  /// No description provided for @homeTrendFooter.
+  ///
+  /// In en, this message translates to:
+  /// **'Last {days} days'**
+  String homeTrendFooter(int days);
+
+  /// No description provided for @homeGoalRow.
+  ///
+  /// In en, this message translates to:
+  /// **'Goal · {target}'**
+  String homeGoalRow(String target);
+
+  /// No description provided for @homeToGo.
+  ///
+  /// In en, this message translates to:
+  /// **'{amount} to go'**
+  String homeToGo(String amount);
+
+  /// No description provided for @homeProgressFrom.
+  ///
+  /// In en, this message translates to:
+  /// **'{percent}% of the way from {start}'**
+  String homeProgressFrom(int percent, String start);
+
+  /// No description provided for @homeCaloriesSlot.
+  ///
+  /// In en, this message translates to:
+  /// **'Calories — coming soon'**
+  String get homeCaloriesSlot;
+
   /// No description provided for @historyTitle.
   ///
   /// In en, this message translates to:

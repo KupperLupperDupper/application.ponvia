@@ -87,6 +87,42 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String homeDeltaDown(String amount) {
+    return 'Down $amount';
+  }
+
+  @override
+  String homeDeltaUp(String amount) {
+    return 'Up $amount';
+  }
+
+  @override
+  String get homeDeltaFlat => 'No change';
+
+  @override
+  String homeTrendFooter(int days) {
+    return 'Last $days days';
+  }
+
+  @override
+  String homeGoalRow(String target) {
+    return 'Goal · $target';
+  }
+
+  @override
+  String homeToGo(String amount) {
+    return '$amount to go';
+  }
+
+  @override
+  String homeProgressFrom(int percent, String start) {
+    return '$percent% of the way from $start';
+  }
+
+  @override
+  String get homeCaloriesSlot => 'Calories — coming soon';
+
+  @override
   String get historyTitle => 'History';
 
   @override

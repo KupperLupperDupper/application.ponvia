@@ -44,8 +44,8 @@ void main() {
     ));
     await tester.pumpAndSettle();
 
-    expect(find.text('80.0'), findsOneWidget); // hero, kg default
-    expect(find.textContaining('2.0 kg'), findsWidgets); // delta -2.0 kg
+    expect(find.textContaining('80.0'), findsWidgets); // hero (rich text), kg
+    expect(find.textContaining('2.0 kg'), findsWidgets); // delta "Down 2.0 kg"
   });
 
   testWidgets('Goals highlights the closest goal with distance', (tester) async {

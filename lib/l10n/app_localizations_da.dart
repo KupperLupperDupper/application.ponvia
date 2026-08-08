@@ -88,6 +88,42 @@ class AppLocalizationsDa extends AppLocalizations {
   }
 
   @override
+  String homeDeltaDown(String amount) {
+    return 'Ned $amount';
+  }
+
+  @override
+  String homeDeltaUp(String amount) {
+    return 'Op $amount';
+  }
+
+  @override
+  String get homeDeltaFlat => 'Ingen ændring';
+
+  @override
+  String homeTrendFooter(int days) {
+    return 'Sidste $days dage';
+  }
+
+  @override
+  String homeGoalRow(String target) {
+    return 'Mål · $target';
+  }
+
+  @override
+  String homeToGo(String amount) {
+    return '$amount tilbage';
+  }
+
+  @override
+  String homeProgressFrom(int percent, String start) {
+    return '$percent % af vejen fra $start';
+  }
+
+  @override
+  String get homeCaloriesSlot => 'Kalorier — kommer snart';
+
+  @override
   String get historyTitle => 'Historik';
 
   @override
