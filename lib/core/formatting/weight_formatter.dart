@@ -38,6 +38,13 @@ class WeightFormatter {
     return '${value(kg)} ${unit.code}';
   }
 
+  /// The magnitude of a weight in the display unit with no unit label, e.g.
+  /// `0.6`. For stone it falls back to the composite string.
+  String magnitudeShort(double kg) {
+    if (unit == WeightUnit.st) return value(kg);
+    return _one.format(WeightConverter.fromKg(kg, unit));
+  }
+
   /// A signed delta between two canonical weights in the display unit, e.g.
   /// `+0.4 kg` / `-1.2 lb`. Returns `0.0`-style for no change.
   String delta(double kgDelta) {

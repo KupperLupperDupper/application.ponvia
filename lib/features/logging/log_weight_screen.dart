@@ -186,7 +186,7 @@ class _LogWeightFormState extends ConsumerState<LogWeightForm> {
     final scheme = Theme.of(context).colorScheme;
     final settings = ref.watch(settingsControllerProvider);
     final unit = settings.unit;
-    final dateFmt = PonviaDateFormatter(locale: settings.localeCode);
+    final dateFmt = PonviaDateFormatter(locale: Localizations.localeOf(context).languageCode);
     final showError = _input.isNotEmpty && !_valid;
 
     final relDay = PonviaDateFormatter.daysAgo(_timestamp, DateTime.now());

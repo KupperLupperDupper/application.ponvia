@@ -20,7 +20,7 @@ class GoalsScreen extends ConsumerWidget {
     final goalsAsync = ref.watch(goalsProvider);
     final closest = ref.watch(closestGoalProvider);
     final currentKg = ref.watch(latestWeightProvider).asData?.value?.weightKg;
-    final fmt = WeightFormatter(settings.unit, locale: settings.localeCode);
+    final fmt = WeightFormatter(settings.unit, locale: Localizations.localeOf(context).languageCode);
 
     return Scaffold(
       appBar: AppBar(title: Text(l10n.goalsTitle)),

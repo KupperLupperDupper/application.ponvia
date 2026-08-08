@@ -26,7 +26,7 @@ class HomeScreen extends ConsumerWidget {
     final settings = ref.watch(settingsControllerProvider);
     final entriesAsync = ref.watch(entriesProvider);
     final closest = ref.watch(closestGoalProvider);
-    final fmt = WeightFormatter(settings.unit, locale: settings.localeCode);
+    final fmt = WeightFormatter(settings.unit, locale: Localizations.localeOf(context).languageCode);
 
     return Scaffold(
       appBar: AppBar(
