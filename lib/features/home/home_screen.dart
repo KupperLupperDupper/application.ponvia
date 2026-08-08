@@ -1,3 +1,4 @@
+import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -7,12 +8,12 @@ import '../../app/theme/typography.dart';
 import '../../core/formatting/date_formatter.dart';
 import '../../core/formatting/weight_formatter.dart';
 import '../../core/ui/spacing.dart';
+import '../../core/units/weight_unit.dart';
 import '../../domain/models/weight_entry.dart';
-import 'home_shell.dart';
+import '../logging/log_weight_screen.dart';
 
-/// The weight-first dashboard. M1 build: hero last weight, delta vs previous,
-/// and the highlighted goal. Visual polish + sparkline arrive with the design
-/// pass (M5).
+/// The weight-first dashboard: hero last weight, delta vs previous, a recent
+/// trend sparkline, and progress toward the highlighted goal.
 class HomeScreen extends ConsumerWidget {
   const HomeScreen({super.key});
 
@@ -26,7 +27,7 @@ class HomeScreen extends ConsumerWidget {
     return Scaffold(
       appBar: AppBar(title: const Text('Ponvia')),
       floatingActionButton: FloatingActionButton.extended(
-        onPressed: () => openLogWeight(context),
+        onPressed: () => showLogWeightSheet(context),
         icon: const Icon(Icons.add),
         label: const Text('Log weight'),
       ),
@@ -41,12 +42,19 @@ class HomeScreen extends ConsumerWidget {
           return ListView(
             padding: const EdgeInsets.all(Insets.screenH),
             children: [
-              _HeroCard(entry: latest, fmt: fmt, deltaKg: deltaKg),
+              _HeroCard(
+                entry: latest,
+                fmt: fmt,
+                deltaKg: deltaKg,
+                unit: settings.unit,
+                recent: entries,
+              ),
               if (closest != null) ...[
                 const SizedBox(height: Insets.cardGap),
                 _GoalCard(
                   targetKg: closest.targetWeightKg,
                   currentKg: latest.weightKg,
+                  startKg: entries.last.weightKg,
                   label: closest.label,
                   fmt: fmt,
                 ),
@@ -60,10 +68,18 @@ class HomeScreen extends ConsumerWidget {
 }
 
 class _HeroCard extends StatelessWidget {
-  const _HeroCard({required this.entry, required this.fmt, this.deltaKg});
+  const _HeroCard({
+    required this.entry,
+    required this.fmt,
+    required this.unit,
+    required this.recent,
+    this.deltaKg,
+  });
 
   final WeightEntry entry;
   final WeightFormatter fmt;
+  final WeightUnit unit;
+  final List<WeightEntry> recent;
   final double? deltaKg;
 
   @override
@@ -92,7 +108,8 @@ class _HeroCard extends StatelessWidget {
               alignment: Alignment.centerLeft,
               child: Text(
                 fmt.value(entry.weightKg),
-                style: PonviaTypography.heroWeight.copyWith(color: scheme.onSurface),
+                style:
+                    PonviaTypography.heroWeight.copyWith(color: scheme.onSurface),
               ),
             ),
             const SizedBox(height: Insets.sm),
@@ -105,8 +122,69 @@ class _HeroCard extends StatelessWidget {
                 ],
               ],
             ),
+            if (recent.length >= 2) ...[
+              const SizedBox(height: Insets.lg),
+              SizedBox(
+                height: 68,
+                child: _Sparkline(entries: recent, unit: unit, color: ponvia),
+              ),
+            ],
           ],
         ),
+      ),
+    );
+  }
+}
+
+/// Minimal trend line for the Home hero: no axes, no grid, newest point dotted.
+class _Sparkline extends StatelessWidget {
+  const _Sparkline({
+    required this.entries,
+    required this.unit,
+    required this.color,
+  });
+
+  final List<WeightEntry> entries; // newest-first
+  final WeightUnit unit;
+  final PonviaColors color;
+
+  @override
+  Widget build(BuildContext context) {
+    // Take up to the last 30 entries, oldest -> newest for plotting.
+    final recent = entries.take(30).toList().reversed.toList();
+    final spots = <FlSpot>[
+      for (var i = 0; i < recent.length; i++)
+        FlSpot(i.toDouble(), WeightConverter.fromKg(recent[i].weightKg, unit)),
+    ];
+    final lastX = (recent.length - 1).toDouble();
+
+    return LineChart(
+      LineChartData(
+        gridData: const FlGridData(show: false),
+        titlesData: const FlTitlesData(show: false),
+        borderData: FlBorderData(show: false),
+        lineTouchData: const LineTouchData(enabled: false),
+        lineBarsData: [
+          LineChartBarData(
+            spots: spots,
+            isCurved: true,
+            curveSmoothness: 0.25,
+            color: color.chartLine,
+            barWidth: 2.5,
+            dotData: FlDotData(
+              checkToShowDot: (spot, _) => spot.x == lastX,
+              getDotPainter: (spot, _, _, _) => FlDotCirclePainter(
+                radius: 3.5,
+                color: color.chartLine,
+                strokeWidth: 0,
+              ),
+            ),
+            belowBarData: BarAreaData(
+              show: true,
+              color: color.chartArea.withValues(alpha: 0.45),
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -137,10 +215,8 @@ class _DeltaChip extends StatelessWidget {
         const SizedBox(width: Insets.xs),
         Text(
           fmt.delta(deltaKg),
-          style: Theme.of(context)
-              .textTheme
-              .labelLarge
-              ?.copyWith(color: color),
+          style:
+              Theme.of(context).textTheme.labelLarge?.copyWith(color: color),
         ),
       ],
     );
@@ -151,12 +227,14 @@ class _GoalCard extends StatelessWidget {
   const _GoalCard({
     required this.targetKg,
     required this.currentKg,
+    required this.startKg,
     required this.fmt,
     this.label,
   });
 
   final double targetKg;
   final double currentKg;
+  final double startKg;
   final String? label;
   final WeightFormatter fmt;
 
@@ -164,6 +242,11 @@ class _GoalCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final remainingKg = (targetKg - currentKg).abs();
     final direction = targetKg < currentKg ? 'to lose' : 'to gain';
+    final span = startKg - targetKg;
+    final progress = span == 0
+        ? (currentKg == targetKg ? 1.0 : 0.0)
+        : ((startKg - currentKg) / span).clamp(0.0, 1.0);
+
     return Card(
       child: Padding(
         padding: const EdgeInsets.all(Insets.cardPadding),
@@ -174,13 +257,23 @@ class _GoalCard extends StatelessWidget {
               children: [
                 const Icon(Icons.flag, size: 20),
                 const SizedBox(width: Insets.sm),
-                Text(label ?? 'Closest goal',
-                    style: Theme.of(context).textTheme.titleMedium),
+                Expanded(
+                  child: Text(label ?? 'Closest goal',
+                      style: Theme.of(context).textTheme.titleMedium),
+                ),
+                Text('Target ${fmt.withUnit(targetKg)}',
+                    style: Theme.of(context).textTheme.bodyLarge),
               ],
             ),
+            const SizedBox(height: Insets.md),
+            ClipRRect(
+              borderRadius: BorderRadius.circular(8),
+              child: LinearProgressIndicator(
+                value: progress,
+                minHeight: 8,
+              ),
+            ),
             const SizedBox(height: Insets.sm),
-            Text('Target ${fmt.withUnit(targetKg)}',
-                style: Theme.of(context).textTheme.bodyLarge),
             Text('${fmt.withUnit(remainingKg)} $direction',
                 style: Theme.of(context).textTheme.bodyLarge),
           ],

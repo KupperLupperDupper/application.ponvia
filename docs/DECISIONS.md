@@ -123,3 +123,15 @@ alternatives rejected**. Newest decisions can be appended over time.
   caches … *.tab" on this Windows dev box (file-locking on `build/`, likely AV). Disabling
   incremental compilation is slightly slower but builds reliably. Harmless on CI.
 - **Rejected:** Excluding `build/` from AV (not always possible), retрy loops (didn't help).
+
+## ADR-015 — File I/O plugins: file_selector + share_plus (not file_picker)
+- **Decision:** Use `file_selector` (import/open) and `share_plus` (export via the OS share
+  sheet) for data portability. Not `file_picker`.
+- **Rationale:** `file_picker` applies the Kotlin Gradle Plugin, which fails to compile
+  under Flutter's new Built-in-Kotlin Android setup used by this project (`compileDebugKotlin
+  not found in project ':file_picker'` → `GeneratedPluginRegistrant` can't resolve
+  `FilePickerPlugin`). `file_selector` (Flutter-team, Java-based) and `share_plus` don't
+  apply KGP and build cleanly. Export as a share also gives a nicer "save to…/send"
+  flow than a bare save dialog. `file_picker` also conflicted with `share_plus` on win32.
+- **Rejected:** `file_picker` (build failure), keeping `share_plus`+`file_picker` (win32
+  conflict), writing exports only to app storage (poor discoverability).

@@ -27,6 +27,10 @@ history — update the **Unreleased** section as you work, and cut it into a ver
   brand green; dark: mint plate on `#0E1412`; Android-12 icon splash) generated from the
   design assets via flutter_launcher_icons + flutter_native_splash. Splash verified
   on-device; icon verified inside the built APK.
+- M2 core screens: modal log/edit sheet (editable date/time), Home sparkline + goal
+  progress, History trend chart with 1W/1M/3M/1Y/All range switcher + tap-to-edit, Goals
+  editor + mark-achieved + distance, and JSON/CSV export (share sheet) + import (file
+  picker, merge/replace). Data I/O uses file_selector + share_plus (ADR-015). 18 tests.
 
 <!--
 When cutting a release, move Unreleased items under a version heading, e.g.:

@@ -44,6 +44,3 @@ class HomeShell extends StatelessWidget {
     );
   }
 }
-
-/// Small helper so screens can open the log-weight sheet consistently.
-void openLogWeight(BuildContext context) => context.push('/log');

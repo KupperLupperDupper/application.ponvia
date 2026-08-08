@@ -1,17 +1,19 @@
 import 'dart:io';
 
+import 'package:file_selector/file_selector.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
+import 'package:share_plus/share_plus.dart';
 
 import '../../app/providers.dart';
 import '../../core/ui/spacing.dart';
 import '../../core/units/weight_unit.dart';
 import '../../domain/models/app_settings.dart';
 
-/// App settings. M1 covers theme, unit, language (persisted; Danish UI lands in
-/// M3), JSON export, and clear-data. Notifications + full import/about are M3/M4.
+/// App settings: theme, unit, language (Danish UI lands in M3), JSON/CSV
+/// export (share sheet) & import (file picker), and clear-data.
 class SettingsScreen extends ConsumerWidget {
   const SettingsScreen({super.key});
 
@@ -69,8 +71,8 @@ class SettingsScreen extends ConsumerWidget {
                   ButtonSegment(value: 'da', label: Text('Dansk')),
                 ],
                 selected: {settings.localeCode ?? 'system'},
-                onSelectionChanged: (s) => controller
-                    .setLocale(s.first == 'system' ? null : s.first),
+                onSelectionChanged: (s) =>
+                    controller.setLocale(s.first == 'system' ? null : s.first),
               ),
             ),
           ),
@@ -78,14 +80,20 @@ class SettingsScreen extends ConsumerWidget {
           ListTile(
             leading: const Icon(Icons.upload_outlined),
             title: const Text('Export backup (JSON)'),
-            subtitle: const Text('Saves a full backup file to app storage'),
-            onTap: () => _exportJson(context, ref),
+            subtitle: const Text('Full backup: weights, goals, settings'),
+            onTap: () => _export(context, ref, csv: false),
+          ),
+          ListTile(
+            leading: const Icon(Icons.table_chart_outlined),
+            title: const Text('Export weights (CSV)'),
+            subtitle: const Text('Weight history for spreadsheets'),
+            onTap: () => _export(context, ref, csv: true),
           ),
           ListTile(
             leading: const Icon(Icons.download_outlined),
-            title: const Text('Import backup'),
-            subtitle: const Text('Coming in M2 (file picker)'),
-            enabled: false,
+            title: const Text('Import (JSON or CSV)'),
+            subtitle: const Text('Restore or merge a backup'),
+            onTap: () => _import(context, ref),
           ),
           ListTile(
             leading: Icon(Icons.delete_forever_outlined,
@@ -97,13 +105,13 @@ class SettingsScreen extends ConsumerWidget {
           const ListTile(
             leading: Icon(Icons.info_outline),
             title: Text('Ponvia'),
-            subtitle: Text('Version 1.0.0 · milestone M1'),
+            subtitle: Text('Version 1.0.0 · milestone M2'),
           ),
           ListTile(
             leading: const Icon(Icons.lock_outline),
             title: const Text('Privacy'),
-            subtitle: Text('All data stays on your device.',
-                style: text.bodyMedium),
+            subtitle:
+                Text('All data stays on your device.', style: text.bodyMedium),
           ),
         ],
       ),
@@ -123,23 +131,96 @@ class SettingsScreen extends ConsumerWidget {
     );
   }
 
-  Future<void> _exportJson(BuildContext context, WidgetRef ref) async {
+  Future<void> _export(
+    BuildContext context,
+    WidgetRef ref, {
+    required bool csv,
+  }) async {
     final messenger = ScaffoldMessenger.of(context);
     try {
-      final json = await ref.read(backupServiceProvider).exportJson(
-            settings: ref.read(settingsControllerProvider),
-            now: DateTime.now(),
-          );
-      final dir = await getApplicationDocumentsDirectory();
-      final file = File(p.join(dir.path,
-          'ponvia-backup-${DateTime.now().millisecondsSinceEpoch}.json'));
-      await file.writeAsString(json);
-      messenger.showSnackBar(
-        SnackBar(content: Text('Backup saved to ${file.path}')),
-      );
+      final backup = ref.read(backupServiceProvider);
+      final settings = ref.read(settingsControllerProvider);
+      final content = csv
+          ? await backup.exportCsv(settings.unit)
+          : await backup.exportJson(settings: settings, now: DateTime.now());
+      final fileName = csv ? 'ponvia-weights.csv' : 'ponvia-backup.json';
+      final dir = await getTemporaryDirectory();
+      final file = File(p.join(dir.path, fileName));
+      await file.writeAsString(content);
+      await SharePlus.instance.share(ShareParams(
+        files: [
+          XFile(file.path,
+              mimeType: csv ? 'text/csv' : 'application/json', name: fileName),
+        ],
+        subject: fileName,
+      ));
     } catch (e) {
       messenger.showSnackBar(SnackBar(content: Text('Export failed: $e')));
     }
+  }
+
+  Future<void> _import(BuildContext context, WidgetRef ref) async {
+    final messenger = ScaffoldMessenger.of(context);
+    const group = XTypeGroup(
+      label: 'Ponvia backup',
+      extensions: ['json', 'csv'],
+      mimeTypes: ['application/json', 'text/csv', 'text/comma-separated-values'],
+    );
+    final file = await openFile(acceptedTypeGroups: [group]);
+    if (file == null) return;
+    final content = await file.readAsString();
+    final isJson = file.name.toLowerCase().endsWith('.json') ||
+        content.trimLeft().startsWith('{');
+    if (!context.mounted) return;
+
+    final replace = await _askMergeOrReplace(context);
+    if (replace == null) return;
+
+    try {
+      final backup = ref.read(backupServiceProvider);
+      if (isJson) {
+        final data = await backup.importJson(content, replace: replace);
+        messenger.showSnackBar(SnackBar(
+          content: Text(
+              'Imported ${data.entries.length} entries, ${data.goals.length} goals'),
+        ));
+      } else {
+        final n = await backup.importCsv(content, replace: replace);
+        messenger.showSnackBar(SnackBar(content: Text('Imported $n entries')));
+      }
+    } catch (e) {
+      messenger.showSnackBar(SnackBar(content: Text('Import failed: $e')));
+    }
+  }
+
+  /// Returns true for replace, false for merge, null if cancelled.
+  Future<bool?> _askMergeOrReplace(BuildContext context) {
+    return showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Import data'),
+        content: const Text(
+            'Merge adds new records to your existing data. Replace deletes all '
+            'current data first. This cannot be undone.'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('Cancel'),
+          ),
+          TextButton(
+            onPressed: () => Navigator.pop(context, false),
+            child: const Text('Merge'),
+          ),
+          FilledButton(
+            style: FilledButton.styleFrom(
+              backgroundColor: Theme.of(context).colorScheme.error,
+            ),
+            onPressed: () => Navigator.pop(context, true),
+            child: const Text('Replace'),
+          ),
+        ],
+      ),
+    );
   }
 
   Future<void> _confirmClear(BuildContext context, WidgetRef ref) async {

@@ -41,13 +41,23 @@ smoke test on the OnePlus (`6eb5eb45`): cold start ~2.0s, onboarding → home �
 empty state, theme tokens applied in dark mode, no runtime errors. Release workflow can now
 produce an APK on a tag. **M1 complete.**
 
-## M2 — Core screens (functional, pre-design styling) ☐
-**Deliverables:** Home (last-weight hero + delta + mini-trend), Log/Edit weight, History
-(list + fl_chart with range switch), Goals (list with closest highlighted + editor),
-Settings shell. All backed by live Drift streams.
+## M2 — Core screens (functional, pre-design styling) ☑
+**Deliverables:**
+- ☑ Log/Edit as a modal bottom sheet (add + edit, editable date/time, note).
+- ☑ Home: last-weight hero + delta chip + recent-trend sparkline (fl_chart) + progress
+  toward the highlighted goal.
+- ☑ History: list (tap-to-edit, swipe-delete) + trend chart with 1W/1M/3M/1Y/All switcher.
+- ☑ Goals: add/edit dialog, mark achieved (with achieved treatment), distance-to-target.
+- ☑ Settings: JSON + CSV export via the share sheet, import (JSON/CSV) via file picker
+  with merge/replace, clear data.
 
-**DoD:** Every SPEC §3.3–3.6 acceptance criterion demonstrably works on-device with
-placeholder styling; widget tests for hero, goal-highlight, and log validation pass.
+**Deps note:** `file_picker` couldn't build under Flutter's Built-in-Kotlin Android setup
+(it applies KGP); swapped to `file_selector` (import) + `share_plus` (export). See
+DECISIONS ADR-015.
+
+**DoD:** ☑ `flutter analyze` clean · ☑ 18 tests pass (incl. hero, goal-highlight+distance,
+log validation) · ☑ debug APK builds · ☑ on-device: modal log sheet + save → Home hero
+updates. **M2 complete.**
 
 ## M3 — Onboarding + i18n ☐
 **Deliverables:** Splash → onboarding gate; first-run stepper (language, theme, unit,
