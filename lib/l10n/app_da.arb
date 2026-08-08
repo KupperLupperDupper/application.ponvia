@@ -56,6 +56,9 @@
   "goalAchieved": "Opnået",
   "goalMarkAchieved": "Markér som opnået",
   "goalReopen": "Genåbn",
+  "goalStarted": "Startede {weight} · {date}",
+  "goalReached": "Nået {date}",
+  "goalClosest": "Nærmeste mål",
 
   "logTitle": "Registrér vægt",
   "logEditTitle": "Redigér måling",

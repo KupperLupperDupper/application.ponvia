@@ -176,6 +176,19 @@ class AppLocalizationsEn extends AppLocalizations {
   String get goalReopen => 'Reopen';
 
   @override
+  String goalStarted(String weight, String date) {
+    return 'Started $weight · $date';
+  }
+
+  @override
+  String goalReached(String date) {
+    return 'Reached $date';
+  }
+
+  @override
+  String get goalClosest => 'Closest goal';
+
+  @override
   String get logTitle => 'Log weight';
 
   @override

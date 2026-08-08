@@ -66,6 +66,11 @@
   "goalAchieved": "Achieved",
   "goalMarkAchieved": "Mark achieved",
   "goalReopen": "Reopen",
+  "goalStarted": "Started {weight} · {date}",
+  "@goalStarted": { "placeholders": { "weight": { "type": "String" }, "date": { "type": "String" } } },
+  "goalReached": "Reached {date}",
+  "@goalReached": { "placeholders": { "date": { "type": "String" } } },
+  "goalClosest": "Closest goal",
 
   "logTitle": "Log weight",
   "logEditTitle": "Edit entry",

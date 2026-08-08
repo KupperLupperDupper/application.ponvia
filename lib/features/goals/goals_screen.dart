@@ -2,14 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../app/providers.dart';
+import '../../app/theme/ponvia_colors.dart';
+import '../../core/formatting/date_formatter.dart';
 import '../../core/formatting/weight_formatter.dart';
 import '../../core/ui/spacing.dart';
 import '../../core/units/weight_unit.dart';
 import '../../domain/models/goal.dart';
 import '../../l10n/app_localizations.dart';
 
-/// Goals list with the closest active goal highlighted. Add, edit, delete, and
-/// mark achieved; each tile shows distance to target.
+/// Goals list styled to DESIGN_SPEC §6: a highlighted "closest goal" card plus
+/// regular / achieved / gain cards, each with progress and a footer.
 class GoalsScreen extends ConsumerWidget {
   const GoalsScreen({super.key});
 
@@ -19,8 +21,13 @@ class GoalsScreen extends ConsumerWidget {
     final settings = ref.watch(settingsControllerProvider);
     final goalsAsync = ref.watch(goalsProvider);
     final closest = ref.watch(closestGoalProvider);
-    final currentKg = ref.watch(latestWeightProvider).asData?.value?.weightKg;
-    final fmt = WeightFormatter(settings.unit, locale: Localizations.localeOf(context).languageCode);
+    final entries = ref.watch(entriesProvider).asData?.value ?? const [];
+    final currentKg = entries.isEmpty ? null : entries.first.weightKg;
+    final startKg = entries.isEmpty ? null : entries.last.weightKg;
+    final fmt = WeightFormatter(settings.unit,
+        locale: Localizations.localeOf(context).languageCode);
+    final dateFmt =
+        PonviaDateFormatter(locale: Localizations.localeOf(context).languageCode);
 
     return Scaffold(
       appBar: AppBar(title: Text(l10n.goalsTitle)),
@@ -32,39 +39,65 @@ class GoalsScreen extends ConsumerWidget {
         loading: () => const Center(child: CircularProgressIndicator()),
         error: (e, _) => Center(child: Text('$e')),
         data: (goals) {
-          if (goals.isEmpty) {
-            return Center(
-              child: Text(l10n.goalsEmpty,
-                  style: Theme.of(context).textTheme.bodyLarge),
-            );
-          }
+          if (goals.isEmpty) return _EmptyGoals(l10n: l10n);
           return ListView(
-            padding: const EdgeInsets.all(Insets.screenH),
+            padding: const EdgeInsets.fromLTRB(
+                Insets.screenH, Insets.lg, Insets.screenH, 96),
             children: [
               for (final g in goals)
-                _GoalTile(
-                  goal: g,
-                  fmt: fmt,
-                  currentKg: currentKg,
-                  highlighted: g.id == closest?.id,
-                  onEdit: () =>
-                      _showGoalDialog(context, ref, settings.unit, existing: g),
-                  onToggleAchieved: () => ref.read(goalRepositoryProvider).update(
-                        g.isAchieved
-                            ? g.copyWith(clearAchieved: true)
-                            : g.copyWith(achievedAt: DateTime.now()),
-                      ),
-                  onDelete: () async {
-                    if (g.id != null) {
-                      await ref.read(goalRepositoryProvider).delete(g.id!);
-                    }
-                  },
+                Padding(
+                  padding: const EdgeInsets.only(bottom: Insets.cardGap),
+                  child: Dismissible(
+                    key: ValueKey(g.id ?? g.createdAt.toIso8601String()),
+                    direction: DismissDirection.endToStart,
+                    background: _deleteBackground(context),
+                    onDismissed: (_) => _delete(context, ref, g),
+                    child: _GoalCard(
+                      goal: g,
+                      fmt: fmt,
+                      dateFmt: dateFmt,
+                      unit: settings.unit,
+                      currentKg: currentKg,
+                      startKg: startKg,
+                      highlighted: g.id == closest?.id,
+                      onTap: () => _showGoalDialog(context, ref, settings.unit,
+                          existing: g),
+                    ),
+                  ),
                 ),
             ],
           );
         },
       ),
     );
+  }
+
+  Widget _deleteBackground(BuildContext context) => Container(
+        decoration: BoxDecoration(
+          color: Theme.of(context).colorScheme.errorContainer,
+          borderRadius: BorderRadius.circular(24),
+        ),
+        alignment: Alignment.centerRight,
+        padding: const EdgeInsets.only(right: Insets.xl),
+        child: const Icon(Icons.delete_outline),
+      );
+
+  void _delete(BuildContext context, WidgetRef ref, Goal g) {
+    final l10n = AppLocalizations.of(context);
+    final repo = ref.read(goalRepositoryProvider);
+    if (g.id != null) repo.delete(g.id!);
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content: Text(l10n.actionDelete),
+      action: SnackBarAction(
+        label: l10n.actionUndo,
+        onPressed: () => repo.add(Goal(
+          targetWeightKg: g.targetWeightKg,
+          label: g.label,
+          createdAt: g.createdAt,
+          achievedAt: g.achievedAt,
+        )),
+      ),
+    ));
   }
 
   Future<void> _showGoalDialog(
@@ -81,6 +114,7 @@ class GoalsScreen extends ConsumerWidget {
               .toStringAsFixed(1),
     );
     final labelController = TextEditingController(text: existing?.label ?? '');
+    final repo = ref.read(goalRepositoryProvider);
 
     final result = await showDialog<bool>(
       context: context,
@@ -102,6 +136,26 @@ class GoalsScreen extends ConsumerWidget {
               controller: labelController,
               decoration: InputDecoration(labelText: l10n.goalLabelField),
             ),
+            if (existing != null) ...[
+              const SizedBox(height: Insets.sm),
+              Align(
+                alignment: Alignment.centerLeft,
+                child: TextButton.icon(
+                  icon: Icon(existing.isAchieved
+                      ? Icons.undo
+                      : Icons.check_circle_outline),
+                  label: Text(existing.isAchieved
+                      ? l10n.goalReopen
+                      : l10n.goalMarkAchieved),
+                  onPressed: () {
+                    repo.update(existing.isAchieved
+                        ? existing.copyWith(clearAchieved: true)
+                        : existing.copyWith(achievedAt: DateTime.now()));
+                    Navigator.pop(context, false);
+                  },
+                ),
+              ),
+            ],
           ],
         ),
         actions: [
@@ -123,7 +177,6 @@ class GoalsScreen extends ConsumerWidget {
     if (value == null) return;
     final kg = WeightConverter.toKg(value, unit);
     final label = labelController.text.trim();
-    final repo = ref.read(goalRepositoryProvider);
     if (existing == null) {
       await repo.add(Goal(
         targetWeightKg: kg,
@@ -142,85 +195,230 @@ class GoalsScreen extends ConsumerWidget {
   }
 }
 
-class _GoalTile extends StatelessWidget {
-  const _GoalTile({
+class _GoalCard extends StatelessWidget {
+  const _GoalCard({
     required this.goal,
     required this.fmt,
+    required this.dateFmt,
+    required this.unit,
     required this.currentKg,
+    required this.startKg,
     required this.highlighted,
-    required this.onEdit,
-    required this.onToggleAchieved,
-    required this.onDelete,
+    required this.onTap,
   });
 
   final Goal goal;
   final WeightFormatter fmt;
+  final PonviaDateFormatter dateFmt;
+  final WeightUnit unit;
   final double? currentKg;
+  final double? startKg;
   final bool highlighted;
-  final VoidCallback onEdit;
-  final VoidCallback onToggleAchieved;
-  final VoidCallback onDelete;
+  final VoidCallback onTap;
 
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
     final scheme = Theme.of(context).colorScheme;
-    final onColor = highlighted ? scheme.onPrimaryContainer : null;
+    final ponvia = Theme.of(context).extension<PonviaColors>()!;
+    final text = Theme.of(context).textTheme;
 
-    final String subtitle;
+    final onColor = highlighted ? scheme.onPrimaryContainer : scheme.onSurface;
+    final subColor =
+        highlighted ? scheme.onPrimaryContainer.withValues(alpha: 0.8) : scheme.onSurfaceVariant;
+
+    final isGain = currentKg != null && goal.targetWeightKg > currentKg!;
+    final remaining =
+        currentKg == null ? null : (goal.targetWeightKg - currentKg!).abs();
+
+    double? progress;
     if (goal.isAchieved) {
-      subtitle = l10n.goalAchieved;
-    } else if (currentKg != null) {
-      final remaining = (goal.targetWeightKg - currentKg!).abs();
-      subtitle = goal.targetWeightKg < currentKg!
-          ? l10n.goalToLose(fmt.withUnit(remaining))
-          : l10n.goalToGain(fmt.withUnit(remaining));
-    } else if (goal.label != null) {
-      subtitle = goal.label!;
-    } else {
-      subtitle = highlighted ? l10n.homeClosestGoal : '';
+      progress = 1;
+    } else if (currentKg != null &&
+        startKg != null &&
+        startKg != goal.targetWeightKg) {
+      progress = ((currentKg! - startKg!) / (goal.targetWeightKg - startKg!))
+          .clamp(0.0, 1.0);
     }
 
-    return Card(
-      color: highlighted ? scheme.primaryContainer : null,
-      child: ListTile(
-        onTap: onEdit,
-        leading: Icon(
-          goal.isAchieved ? Icons.check_circle : Icons.flag,
-          color: onColor,
+    Widget directionRow() {
+      if (goal.isAchieved) {
+        return Row(mainAxisSize: MainAxisSize.min, children: [
+          Icon(Icons.check_circle, size: 18, color: scheme.primary),
+          const SizedBox(width: Insets.xs),
+          Text(l10n.goalAchieved,
+              style: text.bodyLarge
+                  ?.copyWith(fontWeight: FontWeight.w700, color: scheme.primary)),
+        ]);
+      }
+      if (remaining == null) return const SizedBox.shrink();
+      final color = isGain ? ponvia.deltaUp : onColor;
+      return Row(mainAxisSize: MainAxisSize.min, children: [
+        Icon(isGain ? Icons.arrow_upward : Icons.arrow_downward,
+            size: 18, color: color),
+        const SizedBox(width: Insets.xs),
+        Text(
+          isGain
+              ? l10n.goalToGain(fmt.withUnit(remaining))
+              : l10n.goalToLose(fmt.withUnit(remaining)),
+          style: text.bodyLarge?.copyWith(fontWeight: FontWeight.w700, color: color),
         ),
-        title: Text(
-          goal.label ?? fmt.withUnit(goal.targetWeightKg),
-          style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                color: onColor,
-                decoration: goal.isAchieved ? TextDecoration.lineThrough : null,
-              ),
+      ]);
+    }
+
+    final showBar = progress != null && (!isGain || progress > 0);
+
+    return InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(highlighted ? 28 : 24),
+      child: Container(
+        padding: const EdgeInsets.all(Insets.xl),
+        decoration: BoxDecoration(
+          color: highlighted
+              ? scheme.primaryContainer
+              : scheme.surfaceContainerHighest,
+          borderRadius: BorderRadius.circular(highlighted ? 28 : 24),
+          border: highlighted ? null : Border.all(color: scheme.outline),
         ),
-        subtitle: Text(
-          goal.label != null && !goal.isAchieved && currentKg != null
-              ? '${fmt.withUnit(goal.targetWeightKg)} · $subtitle'
-              : subtitle,
-          style: TextStyle(color: onColor),
-        ),
-        trailing: PopupMenuButton<String>(
-          iconColor: onColor,
-          onSelected: (v) {
-            switch (v) {
-              case 'edit':
-                onEdit();
-              case 'achieve':
-                onToggleAchieved();
-              case 'delete':
-                onDelete();
-            }
-          },
-          itemBuilder: (context) => [
-            PopupMenuItem(value: 'edit', child: Text(l10n.actionEdit)),
-            PopupMenuItem(
-              value: 'achieve',
-              child: Text(goal.isAchieved ? l10n.goalReopen : l10n.goalMarkAchieved),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            if (highlighted) ...[
+              _ClosestChip(label: l10n.goalClosest.toUpperCase()),
+              const SizedBox(height: Insets.md),
+            ],
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Text.rich(
+                  TextSpan(children: [
+                    TextSpan(
+                        text: fmt.value(goal.targetWeightKg),
+                        style: text.headlineMedium?.copyWith(
+                            fontSize: highlighted ? 40 : 32, color: onColor)),
+                    if (unit != WeightUnit.st)
+                      TextSpan(
+                          text: ' ${unit.code}',
+                          style: text.titleMedium?.copyWith(color: subColor)),
+                  ]),
+                ),
+                const Spacer(),
+                directionRow(),
+              ],
             ),
-            PopupMenuItem(value: 'delete', child: Text(l10n.actionDelete)),
+            if (showBar) ...[
+              const SizedBox(height: Insets.md),
+              ClipRRect(
+                borderRadius: BorderRadius.circular(5),
+                child: LinearProgressIndicator(
+                  value: progress,
+                  minHeight: highlighted ? 10 : 8,
+                  backgroundColor: highlighted
+                      ? scheme.onPrimaryContainer.withValues(alpha: 0.16)
+                      : scheme.surfaceContainer,
+                  valueColor: AlwaysStoppedAnimation(scheme.primary),
+                ),
+              ),
+            ],
+            _footer(context, l10n, subColor, progress),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _footer(BuildContext context, AppLocalizations l10n, Color subColor,
+      double? progress) {
+    final text = Theme.of(context).textTheme;
+    if (goal.isAchieved && goal.achievedAt != null) {
+      return Padding(
+        padding: const EdgeInsets.only(top: Insets.sm),
+        child: Text(l10n.goalReached(dateFmt.date(goal.achievedAt!)),
+            style: text.bodySmall?.copyWith(color: subColor)),
+      );
+    }
+    if (highlighted && startKg != null && progress != null) {
+      return Padding(
+        padding: const EdgeInsets.only(top: Insets.sm),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              l10n.goalStarted(
+                  fmt.withUnit(startKg!), dateFmt.date(goal.createdAt)),
+              style: text.bodySmall?.copyWith(color: subColor),
+            ),
+            Text('${(progress * 100).round()}%',
+                style: text.bodySmall
+                    ?.copyWith(color: subColor, fontWeight: FontWeight.w700)),
+          ],
+        ),
+      );
+    }
+    if (goal.label != null && goal.label!.isNotEmpty) {
+      return Padding(
+        padding: const EdgeInsets.only(top: Insets.sm),
+        child: Text(goal.label!, style: text.bodySmall?.copyWith(color: subColor)),
+      );
+    }
+    return const SizedBox.shrink();
+  }
+}
+
+class _ClosestChip extends StatelessWidget {
+  const _ClosestChip({required this.label});
+  final String label;
+
+  @override
+  Widget build(BuildContext context) {
+    final scheme = Theme.of(context).colorScheme;
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: Insets.md, vertical: 6),
+      decoration: BoxDecoration(
+        color: scheme.primary,
+        borderRadius: BorderRadius.circular(14),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(Icons.star, size: 16, color: scheme.onPrimary),
+          const SizedBox(width: Insets.xs),
+          Text(label,
+              style: TextStyle(
+                  color: scheme.onPrimary,
+                  fontSize: 12,
+                  fontWeight: FontWeight.w800,
+                  letterSpacing: 0.5)),
+        ],
+      ),
+    );
+  }
+}
+
+class _EmptyGoals extends StatelessWidget {
+  const _EmptyGoals({required this.l10n});
+  final AppLocalizations l10n;
+
+  @override
+  Widget build(BuildContext context) {
+    final scheme = Theme.of(context).colorScheme;
+    final text = Theme.of(context).textTheme;
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.all(Insets.xxl),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Container(
+              width: 96,
+              height: 96,
+              decoration: BoxDecoration(
+                  color: scheme.surfaceContainer, shape: BoxShape.circle),
+              child: Icon(Icons.flag, size: 40, color: scheme.onSurfaceVariant),
+            ),
+            const SizedBox(height: Insets.xl),
+            Text(l10n.goalsEmpty,
+                textAlign: TextAlign.center, style: text.bodyLarge),
           ],
         ),
       ),

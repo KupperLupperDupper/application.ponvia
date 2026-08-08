@@ -392,6 +392,24 @@ abstract class AppLocalizations {
   /// **'Reopen'**
   String get goalReopen;
 
+  /// No description provided for @goalStarted.
+  ///
+  /// In en, this message translates to:
+  /// **'Started {weight} · {date}'**
+  String goalStarted(String weight, String date);
+
+  /// No description provided for @goalReached.
+  ///
+  /// In en, this message translates to:
+  /// **'Reached {date}'**
+  String goalReached(String date);
+
+  /// No description provided for @goalClosest.
+  ///
+  /// In en, this message translates to:
+  /// **'Closest goal'**
+  String get goalClosest;
+
   /// No description provided for @logTitle.
   ///
   /// In en, this message translates to:
