@@ -343,4 +343,58 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get onboardGetStarted => 'Get started';
+
+  @override
+  String get settingsNotifications => 'Notifications';
+
+  @override
+  String get notifOff => 'Off';
+
+  @override
+  String notifSummary(String freq, String time) {
+    return '$freq · $time';
+  }
+
+  @override
+  String get notifTitle => 'Reminders';
+
+  @override
+  String get notifWeighInReminder => 'Weigh-in reminder';
+
+  @override
+  String get notifFrequency => 'Frequency';
+
+  @override
+  String get freqDaily => 'Daily';
+
+  @override
+  String get freqWeekly => 'Weekly';
+
+  @override
+  String get freqMonthly => 'Monthly';
+
+  @override
+  String get notifDayOfWeek => 'Day of week';
+
+  @override
+  String get notifDayOfMonth => 'Day of month';
+
+  @override
+  String get notifTimeOfDay => 'Time of day';
+
+  @override
+  String get notifPermTitle => 'Notifications are off';
+
+  @override
+  String get notifPermBody =>
+      'Turn on notifications to get local weigh-in reminders.';
+
+  @override
+  String get notifAllow => 'Allow notifications';
+
+  @override
+  String get notifPushTitle => 'Time to weigh in';
+
+  @override
+  String get notifPushBody => 'Record today\'s weight in Ponvia.';
 }

@@ -110,5 +110,23 @@
   "onboardFirstWeightBody": "Valgfrit — du kan altid gøre det senere.",
   "onboardAllSetTitle": "Så er du klar",
   "onboardAllSetBody": "Ponvia holder din seneste vægt i fokus.",
-  "onboardGetStarted": "Kom i gang"
+  "onboardGetStarted": "Kom i gang",
+
+  "settingsNotifications": "Notifikationer",
+  "notifOff": "Fra",
+  "notifSummary": "{freq} · {time}",
+  "notifTitle": "Påmindelser",
+  "notifWeighInReminder": "Vejningspåmindelse",
+  "notifFrequency": "Hyppighed",
+  "freqDaily": "Dagligt",
+  "freqWeekly": "Ugentligt",
+  "freqMonthly": "Månedligt",
+  "notifDayOfWeek": "Ugedag",
+  "notifDayOfMonth": "Dag i måneden",
+  "notifTimeOfDay": "Tidspunkt",
+  "notifPermTitle": "Notifikationer er slået fra",
+  "notifPermBody": "Slå notifikationer til for at få lokale vejningspåmindelser.",
+  "notifAllow": "Tillad notifikationer",
+  "notifPushTitle": "Tid til at veje dig",
+  "notifPushBody": "Registrér dagens vægt i Ponvia."
 }

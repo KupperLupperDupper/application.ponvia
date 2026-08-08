@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:file_selector/file_selector.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
@@ -11,7 +12,14 @@ import '../../app/providers.dart';
 import '../../core/ui/spacing.dart';
 import '../../core/units/weight_unit.dart';
 import '../../domain/models/app_settings.dart';
+import '../../domain/models/reminder_config.dart';
 import '../../l10n/app_localizations.dart';
+
+String _freqLabel(AppLocalizations l10n, ReminderFrequency f) => switch (f) {
+      ReminderFrequency.daily => l10n.freqDaily,
+      ReminderFrequency.weekly => l10n.freqWeekly,
+      ReminderFrequency.monthly => l10n.freqMonthly,
+    };
 
 /// App settings: theme, unit, language, JSON/CSV export (share sheet) & import
 /// (file picker), and clear-data.
@@ -79,6 +87,20 @@ class SettingsScreen extends ConsumerWidget {
                     controller.setLocale(s.first == 'system' ? null : s.first),
               ),
             ),
+          ),
+          ListTile(
+            leading: const Icon(Icons.notifications_outlined),
+            title: Text(l10n.settingsNotifications),
+            subtitle: Text(settings.reminder.enabled
+                ? l10n.notifSummary(
+                    _freqLabel(l10n, settings.reminder.frequency),
+                    TimeOfDay(
+                            hour: settings.reminder.hour,
+                            minute: settings.reminder.minute)
+                        .format(context))
+                : l10n.notifOff),
+            trailing: const Icon(Icons.chevron_right),
+            onTap: () => context.push('/reminders'),
           ),
           _sectionHeader(context, l10n.settingsData),
           ListTile(

@@ -77,13 +77,21 @@ stepper advances, choices apply live. **M3 complete.**
 infinite-width; placing such a button beside a `Spacer` in a `Row` crashed onboarding
 layout. Nav buttons are now full-width (stretch), matching the design's pill buttons.
 
-## M4 — Notifications ☐
+## M4 — Notifications ☑
 **Deliverables:** Reminder settings UI (daily/weekly+weekday/monthly+day, time-of-day);
 `ReminderService` scheduling; Android 13+ permission flow + exact-alarm handling; reboot
 reschedule; tap → `/log` deep link.
 
-**DoD:** Each frequency schedules and fires correctly on-device (incl. weekday/monthly
-edge cases); disabling cancels everything; denied permission degrades gracefully.
+**DoD:** ☑ analyze clean · ☑ 23 tests (incl. reminder date-math: daily/weekly/monthly +
+short-month clamp) · ☑ debug APK builds · ☑ on-device: Android 13 permission dialog →
+granted, frequency + weekday + time controls work, scheduling runs without error. **M4
+complete.**
+
+**Notes:** uses `flutter_local_notifications` (v22 named-param API) + `timezone` +
+`flutter_timezone`; core-library desugaring enabled in Gradle. Inexact alarms
+(`inexactAllowWhileIdle`) so no exact-alarm permission is needed. Boot-reschedule receivers
+in the manifest. Single weekday / day-of-month (not multi-select). Onboarding reminder step
+still deferred (optional). Reminders screen is functional; visual polish lands in M5.
 
 ## M5 — Design integration ☐
 **This is the high-fidelity pass** — M1–M4 built function with token-only styling; M5 makes

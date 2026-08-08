@@ -691,6 +691,108 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Get started'**
   String get onboardGetStarted;
+
+  /// No description provided for @settingsNotifications.
+  ///
+  /// In en, this message translates to:
+  /// **'Notifications'**
+  String get settingsNotifications;
+
+  /// No description provided for @notifOff.
+  ///
+  /// In en, this message translates to:
+  /// **'Off'**
+  String get notifOff;
+
+  /// No description provided for @notifSummary.
+  ///
+  /// In en, this message translates to:
+  /// **'{freq} · {time}'**
+  String notifSummary(String freq, String time);
+
+  /// No description provided for @notifTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Reminders'**
+  String get notifTitle;
+
+  /// No description provided for @notifWeighInReminder.
+  ///
+  /// In en, this message translates to:
+  /// **'Weigh-in reminder'**
+  String get notifWeighInReminder;
+
+  /// No description provided for @notifFrequency.
+  ///
+  /// In en, this message translates to:
+  /// **'Frequency'**
+  String get notifFrequency;
+
+  /// No description provided for @freqDaily.
+  ///
+  /// In en, this message translates to:
+  /// **'Daily'**
+  String get freqDaily;
+
+  /// No description provided for @freqWeekly.
+  ///
+  /// In en, this message translates to:
+  /// **'Weekly'**
+  String get freqWeekly;
+
+  /// No description provided for @freqMonthly.
+  ///
+  /// In en, this message translates to:
+  /// **'Monthly'**
+  String get freqMonthly;
+
+  /// No description provided for @notifDayOfWeek.
+  ///
+  /// In en, this message translates to:
+  /// **'Day of week'**
+  String get notifDayOfWeek;
+
+  /// No description provided for @notifDayOfMonth.
+  ///
+  /// In en, this message translates to:
+  /// **'Day of month'**
+  String get notifDayOfMonth;
+
+  /// No description provided for @notifTimeOfDay.
+  ///
+  /// In en, this message translates to:
+  /// **'Time of day'**
+  String get notifTimeOfDay;
+
+  /// No description provided for @notifPermTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Notifications are off'**
+  String get notifPermTitle;
+
+  /// No description provided for @notifPermBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Turn on notifications to get local weigh-in reminders.'**
+  String get notifPermBody;
+
+  /// No description provided for @notifAllow.
+  ///
+  /// In en, this message translates to:
+  /// **'Allow notifications'**
+  String get notifAllow;
+
+  /// No description provided for @notifPushTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Time to weigh in'**
+  String get notifPushTitle;
+
+  /// No description provided for @notifPushBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Record today\'s weight in Ponvia.'**
+  String get notifPushBody;
 }
 
 class _AppLocalizationsDelegate

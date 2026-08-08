@@ -7,6 +7,7 @@ import '../data/db/database.dart';
 import '../data/prefs/settings_store.dart';
 import '../data/repositories/goal_repository.dart';
 import '../data/repositories/weight_repository.dart';
+import '../features/notifications/notification_service.dart';
 import '../domain/goals/closest_goal.dart';
 import '../domain/models/app_settings.dart';
 import '../domain/models/goal.dart';
@@ -16,6 +17,11 @@ import '../domain/models/weight_entry.dart';
 /// Overridden in `main()` with the loaded instance.
 final sharedPreferencesProvider = Provider<SharedPreferences>(
   (ref) => throw UnimplementedError('sharedPreferencesProvider must be overridden'),
+);
+
+/// Overridden in `main()` with the initialized service.
+final notificationServiceProvider = Provider<NotificationService>(
+  (ref) => throw UnimplementedError('notificationServiceProvider must be overridden'),
 );
 
 final settingsStoreProvider = Provider<SettingsStore>(

@@ -343,4 +343,58 @@ class AppLocalizationsDa extends AppLocalizations {
 
   @override
   String get onboardGetStarted => 'Kom i gang';
+
+  @override
+  String get settingsNotifications => 'Notifikationer';
+
+  @override
+  String get notifOff => 'Fra';
+
+  @override
+  String notifSummary(String freq, String time) {
+    return '$freq · $time';
+  }
+
+  @override
+  String get notifTitle => 'Påmindelser';
+
+  @override
+  String get notifWeighInReminder => 'Vejningspåmindelse';
+
+  @override
+  String get notifFrequency => 'Hyppighed';
+
+  @override
+  String get freqDaily => 'Dagligt';
+
+  @override
+  String get freqWeekly => 'Ugentligt';
+
+  @override
+  String get freqMonthly => 'Månedligt';
+
+  @override
+  String get notifDayOfWeek => 'Ugedag';
+
+  @override
+  String get notifDayOfMonth => 'Dag i måneden';
+
+  @override
+  String get notifTimeOfDay => 'Tidspunkt';
+
+  @override
+  String get notifPermTitle => 'Notifikationer er slået fra';
+
+  @override
+  String get notifPermBody =>
+      'Slå notifikationer til for at få lokale vejningspåmindelser.';
+
+  @override
+  String get notifAllow => 'Tillad notifikationer';
+
+  @override
+  String get notifPushTitle => 'Tid til at veje dig';
+
+  @override
+  String get notifPushBody => 'Registrér dagens vægt i Ponvia.';
 }

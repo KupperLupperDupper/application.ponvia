@@ -127,5 +127,24 @@
   "onboardFirstWeightBody": "Optional — you can always do this later.",
   "onboardAllSetTitle": "You’re all set",
   "onboardAllSetBody": "Ponvia keeps your latest weight front and center.",
-  "onboardGetStarted": "Get started"
+  "onboardGetStarted": "Get started",
+
+  "settingsNotifications": "Notifications",
+  "notifOff": "Off",
+  "notifSummary": "{freq} · {time}",
+  "@notifSummary": { "placeholders": { "freq": { "type": "String" }, "time": { "type": "String" } } },
+  "notifTitle": "Reminders",
+  "notifWeighInReminder": "Weigh-in reminder",
+  "notifFrequency": "Frequency",
+  "freqDaily": "Daily",
+  "freqWeekly": "Weekly",
+  "freqMonthly": "Monthly",
+  "notifDayOfWeek": "Day of week",
+  "notifDayOfMonth": "Day of month",
+  "notifTimeOfDay": "Time of day",
+  "notifPermTitle": "Notifications are off",
+  "notifPermBody": "Turn on notifications to get local weigh-in reminders.",
+  "notifAllow": "Allow notifications",
+  "notifPushTitle": "Time to weigh in",
+  "notifPushBody": "Record today's weight in Ponvia."
 }

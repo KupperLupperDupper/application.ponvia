@@ -1,3 +1,4 @@
+import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
@@ -6,14 +7,19 @@ import '../features/history/history_screen.dart';
 import '../features/home/home_screen.dart';
 import '../features/home/home_shell.dart';
 import '../features/logging/log_weight_screen.dart';
+import '../features/notifications/notifications_screen.dart';
 import '../features/onboarding/onboarding_screen.dart';
 import '../features/settings/settings_screen.dart';
 import 'providers.dart';
+
+/// Root navigator key — lets the notification tap handler deep-link to `/log`.
+final rootNavigatorKey = GlobalKey<NavigatorState>();
 
 /// App routing. A redirect gates first-run onboarding; the four destinations
 /// live in a persistent bottom-nav shell; logging is pushed over the shell.
 final routerProvider = Provider<GoRouter>((ref) {
   return GoRouter(
+    navigatorKey: rootNavigatorKey,
     initialLocation: '/',
     redirect: (context, state) {
       final onboarded = ref.read(settingsControllerProvider).hasOnboarded;
@@ -54,6 +60,10 @@ final routerProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: '/log',
         builder: (context, state) => const LogWeightScreen(),
+      ),
+      GoRoute(
+        path: '/reminders',
+        builder: (context, state) => const NotificationsScreen(),
       ),
     ],
   );

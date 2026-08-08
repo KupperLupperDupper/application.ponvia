@@ -34,6 +34,11 @@ history — update the **Unreleased** section as you work, and cut it into a ver
 - M3 localization + onboarding: full English/Danish localization via gen_l10n (every
   screen; locale overrides system and applies live), and a first-run onboarding stepper
   (welcome → language → unit → theme → optional first weight → all set). 19 tests.
+- Home redesigned to match the design mockup (hero card, delta pill, gradient sparkline,
+  goal progress, dashed second-metric slot).
+- M4 notifications: local weigh-in reminders (daily / weekly+weekday / monthly+day, time
+  of day) via flutter_local_notifications + timezone; Android 13 permission flow; boot
+  rescheduling; Settings → Reminders screen; tap → log deep link. 23 tests.
 
 <!--
 When cutting a release, move Unreleased items under a version heading, e.g.:
