@@ -20,7 +20,7 @@ Legend: ☐ not started · ◐ in progress · ☑ done
 brief is self-contained enough to paste into the design tool; agents load without errors.
 No Dart code yet.
 
-## M1 — Scaffold + data layer ◐ (on-device run pending)
+## M1 — Scaffold + data layer ☑
 **Deliverables**
 - ☑ `flutter create` project (id `io.github.kupperlupperdupper.ponvia`), folder structure
   per ARCHITECTURE, analysis options (excludes generated files).
@@ -36,9 +36,10 @@ No Dart code yet.
 - ☑ Unit tests (conversion, goal selection, backup round-trip) + Home widget test;
   `scripts/check.sh`.
 
-**DoD:** ☑ `flutter analyze` clean · ☑ tests green (15) · ☑ debug APK builds. ☐ On-device
-smoke test on the OnePlus (`flutter run -d 6eb5eb45`) — pending phone connection. Release
-workflow can now produce an APK on a tag.
+**DoD:** ☑ `flutter analyze` clean · ☑ tests green (15) · ☑ debug APK builds · ☑ on-device
+smoke test on the OnePlus (`6eb5eb45`): cold start ~2.0s, onboarding → home → DB open →
+empty state, theme tokens applied in dark mode, no runtime errors. Release workflow can now
+produce an APK on a tag. **M1 complete.**
 
 ## M2 — Core screens (functional, pre-design styling) ☐
 **Deliverables:** Home (last-weight hero + delta + mini-trend), Log/Edit weight, History
