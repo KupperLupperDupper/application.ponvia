@@ -45,8 +45,11 @@ Rationale for each choice is in [docs/DECISIONS.md](docs/DECISIONS.md).
 
 Grab the latest **APK** from the [Releases](../../releases) page (each release includes a
 QR code — scan it with your phone to download). Open the APK to install; you may need to
-allow installing from unknown sources. The APK is signed with the debug key for easy
-sideloading — Android may warn about the installer source, which is expected.
+allow installing from unknown sources, and Android may warn about the installer source,
+which is expected for a sideloaded app.
+
+Releases are signed with a stable upload key, so **new versions install right over the old
+one** without losing your data — no uninstall needed. The app is **portrait-only**.
 
 ## Build & run from source
 

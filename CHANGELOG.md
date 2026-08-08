@@ -33,4 +33,5 @@ built). Everything stays on your device: no accounts, no cloud, no network.
 ### Tech
 - Flutter 3.44 · Riverpod · Drift (SQLite) · go_router · Material 3 · fl_chart ·
   flutter_local_notifications. Application id `io.github.kupperlupperdupper.ponvia`.
-- Release APK signed with the debug key for easy sideloading (see the README).
+- Release APKs are signed with a stable upload key (via CI secrets), so updates install
+  in place. Portrait-only.
