@@ -86,11 +86,24 @@ reschedule; tap → `/log` deep link.
 edge cases); disabling cancels everything; denied permission degrades gracefully.
 
 ## M5 — Design integration ☐
-**Deliverables:** Apply returned design tokens + mockups (theme, type, spacing, motion,
-icons/splash assets); polish transitions; performance pass (startup, scroll, chart).
+**This is the high-fidelity pass** — M1–M4 built function with token-only styling; M5 makes
+every screen actually match `design/handoff/DESIGN_SPEC.md` + the mockup canvas. It is
+craft work (bespoke components, spacing rhythm, elevation, motion), not a token tweak, done
+screen-by-screen with on-device before/after review.
+
+**Deliverables:**
+- Rebuild each screen to the mockups: hero card, styled trend chart (gradient, markers,
+  custom range control), goal cards, list rows, settings rows, empty states, dialogs/sheets.
+- Elevation, radii, spacing scale, and motion/transitions per the tokens; splash→app
+  transition; no white flash.
+- **Custom in-app number pad** for weight/goal entry (0–9, decimal, backspace), styled to
+  the tokens, replacing the OS numeric keyboard. Used in the log sheet, onboarding
+  first-weight, and goal target. (User-requested.)
+- Performance pass (startup, scroll, chart).
 
 **DoD:** Screens match the approved designs in light & dark, en & da, and all three units;
-no frame drops on hot paths; splash has no white flash.
+custom keypad works for all numeric entry; no frame drops on hot paths; splash has no
+white flash.
 
 ## M6 — Device QA + release prep ☐
 **Deliverables:** On-device QA pass; version bump + `CHANGELOG.md` entry; tag `v0.x.0` to
