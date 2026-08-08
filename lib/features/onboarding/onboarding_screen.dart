@@ -59,6 +59,17 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
   void _back() => _pageController.previousPage(
       duration: Motion.route, curve: Motion.emphasized);
 
+  /// Advance past the optional first-weight step without saving anything.
+  void _skip() => _pageController.nextPage(
+      duration: Motion.route, curve: Motion.emphasized);
+
+  String _primaryLabel(AppLocalizations l10n) {
+    if (_index >= _lastIndex) return l10n.onboardStartTracking;
+    if (_index == 0) return l10n.onboardGetStarted;
+    if (_index == 4 && _weightInput.isNotEmpty) return l10n.actionSave;
+    return l10n.actionNext;
+  }
+
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
@@ -154,13 +165,20 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
                 children: [
                   FilledButton(
                     onPressed: _next,
-                    child: Text(_index >= _lastIndex
-                        ? l10n.onboardStartTracking
-                        : _index == 0
-                            ? l10n.onboardGetStarted
-                            : l10n.actionNext),
+                    child: Text(_primaryLabel(l10n)),
                   ),
-                  if (_index > 0 && _index < _lastIndex) ...[
+                  if (_index == 4) ...[
+                    const SizedBox(height: Insets.sm),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        TextButton(
+                            onPressed: _back, child: Text(l10n.actionBack)),
+                        TextButton(
+                            onPressed: _skip, child: Text(l10n.actionSkip)),
+                      ],
+                    ),
+                  ] else if (_index > 0 && _index < _lastIndex) ...[
                     const SizedBox(height: Insets.sm),
                     TextButton(onPressed: _back, child: Text(l10n.actionBack)),
                   ],
