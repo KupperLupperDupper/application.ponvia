@@ -68,6 +68,28 @@ jobs:
         # here. Harmless no-op if the project has no build_runner-based generators yet.
         run: dart run build_runner build --delete-conflicting-outputs || true
 
+      - name: Decode signing keystore
+        # Reconstruct the upload keystore from secrets and point Gradle at it via
+        # key.properties. Without these secrets the build would fall back to the debug
+        # key; we fail loudly instead so a release is never accidentally debug-signed.
+        env:
+          KEYSTORE_B64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
+          STORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+          KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
+        run: |
+          if [ -z "$KEYSTORE_B64" ]; then
+            echo "::error::ANDROID_KEYSTORE_BASE64 secret is missing — cannot sign the release."
+            exit 1
+          fi
+          echo "$KEYSTORE_B64" | base64 -d > android/app/upload-keystore.jks
+          cat > android/key.properties <<EOF
+          storeFile=upload-keystore.jks
+          storePassword=$STORE_PASSWORD
+          keyAlias=$KEY_ALIAS
+          keyPassword=$KEY_PASSWORD
+          EOF
+
       - name: Build release APK
         run: |
           flutter build apk --release \
