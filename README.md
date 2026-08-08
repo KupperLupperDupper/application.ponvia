@@ -1,77 +1,82 @@
 # Ponvia
 
-A private, **fully-local weight-tracking app** for Android & iOS, built with Flutter.
-Ponvia keeps your **most recent weight front and center**, with goals and trends to give
-that number meaning. Your data never leaves your device — export and import a backup
-whenever you want. Calorie tracking is planned for a later phase.
+A private, **offline weight-tracking app** for Android (iOS-capable), built with Flutter.
+Ponvia keeps your **latest weight front and center**, with goals and a trend to give that
+number meaning. Everything stays on your device — no accounts, no cloud, no network.
+Calorie tracking is planned for a later phase.
 
-> **Status:** M0 — foundation. This repo currently contains **specs, decisions, the
-> design handoff, and tooling only**. No Flutter app code exists yet; scaffolding begins
-> at M1. See [docs/MILESTONES.md](docs/MILESTONES.md).
+<p align="center">
+  <img src="docs/screenshots/onboarding.png" width="19%" alt="Onboarding" />
+  <img src="docs/screenshots/log.png" width="19%" alt="Log weight" />
+  <img src="docs/screenshots/history.png" width="19%" alt="History" />
+  <img src="docs/screenshots/reminders.png" width="19%" alt="Reminders" />
+  <img src="docs/screenshots/settings.png" width="19%" alt="Settings" />
+</p>
 
-## What it does (target)
+## Features
 
-- **Weight-first home:** last recorded weight as the hero, with change vs previous and
-  progress toward your closest goal.
-- **Effortless logging:** add/edit/delete weight entries with an optional note; view
-  history and a trend chart.
-- **Goals:** keep a list of target weights; the one **closest to your current weight** is
-  highlighted automatically.
-- **Onboarding & splash:** a first-run intro to pick language, theme, and unit.
-- **Settings:** language (Danish/English), theme (System/Light/Dark), weight unit
-  (kg/lb/st), notification reminders, data import/export, and an About page (version,
-  privacy, licenses).
-- **Weigh-in reminders:** local notifications — daily, weekly (choose the weekday), or
-  monthly.
-- **Data portability:** full **JSON** backup/restore + **CSV** weight-history export.
+- **Weight-first home** — latest weight as the hero, change vs the previous entry, a
+  recent-trend sparkline, and progress toward your closest goal.
+- **Fast logging** — a custom in-app number pad (no OS keyboard), editable date/time, and
+  optional notes. Edit or delete any entry.
+- **History** — an interactive trend chart (1W / 1M / 3M / 1Y / All) plus month-grouped
+  entries with per-entry deltas.
+- **Goals** — keep several targets; the one closest to your current weight is highlighted.
+  Mark goals achieved and see distance-to-target.
+- **Weigh-in reminders** — local notifications: daily, weekly (pick the weekday), or
+  monthly (pick the day), at a time you choose. Survives reboots; a tap opens the log sheet.
+- **English & Danish**, light / dark / system theme, and **kg / lb / st** units.
+- **Your data, portable** — JSON backup (weights, goals, settings) + CSV export; import
+  with merge or replace.
 
-## Documentation map
+## Privacy
 
-| Doc | What's in it |
-|-----|--------------|
-| [docs/SPEC.md](docs/SPEC.md) | Product spec: features + acceptance criteria, scope, NFRs |
-| [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) | Layers, folders, data model, deps, i18n, notifications, import/export |
-| [docs/DECISIONS.md](docs/DECISIONS.md) | ADR-style rationale for every technical choice |
-| [docs/MILESTONES.md](docs/MILESTONES.md) | Roadmap M0–M6 with definition-of-done |
-| [design/DESIGN_BRIEF.md](design/DESIGN_BRIEF.md) | Prompt to feed the design tool (it outputs a filled `DESIGN_SYSTEM.md`) |
-| [design/DESIGN_SYSTEM.md](design/DESIGN_SYSTEM.md) | Design-token contract/template the app will consume |
-| [design/handoff/](design/handoff/README.md) | Drop zone for the design output (filled tokens, mockups, assets) |
-| [design/HANDOFF.md](design/HANDOFF.md) | How returned designs map into Flutter |
-| [CLAUDE.md](CLAUDE.md) | Build environment + conventions for future dev sessions |
+Ponvia makes **no network calls**. All data is stored locally in an on-device database;
+the only way data leaves the device is a backup you explicitly export.
 
-## Tech stack (planned)
+## Tech stack
 
-Flutter 3.44.9 / Dart 3.12.2 · Riverpod · Drift (SQLite) · go_router · Material 3 ·
-`gen_l10n` (en/da) · fl_chart · flutter_local_notifications. Rationale in
-[docs/DECISIONS.md](docs/DECISIONS.md).
+Flutter 3.44 / Dart 3.12 · Riverpod · Drift (SQLite) · go_router · Material 3 ·
+`gen_l10n` (en/da) · fl_chart · flutter_local_notifications. Design system (Manrope type,
+sea-green palette, bottom-tab navigation) in [`design/handoff/`](design/handoff/README.md).
+Rationale for each choice is in [docs/DECISIONS.md](docs/DECISIONS.md).
 
-## Platforms
+## Install (Android)
 
-- **Android first** — dev/test on a OnePlus (`flutter run -d <device>`).
-- **iOS** — deferred until a Mac is available; the project stays iOS-capable.
+Grab the latest **APK** from the [Releases](../../releases) page (each release includes a
+QR code — scan it with your phone to download). Open the APK to install; you may need to
+allow installing from unknown sources. The APK is signed with the debug key for easy
+sideloading — Android may warn about the installer source, which is expected.
 
-## Building & running (from M1 onward)
+## Build & run from source
 
-> These commands work once the Flutter project is scaffolded (M1). Prepend the toolchain
-> paths in fresh shells (see [CLAUDE.md](CLAUDE.md)).
+Requires the Flutter SDK (3.44.x). See [CLAUDE.md](CLAUDE.md) for the exact toolchain.
 
 ```bash
 flutter pub get
-flutter run -d <android-device-id>     # debug build on a connected phone
+flutter run -d <android-device-id>   # debug build on a connected phone
 flutter analyze
 flutter test
 ```
 
-## Releases (Android APK)
+Cutting a release: bump [CHANGELOG.md](CHANGELOG.md), then push a `v*` tag
+(e.g. `git tag v0.1.0 && git push origin v0.1.0`). The
+[release workflow](.github/workflows/release.yml) builds the APK, generates a changelog
+and an install QR, and publishes a GitHub Release.
 
-Pushing a `v*` tag (e.g. `v0.1.0`) triggers
-[`.github/workflows/release.yml`](.github/workflows/release.yml), which builds a release
-APK, generates a changelog from commits since the last tag, creates a **QR code** to the
-APK download, and publishes a GitHub Release with the APK + QR attached — scan the QR
-with your phone to install. (Active once M1 exists.) Keep [CHANGELOG.md](CHANGELOG.md)
-updated per release.
+## Documentation
 
-## Privacy
+| Doc | What's in it |
+|-----|--------------|
+| [docs/SPEC.md](docs/SPEC.md) | Product spec: features + acceptance criteria |
+| [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) | Layers, data model, deps, i18n, notifications |
+| [docs/DECISIONS.md](docs/DECISIONS.md) | ADR-style rationale for every technical choice |
+| [docs/MILESTONES.md](docs/MILESTONES.md) | Roadmap M0–M5 (all complete) |
+| [design/handoff/](design/handoff/README.md) | The design system + mockups the UI is built from |
 
-Ponvia makes **no network calls**. All data is stored locally; the only way data leaves
-the device is a backup you explicitly export.
+## Status
+
+Milestones **M0–M5 are complete**: the app is fully built, localized, designed, and
+verified on-device (Android). iOS is supported by the codebase but not yet built (needs a
+Mac). Possible future work: calorie tracking, a licenses page, multi-weekday reminders,
+and `st + lb` split input.

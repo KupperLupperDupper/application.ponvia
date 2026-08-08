@@ -47,21 +47,27 @@ class GoalsScreen extends ConsumerWidget {
               for (final g in goals)
                 Padding(
                   padding: const EdgeInsets.only(bottom: Insets.cardGap),
-                  child: Dismissible(
-                    key: ValueKey(g.id ?? g.createdAt.toIso8601String()),
-                    direction: DismissDirection.endToStart,
-                    background: _deleteBackground(context),
-                    onDismissed: (_) => _delete(context, ref, g),
-                    child: _GoalCard(
-                      goal: g,
-                      fmt: fmt,
-                      dateFmt: dateFmt,
-                      unit: settings.unit,
-                      currentKg: currentKg,
-                      startKg: startKg,
-                      highlighted: g.id == closest?.id,
-                      onTap: () => _showGoalDialog(context, ref, settings.unit,
-                          existing: g),
+                  child: ClipRRect(
+                    // Clip the background + card to the card's shape so the red
+                    // fills fully behind it during the swipe.
+                    borderRadius:
+                        BorderRadius.circular(g.id == closest?.id ? 28 : 24),
+                    child: Dismissible(
+                      key: ValueKey(g.id ?? g.createdAt.toIso8601String()),
+                      direction: DismissDirection.endToStart,
+                      background: _deleteBackground(context),
+                      onDismissed: (_) => _delete(context, ref, g),
+                      child: _GoalCard(
+                        goal: g,
+                        fmt: fmt,
+                        dateFmt: dateFmt,
+                        unit: settings.unit,
+                        currentKg: currentKg,
+                        startKg: startKg,
+                        highlighted: g.id == closest?.id,
+                        onTap: () => _showGoalDialog(context, ref, settings.unit,
+                            existing: g),
+                      ),
                     ),
                   ),
                 ),
@@ -73,13 +79,11 @@ class GoalsScreen extends ConsumerWidget {
   }
 
   Widget _deleteBackground(BuildContext context) => Container(
-        decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.errorContainer,
-          borderRadius: BorderRadius.circular(24),
-        ),
+        color: Theme.of(context).colorScheme.errorContainer,
         alignment: Alignment.centerRight,
         padding: const EdgeInsets.only(right: Insets.xl),
-        child: const Icon(Icons.delete_outline),
+        child: Icon(Icons.delete_outline,
+            color: Theme.of(context).colorScheme.onErrorContainer),
       );
 
   void _delete(BuildContext context, WidgetRef ref, Goal g) {
