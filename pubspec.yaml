@@ -41,11 +41,13 @@ dependencies:
   path_provider: ^2.1.6
   path: ^1.9.1
   shared_preferences: ^2.5.5
-  intl: ^0.20.3
+  intl: 0.20.2
   fl_chart: ^1.2.0
   meta: ^1.18.0
   file_selector: ^1.1.0
   share_plus: ^13.3.0
+  flutter_localizations:
+    sdk: flutter
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -66,6 +68,9 @@ dev_dependencies:
 
 # The following section is specific to Flutter packages.
 flutter:
+
+  # Generate localizations (gen_l10n) from lib/l10n/*.arb per l10n.yaml.
+  generate: true
 
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in

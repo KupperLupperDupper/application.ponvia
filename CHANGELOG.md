@@ -31,6 +31,9 @@ history — update the **Unreleased** section as you work, and cut it into a ver
   progress, History trend chart with 1W/1M/3M/1Y/All range switcher + tap-to-edit, Goals
   editor + mark-achieved + distance, and JSON/CSV export (share sheet) + import (file
   picker, merge/replace). Data I/O uses file_selector + share_plus (ADR-015). 18 tests.
+- M3 localization + onboarding: full English/Danish localization via gen_l10n (every
+  screen; locale overrides system and applies live), and a first-run onboarding stepper
+  (welcome → language → unit → theme → optional first weight → all set). 19 tests.
 
 <!--
 When cutting a release, move Unreleased items under a version heading, e.g.:

@@ -8,11 +8,22 @@ import 'package:ponvia/domain/models/weight_entry.dart';
 import 'package:ponvia/features/goals/goals_screen.dart';
 import 'package:ponvia/features/home/home_screen.dart';
 import 'package:ponvia/features/logging/log_weight_screen.dart';
+import 'package:ponvia/l10n/app_localizations.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 Future<SharedPreferences> _prefs() async {
   SharedPreferences.setMockInitialValues({});
   return SharedPreferences.getInstance();
+}
+
+MaterialApp _app(Widget home) {
+  return MaterialApp(
+    theme: AppTheme.light(),
+    locale: const Locale('en'),
+    localizationsDelegates: AppLocalizations.localizationsDelegates,
+    supportedLocales: AppLocalizations.supportedLocales,
+    home: home,
+  );
 }
 
 void main() {
@@ -29,7 +40,7 @@ void main() {
         goalsProvider.overrideWith((ref) => Stream.value(const <Goal>[])),
         latestWeightProvider.overrideWith((ref) => Stream.value(entries.first)),
       ],
-      child: MaterialApp(theme: AppTheme.light(), home: const HomeScreen()),
+      child: _app(const HomeScreen()),
     ));
     await tester.pumpAndSettle();
 
@@ -51,7 +62,7 @@ void main() {
         goalsProvider.overrideWith((ref) => Stream.value(goals)),
         latestWeightProvider.overrideWith((ref) => Stream.value(entry)),
       ],
-      child: MaterialApp(theme: AppTheme.light(), home: const GoalsScreen()),
+      child: _app(const GoalsScreen()),
     ));
     await tester.pumpAndSettle();
 
@@ -64,8 +75,8 @@ void main() {
     final prefs = await _prefs();
     await tester.pumpWidget(ProviderScope(
       overrides: [sharedPreferencesProvider.overrideWithValue(prefs)],
-      child: const MaterialApp(
-        home: Scaffold(body: SingleChildScrollView(child: LogWeightForm())),
+      child: _app(
+        const Scaffold(body: SingleChildScrollView(child: LogWeightForm())),
       ),
     ));
     await tester.pumpAndSettle();

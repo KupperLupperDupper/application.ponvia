@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../domain/models/app_settings.dart';
+import '../l10n/app_localizations.dart';
 import 'providers.dart';
 import 'router.dart';
 import 'theme/app_theme.dart';
@@ -15,6 +16,8 @@ class PonviaApp extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final themeMode =
         ref.watch(settingsControllerProvider.select((s) => s.themeMode));
+    final localeCode =
+        ref.watch(settingsControllerProvider.select((s) => s.localeCode));
     final router = ref.watch(routerProvider);
 
     return MaterialApp.router(
@@ -27,6 +30,9 @@ class PonviaApp extends ConsumerWidget {
         AppThemeMode.light => ThemeMode.light,
         AppThemeMode.dark => ThemeMode.dark,
       },
+      locale: localeCode == null ? null : Locale(localeCode),
+      localizationsDelegates: AppLocalizations.localizationsDelegates,
+      supportedLocales: AppLocalizations.supportedLocales,
       routerConfig: router,
     );
   }

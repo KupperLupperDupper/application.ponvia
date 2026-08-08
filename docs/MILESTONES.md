@@ -59,13 +59,23 @@ DECISIONS ADR-015.
 log validation) · ☑ debug APK builds · ☑ on-device: modal log sheet + save → Home hero
 updates. **M2 complete.**
 
-## M3 — Onboarding + i18n ☐
-**Deliverables:** Splash → onboarding gate; first-run stepper (language, theme, unit,
-optional first weight + reminder); full en/da localization; locale/theme/unit apply live.
+## M3 — Onboarding + i18n ☑
+**Deliverables:**
+- ☑ Full **en/da localization** via gen_l10n (`lib/l10n/*.arb`, ~75 keys); every screen
+  localized (no hard-coded user-facing strings). Locale from settings, overriding system.
+- ☑ Locale / theme / unit apply **live** across the app (incl. during onboarding).
+- ☑ First-run **onboarding stepper** (PageView): welcome → language → unit → theme →
+  optional first weight → all set; dots indicator; full-width nav buttons.
+- ☑ Native splash + router onboarding gate (from M1) intact.
+- Reminder setup in onboarding deferred to **M4** (built with the notification engine).
 
-**DoD:** Fresh install lands in onboarding; choices persist and apply app-wide; switching
-language/theme/unit in Settings updates the UI immediately; no hard-coded strings
-(analyzer/l10n checks pass).
+**DoD:** ☑ analyze clean · ☑ 19 tests pass (incl. onboarding render) · ☑ debug APK builds ·
+☑ on-device: fresh install lands in onboarding, renders in **Danish** (system locale),
+stepper advances, choices apply live. **M3 complete.**
+
+**Bug fixed:** the theme's `FilledButton.minimumSize = Size.fromHeight(56)` is
+infinite-width; placing such a button beside a `Spacer` in a `Row` crashed onboarding
+layout. Nav buttons are now full-width (stretch), matching the design's pill buttons.
 
 ## M4 — Notifications ☐
 **Deliverables:** Reminder settings UI (daily/weekly+weekday/monthly+day, time-of-day);

@@ -6,6 +6,7 @@ import '../../core/formatting/date_formatter.dart';
 import '../../core/ui/spacing.dart';
 import '../../core/units/weight_unit.dart';
 import '../../domain/models/weight_entry.dart';
+import '../../l10n/app_localizations.dart';
 
 /// Opens the log/edit form as a modal bottom sheet (the design's logging model).
 /// Pass [existing] to edit an entry; omit it to add a new one.
@@ -27,7 +28,7 @@ class LogWeightScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Log weight')),
+      appBar: AppBar(title: Text(AppLocalizations.of(context).logTitle)),
       body: const SingleChildScrollView(
         padding: EdgeInsets.all(Insets.screenH),
         child: LogWeightForm(),
@@ -125,8 +126,9 @@ class _LogWeightFormState extends ConsumerState<LogWeightForm> {
 
   @override
   Widget build(BuildContext context) {
-    final unit = ref.watch(settingsControllerProvider).unit;
+    final l10n = AppLocalizations.of(context);
     final settings = ref.watch(settingsControllerProvider);
+    final unit = settings.unit;
     final dateFmt = PonviaDateFormatter(locale: settings.localeCode);
 
     return Padding(
@@ -143,7 +145,7 @@ class _LogWeightFormState extends ConsumerState<LogWeightForm> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Text(
-              _isEditing ? 'Edit entry' : 'Log weight',
+              _isEditing ? l10n.logEditTitle : l10n.logTitle,
               style: Theme.of(context).textTheme.titleLarge,
             ),
             const SizedBox(height: Insets.lg),
@@ -153,13 +155,13 @@ class _LogWeightFormState extends ConsumerState<LogWeightForm> {
               keyboardType: const TextInputType.numberWithOptions(decimal: true),
               style: Theme.of(context).textTheme.displaySmall,
               decoration: InputDecoration(
-                labelText: 'Weight (${unit.code})',
+                labelText: l10n.logWeightField(unit.code),
                 suffixText: unit.code,
               ),
               validator: (raw) {
                 final v = double.tryParse((raw ?? '').trim().replaceAll(',', '.'));
-                if (v == null) return 'Enter a number';
-                if (v <= 0 || v > 1000) return 'Enter a realistic weight';
+                if (v == null) return l10n.logErrorNumber;
+                if (v <= 0 || v > 1000) return l10n.logErrorRealistic;
                 return null;
               },
             ),
@@ -170,13 +172,13 @@ class _LogWeightFormState extends ConsumerState<LogWeightForm> {
               title: Text(dateFmt.dateTime(_timestamp)),
               trailing: TextButton(
                 onPressed: _pickDateTime,
-                child: const Text('Change'),
+                child: Text(l10n.actionChange),
               ),
             ),
             const SizedBox(height: Insets.sm),
             TextFormField(
               controller: _noteController,
-              decoration: const InputDecoration(labelText: 'Note (optional)'),
+              decoration: InputDecoration(labelText: l10n.logNoteField),
               textInputAction: TextInputAction.done,
             ),
             const SizedBox(height: Insets.xxl),
@@ -188,7 +190,7 @@ class _LogWeightFormState extends ConsumerState<LogWeightForm> {
                       width: 20,
                       child: CircularProgressIndicator(strokeWidth: 2),
                     )
-                  : Text(_isEditing ? 'Save changes' : 'Save'),
+                  : Text(_isEditing ? l10n.logSaveChanges : l10n.actionSave),
             ),
           ],
         ),

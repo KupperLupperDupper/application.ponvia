@@ -10,6 +10,7 @@ import '../../core/formatting/weight_formatter.dart';
 import '../../core/ui/spacing.dart';
 import '../../core/units/weight_unit.dart';
 import '../../domain/models/weight_entry.dart';
+import '../../l10n/app_localizations.dart';
 import '../logging/log_weight_screen.dart';
 
 /// The weight-first dashboard: hero last weight, delta vs previous, a recent
@@ -19,6 +20,7 @@ class HomeScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = AppLocalizations.of(context);
     final settings = ref.watch(settingsControllerProvider);
     final entriesAsync = ref.watch(entriesProvider);
     final closest = ref.watch(closestGoalProvider);
@@ -29,11 +31,11 @@ class HomeScreen extends ConsumerWidget {
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () => showLogWeightSheet(context),
         icon: const Icon(Icons.add),
-        label: const Text('Log weight'),
+        label: Text(l10n.homeLogWeight),
       ),
       body: entriesAsync.when(
         loading: () => const Center(child: CircularProgressIndicator()),
-        error: (e, _) => Center(child: Text('Something went wrong.\n$e')),
+        error: (e, _) => Center(child: Text('$e')),
         data: (entries) {
           if (entries.isEmpty) return const _EmptyHome();
           final latest = entries.first;
@@ -84,14 +86,15 @@ class _HeroCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     final scheme = Theme.of(context).colorScheme;
     final ponvia = Theme.of(context).extension<PonviaColors>()!;
-    final dateFmt = PonviaDateFormatter();
+    final dateFmt = PonviaDateFormatter(locale: Localizations.localeOf(context).languageCode);
     final daysAgo = PonviaDateFormatter.daysAgo(entry.timestamp, DateTime.now());
     final when = daysAgo == 0
-        ? 'Today'
+        ? l10n.today
         : daysAgo == 1
-            ? 'Yesterday'
+            ? l10n.yesterday
             : dateFmt.date(entry.timestamp);
 
     return Card(
@@ -100,7 +103,7 @@ class _HeroCard extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('Latest weight',
+            Text(l10n.homeLatestWeight,
                 style: Theme.of(context).textTheme.labelLarge),
             const SizedBox(height: Insets.sm),
             FittedBox(
@@ -150,7 +153,6 @@ class _Sparkline extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Take up to the last 30 entries, oldest -> newest for plotting.
     final recent = entries.take(30).toList().reversed.toList();
     final spots = <FlSpot>[
       for (var i = 0; i < recent.length; i++)
@@ -240,8 +242,11 @@ class _GoalCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     final remainingKg = (targetKg - currentKg).abs();
-    final direction = targetKg < currentKg ? 'to lose' : 'to gain';
+    final remainingText = targetKg < currentKg
+        ? l10n.goalToLose(fmt.withUnit(remainingKg))
+        : l10n.goalToGain(fmt.withUnit(remainingKg));
     final span = startKg - targetKg;
     final progress = span == 0
         ? (currentKg == targetKg ? 1.0 : 0.0)
@@ -258,24 +263,20 @@ class _GoalCard extends StatelessWidget {
                 const Icon(Icons.flag, size: 20),
                 const SizedBox(width: Insets.sm),
                 Expanded(
-                  child: Text(label ?? 'Closest goal',
+                  child: Text(label ?? l10n.homeClosestGoal,
                       style: Theme.of(context).textTheme.titleMedium),
                 ),
-                Text('Target ${fmt.withUnit(targetKg)}',
+                Text(l10n.homeTarget(fmt.withUnit(targetKg)),
                     style: Theme.of(context).textTheme.bodyLarge),
               ],
             ),
             const SizedBox(height: Insets.md),
             ClipRRect(
               borderRadius: BorderRadius.circular(8),
-              child: LinearProgressIndicator(
-                value: progress,
-                minHeight: 8,
-              ),
+              child: LinearProgressIndicator(value: progress, minHeight: 8),
             ),
             const SizedBox(height: Insets.sm),
-            Text('${fmt.withUnit(remainingKg)} $direction',
-                style: Theme.of(context).textTheme.bodyLarge),
+            Text(remainingText, style: Theme.of(context).textTheme.bodyLarge),
           ],
         ),
       ),
@@ -288,6 +289,7 @@ class _EmptyHome extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     return Center(
       child: Padding(
         padding: const EdgeInsets.all(Insets.xxl),
@@ -296,11 +298,11 @@ class _EmptyHome extends StatelessWidget {
           children: [
             const Icon(Icons.monitor_weight_outlined, size: 64),
             const SizedBox(height: Insets.lg),
-            Text('No weight logged yet',
+            Text(l10n.homeEmptyTitle,
                 style: Theme.of(context).textTheme.titleMedium),
             const SizedBox(height: Insets.sm),
             Text(
-              'Tap “Log weight” to record your first entry.',
+              l10n.homeEmptyBody,
               textAlign: TextAlign.center,
               style: Theme.of(context).textTheme.bodyLarge,
             ),

@@ -6,6 +6,7 @@ import 'package:ponvia/app/theme/app_theme.dart';
 import 'package:ponvia/domain/models/goal.dart';
 import 'package:ponvia/domain/models/weight_entry.dart';
 import 'package:ponvia/features/home/home_screen.dart';
+import 'package:ponvia/l10n/app_localizations.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
@@ -24,7 +25,13 @@ void main() {
           latestWeightProvider
               .overrideWith((ref) => Stream<WeightEntry?>.value(null)),
         ],
-        child: MaterialApp(theme: AppTheme.light(), home: const HomeScreen()),
+        child: MaterialApp(
+          theme: AppTheme.light(),
+          locale: const Locale('en'),
+          localizationsDelegates: AppLocalizations.localizationsDelegates,
+          supportedLocales: AppLocalizations.supportedLocales,
+          home: const HomeScreen(),
+        ),
       ),
     );
     await tester.pumpAndSettle();

@@ -6,6 +6,7 @@ import '../../core/formatting/weight_formatter.dart';
 import '../../core/ui/spacing.dart';
 import '../../core/units/weight_unit.dart';
 import '../../domain/models/goal.dart';
+import '../../l10n/app_localizations.dart';
 
 /// Goals list with the closest active goal highlighted. Add, edit, delete, and
 /// mark achieved; each tile shows distance to target.
@@ -14,6 +15,7 @@ class GoalsScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = AppLocalizations.of(context);
     final settings = ref.watch(settingsControllerProvider);
     final goalsAsync = ref.watch(goalsProvider);
     final closest = ref.watch(closestGoalProvider);
@@ -21,7 +23,7 @@ class GoalsScreen extends ConsumerWidget {
     final fmt = WeightFormatter(settings.unit, locale: settings.localeCode);
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Goals')),
+      appBar: AppBar(title: Text(l10n.goalsTitle)),
       floatingActionButton: FloatingActionButton(
         onPressed: () => _showGoalDialog(context, ref, settings.unit),
         child: const Icon(Icons.add),
@@ -32,7 +34,7 @@ class GoalsScreen extends ConsumerWidget {
         data: (goals) {
           if (goals.isEmpty) {
             return Center(
-              child: Text('No goals yet. Tap + to add one.',
+              child: Text(l10n.goalsEmpty,
                   style: Theme.of(context).textTheme.bodyLarge),
             );
           }
@@ -71,6 +73,7 @@ class GoalsScreen extends ConsumerWidget {
     WeightUnit unit, {
     Goal? existing,
   }) async {
+    final l10n = AppLocalizations.of(context);
     final valueController = TextEditingController(
       text: existing == null
           ? ''
@@ -82,7 +85,7 @@ class GoalsScreen extends ConsumerWidget {
     final result = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
-        title: Text(existing == null ? 'New goal' : 'Edit goal'),
+        title: Text(existing == null ? l10n.goalNew : l10n.goalEdit),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -91,23 +94,24 @@ class GoalsScreen extends ConsumerWidget {
               autofocus: true,
               keyboardType:
                   const TextInputType.numberWithOptions(decimal: true),
-              decoration: InputDecoration(labelText: 'Target (${unit.code})'),
+              decoration:
+                  InputDecoration(labelText: l10n.goalTargetField(unit.code)),
             ),
             const SizedBox(height: Insets.md),
             TextField(
               controller: labelController,
-              decoration: const InputDecoration(labelText: 'Label (optional)'),
+              decoration: InputDecoration(labelText: l10n.goalLabelField),
             ),
           ],
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context, false),
-            child: const Text('Cancel'),
+            child: Text(l10n.actionCancel),
           ),
           FilledButton(
             onPressed: () => Navigator.pop(context, true),
-            child: Text(existing == null ? 'Add' : 'Save'),
+            child: Text(existing == null ? l10n.actionAdd : l10n.actionSave),
           ),
         ],
       ),
@@ -159,20 +163,22 @@ class _GoalTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     final scheme = Theme.of(context).colorScheme;
     final onColor = highlighted ? scheme.onPrimaryContainer : null;
 
     final String subtitle;
     if (goal.isAchieved) {
-      subtitle = 'Achieved';
+      subtitle = l10n.goalAchieved;
     } else if (currentKg != null) {
       final remaining = (goal.targetWeightKg - currentKg!).abs();
-      final direction = goal.targetWeightKg < currentKg! ? 'to lose' : 'to gain';
-      subtitle = '${fmt.withUnit(remaining)} $direction';
+      subtitle = goal.targetWeightKg < currentKg!
+          ? l10n.goalToLose(fmt.withUnit(remaining))
+          : l10n.goalToGain(fmt.withUnit(remaining));
     } else if (goal.label != null) {
       subtitle = goal.label!;
     } else {
-      subtitle = highlighted ? 'Closest goal' : '';
+      subtitle = highlighted ? l10n.homeClosestGoal : '';
     }
 
     return Card(
@@ -209,12 +215,12 @@ class _GoalTile extends StatelessWidget {
             }
           },
           itemBuilder: (context) => [
-            const PopupMenuItem(value: 'edit', child: Text('Edit')),
+            PopupMenuItem(value: 'edit', child: Text(l10n.actionEdit)),
             PopupMenuItem(
               value: 'achieve',
-              child: Text(goal.isAchieved ? 'Reopen' : 'Mark achieved'),
+              child: Text(goal.isAchieved ? l10n.goalReopen : l10n.goalMarkAchieved),
             ),
-            const PopupMenuItem(value: 'delete', child: Text('Delete')),
+            PopupMenuItem(value: 'delete', child: Text(l10n.actionDelete)),
           ],
         ),
       ),

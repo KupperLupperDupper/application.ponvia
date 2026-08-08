@@ -11,34 +11,38 @@ import '../../app/providers.dart';
 import '../../core/ui/spacing.dart';
 import '../../core/units/weight_unit.dart';
 import '../../domain/models/app_settings.dart';
+import '../../l10n/app_localizations.dart';
 
-/// App settings: theme, unit, language (Danish UI lands in M3), JSON/CSV
-/// export (share sheet) & import (file picker), and clear-data.
+/// App settings: theme, unit, language, JSON/CSV export (share sheet) & import
+/// (file picker), and clear-data.
 class SettingsScreen extends ConsumerWidget {
   const SettingsScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = AppLocalizations.of(context);
     final settings = ref.watch(settingsControllerProvider);
     final controller = ref.read(settingsControllerProvider.notifier);
     final text = Theme.of(context).textTheme;
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Settings')),
+      appBar: AppBar(title: Text(l10n.navSettings)),
       body: ListView(
         padding: const EdgeInsets.symmetric(vertical: Insets.sm),
         children: [
-          _sectionHeader(context, 'Appearance'),
+          _sectionHeader(context, l10n.settingsAppearance),
           ListTile(
-            title: const Text('Theme'),
+            title: Text(l10n.settingsTheme),
             subtitle: Padding(
               padding: const EdgeInsets.only(top: Insets.sm),
               child: SegmentedButton<AppThemeMode>(
-                segments: const [
+                segments: [
                   ButtonSegment(
-                      value: AppThemeMode.system, label: Text('System')),
-                  ButtonSegment(value: AppThemeMode.light, label: Text('Light')),
-                  ButtonSegment(value: AppThemeMode.dark, label: Text('Dark')),
+                      value: AppThemeMode.system, label: Text(l10n.themeSystem)),
+                  ButtonSegment(
+                      value: AppThemeMode.light, label: Text(l10n.themeLight)),
+                  ButtonSegment(
+                      value: AppThemeMode.dark, label: Text(l10n.themeDark)),
                 ],
                 selected: {settings.themeMode},
                 onSelectionChanged: (s) => controller.setThemeMode(s.first),
@@ -46,7 +50,7 @@ class SettingsScreen extends ConsumerWidget {
             ),
           ),
           ListTile(
-            title: const Text('Weight unit'),
+            title: Text(l10n.settingsUnit),
             subtitle: Padding(
               padding: const EdgeInsets.only(top: Insets.sm),
               child: SegmentedButton<WeightUnit>(
@@ -61,14 +65,14 @@ class SettingsScreen extends ConsumerWidget {
             ),
           ),
           ListTile(
-            title: const Text('Language'),
+            title: Text(l10n.settingsLanguage),
             subtitle: Padding(
               padding: const EdgeInsets.only(top: Insets.sm),
               child: SegmentedButton<String>(
-                segments: const [
-                  ButtonSegment(value: 'system', label: Text('System')),
-                  ButtonSegment(value: 'en', label: Text('English')),
-                  ButtonSegment(value: 'da', label: Text('Dansk')),
+                segments: [
+                  ButtonSegment(value: 'system', label: Text(l10n.languageSystem)),
+                  ButtonSegment(value: 'en', label: Text(l10n.languageEnglish)),
+                  ButtonSegment(value: 'da', label: Text(l10n.languageDanish)),
                 ],
                 selected: {settings.localeCode ?? 'system'},
                 onSelectionChanged: (s) =>
@@ -76,42 +80,41 @@ class SettingsScreen extends ConsumerWidget {
               ),
             ),
           ),
-          _sectionHeader(context, 'Data'),
+          _sectionHeader(context, l10n.settingsData),
           ListTile(
             leading: const Icon(Icons.upload_outlined),
-            title: const Text('Export backup (JSON)'),
-            subtitle: const Text('Full backup: weights, goals, settings'),
+            title: Text(l10n.settingsExportJson),
+            subtitle: Text(l10n.settingsExportJsonSub),
             onTap: () => _export(context, ref, csv: false),
           ),
           ListTile(
             leading: const Icon(Icons.table_chart_outlined),
-            title: const Text('Export weights (CSV)'),
-            subtitle: const Text('Weight history for spreadsheets'),
+            title: Text(l10n.settingsExportCsv),
+            subtitle: Text(l10n.settingsExportCsvSub),
             onTap: () => _export(context, ref, csv: true),
           ),
           ListTile(
             leading: const Icon(Icons.download_outlined),
-            title: const Text('Import (JSON or CSV)'),
-            subtitle: const Text('Restore or merge a backup'),
+            title: Text(l10n.settingsImport),
+            subtitle: Text(l10n.settingsImportSub),
             onTap: () => _import(context, ref),
           ),
           ListTile(
             leading: Icon(Icons.delete_forever_outlined,
                 color: Theme.of(context).colorScheme.error),
-            title: const Text('Clear entries & goals'),
+            title: Text(l10n.settingsClear),
             onTap: () => _confirmClear(context, ref),
           ),
-          _sectionHeader(context, 'About'),
-          const ListTile(
-            leading: Icon(Icons.info_outline),
-            title: Text('Ponvia'),
-            subtitle: Text('Version 1.0.0 · milestone M2'),
+          _sectionHeader(context, l10n.settingsAbout),
+          ListTile(
+            leading: const Icon(Icons.info_outline),
+            title: const Text('Ponvia'),
+            subtitle: Text(l10n.settingsVersion('1.0.0')),
           ),
           ListTile(
             leading: const Icon(Icons.lock_outline),
-            title: const Text('Privacy'),
-            subtitle:
-                Text('All data stays on your device.', style: text.bodyMedium),
+            title: Text(l10n.settingsPrivacy),
+            subtitle: Text(l10n.settingsPrivacyBody, style: text.bodyMedium),
           ),
         ],
       ),
@@ -136,6 +139,7 @@ class SettingsScreen extends ConsumerWidget {
     WidgetRef ref, {
     required bool csv,
   }) async {
+    final l10n = AppLocalizations.of(context);
     final messenger = ScaffoldMessenger.of(context);
     try {
       final backup = ref.read(backupServiceProvider);
@@ -155,11 +159,12 @@ class SettingsScreen extends ConsumerWidget {
         subject: fileName,
       ));
     } catch (e) {
-      messenger.showSnackBar(SnackBar(content: Text('Export failed: $e')));
+      messenger.showSnackBar(SnackBar(content: Text(l10n.exportFailed('$e'))));
     }
   }
 
   Future<void> _import(BuildContext context, WidgetRef ref) async {
+    final l10n = AppLocalizations.of(context);
     final messenger = ScaffoldMessenger.of(context);
     const group = XTypeGroup(
       label: 'Ponvia backup',
@@ -173,7 +178,7 @@ class SettingsScreen extends ConsumerWidget {
         content.trimLeft().startsWith('{');
     if (!context.mounted) return;
 
-    final replace = await _askMergeOrReplace(context);
+    final replace = await _askMergeOrReplace(context, l10n);
     if (replace == null) return;
 
     try {
@@ -181,42 +186,39 @@ class SettingsScreen extends ConsumerWidget {
       if (isJson) {
         final data = await backup.importJson(content, replace: replace);
         messenger.showSnackBar(SnackBar(
-          content: Text(
-              'Imported ${data.entries.length} entries, ${data.goals.length} goals'),
+          content: Text(l10n.importedSummary(data.entries.length, data.goals.length)),
         ));
       } else {
         final n = await backup.importCsv(content, replace: replace);
-        messenger.showSnackBar(SnackBar(content: Text('Imported $n entries')));
+        messenger.showSnackBar(SnackBar(content: Text(l10n.importedCsv(n))));
       }
     } catch (e) {
-      messenger.showSnackBar(SnackBar(content: Text('Import failed: $e')));
+      messenger.showSnackBar(SnackBar(content: Text(l10n.importFailed('$e'))));
     }
   }
 
   /// Returns true for replace, false for merge, null if cancelled.
-  Future<bool?> _askMergeOrReplace(BuildContext context) {
+  Future<bool?> _askMergeOrReplace(BuildContext context, AppLocalizations l10n) {
     return showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Import data'),
-        content: const Text(
-            'Merge adds new records to your existing data. Replace deletes all '
-            'current data first. This cannot be undone.'),
+        title: Text(l10n.importDialogTitle),
+        content: Text(l10n.importDialogBody),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text('Cancel'),
+            child: Text(l10n.actionCancel),
           ),
           TextButton(
             onPressed: () => Navigator.pop(context, false),
-            child: const Text('Merge'),
+            child: Text(l10n.importMerge),
           ),
           FilledButton(
             style: FilledButton.styleFrom(
               backgroundColor: Theme.of(context).colorScheme.error,
             ),
             onPressed: () => Navigator.pop(context, true),
-            child: const Text('Replace'),
+            child: Text(l10n.importReplace),
           ),
         ],
       ),
@@ -224,24 +226,23 @@ class SettingsScreen extends ConsumerWidget {
   }
 
   Future<void> _confirmClear(BuildContext context, WidgetRef ref) async {
+    final l10n = AppLocalizations.of(context);
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Clear entries & goals?'),
-        content: const Text(
-            'This permanently deletes all weight entries and goals. This cannot '
-            'be undone.'),
+        title: Text(l10n.clearDialogTitle),
+        content: Text(l10n.clearDialogBody),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context, false),
-            child: const Text('Cancel'),
+            child: Text(l10n.actionCancel),
           ),
           FilledButton(
             style: FilledButton.styleFrom(
               backgroundColor: Theme.of(context).colorScheme.error,
             ),
             onPressed: () => Navigator.pop(context, true),
-            child: const Text('Delete'),
+            child: Text(l10n.actionDelete),
           ),
         ],
       ),

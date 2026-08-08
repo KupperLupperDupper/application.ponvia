@@ -9,18 +9,26 @@ import '../../core/formatting/weight_formatter.dart';
 import '../../core/ui/spacing.dart';
 import '../../core/units/weight_unit.dart';
 import '../../domain/models/weight_entry.dart';
+import '../../l10n/app_localizations.dart';
 import '../logging/log_weight_screen.dart';
 
 enum _Range {
-  week('1W', Duration(days: 7)),
-  month('1M', Duration(days: 31)),
-  threeMonths('3M', Duration(days: 93)),
-  year('1Y', Duration(days: 366)),
-  all('All', null);
+  week(Duration(days: 7)),
+  month(Duration(days: 31)),
+  threeMonths(Duration(days: 93)),
+  year(Duration(days: 366)),
+  all(null);
 
-  const _Range(this.label, this.duration);
-  final String label;
+  const _Range(this.duration);
   final Duration? duration;
+
+  String label(AppLocalizations l10n) => switch (this) {
+        _Range.week => l10n.range1W,
+        _Range.month => l10n.range1M,
+        _Range.threeMonths => l10n.range3M,
+        _Range.year => l10n.range1Y,
+        _Range.all => l10n.rangeAll,
+      };
 }
 
 /// Reverse-chronological history with a trend chart and a range switcher.
@@ -37,20 +45,21 @@ class _HistoryScreenState extends ConsumerState<HistoryScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     final settings = ref.watch(settingsControllerProvider);
     final entriesAsync = ref.watch(entriesProvider);
     final fmt = WeightFormatter(settings.unit, locale: settings.localeCode);
     final dateFmt = PonviaDateFormatter(locale: settings.localeCode);
 
     return Scaffold(
-      appBar: AppBar(title: const Text('History')),
+      appBar: AppBar(title: Text(l10n.historyTitle)),
       body: entriesAsync.when(
         loading: () => const Center(child: CircularProgressIndicator()),
         error: (e, _) => Center(child: Text('$e')),
         data: (all) {
           if (all.isEmpty) {
             return Center(
-              child: Text('No entries yet.',
+              child: Text(l10n.historyEmpty,
                   style: Theme.of(context).textTheme.bodyLarge),
             );
           }
@@ -68,7 +77,7 @@ class _HistoryScreenState extends ConsumerState<HistoryScreen> {
                 child: SegmentedButton<_Range>(
                   segments: [
                     for (final r in _Range.values)
-                      ButtonSegment(value: r, label: Text(r.label)),
+                      ButtonSegment(value: r, label: Text(r.label(l10n))),
                   ],
                   selected: {_range},
                   showSelectedIcon: false,
@@ -93,7 +102,7 @@ class _HistoryScreenState extends ConsumerState<HistoryScreen> {
               Expanded(
                 child: inRange.isEmpty
                     ? Center(
-                        child: Text('No entries in this range.',
+                        child: Text(l10n.historyEmptyRange,
                             style: Theme.of(context).textTheme.bodyMedium),
                       )
                     : ListView.separated(
