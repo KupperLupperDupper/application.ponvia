@@ -434,6 +434,42 @@ abstract class AppLocalizations {
   /// **'Enter a realistic weight'**
   String get logErrorRealistic;
 
+  /// No description provided for @logDateLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Date'**
+  String get logDateLabel;
+
+  /// No description provided for @logTimeLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Time'**
+  String get logTimeLabel;
+
+  /// No description provided for @logAddNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Add a note (optional)'**
+  String get logAddNote;
+
+  /// No description provided for @logRangeError.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a weight between 20 and 400 kg'**
+  String get logRangeError;
+
+  /// No description provided for @logDeleted.
+  ///
+  /// In en, this message translates to:
+  /// **'Entry deleted'**
+  String get logDeleted;
+
+  /// No description provided for @actionUndo.
+  ///
+  /// In en, this message translates to:
+  /// **'Undo'**
+  String get actionUndo;
+
   /// No description provided for @settingsAppearance.
   ///
   /// In en, this message translates to:

@@ -200,6 +200,24 @@ class AppLocalizationsDa extends AppLocalizations {
   String get logErrorRealistic => 'Indtast en realistisk vægt';
 
   @override
+  String get logDateLabel => 'Dato';
+
+  @override
+  String get logTimeLabel => 'Tid';
+
+  @override
+  String get logAddNote => 'Tilføj en note (valgfri)';
+
+  @override
+  String get logRangeError => 'Indtast en vægt mellem 20 og 400 kg';
+
+  @override
+  String get logDeleted => 'Måling slettet';
+
+  @override
+  String get actionUndo => 'Fortryd';
+
+  @override
   String get settingsAppearance => 'Udseende';
 
   @override

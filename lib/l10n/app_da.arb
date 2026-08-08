@@ -64,6 +64,12 @@
   "logSaveChanges": "Gem ændringer",
   "logErrorNumber": "Indtast et tal",
   "logErrorRealistic": "Indtast en realistisk vægt",
+  "logDateLabel": "Dato",
+  "logTimeLabel": "Tid",
+  "logAddNote": "Tilføj en note (valgfri)",
+  "logRangeError": "Indtast en vægt mellem 20 og 400 kg",
+  "logDeleted": "Måling slettet",
+  "actionUndo": "Fortryd",
 
   "settingsAppearance": "Udseende",
   "settingsTheme": "Tema",

@@ -75,6 +75,12 @@
   "logSaveChanges": "Save changes",
   "logErrorNumber": "Enter a number",
   "logErrorRealistic": "Enter a realistic weight",
+  "logDateLabel": "Date",
+  "logTimeLabel": "Time",
+  "logAddNote": "Add a note (optional)",
+  "logRangeError": "Enter a weight between 20 and 400 kg",
+  "logDeleted": "Entry deleted",
+  "actionUndo": "Undo",
 
   "settingsAppearance": "Appearance",
   "settingsTheme": "Theme",

@@ -71,7 +71,8 @@ void main() {
     expect(find.textContaining('2.0 kg'), findsWidgets);
   });
 
-  testWidgets('Log form validates a non-numeric weight', (tester) async {
+  testWidgets('Log keypad shows a range error for an out-of-range weight',
+      (tester) async {
     final prefs = await _prefs();
     await tester.pumpWidget(ProviderScope(
       overrides: [sharedPreferencesProvider.overrideWithValue(prefs)],
@@ -81,9 +82,10 @@ void main() {
     ));
     await tester.pumpAndSettle();
 
-    await tester.tap(find.widgetWithText(FilledButton, 'Save'));
+    // Tap "5" on the custom keypad — 5 kg is below the 20 kg minimum.
+    await tester.tap(find.text('5'));
     await tester.pumpAndSettle();
 
-    expect(find.text('Enter a number'), findsOneWidget);
+    expect(find.textContaining('between 20 and 400'), findsOneWidget);
   });
 }

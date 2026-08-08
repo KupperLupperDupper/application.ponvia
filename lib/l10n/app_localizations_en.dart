@@ -199,6 +199,24 @@ class AppLocalizationsEn extends AppLocalizations {
   String get logErrorRealistic => 'Enter a realistic weight';
 
   @override
+  String get logDateLabel => 'Date';
+
+  @override
+  String get logTimeLabel => 'Time';
+
+  @override
+  String get logAddNote => 'Add a note (optional)';
+
+  @override
+  String get logRangeError => 'Enter a weight between 20 and 400 kg';
+
+  @override
+  String get logDeleted => 'Entry deleted';
+
+  @override
+  String get actionUndo => 'Undo';
+
+  @override
   String get settingsAppearance => 'Appearance';
 
   @override
