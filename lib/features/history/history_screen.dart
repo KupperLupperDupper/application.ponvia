@@ -334,16 +334,25 @@ class _TrendChart extends StatelessWidget {
     final values = [
       for (final e in chrono) WeightConverter.fromKg(e.weightKg, unit),
     ];
+    // Time-based x-axis (normalized to start at 0 so labels align to the data).
+    final minXms = chrono.first.timestamp.millisecondsSinceEpoch.toDouble();
     final spots = <FlSpot>[
-      for (var i = 0; i < values.length; i++) FlSpot(i.toDouble(), values[i]),
+      for (var i = 0; i < values.length; i++)
+        FlSpot(chrono[i].timestamp.millisecondsSinceEpoch - minXms, values[i]),
     ];
     final minV = values.reduce((a, b) => a < b ? a : b);
     final maxV = values.reduce((a, b) => a > b ? a : b);
     final pad = ((maxV - minV) * 0.15).clamp(0.5, double.infinity);
-    final labelEvery = (chrono.length / 4).ceil().clamp(1, chrono.length);
+    final maxX = spots.last.x;
+    final xInterval = maxX <= 0 ? 1.0 : maxX / 2;
+    final yRange = (maxV + pad) - (minV - pad);
+    final yInterval = yRange <= 0 ? 1.0 : yRange / 4;
+    final yDecimals = yRange < 4 ? 1 : 0;
 
     return LineChart(
       LineChartData(
+        minX: 0,
+        maxX: maxX,
         minY: minV - pad,
         maxY: maxV + pad,
         gridData: FlGridData(
@@ -362,8 +371,9 @@ class _TrendChart extends StatelessWidget {
             sideTitles: SideTitles(
               showTitles: true,
               reservedSize: 34,
+              interval: yInterval,
               getTitlesWidget: (value, meta) => Text(
-                value.toStringAsFixed(0),
+                value.toStringAsFixed(yDecimals),
                 style: Theme.of(context)
                     .textTheme
                     .labelSmall
@@ -375,14 +385,14 @@ class _TrendChart extends StatelessWidget {
             sideTitles: SideTitles(
               showTitles: true,
               reservedSize: 24,
-              interval: labelEvery.toDouble(),
+              interval: xInterval,
               getTitlesWidget: (value, meta) {
-                final i = value.round();
-                if (i < 0 || i >= chrono.length) return const SizedBox.shrink();
+                final dt = DateTime.fromMillisecondsSinceEpoch(
+                    (value + minXms).toInt());
                 return Padding(
                   padding: const EdgeInsets.only(top: Insets.xs),
                   child: Text(
-                    dateFmt.date(chrono[i].timestamp),
+                    dateFmt.date(dt),
                     style: Theme.of(context).textTheme.labelSmall?.copyWith(
                         color: scheme.onSurfaceVariant, letterSpacing: 0),
                   ),
@@ -398,7 +408,7 @@ class _TrendChart extends StatelessWidget {
               for (final s in spots)
                 LineTooltipItem(
                   '${fmt.value(WeightConverter.toKg(s.y, unit))} · '
-                  '${dateFmt.date(chrono[s.x.round()].timestamp)}',
+                  '${dateFmt.date(chrono[s.spotIndex].timestamp)}',
                   TextStyle(
                     color: scheme.onPrimary,
                     fontWeight: FontWeight.w700,
@@ -415,7 +425,11 @@ class _TrendChart extends StatelessWidget {
             curveSmoothness: 0.25,
             color: ponvia.chartLine,
             barWidth: 3,
-            dotData: const FlDotData(show: false),
+            dotData: FlDotData(
+              show: true,
+              getDotPainter: (spot, _, _, _) => FlDotCirclePainter(
+                  radius: 3, color: ponvia.chartLine, strokeWidth: 0),
+            ),
             belowBarData: BarAreaData(
               show: true,
               gradient: LinearGradient(

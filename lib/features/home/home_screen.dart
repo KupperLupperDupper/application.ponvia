@@ -281,11 +281,13 @@ class _Sparkline extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final recent = entries.take(30).toList().reversed.toList();
+    final minMs = recent.first.timestamp.millisecondsSinceEpoch.toDouble();
     final spots = <FlSpot>[
       for (var i = 0; i < recent.length; i++)
-        FlSpot(i.toDouble(), WeightConverter.fromKg(recent[i].weightKg, unit)),
+        FlSpot(recent[i].timestamp.millisecondsSinceEpoch - minMs,
+            WeightConverter.fromKg(recent[i].weightKg, unit)),
     ];
-    final lastX = (recent.length - 1).toDouble();
+    final lastX = spots.last.x;
 
     return LineChart(
       LineChartData(
