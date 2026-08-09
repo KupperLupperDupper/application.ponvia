@@ -79,7 +79,11 @@ and an install QR, and publishes a GitHub Release.
 
 ## Status
 
-Milestones **M0–M5 are complete**: the app is fully built, localized, designed, and
-verified on-device (Android). iOS is supported by the codebase but not yet built (needs a
-Mac). Possible future work: calorie tracking, a licenses page, multi-weekday reminders,
-and `st + lb` split input.
+**Released — v0.1.1** is live on the [Releases](../../releases) page (signed, installs
+in place). Milestones **M0–M5 are complete**: the app is fully built, localized, designed,
+and verified on-device (Android). iOS is supported by the codebase but not yet built
+(needs a Mac).
+
+**Next up:** calorie tracking — the planned phase-2 feature (Home already shows a
+"Kalorier — kommer snart" placeholder). Smaller backlog: a licenses page, multi-weekday
+reminders, and `st + lb` split input.
