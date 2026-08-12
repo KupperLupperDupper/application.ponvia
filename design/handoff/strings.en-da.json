@@ -1,0 +1,122 @@
+{
+  "nav": {
+    "add": {
+      "en": "Log weight",
+      "da": "Registrér vægt",
+      "note": "tooltip / semantics label only — the button is unlabelled"
+    },
+    "home": {
+      "en": "Home",
+      "da": "Hjem"
+    },
+    "history": {
+      "en": "History",
+      "da": "Historik"
+    },
+    "goals": {
+      "en": "Goals",
+      "da": "Mål"
+    },
+    "settings": {
+      "en": "Settings",
+      "da": "Indstillinger"
+    },
+    "newGoal": {
+      "en": "New goal",
+      "da": "Nyt mål"
+    }
+  },
+  "snackbar": {
+    "entryDeleted": {
+      "en": "Entry deleted",
+      "da": "Registrering slettet"
+    },
+    "goalDeleted": {
+      "en": "Goal deleted",
+      "da": "Mål slettet"
+    },
+    "allDataCleared": {
+      "en": "All data cleared — {entries} entries and {goals} goals",
+      "da": "Alle data er slettet — {entries} registreringer og {goals} mål"
+    },
+    "dataReplaced": {
+      "en": "Data replaced by import",
+      "da": "Data erstattet af import"
+    },
+    "undo": {
+      "en": "Undo",
+      "da": "Fortryd"
+    }
+  },
+  "privacy": {
+    "title": {
+      "en": "Privacy",
+      "da": "Privatliv"
+    },
+    "lead": {
+      "en": "Ponvia runs entirely on this phone. There is no account, no server, and nothing to opt out of.",
+      "da": "Ponvia kører udelukkende på denne telefon. Der er ingen konto, ingen server, og intet du skal fravælge."
+    },
+    "rows": [
+      {
+        "icon": "person_off",
+        "title": {
+          "en": "No account, ever",
+          "da": "Ingen konto — nogensinde"
+        },
+        "body": {
+          "en": "Nothing to sign up for, nothing to sign in to.",
+          "da": "Der er intet at oprette, og intet at logge ind på."
+        }
+      },
+      {
+        "icon": "cloud_off",
+        "title": {
+          "en": "Your data never leaves the device",
+          "da": "Dine data forlader aldrig enheden"
+        },
+        "body": {
+          "en": "Weights, goals and notes live in this app's local storage only.",
+          "da": "Vægt, mål og noter ligger kun i appens lokale lager på telefonen."
+        }
+      },
+      {
+        "icon": "wifi_off",
+        "title": {
+          "en": "No network permission",
+          "da": "Ingen netværkstilladelse"
+        },
+        "body": {
+          "en": "The app cannot reach the internet — it isn't declared in the manifest.",
+          "da": "Appen kan ikke nå internettet — tilladelsen er ikke erklæret i manifestet."
+        }
+      },
+      {
+        "icon": "visibility_off",
+        "title": {
+          "en": "No tracking, no analytics",
+          "da": "Ingen sporing, ingen analyse"
+        },
+        "body": {
+          "en": "No usage events, no crash reporting, no identifiers.",
+          "da": "Ingen brugshændelser, ingen fejlrapportering, ingen identifikatorer."
+        }
+      },
+      {
+        "icon": "block",
+        "title": {
+          "en": "No ads, no third parties",
+          "da": "Ingen reklamer, ingen tredjeparter"
+        },
+        "body": {
+          "en": "Nothing in Ponvia is supplied by anyone else.",
+          "da": "Intet indhold i Ponvia leveres af andre end appen selv."
+        }
+      }
+    ],
+    "footer": {
+      "en": "The only way your data leaves this phone is an export you start yourself, in Settings › Data › Export.",
+      "da": "Den eneste måde, dine data forlader telefonen på, er en eksport, du selv starter, under Indstillinger › Data › Eksportér."
+    }
+  }
+}

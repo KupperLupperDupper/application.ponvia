@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../app/providers.dart';
+import '../../app/router.dart';
 import '../../app/theme/typography.dart';
 import '../../core/formatting/date_formatter.dart';
 import '../../core/ui/spacing.dart';
+import '../../core/ui/undo_snackbar.dart';
 import '../../core/units/weight_unit.dart';
 import '../../domain/models/weight_entry.dart';
 import '../../l10n/app_localizations.dart';
@@ -165,19 +167,21 @@ class _LogWeightFormState extends ConsumerState<LogWeightForm> {
 
   Future<void> _delete() async {
     final l10n = AppLocalizations.of(context);
-    final messenger = ScaffoldMessenger.of(context);
     final repo = ref.read(weightRepositoryProvider);
     final e = widget.existing!;
     if (e.id != null) await repo.delete(e.id!);
     if (mounted) Navigator.of(context).maybePop();
-    messenger.showSnackBar(SnackBar(
-      content: Text(l10n.logDeleted),
-      action: SnackBarAction(
-        label: l10n.actionUndo,
-        onPressed: () => repo.add(WeightEntry(
-            timestamp: e.timestamp, weightKg: e.weightKg, note: e.note)),
-      ),
-    ));
+    // The sheet is gone; show over the app via the root context.
+    final ctx = rootNavigatorKey.currentContext;
+    if (ctx == null || !ctx.mounted) return;
+    showUndoSnackbar(
+      ctx,
+      message: l10n.snackbarEntryDeleted,
+      undoLabel: l10n.actionUndo,
+      icon: Icons.delete_outline,
+      onUndo: () => repo.add(WeightEntry(
+          timestamp: e.timestamp, weightKg: e.weightKg, note: e.note)),
+    );
   }
 
   @override

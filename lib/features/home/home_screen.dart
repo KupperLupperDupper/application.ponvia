@@ -22,7 +22,6 @@ class HomeScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final l10n = AppLocalizations.of(context);
     final settings = ref.watch(settingsControllerProvider);
     final entriesAsync = ref.watch(entriesProvider);
     final closest = ref.watch(closestGoalProvider);
@@ -38,11 +37,6 @@ class HomeScreen extends ConsumerWidget {
           ),
           const SizedBox(width: Insets.xs),
         ],
-      ),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: () => showLogWeightSheet(context),
-        icon: const Icon(Icons.add),
-        label: Text(l10n.homeLogWeight),
       ),
       body: entriesAsync.when(
         loading: () => const Center(child: CircularProgressIndicator()),

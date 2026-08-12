@@ -230,6 +230,20 @@ class AppLocalizationsEn extends AppLocalizations {
   String get actionUndo => 'Undo';
 
   @override
+  String get snackbarEntryDeleted => 'Entry deleted';
+
+  @override
+  String get snackbarGoalDeleted => 'Goal deleted';
+
+  @override
+  String snackbarAllDataCleared(int entries, int goals) {
+    return 'All data cleared — $entries entries and $goals goals';
+  }
+
+  @override
+  String get snackbarDataReplaced => 'Data replaced by import';
+
+  @override
   String get settingsAppearance => 'Appearance';
 
   @override
@@ -307,11 +321,54 @@ class AppLocalizationsEn extends AppLocalizations {
   String get settingsPrivacyBody => 'All data stays on your device.';
 
   @override
+  String get privacyLead =>
+      'Ponvia runs entirely on this phone. There is no account, no server, and nothing to opt out of.';
+
+  @override
+  String get privacyNoAccountTitle => 'No account, ever';
+
+  @override
+  String get privacyNoAccountBody =>
+      'Nothing to sign up for, nothing to sign in to.';
+
+  @override
+  String get privacyOnDeviceTitle => 'Your data never leaves the device';
+
+  @override
+  String get privacyOnDeviceBody =>
+      'Weights, goals and notes live in this app\'s local storage only.';
+
+  @override
+  String get privacyNoNetworkTitle => 'No network permission';
+
+  @override
+  String get privacyNoNetworkBody =>
+      'The app cannot reach the internet — it isn\'t declared in the manifest.';
+
+  @override
+  String get privacyNoTrackingTitle => 'No tracking, no analytics';
+
+  @override
+  String get privacyNoTrackingBody =>
+      'No usage events, no crash reporting, no identifiers.';
+
+  @override
+  String get privacyNoAdsTitle => 'No ads, no third parties';
+
+  @override
+  String get privacyNoAdsBody =>
+      'Nothing in Ponvia is supplied by anyone else.';
+
+  @override
+  String get privacyFooter =>
+      'The only way your data leaves this phone is an export you start yourself, in Settings › Data › Export.';
+
+  @override
   String get importDialogTitle => 'Import data';
 
   @override
   String get importDialogBody =>
-      'Merge adds new records to your existing data. Replace deletes all current data first. This cannot be undone.';
+      'Merge adds new records to your existing data. Replace deletes all current data first — you can undo it right after.';
 
   @override
   String get importMerge => 'Merge';

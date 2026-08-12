@@ -9,6 +9,7 @@ import '../features/home/home_shell.dart';
 import '../features/logging/log_weight_screen.dart';
 import '../features/notifications/notifications_screen.dart';
 import '../features/onboarding/onboarding_screen.dart';
+import '../features/settings/privacy_screen.dart';
 import '../features/settings/settings_screen.dart';
 import 'providers.dart';
 
@@ -64,6 +65,10 @@ final routerProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: '/reminders',
         builder: (context, state) => const NotificationsScreen(),
+      ),
+      GoRoute(
+        path: '/privacy',
+        builder: (context, state) => const PrivacyScreen(),
       ),
     ],
   );

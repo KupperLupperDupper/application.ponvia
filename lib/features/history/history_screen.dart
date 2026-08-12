@@ -8,6 +8,7 @@ import '../../app/theme/ponvia_colors.dart';
 import '../../core/formatting/date_formatter.dart';
 import '../../core/formatting/weight_formatter.dart';
 import '../../core/ui/spacing.dart';
+import '../../core/ui/undo_snackbar.dart';
 import '../../core/units/weight_unit.dart';
 import '../../domain/models/weight_entry.dart';
 import '../../l10n/app_localizations.dart';
@@ -144,7 +145,17 @@ class _HistoryScreenState extends ConsumerState<HistoryScreen> {
           child: const Icon(Icons.delete_outline),
         ),
         onDismissed: (_) async {
-          if (e.id != null) await ref.read(weightRepositoryProvider).delete(e.id!);
+          final repo = ref.read(weightRepositoryProvider);
+          if (e.id != null) await repo.delete(e.id!);
+          if (!context.mounted) return;
+          showUndoSnackbar(
+            context,
+            message: l10n.snackbarEntryDeleted,
+            undoLabel: l10n.actionUndo,
+            icon: Icons.delete_outline,
+            onUndo: () => repo.add(WeightEntry(
+                timestamp: e.timestamp, weightKg: e.weightKg, note: e.note)),
+          );
         },
         child: _EntryRow(
           title: '$when · ${dateFmt.time(e.timestamp)}',

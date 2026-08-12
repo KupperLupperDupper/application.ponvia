@@ -10,7 +10,9 @@ import 'package:share_plus/share_plus.dart';
 
 import '../../app/providers.dart';
 import '../../core/ui/spacing.dart';
+import '../../core/ui/undo_snackbar.dart';
 import '../../core/units/weight_unit.dart';
+import '../../data/backup/backup_service.dart';
 import '../../domain/models/app_settings.dart';
 import '../../domain/models/reminder_config.dart';
 import '../../l10n/app_localizations.dart';
@@ -112,13 +114,16 @@ class SettingsScreen extends ConsumerWidget {
           _Header(l10n.settingsAbout),
           _SettingRow(
             icon: Icons.lock_outline,
-            title: l10n.settingsPrivacyBody,
-            subtle: true,
+            title: l10n.settingsPrivacy,
+            trailing: Icon(Icons.chevron_right,
+                size: 20,
+                color: Theme.of(context).colorScheme.onSurfaceVariant),
+            onTap: () => context.push('/privacy'),
           ),
           _SettingRow(
             icon: Icons.info_outline,
             title: 'Ponvia',
-            trailing: Text(l10n.settingsVersion('0.1.1'),
+            trailing: Text(l10n.settingsVersion('0.2.0'),
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                     color: Theme.of(context).colorScheme.onSurfaceVariant)),
           ),
@@ -295,20 +300,49 @@ class SettingsScreen extends ConsumerWidget {
     final replace = await _askMergeOrReplace(context, l10n);
     if (replace == null) return;
 
+    final backup = ref.read(backupServiceProvider);
+    // A replace wipes existing data first — snapshot it so the import is undoable.
+    final String? snapshot = replace
+        ? await backup.exportJson(
+            settings: ref.read(settingsControllerProvider),
+            now: DateTime.now())
+        : null;
+
     try {
-      final backup = ref.read(backupServiceProvider);
       if (isJson) {
         final data = await backup.importJson(content, replace: replace);
-        messenger.showSnackBar(SnackBar(
-            content: Text(l10n.importedSummary(
-                data.entries.length, data.goals.length))));
+        if (!context.mounted) return;
+        if (snapshot != null) {
+          _showReplaceUndo(context, l10n, backup, snapshot);
+        } else {
+          messenger.showSnackBar(SnackBar(
+              content: Text(l10n.importedSummary(
+                  data.entries.length, data.goals.length))));
+        }
       } else {
         final n = await backup.importCsv(content, replace: replace);
-        messenger.showSnackBar(SnackBar(content: Text(l10n.importedCsv(n))));
+        if (!context.mounted) return;
+        if (snapshot != null) {
+          _showReplaceUndo(context, l10n, backup, snapshot);
+        } else {
+          messenger.showSnackBar(SnackBar(content: Text(l10n.importedCsv(n))));
+        }
       }
     } catch (e) {
       messenger.showSnackBar(SnackBar(content: Text(l10n.importFailed('$e'))));
     }
+  }
+
+  void _showReplaceUndo(BuildContext context, AppLocalizations l10n,
+      BackupService backup, String snapshot) {
+    showUndoSnackbar(
+      context,
+      message: l10n.snackbarDataReplaced,
+      undoLabel: l10n.actionUndo,
+      icon: Icons.restore,
+      bulk: true,
+      onUndo: () => backup.importJson(snapshot, replace: true),
+    );
   }
 
   Future<bool?> _askMergeOrReplace(BuildContext context, AppLocalizations l10n) {
@@ -355,9 +389,26 @@ class SettingsScreen extends ConsumerWidget {
         ],
       ),
     );
-    if (confirmed == true) {
-      await ref.read(databaseProvider).clearAllData();
-    }
+    if (confirmed != true) return;
+
+    // Snapshot everything before wiping so the undo can restore it in full.
+    final backup = ref.read(backupServiceProvider);
+    final settings = ref.read(settingsControllerProvider);
+    final entriesCount =
+        ref.read(entriesProvider).asData?.value.length ?? 0;
+    final goalsCount = ref.read(goalsProvider).asData?.value.length ?? 0;
+    final snapshot =
+        await backup.exportJson(settings: settings, now: DateTime.now());
+    await ref.read(databaseProvider).clearAllData();
+    if (!context.mounted) return;
+    showUndoSnackbar(
+      context,
+      message: l10n.snackbarAllDataCleared(entriesCount, goalsCount),
+      undoLabel: l10n.actionUndo,
+      icon: Icons.settings_backup_restore,
+      bulk: true,
+      onUndo: () => backup.importJson(snapshot, replace: true),
+    );
   }
 }
 
@@ -387,7 +438,6 @@ class _SettingRow extends StatelessWidget {
     this.trailing,
     this.onTap,
     this.error = false,
-    this.subtle = false,
   });
 
   final IconData icon;
@@ -395,16 +445,11 @@ class _SettingRow extends StatelessWidget {
   final Widget? trailing;
   final VoidCallback? onTap;
   final bool error;
-  final bool subtle;
 
   @override
   Widget build(BuildContext context) {
     final scheme = Theme.of(context).colorScheme;
-    final color = error
-        ? scheme.error
-        : subtle
-            ? scheme.onSurfaceVariant
-            : scheme.onSurface;
+    final color = error ? scheme.error : scheme.onSurface;
     return InkWell(
       onTap: onTap,
       child: Padding(

@@ -6,6 +6,7 @@ import '../../app/theme/ponvia_colors.dart';
 import '../../core/formatting/date_formatter.dart';
 import '../../core/formatting/weight_formatter.dart';
 import '../../core/ui/spacing.dart';
+import '../../core/ui/undo_snackbar.dart';
 import '../../core/units/weight_unit.dart';
 import '../../domain/models/goal.dart';
 import '../../l10n/app_localizations.dart';
@@ -30,10 +31,25 @@ class GoalsScreen extends ConsumerWidget {
         PonviaDateFormatter(locale: Localizations.localeOf(context).languageCode);
 
     return Scaffold(
-      appBar: AppBar(title: Text(l10n.goalsTitle)),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => _showGoalDialog(context, ref, settings.unit),
-        child: const Icon(Icons.add),
+      appBar: AppBar(
+        title: Text(l10n.goalsTitle),
+        actions: [
+          Padding(
+            padding: const EdgeInsets.only(right: Insets.md),
+            child: FilledButton.tonalIcon(
+              onPressed: () => _showGoalDialog(context, ref, settings.unit),
+              icon: const Icon(Icons.add, size: 18),
+              label: Text(l10n.goalNew),
+              style: FilledButton.styleFrom(
+                // The theme's minimumSize is Size.fromHeight(56) (infinite
+                // width); pin a finite 40dp height so it fits an AppBar action.
+                minimumSize: const Size(0, 40),
+                tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                padding: const EdgeInsets.symmetric(horizontal: Insets.md),
+              ),
+            ),
+          ),
+        ],
       ),
       body: goalsAsync.when(
         loading: () => const Center(child: CircularProgressIndicator()),
@@ -76,18 +92,18 @@ class GoalsScreen extends ConsumerWidget {
     final l10n = AppLocalizations.of(context);
     final repo = ref.read(goalRepositoryProvider);
     if (g.id != null) repo.delete(g.id!);
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      content: Text(l10n.actionDelete),
-      action: SnackBarAction(
-        label: l10n.actionUndo,
-        onPressed: () => repo.add(Goal(
-          targetWeightKg: g.targetWeightKg,
-          label: g.label,
-          createdAt: g.createdAt,
-          achievedAt: g.achievedAt,
-        )),
-      ),
-    ));
+    showUndoSnackbar(
+      context,
+      message: l10n.snackbarGoalDeleted,
+      undoLabel: l10n.actionUndo,
+      icon: Icons.delete_outline,
+      onUndo: () => repo.add(Goal(
+        targetWeightKg: g.targetWeightKg,
+        label: g.label,
+        createdAt: g.createdAt,
+        achievedAt: g.achievedAt,
+      )),
+    );
   }
 
   Future<void> _showGoalDialog(

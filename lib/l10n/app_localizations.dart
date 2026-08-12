@@ -488,6 +488,30 @@ abstract class AppLocalizations {
   /// **'Undo'**
   String get actionUndo;
 
+  /// No description provided for @snackbarEntryDeleted.
+  ///
+  /// In en, this message translates to:
+  /// **'Entry deleted'**
+  String get snackbarEntryDeleted;
+
+  /// No description provided for @snackbarGoalDeleted.
+  ///
+  /// In en, this message translates to:
+  /// **'Goal deleted'**
+  String get snackbarGoalDeleted;
+
+  /// No description provided for @snackbarAllDataCleared.
+  ///
+  /// In en, this message translates to:
+  /// **'All data cleared — {entries} entries and {goals} goals'**
+  String snackbarAllDataCleared(int entries, int goals);
+
+  /// No description provided for @snackbarDataReplaced.
+  ///
+  /// In en, this message translates to:
+  /// **'Data replaced by import'**
+  String get snackbarDataReplaced;
+
   /// No description provided for @settingsAppearance.
   ///
   /// In en, this message translates to:
@@ -638,6 +662,78 @@ abstract class AppLocalizations {
   /// **'All data stays on your device.'**
   String get settingsPrivacyBody;
 
+  /// No description provided for @privacyLead.
+  ///
+  /// In en, this message translates to:
+  /// **'Ponvia runs entirely on this phone. There is no account, no server, and nothing to opt out of.'**
+  String get privacyLead;
+
+  /// No description provided for @privacyNoAccountTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'No account, ever'**
+  String get privacyNoAccountTitle;
+
+  /// No description provided for @privacyNoAccountBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Nothing to sign up for, nothing to sign in to.'**
+  String get privacyNoAccountBody;
+
+  /// No description provided for @privacyOnDeviceTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Your data never leaves the device'**
+  String get privacyOnDeviceTitle;
+
+  /// No description provided for @privacyOnDeviceBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Weights, goals and notes live in this app\'s local storage only.'**
+  String get privacyOnDeviceBody;
+
+  /// No description provided for @privacyNoNetworkTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'No network permission'**
+  String get privacyNoNetworkTitle;
+
+  /// No description provided for @privacyNoNetworkBody.
+  ///
+  /// In en, this message translates to:
+  /// **'The app cannot reach the internet — it isn\'t declared in the manifest.'**
+  String get privacyNoNetworkBody;
+
+  /// No description provided for @privacyNoTrackingTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'No tracking, no analytics'**
+  String get privacyNoTrackingTitle;
+
+  /// No description provided for @privacyNoTrackingBody.
+  ///
+  /// In en, this message translates to:
+  /// **'No usage events, no crash reporting, no identifiers.'**
+  String get privacyNoTrackingBody;
+
+  /// No description provided for @privacyNoAdsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'No ads, no third parties'**
+  String get privacyNoAdsTitle;
+
+  /// No description provided for @privacyNoAdsBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Nothing in Ponvia is supplied by anyone else.'**
+  String get privacyNoAdsBody;
+
+  /// No description provided for @privacyFooter.
+  ///
+  /// In en, this message translates to:
+  /// **'The only way your data leaves this phone is an export you start yourself, in Settings › Data › Export.'**
+  String get privacyFooter;
+
   /// No description provided for @importDialogTitle.
   ///
   /// In en, this message translates to:
@@ -647,7 +743,7 @@ abstract class AppLocalizations {
   /// No description provided for @importDialogBody.
   ///
   /// In en, this message translates to:
-  /// **'Merge adds new records to your existing data. Replace deletes all current data first. This cannot be undone.'**
+  /// **'Merge adds new records to your existing data. Replace deletes all current data first — you can undo it right after.'**
   String get importDialogBody;
 
   /// No description provided for @importMerge.

@@ -9,6 +9,19 @@ history — update the **Unreleased** section as you work, and cut it into a ver
 
 ## [Unreleased]
 
+## [0.2.0] - 2026-08-12
+### Added
+- **Universal add button** in the bottom navigation — log a weight from any tab, not just
+  Home. The nav bar now has a central add action; "New goal" moved to an app-bar button on
+  the Goals screen.
+- **Undo on every delete** — a custom, themed snackbar with an Undo action now appears when
+  you delete a weight entry (in History or the edit sheet) or a goal. **Clear all data** and
+  a **Replace** import are undoable too: they snapshot your data first so the wipe can be
+  reversed.
+- **Privacy page** (Settings › Privacy) — a plain-language, fully-local summary in English
+  and Danish: no accounts, no cloud, no tracking; your data only leaves the device via an
+  export you start yourself.
+
 ## [0.1.1] - 2026-08-09
 ### Fixed
 - Goals swipe-to-delete: the red delete surface now sits flush behind the card as you

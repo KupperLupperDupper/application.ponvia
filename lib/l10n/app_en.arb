@@ -87,6 +87,17 @@
   "logDeleted": "Entry deleted",
   "actionUndo": "Undo",
 
+  "snackbarEntryDeleted": "Entry deleted",
+  "snackbarGoalDeleted": "Goal deleted",
+  "snackbarAllDataCleared": "All data cleared — {entries} entries and {goals} goals",
+  "@snackbarAllDataCleared": {
+    "placeholders": {
+      "entries": { "type": "int" },
+      "goals": { "type": "int" }
+    }
+  },
+  "snackbarDataReplaced": "Data replaced by import",
+
   "settingsAppearance": "Appearance",
   "settingsPreferences": "Preferences",
   "settingsExportData": "Export data",
@@ -114,8 +125,21 @@
   "settingsPrivacy": "Privacy",
   "settingsPrivacyBody": "All data stays on your device.",
 
+  "privacyLead": "Ponvia runs entirely on this phone. There is no account, no server, and nothing to opt out of.",
+  "privacyNoAccountTitle": "No account, ever",
+  "privacyNoAccountBody": "Nothing to sign up for, nothing to sign in to.",
+  "privacyOnDeviceTitle": "Your data never leaves the device",
+  "privacyOnDeviceBody": "Weights, goals and notes live in this app's local storage only.",
+  "privacyNoNetworkTitle": "No network permission",
+  "privacyNoNetworkBody": "The app cannot reach the internet — it isn't declared in the manifest.",
+  "privacyNoTrackingTitle": "No tracking, no analytics",
+  "privacyNoTrackingBody": "No usage events, no crash reporting, no identifiers.",
+  "privacyNoAdsTitle": "No ads, no third parties",
+  "privacyNoAdsBody": "Nothing in Ponvia is supplied by anyone else.",
+  "privacyFooter": "The only way your data leaves this phone is an export you start yourself, in Settings › Data › Export.",
+
   "importDialogTitle": "Import data",
-  "importDialogBody": "Merge adds new records to your existing data. Replace deletes all current data first. This cannot be undone.",
+  "importDialogBody": "Merge adds new records to your existing data. Replace deletes all current data first — you can undo it right after.",
   "importMerge": "Merge",
   "importReplace": "Replace",
   "importedSummary": "Imported {entries} entries, {goals} goals",

@@ -231,6 +231,20 @@ class AppLocalizationsDa extends AppLocalizations {
   String get actionUndo => 'Fortryd';
 
   @override
+  String get snackbarEntryDeleted => 'Registrering slettet';
+
+  @override
+  String get snackbarGoalDeleted => 'Mål slettet';
+
+  @override
+  String snackbarAllDataCleared(int entries, int goals) {
+    return 'Alle data er slettet — $entries registreringer og $goals mål';
+  }
+
+  @override
+  String get snackbarDataReplaced => 'Data erstattet af import';
+
+  @override
   String get settingsAppearance => 'Udseende';
 
   @override
@@ -308,11 +322,54 @@ class AppLocalizationsDa extends AppLocalizations {
   String get settingsPrivacyBody => 'Alle data bliver på din enhed.';
 
   @override
+  String get privacyLead =>
+      'Ponvia kører udelukkende på denne telefon. Der er ingen konto, ingen server, og intet du skal fravælge.';
+
+  @override
+  String get privacyNoAccountTitle => 'Ingen konto — nogensinde';
+
+  @override
+  String get privacyNoAccountBody =>
+      'Der er intet at oprette, og intet at logge ind på.';
+
+  @override
+  String get privacyOnDeviceTitle => 'Dine data forlader aldrig enheden';
+
+  @override
+  String get privacyOnDeviceBody =>
+      'Vægt, mål og noter ligger kun i appens lokale lager på telefonen.';
+
+  @override
+  String get privacyNoNetworkTitle => 'Ingen netværkstilladelse';
+
+  @override
+  String get privacyNoNetworkBody =>
+      'Appen kan ikke nå internettet — tilladelsen er ikke erklæret i manifestet.';
+
+  @override
+  String get privacyNoTrackingTitle => 'Ingen sporing, ingen analyse';
+
+  @override
+  String get privacyNoTrackingBody =>
+      'Ingen brugshændelser, ingen fejlrapportering, ingen identifikatorer.';
+
+  @override
+  String get privacyNoAdsTitle => 'Ingen reklamer, ingen tredjeparter';
+
+  @override
+  String get privacyNoAdsBody =>
+      'Intet indhold i Ponvia leveres af andre end appen selv.';
+
+  @override
+  String get privacyFooter =>
+      'Den eneste måde, dine data forlader telefonen på, er en eksport, du selv starter, under Indstillinger › Data › Eksportér.';
+
+  @override
   String get importDialogTitle => 'Importér data';
 
   @override
   String get importDialogBody =>
-      'Flet tilføjer nye poster til dine eksisterende data. Erstat sletter alle nuværende data først. Dette kan ikke fortrydes.';
+      'Flet tilføjer nye poster til dine eksisterende data. Erstat sletter alle nuværende data først — du kan fortryde det umiddelbart efter.';
 
   @override
   String get importMerge => 'Flet';

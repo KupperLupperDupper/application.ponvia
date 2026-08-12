@@ -38,6 +38,9 @@ android {
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode
         versionName = flutter.versionName
+        // Launcher label; the debug buildType overrides it so the two installs
+        // are distinguishable on the device.
+        manifestPlaceholders["appLabel"] = "Ponvia"
     }
 
     signingConfigs {
@@ -60,6 +63,14 @@ android {
             } else {
                 signingConfigs.getByName("debug")
             }
+        }
+        debug {
+            // Install debug builds under a separate application id so they coexist
+            // with the signed "prod" APK on the same device (and never touch its
+            // data). Also relabel the launcher icon to tell the two apart.
+            applicationIdSuffix = ".debug"
+            versionNameSuffix = "-debug"
+            manifestPlaceholders["appLabel"] = "Ponvia (debug)"
         }
     }
 }

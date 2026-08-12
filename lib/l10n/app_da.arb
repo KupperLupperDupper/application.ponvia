@@ -74,6 +74,17 @@
   "logDeleted": "Måling slettet",
   "actionUndo": "Fortryd",
 
+  "snackbarEntryDeleted": "Registrering slettet",
+  "snackbarGoalDeleted": "Mål slettet",
+  "snackbarAllDataCleared": "Alle data er slettet — {entries} registreringer og {goals} mål",
+  "@snackbarAllDataCleared": {
+    "placeholders": {
+      "entries": { "type": "int" },
+      "goals": { "type": "int" }
+    }
+  },
+  "snackbarDataReplaced": "Data erstattet af import",
+
   "settingsAppearance": "Udseende",
   "settingsPreferences": "Præferencer",
   "settingsExportData": "Eksportér data",
@@ -100,8 +111,21 @@
   "settingsPrivacy": "Privatliv",
   "settingsPrivacyBody": "Alle data bliver på din enhed.",
 
+  "privacyLead": "Ponvia kører udelukkende på denne telefon. Der er ingen konto, ingen server, og intet du skal fravælge.",
+  "privacyNoAccountTitle": "Ingen konto — nogensinde",
+  "privacyNoAccountBody": "Der er intet at oprette, og intet at logge ind på.",
+  "privacyOnDeviceTitle": "Dine data forlader aldrig enheden",
+  "privacyOnDeviceBody": "Vægt, mål og noter ligger kun i appens lokale lager på telefonen.",
+  "privacyNoNetworkTitle": "Ingen netværkstilladelse",
+  "privacyNoNetworkBody": "Appen kan ikke nå internettet — tilladelsen er ikke erklæret i manifestet.",
+  "privacyNoTrackingTitle": "Ingen sporing, ingen analyse",
+  "privacyNoTrackingBody": "Ingen brugshændelser, ingen fejlrapportering, ingen identifikatorer.",
+  "privacyNoAdsTitle": "Ingen reklamer, ingen tredjeparter",
+  "privacyNoAdsBody": "Intet indhold i Ponvia leveres af andre end appen selv.",
+  "privacyFooter": "Den eneste måde, dine data forlader telefonen på, er en eksport, du selv starter, under Indstillinger › Data › Eksportér.",
+
   "importDialogTitle": "Importér data",
-  "importDialogBody": "Flet tilføjer nye poster til dine eksisterende data. Erstat sletter alle nuværende data først. Dette kan ikke fortrydes.",
+  "importDialogBody": "Flet tilføjer nye poster til dine eksisterende data. Erstat sletter alle nuværende data først — du kan fortryde det umiddelbart efter.",
   "importMerge": "Flet",
   "importReplace": "Erstat",
   "importedSummary": "Importerede {entries} målinger, {goals} mål",
