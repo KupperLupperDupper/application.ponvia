@@ -119,6 +119,9 @@ class GoalsScreen extends ConsumerWidget {
       context: context,
       isScrollControlled: true,
       useSafeArea: true,
+      // Present over the root navigator so the sheet covers the bottom nav
+      // (like the log-weight sheet) instead of opening behind it.
+      useRootNavigator: true,
       showDragHandle: true,
       builder: (context) => _GoalForm(existing: existing),
     );

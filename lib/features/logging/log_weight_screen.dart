@@ -24,6 +24,9 @@ Future<void> showLogWeightSheet(BuildContext context, {WeightEntry? existing}) {
     context: context,
     isScrollControlled: true,
     useSafeArea: true,
+    // Present over the root navigator so the sheet always covers the bottom nav
+    // (e.g. when opened to edit an entry from the History tab).
+    useRootNavigator: true,
     showDragHandle: true,
     builder: (context) => LogWeightForm(existing: existing),
   );
