@@ -133,6 +133,18 @@ class AppLocalizationsDa extends AppLocalizations {
   String get historyEmptyRange => 'Ingen målinger i denne periode.';
 
   @override
+  String get historySummaryEyebrow => 'DENNE PERIODE';
+
+  @override
+  String get statMin => 'Min';
+
+  @override
+  String get statAvg => 'Gns.';
+
+  @override
+  String get statMax => 'Maks';
+
+  @override
   String get range1W => '1u';
 
   @override

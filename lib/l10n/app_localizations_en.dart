@@ -132,6 +132,18 @@ class AppLocalizationsEn extends AppLocalizations {
   String get historyEmptyRange => 'No entries in this range.';
 
   @override
+  String get historySummaryEyebrow => 'THIS PERIOD';
+
+  @override
+  String get statMin => 'Min';
+
+  @override
+  String get statAvg => 'Avg';
+
+  @override
+  String get statMax => 'Max';
+
+  @override
   String get range1W => '1W';
 
   @override

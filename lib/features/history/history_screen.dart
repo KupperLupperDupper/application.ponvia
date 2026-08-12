@@ -11,6 +11,7 @@ import '../../core/ui/spacing.dart';
 import '../../core/ui/undo_snackbar.dart';
 import '../../core/units/weight_unit.dart';
 import '../../domain/models/weight_entry.dart';
+import '../../domain/range_stats.dart';
 import '../../l10n/app_localizations.dart';
 import '../logging/log_weight_screen.dart';
 
@@ -81,6 +82,13 @@ class _HistoryScreenState extends ConsumerState<HistoryScreen> {
                 onSelectionChanged: (s) => setState(() => _range = s.first),
               ),
               const SizedBox(height: Insets.lg),
+              if (inRange.isNotEmpty) ...[
+                _SummaryCard(
+                  stats: computeRangeStats(inRange)!,
+                  fmt: fmt,
+                ),
+                const SizedBox(height: Insets.md),
+              ],
               if (inRange.length >= 2)
                 _ChartCard(
                   entries: inRange,
@@ -257,6 +265,155 @@ class _DeltaCell extends StatelessWidget {
             style: TextStyle(
                 fontWeight: FontWeight.w700, fontSize: 14, color: color)),
       ],
+    );
+  }
+}
+
+/// Compact stats for the selected range: min / avg / max plus a net-change chip
+/// (latest − earliest weight). Rendered above the chart. DESIGN_SPEC §5 language
+/// — same card shell as [_ChartCard] and the Home hero's delta chip.
+class _SummaryCard extends StatelessWidget {
+  const _SummaryCard({required this.stats, required this.fmt});
+
+  final RangeStats stats;
+  final WeightFormatter fmt;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+    final scheme = Theme.of(context).colorScheme;
+    final ponvia = Theme.of(context).extension<PonviaColors>()!;
+    final text = Theme.of(context).textTheme;
+
+    return Container(
+      decoration: BoxDecoration(
+        color: scheme.surfaceContainerHighest,
+        borderRadius: BorderRadius.circular(24),
+        border: Border.all(color: scheme.outline),
+      ),
+      padding:
+          const EdgeInsets.fromLTRB(Insets.xl, Insets.lg, Insets.lg, Insets.lg),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Expanded(
+                child: Text(
+                  l10n.historySummaryEyebrow,
+                  style: text.labelSmall?.copyWith(
+                    color: scheme.onSurfaceVariant,
+                    fontWeight: FontWeight.w800,
+                    letterSpacing: 0.6,
+                  ),
+                ),
+              ),
+              const SizedBox(width: Insets.sm),
+              _NetChip(netKg: stats.netKg, fmt: fmt, ponvia: ponvia),
+            ],
+          ),
+          const SizedBox(height: Insets.lg),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Expanded(
+                  child: _StatCell(
+                      label: l10n.statMin, value: fmt.withUnit(stats.minKg))),
+              Expanded(
+                  child: _StatCell(
+                      label: l10n.statAvg, value: fmt.withUnit(stats.avgKg))),
+              Expanded(
+                  child: _StatCell(
+                      label: l10n.statMax, value: fmt.withUnit(stats.maxKg))),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _StatCell extends StatelessWidget {
+  const _StatCell({required this.label, required this.value});
+
+  final String label;
+  final String value;
+
+  @override
+  Widget build(BuildContext context) {
+    final scheme = Theme.of(context).colorScheme;
+    final text = Theme.of(context).textTheme;
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(label.toUpperCase(),
+            style: text.labelSmall
+                ?.copyWith(color: scheme.onSurfaceVariant, letterSpacing: 0.4)),
+        const SizedBox(height: Insets.xs),
+        Text(value,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: text.titleMedium?.copyWith(fontWeight: FontWeight.w800)),
+      ],
+    );
+  }
+}
+
+/// Net change as a filled chip, mirroring the Home hero's delta chip: green for
+/// a decrease, ochre for an increase, neutral for no change. Icon + word carry
+/// the direction so colour is never the only signal.
+class _NetChip extends StatelessWidget {
+  const _NetChip(
+      {required this.netKg, required this.fmt, required this.ponvia});
+
+  final double netKg;
+  final WeightFormatter fmt;
+  final PonviaColors ponvia;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+    final scheme = Theme.of(context).colorScheme;
+    final amount = fmt.withUnit(netKg.abs());
+
+    final (Color bg, Color fg, IconData icon, String label) = netKg < 0
+        ? (
+            scheme.primaryContainer,
+            scheme.onPrimaryContainer,
+            Icons.arrow_downward,
+            l10n.homeDeltaDown(amount)
+          )
+        : netKg > 0
+            ? (
+                ponvia.deltaUpContainer,
+                ponvia.onDeltaUpContainer,
+                Icons.arrow_upward,
+                l10n.homeDeltaUp(amount)
+              )
+            : (
+                scheme.surfaceContainer,
+                scheme.onSurfaceVariant,
+                Icons.remove,
+                l10n.homeDeltaFlat
+              );
+
+    return Container(
+      height: 32,
+      padding: const EdgeInsets.symmetric(horizontal: Insets.md),
+      decoration: BoxDecoration(
+        color: bg,
+        borderRadius: BorderRadius.circular(16),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(icon, size: 18, color: fg),
+          const SizedBox(width: Insets.xs),
+          Text(label,
+              style:
+                  Theme.of(context).textTheme.labelLarge?.copyWith(color: fg)),
+        ],
+      ),
     );
   }
 }

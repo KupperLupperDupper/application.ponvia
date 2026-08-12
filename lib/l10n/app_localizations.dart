@@ -308,6 +308,30 @@ abstract class AppLocalizations {
   /// **'No entries in this range.'**
   String get historyEmptyRange;
 
+  /// No description provided for @historySummaryEyebrow.
+  ///
+  /// In en, this message translates to:
+  /// **'THIS PERIOD'**
+  String get historySummaryEyebrow;
+
+  /// No description provided for @statMin.
+  ///
+  /// In en, this message translates to:
+  /// **'Min'**
+  String get statMin;
+
+  /// No description provided for @statAvg.
+  ///
+  /// In en, this message translates to:
+  /// **'Avg'**
+  String get statAvg;
+
+  /// No description provided for @statMax.
+  ///
+  /// In en, this message translates to:
+  /// **'Max'**
+  String get statMax;
+
   /// No description provided for @range1W.
   ///
   /// In en, this message translates to:
