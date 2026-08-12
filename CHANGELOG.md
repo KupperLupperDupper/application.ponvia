@@ -9,6 +9,29 @@ history — update the **Unreleased** section as you work, and cut it into a ver
 
 ## [Unreleased]
 
+## [0.3.0] - 2026-08-12
+### Added
+- **History summary** — a min / average / max / net-change card for the selected range.
+- **Goal line on the chart** — the closest goal's target is drawn as a marker on the
+  History trend chart.
+- **Trend-weight line** — a smoothed (EMA) overlay on the Home sparkline and History chart
+  so day-to-day noise reads as a calm trend.
+- **Goal ETA** — a quiet "at your recent pace, ~<date>" estimate on Home and Goals; hidden
+  when the trend is too flat, noisy, or the wrong way to be trustworthy.
+- **Goal auto-detection** — when a weigh-in reaches a goal, a calm "you reached it" moment
+  offers to mark it complete; a single weigh-in that passes several goals completes them all.
+- **Redesigned add/edit-goal sheet** — a themed bottom sheet using the in-app number pad,
+  with a derived lose/gain direction and a "Highlight on Home" pin.
+
+### Changed
+- The undo snackbar sits closer to the navigation bar.
+- Clearing all data now says it can be undone (it snapshots first), matching the behaviour.
+
+### Fixed
+- Editing a weight entry or goal no longer crashes.
+- Empty-state titles are centred when they wrap.
+- History builds its rows lazily, keeping a long "All" history smooth to scroll.
+
 ## [0.2.0] - 2026-08-12
 ### Added
 - **Universal add button** in the bottom navigation — log a weight from any tab, not just
