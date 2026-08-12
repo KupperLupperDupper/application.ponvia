@@ -36,6 +36,7 @@
   "homeGoalRow": "Mål · {target}",
   "homeToGo": "{amount} tilbage",
   "homeProgressFrom": "{percent} % af vejen fra {start}",
+  "homeGoalEta": "I dit nuværende tempo · ~{date}",
   "homeCaloriesSlot": "Kalorier — kommer snart",
 
   "historyTitle": "Historik",

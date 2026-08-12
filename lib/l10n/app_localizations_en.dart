@@ -120,6 +120,11 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String homeGoalEta(String date) {
+    return 'At your recent pace · ~$date';
+  }
+
+  @override
   String get homeCaloriesSlot => 'Calories — coming soon';
 
   @override
