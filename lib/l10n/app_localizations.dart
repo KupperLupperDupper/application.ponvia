@@ -362,6 +362,18 @@ abstract class AppLocalizations {
   /// **'All'**
   String get rangeAll;
 
+  /// No description provided for @chartLegendWeight.
+  ///
+  /// In en, this message translates to:
+  /// **'Weight'**
+  String get chartLegendWeight;
+
+  /// No description provided for @chartLegendTrend.
+  ///
+  /// In en, this message translates to:
+  /// **'Trend'**
+  String get chartLegendTrend;
+
   /// No description provided for @goalsTitle.
   ///
   /// In en, this message translates to:

@@ -12,6 +12,7 @@ import '../../core/ui/undo_snackbar.dart';
 import '../../core/units/weight_unit.dart';
 import '../../domain/models/weight_entry.dart';
 import '../../domain/range_stats.dart';
+import '../../domain/trend_weight.dart';
 import '../../l10n/app_localizations.dart';
 import '../logging/log_weight_screen.dart';
 import 'trend_bounds.dart';
@@ -439,7 +440,11 @@ class _ChartCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     final scheme = Theme.of(context).colorScheme;
+    final ponvia = Theme.of(context).extension<PonviaColors>()!;
+    // Legend appears only when the trend line does (see TrendWeight.minRenderPoints).
+    final showLegend = entries.length >= TrendWeight.minRenderPoints;
     return Container(
       decoration: BoxDecoration(
         color: scheme.surfaceContainerHighest,
@@ -447,15 +452,62 @@ class _ChartCard extends StatelessWidget {
         border: Border.all(color: scheme.outline),
       ),
       padding: const EdgeInsets.fromLTRB(Insets.lg, Insets.md, Insets.md, Insets.md),
-      child: SizedBox(
-        height: 170,
-        child: _TrendChart(
-            entries: entries,
-            unit: unit,
-            fmt: fmt,
-            dateFmt: dateFmt,
-            goalTargetKg: goalTargetKg),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          if (showLegend)
+            Padding(
+              padding: const EdgeInsets.only(right: Insets.xs, bottom: Insets.sm),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  _LegendItem(
+                      color: ponvia.chartLine, label: l10n.chartLegendWeight),
+                  const SizedBox(width: Insets.md),
+                  _LegendItem(
+                      color: scheme.onSurfaceVariant,
+                      label: l10n.chartLegendTrend),
+                ],
+              ),
+            ),
+          SizedBox(
+            height: 170,
+            child: _TrendChart(
+                entries: entries,
+                unit: unit,
+                fmt: fmt,
+                dateFmt: dateFmt,
+                goalTargetKg: goalTargetKg),
+          ),
+        ],
       ),
+    );
+  }
+}
+
+/// A single dot + label used in the chart legend.
+class _LegendItem extends StatelessWidget {
+  const _LegendItem({required this.color, required this.label});
+
+  final Color color;
+  final String label;
+
+  @override
+  Widget build(BuildContext context) {
+    final scheme = Theme.of(context).colorScheme;
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Container(
+          width: 8,
+          height: 8,
+          decoration: BoxDecoration(color: color, shape: BoxShape.circle),
+        ),
+        const SizedBox(width: Insets.xs),
+        Text(label,
+            style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                color: scheme.onSurfaceVariant, letterSpacing: 0)),
+      ],
     );
   }
 }
@@ -529,6 +581,14 @@ class _TrendChart extends StatelessWidget {
         ? null
         : WeightConverter.fromKg(goalTargetKg!, unit);
     final bounds = TrendBounds.of(values, target: goalTarget);
+    // Smoothed "trend weight" overlay: EMA in canonical kg, converted for
+    // display and pinned to the raw spots' x-coordinates so the two align.
+    final showTrend = chrono.length >= TrendWeight.minRenderPoints;
+    final trendKg = TrendWeight.ema([for (final e in chrono) e.weightKg]);
+    final trendSpots = <FlSpot>[
+      for (var i = 0; i < chrono.length; i++)
+        FlSpot(spots[i].x, WeightConverter.fromKg(trendKg[i], unit)),
+    ];
     final maxX = spots.last.x;
     final xInterval = maxX <= 0 ? 1.0 : maxX / 2;
     final yInterval = bounds.interval;
@@ -613,19 +673,37 @@ class _TrendChart extends StatelessWidget {
           ),
         ),
         lineTouchData: LineTouchData(
+          // No indicator dot/line on the trend bar — keep touch feedback on the
+          // raw series only.
+          getTouchedSpotIndicator: (barData, indexes) => [
+            for (final _ in indexes)
+              identical(barData.spots, trendSpots)
+                  ? null
+                  : TouchedSpotIndicatorData(
+                      FlLine(
+                          color: ponvia.chartLine.withValues(alpha: 0.4),
+                          strokeWidth: 2),
+                      const FlDotData(show: false),
+                    ),
+          ],
           touchTooltipData: LineTouchTooltipData(
             getTooltipColor: (_) => scheme.primary,
-            getTooltipItems: (spots) => [
-              for (final s in spots)
-                LineTooltipItem(
-                  '${fmt.value(WeightConverter.toKg(s.y, unit))} · '
-                  '${dateFmt.date(chrono[s.spotIndex].timestamp)}',
-                  TextStyle(
-                    color: scheme.onPrimary,
-                    fontWeight: FontWeight.w700,
-                    fontSize: 12,
-                  ),
-                ),
+            // Only the raw series carries a tooltip; the trend bar (barIndex 1)
+            // returns null so a tap shows one clean `value · date`.
+            getTooltipItems: (touchedSpots) => [
+              for (final s in touchedSpots)
+                if (s.barIndex == 0)
+                  LineTooltipItem(
+                    '${fmt.value(WeightConverter.toKg(s.y, unit))} · '
+                    '${dateFmt.date(chrono[s.spotIndex].timestamp)}',
+                    TextStyle(
+                      color: scheme.onPrimary,
+                      fontWeight: FontWeight.w700,
+                      fontSize: 12,
+                    ),
+                  )
+                else
+                  null,
             ],
           ),
         ),
@@ -653,6 +731,16 @@ class _TrendChart extends StatelessWidget {
               ),
             ),
           ),
+          // Trend line: thin, neutral, dotless, painted over the raw fill.
+          if (showTrend)
+            LineChartBarData(
+              spots: trendSpots,
+              isCurved: true,
+              curveSmoothness: 0.25,
+              color: scheme.onSurfaceVariant,
+              barWidth: 2,
+              dotData: const FlDotData(show: false),
+            ),
         ],
       ),
     );

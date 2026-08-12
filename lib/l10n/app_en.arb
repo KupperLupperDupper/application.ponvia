@@ -59,6 +59,8 @@
   "range3M": "3M",
   "range1Y": "1Y",
   "rangeAll": "All",
+  "chartLegendWeight": "Weight",
+  "chartLegendTrend": "Trend",
 
   "goalsTitle": "Goals",
   "goalsEmpty": "No goals yet. Tap + to add one.",

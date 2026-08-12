@@ -159,6 +159,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get rangeAll => 'All';
 
   @override
+  String get chartLegendWeight => 'Weight';
+
+  @override
+  String get chartLegendTrend => 'Trend';
+
+  @override
   String get goalsTitle => 'Goals';
 
   @override
