@@ -13,8 +13,10 @@ class GoalRepository {
         id: r.id,
         targetWeightKg: r.targetWeightKg,
         label: r.label,
+        startWeightKg: r.startWeightKg,
         createdAt: r.createdAt,
         achievedAt: r.achievedAt,
+        reachedPromptShownAt: r.reachedPromptShownAt,
       );
 
   Stream<List<Goal>> watchAll() {
@@ -34,8 +36,10 @@ class GoalRepository {
           GoalsCompanion.insert(
             targetWeightKg: g.targetWeightKg,
             label: Value(g.label),
+            startWeightKg: Value(g.startWeightKg),
             createdAt: g.createdAt,
             achievedAt: Value(g.achievedAt),
+            reachedPromptShownAt: Value(g.reachedPromptShownAt),
           ),
         );
   }
@@ -46,8 +50,10 @@ class GoalRepository {
       GoalsCompanion(
         targetWeightKg: Value(g.targetWeightKg),
         label: Value(g.label),
+        startWeightKg: Value(g.startWeightKg),
         createdAt: Value(g.createdAt),
         achievedAt: Value(g.achievedAt),
+        reachedPromptShownAt: Value(g.reachedPromptShownAt),
       ),
     );
   }
@@ -64,8 +70,10 @@ class GoalRepository {
               GoalsCompanion.insert(
                 targetWeightKg: g.targetWeightKg,
                 label: Value(g.label),
+                startWeightKg: Value(g.startWeightKg),
                 createdAt: g.createdAt,
                 achievedAt: Value(g.achievedAt),
+                reachedPromptShownAt: Value(g.reachedPromptShownAt),
               ),
             );
         inserted++;

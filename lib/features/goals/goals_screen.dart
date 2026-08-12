@@ -100,8 +100,10 @@ class GoalsScreen extends ConsumerWidget {
       onUndo: () => repo.add(Goal(
         targetWeightKg: g.targetWeightKg,
         label: g.label,
+        startWeightKg: g.startWeightKg,
         createdAt: g.createdAt,
         achievedAt: g.achievedAt,
+        reachedPromptShownAt: g.reachedPromptShownAt,
       )),
     );
   }
@@ -184,9 +186,12 @@ class GoalsScreen extends ConsumerWidget {
     final kg = WeightConverter.toKg(value, unit);
     final label = labelController.text.trim();
     if (existing == null) {
+      // Anchor the goal's direction (lose vs gain) to the current weight.
+      final startKg = ref.read(latestWeightProvider).asData?.value?.weightKg;
       await repo.add(Goal(
         targetWeightKg: kg,
         label: label.isEmpty ? null : label,
+        startWeightKg: startKg,
         createdAt: DateTime.now(),
       ));
     } else {
@@ -194,8 +199,10 @@ class GoalsScreen extends ConsumerWidget {
         id: existing.id,
         targetWeightKg: kg,
         label: label.isEmpty ? null : label,
+        startWeightKg: existing.startWeightKg,
         createdAt: existing.createdAt,
         achievedAt: existing.achievedAt,
+        reachedPromptShownAt: existing.reachedPromptShownAt,
       ));
     }
   }

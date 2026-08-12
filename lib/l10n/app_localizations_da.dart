@@ -190,6 +190,20 @@ class AppLocalizationsDa extends AppLocalizations {
   String get goalClosest => 'Nærmeste mål';
 
   @override
+  String get goalReachedTitle => 'Du nåede det';
+
+  @override
+  String goalReachedBody(String weight) {
+    return 'Du har nået dit mål på $weight.';
+  }
+
+  @override
+  String get goalReachedKeepOpen => 'Behold det åbne';
+
+  @override
+  String get goalReachedMarked => 'Målet er markeret som nået';
+
+  @override
   String get logTitle => 'Registrér vægt';
 
   @override

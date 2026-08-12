@@ -5,11 +5,17 @@ import '../../app/providers.dart';
 import '../../app/router.dart';
 import '../../app/theme/typography.dart';
 import '../../core/formatting/date_formatter.dart';
+import '../../core/formatting/weight_formatter.dart';
 import '../../core/ui/spacing.dart';
 import '../../core/ui/undo_snackbar.dart';
 import '../../core/units/weight_unit.dart';
+import '../../data/repositories/goal_repository.dart';
+import '../../data/repositories/weight_repository.dart';
+import '../../domain/goals/goal_achievement.dart';
+import '../../domain/models/goal.dart';
 import '../../domain/models/weight_entry.dart';
 import '../../l10n/app_localizations.dart';
+import '../goals/goal_reached_sheet.dart';
 import 'numeric_keypad.dart';
 
 /// Opens the log/edit form as a modal bottom sheet (the design's logging model).
@@ -156,13 +162,93 @@ class _LogWeightFormState extends ConsumerState<LogWeightForm> {
       weightKg: kg,
       note: note.isEmpty ? null : note,
     );
+    // Capture everything from `ref` before the sheet pops (this State is
+    // disposed on pop; the achievement moment is presented over the app root).
     final repo = ref.read(weightRepositoryProvider);
+    final goalRepo = ref.read(goalRepositoryProvider);
+    final unit = ref.read(settingsControllerProvider).unit;
+
+    final previousLatestKg = (await repo.latest())?.weightKg;
     if (_isEditing) {
       await repo.update(entry);
     } else {
       await repo.add(entry);
     }
+
+    // Did the new latest weight reach any active, un-prompted goal?
+    final reached = await _detectReachedGoal(repo, goalRepo, previousLatestKg);
+
     if (mounted) Navigator.of(context).maybePop();
+    if (reached != null) {
+      await _presentGoalReached(goalRepo, unit, reached);
+    }
+  }
+
+  /// Returns the goal to prompt (nearest reached target), marking any other
+  /// goals reached on the same save as silently seen so they won't prompt later.
+  Future<Goal?> _detectReachedGoal(
+    WeightRepository repo,
+    GoalRepository goalRepo,
+    double? previousLatestKg,
+  ) async {
+    final latest = await repo.latest();
+    if (latest == null) return null;
+    final goals = await goalRepo.getAll();
+    final reached = GoalAchievement.nearestReached(
+      newLatestKg: latest.weightKg,
+      previousLatestKg: previousLatestKg,
+      goals: goals,
+    );
+    if (reached == null) return null;
+    final all = GoalAchievement.allReached(
+      newLatestKg: latest.weightKg,
+      previousLatestKg: previousLatestKg,
+      goals: goals,
+    );
+    final now = DateTime.now();
+    for (final g in all) {
+      if (g.id == reached.id) continue;
+      await goalRepo.update(g.copyWith(reachedPromptShownAt: now));
+    }
+    return reached;
+  }
+
+  /// Presents the calm "you reached it" sheet over the app root (the log sheet
+  /// has already closed). Confirm sets `achievedAt`; keep-open just records that
+  /// the prompt was shown so it never re-opens for this goal.
+  Future<void> _presentGoalReached(
+    GoalRepository goalRepo,
+    WeightUnit unit,
+    Goal goal,
+  ) async {
+    final ctx = rootNavigatorKey.currentContext;
+    if (ctx == null || !ctx.mounted) return;
+    final fmt =
+        WeightFormatter(unit, locale: Localizations.localeOf(ctx).languageCode);
+    final weightLabel = fmt.withUnit(goal.targetWeightKg);
+    // Let the log sheet's close animation finish before presenting.
+    await Future<void>.delayed(const Duration(milliseconds: 260));
+    if (!ctx.mounted) return;
+
+    final confirmed = await showGoalReachedSheet(ctx, weightLabel: weightLabel);
+    if (!ctx.mounted) return;
+    final l10n = AppLocalizations.of(ctx);
+    final now = DateTime.now();
+    if (confirmed == true) {
+      await goalRepo.update(
+          goal.copyWith(achievedAt: now, reachedPromptShownAt: now));
+      if (!ctx.mounted) return;
+      showUndoSnackbar(
+        ctx,
+        message: l10n.goalReachedMarked,
+        undoLabel: l10n.actionUndo,
+        icon: Icons.check_circle_outline,
+        onUndo: () => goalRepo.update(goal.copyWith(clearAchieved: true)),
+      );
+    } else {
+      // Keep it open: record the prompt so it won't re-nag.
+      await goalRepo.update(goal.copyWith(reachedPromptShownAt: now));
+    }
   }
 
   Future<void> _delete() async {

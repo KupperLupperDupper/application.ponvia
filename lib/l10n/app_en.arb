@@ -72,6 +72,12 @@
   "@goalReached": { "placeholders": { "date": { "type": "String" } } },
   "goalClosest": "Closest goal",
 
+  "goalReachedTitle": "You reached it",
+  "goalReachedBody": "You've hit your {weight} goal.",
+  "@goalReachedBody": { "placeholders": { "weight": { "type": "String" } } },
+  "goalReachedKeepOpen": "Keep it open",
+  "goalReachedMarked": "Goal marked as reached",
+
   "logTitle": "Log weight",
   "logEditTitle": "Edit entry",
   "logWeightField": "Weight ({unit})",

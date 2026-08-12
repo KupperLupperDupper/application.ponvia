@@ -60,6 +60,11 @@
   "goalReached": "Nået {date}",
   "goalClosest": "Nærmeste mål",
 
+  "goalReachedTitle": "Du nåede det",
+  "goalReachedBody": "Du har nået dit mål på {weight}.",
+  "goalReachedKeepOpen": "Behold det åbne",
+  "goalReachedMarked": "Målet er markeret som nået",
+
   "logTitle": "Registrér vægt",
   "logEditTitle": "Redigér måling",
   "logWeightField": "Vægt ({unit})",
