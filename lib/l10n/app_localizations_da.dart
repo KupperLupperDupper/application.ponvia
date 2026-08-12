@@ -447,7 +447,7 @@ class AppLocalizationsDa extends AppLocalizations {
 
   @override
   String get clearDialogBody =>
-      'Dette sletter permanent alle vægtmålinger og mål. Dette kan ikke fortrydes.';
+      'Dette sletter permanent alle vægtmålinger og mål — du kan fortryde det umiddelbart efter. Eksportér først, hvis du vil have en varig kopi.';
 
   @override
   String get onboardWelcomeTitle => 'Velkommen til Ponvia';

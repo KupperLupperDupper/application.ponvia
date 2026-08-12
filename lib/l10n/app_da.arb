@@ -148,7 +148,7 @@
   "exportFailed": "Eksport mislykkedes: {error}",
 
   "clearDialogTitle": "Ryd målinger og mål?",
-  "clearDialogBody": "Dette sletter permanent alle vægtmålinger og mål. Dette kan ikke fortrydes.",
+  "clearDialogBody": "Dette sletter permanent alle vægtmålinger og mål — du kan fortryde det umiddelbart efter. Eksportér først, hvis du vil have en varig kopi.",
 
   "onboardWelcomeTitle": "Velkommen til Ponvia",
   "onboardWelcomeBody": "Registrér din vægt på sekunder og se tendensen tage form. Ingen konto, ingen sky — alt bliver på denne telefon.",

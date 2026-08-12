@@ -66,6 +66,7 @@ class _LogWeightFormState extends ConsumerState<LogWeightForm> {
   String _input = '';
   late DateTime _timestamp;
   bool _saving = false;
+  bool _prefilled = false;
 
   bool get _isEditing => widget.existing != null;
 
@@ -74,12 +75,21 @@ class _LogWeightFormState extends ConsumerState<LogWeightForm> {
     super.initState();
     final e = widget.existing;
     _timestamp = e?.timestamp ?? DateTime.now();
-    if (e != null) {
+    _noteController.text = e?.note ?? '';
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    // Pre-fill the value here, not in initState: it uses `_sep`, which reads
+    // Localizations.localeOf(context) — illegal before initState completes.
+    final e = widget.existing;
+    if (e != null && !_prefilled) {
+      _prefilled = true;
       final unit = ref.read(settingsControllerProvider).unit;
       _input = WeightConverter.fromKg(e.weightKg, unit)
           .toStringAsFixed(1)
           .replaceAll('.', _sep);
-      _noteController.text = e.note ?? '';
     }
   }
 
@@ -178,41 +188,35 @@ class _LogWeightFormState extends ConsumerState<LogWeightForm> {
       await repo.add(entry);
     }
 
-    // Did the new latest weight reach any active, un-prompted goal?
-    final reached = await _detectReachedGoal(repo, goalRepo, previousLatestKg);
+    // Did the new latest weight reach any active, un-prompted goals?
+    final reached = await _detectReachedGoals(repo, goalRepo, previousLatestKg);
 
     if (mounted) Navigator.of(context).maybePop();
-    if (reached != null) {
+    if (reached.isNotEmpty) {
       await _presentGoalReached(goalRepo, unit, reached);
     }
   }
 
-  /// Returns the goal to prompt (nearest reached target), marking any other
-  /// goals reached on the same save as silently seen so they won't prompt later.
-  Future<Goal?> _detectReachedGoal(
+  /// Every active, un-prompted goal the new latest weight has reached, sorted
+  /// nearest-target-first. The nearest is shown in the calm moment; all of them
+  /// are marked complete together on confirm (a single weigh-in can pass more
+  /// than one goal).
+  Future<List<Goal>> _detectReachedGoals(
     WeightRepository repo,
     GoalRepository goalRepo,
     double? previousLatestKg,
   ) async {
     final latest = await repo.latest();
-    if (latest == null) return null;
+    if (latest == null) return const [];
     final goals = await goalRepo.getAll();
-    final reached = GoalAchievement.nearestReached(
+    final reached = GoalAchievement.allReached(
       newLatestKg: latest.weightKg,
       previousLatestKg: previousLatestKg,
       goals: goals,
     );
-    if (reached == null) return null;
-    final all = GoalAchievement.allReached(
-      newLatestKg: latest.weightKg,
-      previousLatestKg: previousLatestKg,
-      goals: goals,
-    );
-    final now = DateTime.now();
-    for (final g in all) {
-      if (g.id == reached.id) continue;
-      await goalRepo.update(g.copyWith(reachedPromptShownAt: now));
-    }
+    reached.sort((a, b) => (a.targetWeightKg - latest.weightKg)
+        .abs()
+        .compareTo((b.targetWeightKg - latest.weightKg).abs()));
     return reached;
   }
 
@@ -222,13 +226,14 @@ class _LogWeightFormState extends ConsumerState<LogWeightForm> {
   Future<void> _presentGoalReached(
     GoalRepository goalRepo,
     WeightUnit unit,
-    Goal goal,
+    List<Goal> reached,
   ) async {
     final ctx = rootNavigatorKey.currentContext;
     if (ctx == null || !ctx.mounted) return;
+    final nearest = reached.first;
     final fmt =
         WeightFormatter(unit, locale: Localizations.localeOf(ctx).languageCode);
-    final weightLabel = fmt.withUnit(goal.targetWeightKg);
+    final weightLabel = fmt.withUnit(nearest.targetWeightKg);
     // Let the log sheet's close animation finish before presenting.
     await Future<void>.delayed(const Duration(milliseconds: 260));
     if (!ctx.mounted) return;
@@ -238,19 +243,29 @@ class _LogWeightFormState extends ConsumerState<LogWeightForm> {
     final l10n = AppLocalizations.of(ctx);
     final now = DateTime.now();
     if (confirmed == true) {
-      await goalRepo.update(
-          goal.copyWith(achievedAt: now, reachedPromptShownAt: now));
+      // A single weigh-in can pass several goals — mark them all complete.
+      for (final g in reached) {
+        await goalRepo.update(
+            g.copyWith(achievedAt: now, reachedPromptShownAt: now));
+      }
       if (!ctx.mounted) return;
       showUndoSnackbar(
         ctx,
         message: l10n.goalReachedMarked,
         undoLabel: l10n.actionUndo,
         icon: Icons.check_circle_outline,
-        onUndo: () => goalRepo.update(goal.copyWith(clearAchieved: true)),
+        onUndo: () {
+          for (final g in reached) {
+            goalRepo.update(
+                g.copyWith(clearAchieved: true, clearReachedPrompt: true));
+          }
+        },
       );
     } else {
-      // Keep it open: record the prompt so it won't re-nag.
-      await goalRepo.update(goal.copyWith(reachedPromptShownAt: now));
+      // Keep them open: record the prompt on all so they won't re-nag.
+      for (final g in reached) {
+        await goalRepo.update(g.copyWith(reachedPromptShownAt: now));
+      }
     }
   }
 

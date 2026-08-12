@@ -72,45 +72,74 @@ class _HistoryScreenState extends ConsumerState<HistoryScreen> {
               ? all
               : all.where((e) => e.timestamp.isAfter(cutoff)).toList();
 
-          return ListView(
-            padding: const EdgeInsets.fromLTRB(
-                Insets.screenH, Insets.md, Insets.screenH, 96),
-            children: [
-              SegmentedButton<_Range>(
-                segments: [
-                  for (final r in _Range.values)
-                    ButtonSegment(value: r, label: Text(r.label(l10n))),
-                ],
-                selected: {_range},
-                showSelectedIcon: false,
-                onSelectionChanged: (s) => setState(() => _range = s.first),
-              ),
-              const SizedBox(height: Insets.lg),
-              if (inRange.isNotEmpty) ...[
-                _SummaryCard(
-                  stats: computeRangeStats(inRange)!,
-                  fmt: fmt,
-                ),
-                const SizedBox(height: Insets.md),
+          // Header widgets (few) stay eager; the entry rows build lazily via
+          // SliverList.builder so a long "All" history doesn't build every row
+          // (and its Dismissible) up front.
+          final header = <Widget>[
+            SegmentedButton<_Range>(
+              segments: [
+                for (final r in _Range.values)
+                  ButtonSegment(value: r, label: Text(r.label(l10n))),
               ],
-              if (inRange.length >= 2)
-                _ChartCard(
-                  entries: inRange,
-                  unit: settings.unit,
-                  fmt: fmt,
-                  dateFmt: dateFmt,
-                  goalTargetKg: goalTargetKg,
+              selected: {_range},
+              showSelectedIcon: false,
+              onSelectionChanged: (s) => setState(() => _range = s.first),
+            ),
+            const SizedBox(height: Insets.lg),
+            if (inRange.isNotEmpty) ...[
+              _SummaryCard(stats: computeRangeStats(inRange)!, fmt: fmt),
+              const SizedBox(height: Insets.md),
+            ],
+            if (inRange.length >= 2)
+              _ChartCard(
+                entries: inRange,
+                unit: settings.unit,
+                fmt: fmt,
+                dateFmt: dateFmt,
+                goalTargetKg: goalTargetKg,
+              ),
+            if (inRange.isEmpty)
+              Padding(
+                padding: const EdgeInsets.only(top: Insets.xxxl),
+                child: Center(
+                  child: Text(l10n.historyEmptyRange,
+                      style: Theme.of(context).textTheme.bodyMedium),
                 ),
-              if (inRange.isEmpty)
-                Padding(
-                  padding: const EdgeInsets.only(top: Insets.xxxl),
-                  child: Center(
-                    child: Text(l10n.historyEmptyRange,
-                        style: Theme.of(context).textTheme.bodyMedium),
-                  ),
-                )
-              else
-                ..._buildRows(context, inRange, fmt, dateFmt, settings.unit),
+              ),
+          ];
+
+          // Lightweight row descriptors (cheap structs); widgets built on demand.
+          final items = <_HistoryItem>[];
+          int? lastMonthKey;
+          for (var i = 0; i < inRange.length; i++) {
+            final e = inRange[i];
+            final monthKey = e.timestamp.year * 100 + e.timestamp.month;
+            if (monthKey != lastMonthKey) {
+              lastMonthKey = monthKey;
+              items.add(_HistoryItem.month(e.timestamp));
+            }
+            items.add(_HistoryItem.entry(
+                e, i + 1 < inRange.length ? inRange[i + 1] : null));
+          }
+          final monthFmt =
+              DateFormat.yMMMM(Localizations.localeOf(context).languageCode);
+
+          return CustomScrollView(
+            slivers: [
+              SliverPadding(
+                padding: const EdgeInsets.fromLTRB(
+                    Insets.screenH, Insets.md, Insets.screenH, 0),
+                sliver: SliverList(delegate: SliverChildListDelegate(header)),
+              ),
+              SliverPadding(
+                padding: const EdgeInsets.fromLTRB(
+                    Insets.screenH, 0, Insets.screenH, 96),
+                sliver: SliverList.builder(
+                  itemCount: items.length,
+                  itemBuilder: (context, i) =>
+                      _buildRow(context, items[i], fmt, dateFmt, monthFmt),
+                ),
+              ),
             ],
           );
         },
@@ -118,70 +147,80 @@ class _HistoryScreenState extends ConsumerState<HistoryScreen> {
     );
   }
 
-  List<Widget> _buildRows(BuildContext context, List<WeightEntry> entries,
-      WeightFormatter fmt, PonviaDateFormatter dateFmt, WeightUnit unit) {
+  Widget _buildRow(BuildContext context, _HistoryItem item,
+      WeightFormatter fmt, PonviaDateFormatter dateFmt, DateFormat monthFmt) {
     final l10n = AppLocalizations.of(context);
     final scheme = Theme.of(context).colorScheme;
-    final monthFmt =
-        DateFormat.yMMMM(Localizations.localeOf(context).languageCode);
-    final rows = <Widget>[];
-    int? lastMonthKey;
 
-    for (var i = 0; i < entries.length; i++) {
-      final e = entries[i];
-      final monthKey = e.timestamp.year * 100 + e.timestamp.month;
-      if (monthKey != lastMonthKey) {
-        lastMonthKey = monthKey;
-        rows.add(Padding(
-          padding: const EdgeInsets.fromLTRB(Insets.xs, Insets.lg, 0, Insets.sm),
-          child: Text(monthFmt.format(e.timestamp).toUpperCase(),
-              style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                  color: scheme.onSurfaceVariant)),
-        ));
-      }
-      final prev = i + 1 < entries.length ? entries[i + 1] : null;
-      final deltaKg = prev == null ? null : e.weightKg - prev.weightKg;
-      final relDay = PonviaDateFormatter.daysAgo(e.timestamp, DateTime.now());
-      final when = relDay == 0
-          ? l10n.today
-          : relDay == 1
-              ? l10n.yesterday
-              : dateFmt.date(e.timestamp);
-
-      rows.add(Dismissible(
-        key: ValueKey(e.id ?? e.timestamp.toIso8601String()),
-        direction: DismissDirection.endToStart,
-        background: Container(
-          color: scheme.errorContainer,
-          alignment: Alignment.centerRight,
-          padding: const EdgeInsets.only(right: Insets.xl),
-          child: const Icon(Icons.delete_outline),
-        ),
-        onDismissed: (_) async {
-          final repo = ref.read(weightRepositoryProvider);
-          if (e.id != null) await repo.delete(e.id!);
-          if (!context.mounted) return;
-          showUndoSnackbar(
-            context,
-            message: l10n.snackbarEntryDeleted,
-            undoLabel: l10n.actionUndo,
-            icon: Icons.delete_outline,
-            onUndo: () => repo.add(WeightEntry(
-                timestamp: e.timestamp, weightKg: e.weightKg, note: e.note)),
-          );
-        },
-        child: _EntryRow(
-          title: '$when · ${dateFmt.time(e.timestamp)}',
-          note: e.note,
-          value: fmt.withUnit(e.weightKg),
-          deltaKg: deltaKg,
-          fmt: fmt,
-          onTap: () => showLogWeightSheet(context, existing: e),
-        ),
-      ));
+    if (item.isMonth) {
+      return Padding(
+        padding: const EdgeInsets.fromLTRB(Insets.xs, Insets.lg, 0, Insets.sm),
+        child: Text(monthFmt.format(item.monthDate!).toUpperCase(),
+            style: Theme.of(context)
+                .textTheme
+                .labelSmall
+                ?.copyWith(color: scheme.onSurfaceVariant)),
+      );
     }
-    return rows;
+
+    final e = item.entry!;
+    final deltaKg =
+        item.prev == null ? null : e.weightKg - item.prev!.weightKg;
+    final relDay = PonviaDateFormatter.daysAgo(e.timestamp, DateTime.now());
+    final when = relDay == 0
+        ? l10n.today
+        : relDay == 1
+            ? l10n.yesterday
+            : dateFmt.date(e.timestamp);
+
+    return Dismissible(
+      key: ValueKey(e.id ?? e.timestamp.toIso8601String()),
+      direction: DismissDirection.endToStart,
+      background: Container(
+        color: scheme.errorContainer,
+        alignment: Alignment.centerRight,
+        padding: const EdgeInsets.only(right: Insets.xl),
+        child: const Icon(Icons.delete_outline),
+      ),
+      onDismissed: (_) async {
+        final repo = ref.read(weightRepositoryProvider);
+        if (e.id != null) await repo.delete(e.id!);
+        if (!context.mounted) return;
+        showUndoSnackbar(
+          context,
+          message: l10n.snackbarEntryDeleted,
+          undoLabel: l10n.actionUndo,
+          icon: Icons.delete_outline,
+          onUndo: () => repo.add(WeightEntry(
+              timestamp: e.timestamp, weightKg: e.weightKg, note: e.note)),
+        );
+      },
+      child: _EntryRow(
+        title: '$when · ${dateFmt.time(e.timestamp)}',
+        note: e.note,
+        value: fmt.withUnit(e.weightKg),
+        deltaKg: deltaKg,
+        fmt: fmt,
+        onTap: () => showLogWeightSheet(context, existing: e),
+      ),
+    );
   }
+}
+
+/// A lightweight History list slot — either a month header or an entry row
+/// (with its previous entry, for the delta). Cheap to create in bulk; the
+/// widgets are built lazily by SliverList.builder.
+class _HistoryItem {
+  const _HistoryItem.month(this.monthDate)
+      : entry = null,
+        prev = null;
+  const _HistoryItem.entry(this.entry, this.prev) : monthDate = null;
+
+  final DateTime? monthDate;
+  final WeightEntry? entry;
+  final WeightEntry? prev;
+
+  bool get isMonth => monthDate != null;
 }
 
 class _EntryRow extends StatelessWidget {
@@ -534,7 +573,8 @@ class _EmptyHistory extends StatelessWidget {
               child: Icon(Icons.show_chart, size: 40, color: scheme.onSurfaceVariant),
             ),
             const SizedBox(height: Insets.xl),
-            Text(l10n.historyEmpty, style: text.headlineMedium),
+            Text(l10n.historyEmpty,
+                textAlign: TextAlign.center, style: text.headlineMedium),
           ],
         ),
       ),

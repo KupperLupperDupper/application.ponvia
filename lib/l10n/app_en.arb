@@ -169,7 +169,7 @@
   "@exportFailed": { "placeholders": { "error": { "type": "String" } } },
 
   "clearDialogTitle": "Clear entries & goals?",
-  "clearDialogBody": "This permanently deletes all weight entries and goals. This cannot be undone.",
+  "clearDialogBody": "This permanently deletes all weight entries and goals — you can undo it right after. Export first if you want a lasting copy.",
 
   "onboardWelcomeTitle": "Welcome to Ponvia",
   "onboardWelcomeBody": "Log your weight in seconds and watch the trend take shape. No account, no cloud — everything stays on this phone.",

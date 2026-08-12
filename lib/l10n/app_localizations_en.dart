@@ -446,7 +446,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get clearDialogBody =>
-      'This permanently deletes all weight entries and goals. This cannot be undone.';
+      'This permanently deletes all weight entries and goals — you can undo it right after. Export first if you want a lasting copy.';
 
   @override
   String get onboardWelcomeTitle => 'Welcome to Ponvia';

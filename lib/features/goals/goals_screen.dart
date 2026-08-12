@@ -145,6 +145,7 @@ class _GoalFormState extends ConsumerState<_GoalForm> {
   String _input = '';
   bool _highlight = false;
   bool _saving = false;
+  bool _prefilled = false;
 
   bool get _isEditing => widget.existing != null;
 
@@ -153,12 +154,23 @@ class _GoalFormState extends ConsumerState<_GoalForm> {
     super.initState();
     final g = widget.existing;
     if (g != null) {
+      _labelController.text = g.label ?? '';
+      _highlight = g.highlightOverride;
+    }
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    // Pre-fill the target here, not in initState: it uses `_sep`, which reads
+    // Localizations.localeOf(context) — illegal before initState completes.
+    final g = widget.existing;
+    if (g != null && !_prefilled) {
+      _prefilled = true;
       final unit = ref.read(settingsControllerProvider).unit;
       _input = WeightConverter.fromKg(g.targetWeightKg, unit)
           .toStringAsFixed(1)
           .replaceAll('.', _sep);
-      _labelController.text = g.label ?? '';
-      _highlight = g.highlightOverride;
     }
   }
 

@@ -869,7 +869,7 @@ abstract class AppLocalizations {
   /// No description provided for @clearDialogBody.
   ///
   /// In en, this message translates to:
-  /// **'This permanently deletes all weight entries and goals. This cannot be undone.'**
+  /// **'This permanently deletes all weight entries and goals — you can undo it right after. Export first if you want a lasting copy.'**
   String get clearDialogBody;
 
   /// No description provided for @onboardWelcomeTitle.
