@@ -13,6 +13,7 @@ import '../../core/units/weight_unit.dart';
 import '../../domain/models/weight_entry.dart';
 import '../../l10n/app_localizations.dart';
 import '../logging/log_weight_screen.dart';
+import 'trend_bounds.dart';
 
 enum _Range {
   week(Duration(days: 7)),
@@ -50,6 +51,8 @@ class _HistoryScreenState extends ConsumerState<HistoryScreen> {
     final l10n = AppLocalizations.of(context);
     final settings = ref.watch(settingsControllerProvider);
     final entriesAsync = ref.watch(entriesProvider);
+    // Closest unachieved goal (null when none / no weight yet) → marker line.
+    final goalTargetKg = ref.watch(closestGoalProvider)?.targetWeightKg;
     final fmt = WeightFormatter(settings.unit, locale: Localizations.localeOf(context).languageCode);
     final dateFmt = PonviaDateFormatter(locale: Localizations.localeOf(context).languageCode);
 
@@ -87,6 +90,7 @@ class _HistoryScreenState extends ConsumerState<HistoryScreen> {
                   unit: settings.unit,
                   fmt: fmt,
                   dateFmt: dateFmt,
+                  goalTargetKg: goalTargetKg,
                 ),
               if (inRange.isEmpty)
                 Padding(
@@ -267,12 +271,14 @@ class _ChartCard extends StatelessWidget {
     required this.unit,
     required this.fmt,
     required this.dateFmt,
+    required this.goalTargetKg,
   });
 
   final List<WeightEntry> entries;
   final WeightUnit unit;
   final WeightFormatter fmt;
   final PonviaDateFormatter dateFmt;
+  final double? goalTargetKg;
 
   @override
   Widget build(BuildContext context) {
@@ -287,7 +293,11 @@ class _ChartCard extends StatelessWidget {
       child: SizedBox(
         height: 170,
         child: _TrendChart(
-            entries: entries, unit: unit, fmt: fmt, dateFmt: dateFmt),
+            entries: entries,
+            unit: unit,
+            fmt: fmt,
+            dateFmt: dateFmt,
+            goalTargetKg: goalTargetKg),
       ),
     );
   }
@@ -330,17 +340,20 @@ class _TrendChart extends StatelessWidget {
     required this.unit,
     required this.fmt,
     required this.dateFmt,
+    required this.goalTargetKg,
   });
 
   final List<WeightEntry> entries; // newest-first
   final WeightUnit unit;
   final WeightFormatter fmt;
   final PonviaDateFormatter dateFmt;
+  final double? goalTargetKg;
 
   @override
   Widget build(BuildContext context) {
     final ponvia = Theme.of(context).extension<PonviaColors>()!;
     final scheme = Theme.of(context).colorScheme;
+    final l10n = AppLocalizations.of(context);
     final axisDate =
         DateFormat.MMMd(Localizations.localeOf(context).languageCode);
     final chrono = entries.reversed.toList();
@@ -353,21 +366,47 @@ class _TrendChart extends StatelessWidget {
       for (var i = 0; i < values.length; i++)
         FlSpot(chrono[i].timestamp.millisecondsSinceEpoch - minXms, values[i]),
     ];
-    final minV = values.reduce((a, b) => a < b ? a : b);
-    final maxV = values.reduce((a, b) => a > b ? a : b);
-    final pad = ((maxV - minV) * 0.15).clamp(0.5, double.infinity);
+    // Goal target in the display unit (like the series); folded into the
+    // y-range so the marker line is visible even when it sits off the data.
+    final goalTarget = goalTargetKg == null
+        ? null
+        : WeightConverter.fromKg(goalTargetKg!, unit);
+    final bounds = TrendBounds.of(values, target: goalTarget);
     final maxX = spots.last.x;
     final xInterval = maxX <= 0 ? 1.0 : maxX / 2;
-    final yRange = (maxV + pad) - (minV - pad);
-    final yInterval = yRange <= 0 ? 1.0 : yRange / 4;
-    final yDecimals = yRange < 4 ? 1 : 0;
+    final yInterval = bounds.interval;
+    final yDecimals = bounds.decimals;
 
     return LineChart(
       LineChartData(
         minX: 0,
         maxX: maxX,
-        minY: minV - pad,
-        maxY: maxV + pad,
+        minY: bounds.minY,
+        maxY: bounds.maxY,
+        extraLinesData: goalTarget == null
+            ? const ExtraLinesData()
+            : ExtraLinesData(
+                horizontalLines: [
+                  HorizontalLine(
+                    y: goalTarget,
+                    color: scheme.onSurfaceVariant.withValues(alpha: 0.7),
+                    strokeWidth: 1.5,
+                    dashArray: const [6, 5],
+                    label: HorizontalLineLabel(
+                      show: true,
+                      alignment: Alignment.topRight,
+                      padding: const EdgeInsets.only(right: 4, bottom: 3),
+                      labelResolver: (_) =>
+                          l10n.homeTarget(fmt.withUnit(goalTargetKg!)),
+                      style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                            color: scheme.onSurfaceVariant,
+                            fontWeight: FontWeight.w700,
+                            letterSpacing: 0,
+                          ),
+                    ),
+                  ),
+                ],
+              ),
         gridData: FlGridData(
           show: true,
           drawVerticalLine: false,
