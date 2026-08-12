@@ -6,10 +6,12 @@ import '../../app/theme/ponvia_colors.dart';
 import '../../app/theme/typography.dart';
 import '../../core/formatting/date_formatter.dart';
 import '../../core/formatting/weight_formatter.dart';
+import '../../core/ui/goal_eta_line.dart';
 import '../../core/ui/spacing.dart';
 import '../../core/ui/undo_snackbar.dart';
 import '../../core/units/weight_unit.dart';
 import '../../domain/models/goal.dart';
+import '../../domain/models/weight_entry.dart';
 import '../../l10n/app_localizations.dart';
 import '../logging/numeric_keypad.dart';
 
@@ -77,6 +79,7 @@ class GoalsScreen extends ConsumerWidget {
                       unit: settings.unit,
                       currentKg: currentKg,
                       startKg: startKg,
+                      entries: entries,
                       highlighted: g.id == closest?.id,
                       onTap: () => _showGoalSheet(context, existing: g),
                     ),
@@ -574,6 +577,7 @@ class _GoalCard extends StatelessWidget {
     required this.unit,
     required this.currentKg,
     required this.startKg,
+    required this.entries,
     required this.highlighted,
     required this.onTap,
   });
@@ -584,6 +588,7 @@ class _GoalCard extends StatelessWidget {
   final WeightUnit unit;
   final double? currentKg;
   final double? startKg;
+  final List<WeightEntry> entries;
   final bool highlighted;
   final VoidCallback onTap;
 
@@ -709,21 +714,28 @@ class _GoalCard extends StatelessWidget {
       );
     }
     if (highlighted && startKg != null && progress != null) {
-      return Padding(
-        padding: const EdgeInsets.only(top: Insets.sm),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-              l10n.goalStarted(
-                  fmt.withUnit(startKg!), dateFmt.date(goal.createdAt)),
-              style: text.bodySmall?.copyWith(color: subColor),
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(top: Insets.sm),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  l10n.goalStarted(
+                      fmt.withUnit(startKg!), dateFmt.date(goal.createdAt)),
+                  style: text.bodySmall?.copyWith(color: subColor),
+                ),
+                Text('${(progress * 100).round()}%',
+                    style: text.bodySmall?.copyWith(
+                        color: subColor, fontWeight: FontWeight.w700)),
+              ],
             ),
-            Text('${(progress * 100).round()}%',
-                style: text.bodySmall
-                    ?.copyWith(color: subColor, fontWeight: FontWeight.w700)),
-          ],
-        ),
+          ),
+          GoalEtaLine(
+              entries: entries, targetKg: goal.targetWeightKg, color: subColor),
+        ],
       );
     }
     if (goal.label != null && goal.label!.isNotEmpty) {

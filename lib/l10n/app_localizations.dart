@@ -284,6 +284,12 @@ abstract class AppLocalizations {
   /// **'{percent}% of the way from {start}'**
   String homeProgressFrom(int percent, String start);
 
+  /// No description provided for @homeGoalEta.
+  ///
+  /// In en, this message translates to:
+  /// **'At your recent pace · ~{date}'**
+  String homeGoalEta(String date);
+
   /// No description provided for @homeCaloriesSlot.
   ///
   /// In en, this message translates to:

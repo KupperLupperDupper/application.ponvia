@@ -8,6 +8,7 @@ import '../../app/theme/ponvia_colors.dart';
 import '../../app/theme/typography.dart';
 import '../../core/formatting/date_formatter.dart';
 import '../../core/formatting/weight_formatter.dart';
+import '../../core/ui/goal_eta_line.dart';
 import '../../core/ui/spacing.dart';
 import '../../core/units/weight_unit.dart';
 import '../../domain/models/weight_entry.dart';
@@ -65,6 +66,7 @@ class HomeScreen extends ConsumerWidget {
                   currentKg: latest.weightKg,
                   startKg: entries.last.weightKg,
                   fmt: fmt,
+                  entries: entries,
                 ),
               ],
               const SizedBox(height: Insets.cardGap),
@@ -347,12 +349,14 @@ class _GoalCard extends StatelessWidget {
     required this.currentKg,
     required this.startKg,
     required this.fmt,
+    required this.entries,
   });
 
   final double targetKg;
   final double currentKg;
   final double startKg;
   final WeightFormatter fmt;
+  final List<WeightEntry> entries;
 
   @override
   Widget build(BuildContext context) {
@@ -402,6 +406,7 @@ class _GoalCard extends StatelessWidget {
           const SizedBox(height: Insets.sm),
           Text(l10n.homeProgressFrom(percent, fmt.withUnit(startKg)),
               style: text.bodySmall?.copyWith(color: scheme.onSurfaceVariant)),
+          GoalEtaLine(entries: entries, targetKg: targetKg),
         ],
       ),
     );

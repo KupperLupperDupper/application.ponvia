@@ -45,6 +45,8 @@
   "@homeToGo": { "placeholders": { "amount": { "type": "String" } } },
   "homeProgressFrom": "{percent}% of the way from {start}",
   "@homeProgressFrom": { "placeholders": { "percent": { "type": "int" }, "start": { "type": "String" } } },
+  "homeGoalEta": "At your recent pace · ~{date}",
+  "@homeGoalEta": { "placeholders": { "date": { "type": "String" } } },
   "homeCaloriesSlot": "Calories — coming soon",
 
   "historyTitle": "History",
