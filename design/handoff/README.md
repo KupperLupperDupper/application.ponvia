@@ -3,7 +3,9 @@
 ## Overview
 Ponvia is a local-first weight-tracking app. The product goal is near-zero-friction logging with the **latest weight always front and centre**, given meaning by a highlighted goal and a recent trend. Calorie tracking is explicitly out of scope for this build, but Home reserves a visual slot for a second metric so it can be added later without a redesign.
 
-This bundle covers ten screens — Splash, Onboarding, Home, Log/Edit weight, History, Goals, Settings, Notification settings, **Privacy**, plus the **bottom navigation with universal add** and the **custom undo snackbar** — in light and dark, with Home and Onboarding also shown in Danish and across kg / lb / st. Privacy is shown complete in both English and Danish.
+This bundle covers ten screens — Splash, Onboarding, Home, Log/Edit weight, History, Goals, Settings, Notification settings, **Privacy**, plus the **bottom navigation with universal add**, the **custom undo snackbar** and the **Goal reached moment** — in light and dark, with Home and Onboarding also shown in Danish and across kg / lb / st. Privacy is shown complete in both English and Danish.
+
+The **Goal reached** sheet has its own spec in `GOAL_REACHED.md`.
 
 **Read `BOTTOM_NAV_SNACKBAR_PRIVACY.md` first** if you are implementing the nav, the snackbar or the Privacy page: it is newer than the per-screen notes below and overrides them. Localised copy for all three is in `strings.en-da.json`.
 
@@ -180,6 +182,7 @@ All in `assets/`:
 - `Ponvia.dc.html` — **the design reference.** All 30+ frames on one canvas, grouped by screen, each captioned with its intended export name (`home.dark.kg.png`, `log-error.light.png`, …). Open it in a browser and pan/zoom.
 - `DESIGN_SYSTEM.md` — filled token spec (brand, both colour schemes, type, spacing, shape, elevation, motion, iconography, charts, navigation decision).
 - `tokens.json` — the same values, machine-readable, for generating a Flutter `ThemeData`.
+- `GOAL_REACHED.md` — the goal-reached sheet: trigger rules, geometry, copy, motion.
 - `rationale.md` — one paragraph on palette and mood.
 - `assets/` — icon, adaptive pair, splash logos, font licenses.
 
@@ -198,3 +201,12 @@ All in `assets/`:
 
 ### 11. Bottom nav + undo snackbar
 See BOTTOM_NAV_SNACKBAR_PRIVACY.md. Frames: nav.* and snackbar.* in Ponvia.dc.html sections 13 and 11. The sections badged 2–6 in that file are **superseded exploration** kept for provenance — build from the one badged 7 · Settled.
+
+
+### 12. Goal reached — modal sheet
+See `GOAL_REACHED.md`. Frames: `goalreached.*` in `Ponvia.dc.html` sections 14 and 15.
+- **Purpose:** close the loop that today requires manually tapping "Mark achieved" in the goal editor. Fires after a log whose weight crosses an active goal's target, lose or gain.
+- **Tone is a hard constraint:** the app gently notices; it does not congratulate. No confetti, streaks, badges, sound, celebratory haptics, bounce or emoji. Only the 64dp `check_circle` emblem moves, once, for 250ms.
+- **Layout:** content-hug sheet, 28 top radius, `surfaceContainerHighest`, elevation 3 — the same family as the log sheet. Emblem → title → one body line → full-width filled "Mark achieved" → text "Keep it open".
+- **After confirm:** sheet out (250ms), then the existing undo snackbar at the 98dp inset — "Goal marked as reached · Undo". No second confirmation, no route change.
+- **Copy:** `strings.en-da.json → goalReached`; the weight is interpolated in the display unit with locale decimals.

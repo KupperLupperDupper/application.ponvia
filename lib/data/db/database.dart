@@ -26,9 +26,12 @@ class AppDatabase extends _$AppDatabase {
   MigrationStrategy get migration => MigrationStrategy(
         onCreate: (m) => m.createAll(),
         onUpgrade: (m, from, to) async {
-          // v2: manual "Highlight on Home" pin on goals.
+          // v2: manual "Highlight on Home" pin, plus goal auto-detection's
+          // direction anchor (startWeightKg) and one-shot prompt flag.
           if (from < 2) {
             await m.addColumn(goals, goals.highlightOverride);
+            await m.addColumn(goals, goals.startWeightKg);
+            await m.addColumn(goals, goals.reachedPromptShownAt);
           }
         },
       );

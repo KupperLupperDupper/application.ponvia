@@ -207,6 +207,20 @@ class AppLocalizationsEn extends AppLocalizations {
   String get goalClosest => 'Closest goal';
 
   @override
+  String get goalReachedTitle => 'You reached it';
+
+  @override
+  String goalReachedBody(String weight) {
+    return 'You\'ve hit your $weight goal.';
+  }
+
+  @override
+  String get goalReachedKeepOpen => 'Keep it open';
+
+  @override
+  String get goalReachedMarked => 'Goal marked as reached';
+
+  @override
   String get logTitle => 'Log weight';
 
   @override

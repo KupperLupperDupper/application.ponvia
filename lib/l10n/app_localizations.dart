@@ -446,6 +446,30 @@ abstract class AppLocalizations {
   /// **'Closest goal'**
   String get goalClosest;
 
+  /// No description provided for @goalReachedTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'You reached it'**
+  String get goalReachedTitle;
+
+  /// No description provided for @goalReachedBody.
+  ///
+  /// In en, this message translates to:
+  /// **'You\'ve hit your {weight} goal.'**
+  String goalReachedBody(String weight);
+
+  /// No description provided for @goalReachedKeepOpen.
+  ///
+  /// In en, this message translates to:
+  /// **'Keep it open'**
+  String get goalReachedKeepOpen;
+
+  /// No description provided for @goalReachedMarked.
+  ///
+  /// In en, this message translates to:
+  /// **'Goal marked as reached'**
+  String get goalReachedMarked;
+
   /// No description provided for @logTitle.
   ///
   /// In en, this message translates to:

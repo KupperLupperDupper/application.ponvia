@@ -101,8 +101,10 @@ class GoalsScreen extends ConsumerWidget {
       onUndo: () => repo.add(Goal(
         targetWeightKg: g.targetWeightKg,
         label: g.label,
+        startWeightKg: g.startWeightKg,
         createdAt: g.createdAt,
         achievedAt: g.achievedAt,
+        reachedPromptShownAt: g.reachedPromptShownAt,
       )),
     );
   }
@@ -220,9 +222,12 @@ class _GoalFormState extends ConsumerState<_GoalForm> {
     final existing = widget.existing;
     final int id;
     if (existing == null) {
+      // Anchor the goal's direction (lose vs gain) to the current weight.
+      final startKg = ref.read(latestWeightProvider).asData?.value?.weightKg;
       id = await repo.add(Goal(
         targetWeightKg: kg,
         label: labelOrNull,
+        startWeightKg: startKg,
         createdAt: DateTime.now(),
       ));
     } else {
@@ -231,9 +236,11 @@ class _GoalFormState extends ConsumerState<_GoalForm> {
         id: id,
         targetWeightKg: kg,
         label: labelOrNull,
+        startWeightKg: existing.startWeightKg,
         createdAt: existing.createdAt,
         achievedAt: existing.achievedAt,
         highlightOverride: existing.highlightOverride,
+        reachedPromptShownAt: existing.reachedPromptShownAt,
       ));
     }
     // Apply the pin last so exclusivity (clearing other goals) always holds.

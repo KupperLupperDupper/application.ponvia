@@ -26,6 +26,28 @@
       "da": "Nyt mål"
     }
   },
+  "goalReached": {
+    "title": {
+      "en": "You reached it",
+      "da": "Du nåede det"
+    },
+    "body": {
+      "en": "You've hit your {weight} goal.",
+      "da": "Du har nået dit mål på {weight}."
+    },
+    "confirm": {
+      "en": "Mark achieved",
+      "da": "Markér som opnået"
+    },
+    "dismiss": {
+      "en": "Keep it open",
+      "da": "Behold det åbne"
+    },
+    "confirmedSnackbar": {
+      "en": "Goal marked as reached",
+      "da": "Målet er markeret som nået"
+    }
+  },
   "snackbar": {
     "entryDeleted": {
       "en": "Entry deleted",

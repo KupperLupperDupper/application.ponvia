@@ -19,8 +19,10 @@ void main() {
     Goal(
       targetWeightKg: 78,
       label: 'Summer',
+      startWeightKg: 90.5,
       createdAt: DateTime(2026, 7, 1),
       highlightOverride: true,
+      reachedPromptShownAt: DateTime(2026, 7, 20, 8),
     ),
   ];
   const settings = AppSettings(unit: WeightUnit.lb, hasOnboarded: true);
@@ -38,8 +40,19 @@ void main() {
     expect(data.entries.first.note, 'morning, fasted');
     expect(data.goals.single.label, 'Summer');
     expect(data.goals.single.highlightOverride, true);
+    expect(data.goals.single.startWeightKg, 90.5);
+    expect(data.goals.single.reachedPromptShownAt, DateTime(2026, 7, 20, 8));
     expect(data.settings!.unit, WeightUnit.lb);
     expect(data.settings!.hasOnboarded, true);
+  });
+
+  test('a v1 backup (no goal start/prompt fields) still decodes', () {
+    const json = '{"schemaVersion":1,"weights":[],'
+        '"goals":[{"targetWeightKg":80,"createdAt":"2026-01-01T00:00:00.000Z"}]}';
+    final data = BackupCodec.decodeJson(json);
+    expect(data.goals.single.targetWeightKg, 80);
+    expect(data.goals.single.startWeightKg, isNull);
+    expect(data.goals.single.reachedPromptShownAt, isNull);
   });
 
   test('rejects a backup from a newer schema', () {

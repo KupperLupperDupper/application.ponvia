@@ -16,6 +16,11 @@ class Goals extends Table {
   IntColumn get id => integer().autoIncrement()();
   RealColumn get targetWeightKg => real()();
   TextColumn get label => text().nullable()();
+
+  /// The latest weight at the moment the goal was created, used to classify the
+  /// goal's direction (lose when `target < start`, gain when `target > start`)
+  /// for auto-detection. Null for goals created before this was captured.
+  RealColumn get startWeightKg => real().nullable()();
   DateTimeColumn get createdAt => dateTime()();
   DateTimeColumn get achievedAt => dateTime().nullable()();
 
@@ -24,4 +29,8 @@ class Goals extends Table {
   /// time (enforced by [GoalRepository.setHighlightOverride]).
   BoolColumn get highlightOverride =>
       boolean().withDefault(const Constant(false))();
+
+  /// When the "you reached it" moment was shown for this goal (whatever the
+  /// user answered). Set once so a later re-crossing never re-opens the prompt.
+  DateTimeColumn get reachedPromptShownAt => dateTime().nullable()();
 }
