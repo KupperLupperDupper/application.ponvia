@@ -15,6 +15,7 @@ class GoalRepository {
         label: r.label,
         createdAt: r.createdAt,
         achievedAt: r.achievedAt,
+        highlightOverride: r.highlightOverride,
       );
 
   Stream<List<Goal>> watchAll() {
@@ -36,6 +37,7 @@ class GoalRepository {
             label: Value(g.label),
             createdAt: g.createdAt,
             achievedAt: Value(g.achievedAt),
+            highlightOverride: Value(g.highlightOverride),
           ),
         );
   }
@@ -48,8 +50,25 @@ class GoalRepository {
         label: Value(g.label),
         createdAt: Value(g.createdAt),
         achievedAt: Value(g.achievedAt),
+        highlightOverride: Value(g.highlightOverride),
       ),
     );
+  }
+
+  /// Pins (or unpins) a goal's "Highlight on Home" override. Pinning one goal
+  /// clears the flag on every other goal, so at most one is ever highlighted
+  /// manually.
+  Future<void> setHighlightOverride(int id, bool on) async {
+    await _db.transaction(() async {
+      if (on) {
+        await _db.update(_db.goals).write(
+              const GoalsCompanion(highlightOverride: Value(false)),
+            );
+      }
+      await (_db.update(_db.goals)..where((t) => t.id.equals(id))).write(
+        GoalsCompanion(highlightOverride: Value(on)),
+      );
+    });
   }
 
   Future<void> delete(int id) =>
@@ -66,6 +85,7 @@ class GoalRepository {
                 label: Value(g.label),
                 createdAt: g.createdAt,
                 achievedAt: Value(g.achievedAt),
+                highlightOverride: Value(g.highlightOverride),
               ),
             );
         inserted++;

@@ -5,14 +5,25 @@ import '../models/goal.dart';
 class ClosestGoal {
   const ClosestGoal._();
 
-  /// Returns the non-achieved goal minimizing `|target - current|`.
+  /// Returns the highlighted goal.
   ///
-  /// Ties break toward the more recently created goal. Returns `null` when there
-  /// is no current weight yet or no active goals (highlighting is suppressed).
+  /// A goal manually pinned via "Highlight on Home" ([Goal.highlightOverride])
+  /// always wins — even before a first weight is logged — with ties broken
+  /// toward the more recently created pin. Otherwise this returns the
+  /// non-achieved goal minimizing `|target - current|`, ties breaking toward the
+  /// more recently created goal. Returns `null` when there are no active goals,
+  /// or (absent a pin) when there is no current weight yet.
   static Goal? select(List<Goal> goals, double? currentKg) {
-    if (currentKg == null) return null;
     final active = goals.where((g) => !g.isAchieved).toList();
     if (active.isEmpty) return null;
+
+    final pinned = active.where((g) => g.highlightOverride).toList();
+    if (pinned.isNotEmpty) {
+      pinned.sort((a, b) => b.createdAt.compareTo(a.createdAt));
+      return pinned.first;
+    }
+
+    if (currentKg == null) return null;
 
     active.sort((a, b) {
       final da = (a.targetWeightKg - currentKg).abs();

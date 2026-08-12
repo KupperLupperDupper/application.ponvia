@@ -18,4 +18,10 @@ class Goals extends Table {
   TextColumn get label => text().nullable()();
   DateTimeColumn get createdAt => dateTime()();
   DateTimeColumn get achievedAt => dateTime().nullable()();
+
+  /// Manual "Highlight on Home" pin. When set, this goal overrides the
+  /// distance-based closest-goal selection. At most one goal is pinned at a
+  /// time (enforced by [GoalRepository.setHighlightOverride]).
+  BoolColumn get highlightOverride =>
+      boolean().withDefault(const Constant(false))();
 }

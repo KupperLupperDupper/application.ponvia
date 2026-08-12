@@ -169,5 +169,15 @@
   "notifPushTitle": "Tid til at veje dig",
   "notifPushBody": "Registrér dagens vægt i Ponvia.",
   "notifNext": "Næste: {when}",
-  "notifDaySelected": "{day} valgt"
+  "notifDaySelected": "{day} valgt",
+
+  "goalTargetLabel": "Målvægt",
+  "goalLabelHint": "f.eks. Sommermål",
+  "goalDirectionLabel": "Retning",
+  "goalDirectionLose": "Tab",
+  "goalDirectionGain": "Tag på",
+  "goalDirectionUnknown": "Ikke nok data endnu",
+  "goalHighlightOnHome": "Fremhæv på forsiden",
+  "goalHighlightOnHomeSub": "Vis dette måls fremgang på forsiden",
+  "goalSave": "Gem mål"
 }

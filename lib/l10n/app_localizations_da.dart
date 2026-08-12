@@ -515,4 +515,31 @@ class AppLocalizationsDa extends AppLocalizations {
   String notifDaySelected(String day) {
     return '$day valgt';
   }
+
+  @override
+  String get goalTargetLabel => 'Målvægt';
+
+  @override
+  String get goalLabelHint => 'f.eks. Sommermål';
+
+  @override
+  String get goalDirectionLabel => 'Retning';
+
+  @override
+  String get goalDirectionLose => 'Tab';
+
+  @override
+  String get goalDirectionGain => 'Tag på';
+
+  @override
+  String get goalDirectionUnknown => 'Ikke nok data endnu';
+
+  @override
+  String get goalHighlightOnHome => 'Fremhæv på forsiden';
+
+  @override
+  String get goalHighlightOnHomeSub => 'Vis dette måls fremgang på forsiden';
+
+  @override
+  String get goalSave => 'Gem mål';
 }
