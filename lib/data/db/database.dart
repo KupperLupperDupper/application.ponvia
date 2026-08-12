@@ -20,7 +20,18 @@ class AppDatabase extends _$AppDatabase {
   AppDatabase.forTesting(super.executor);
 
   @override
-  int get schemaVersion => 1;
+  int get schemaVersion => 2;
+
+  @override
+  MigrationStrategy get migration => MigrationStrategy(
+        onCreate: (m) => m.createAll(),
+        onUpgrade: (m, from, to) async {
+          // v2: manual "Highlight on Home" pin on goals.
+          if (from < 2) {
+            await m.addColumn(goals, goals.highlightOverride);
+          }
+        },
+      );
 
   /// Removes all domain data (used by "clear all data" and import-replace).
   Future<void> clearAllData() async {

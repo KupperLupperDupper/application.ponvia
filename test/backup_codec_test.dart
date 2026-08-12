@@ -16,7 +16,12 @@ void main() {
     WeightEntry(timestamp: DateTime(2026, 8, 2, 7, 30), weightKg: 82.0),
   ];
   final goals = [
-    Goal(targetWeightKg: 78, label: 'Summer', createdAt: DateTime(2026, 7, 1)),
+    Goal(
+      targetWeightKg: 78,
+      label: 'Summer',
+      createdAt: DateTime(2026, 7, 1),
+      highlightOverride: true,
+    ),
   ];
   const settings = AppSettings(unit: WeightUnit.lb, hasOnboarded: true);
 
@@ -32,6 +37,7 @@ void main() {
     expect(data.entries.first.weightKg, 82.4);
     expect(data.entries.first.note, 'morning, fasted');
     expect(data.goals.single.label, 'Summer');
+    expect(data.goals.single.highlightOverride, true);
     expect(data.settings!.unit, WeightUnit.lb);
     expect(data.settings!.hasOnboarded, true);
   });

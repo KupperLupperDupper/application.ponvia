@@ -9,6 +9,7 @@ class Goal {
     this.label,
     required this.createdAt,
     this.achievedAt,
+    this.highlightOverride = false,
   });
 
   final int? id;
@@ -16,6 +17,9 @@ class Goal {
   final String? label;
   final DateTime createdAt;
   final DateTime? achievedAt;
+
+  /// Manual "Highlight on Home" pin — overrides distance-based highlighting.
+  final bool highlightOverride;
 
   bool get isAchieved => achievedAt != null;
 
@@ -26,6 +30,7 @@ class Goal {
     DateTime? createdAt,
     DateTime? achievedAt,
     bool clearAchieved = false,
+    bool? highlightOverride,
   }) {
     return Goal(
       id: id ?? this.id,
@@ -33,6 +38,7 @@ class Goal {
       label: label ?? this.label,
       createdAt: createdAt ?? this.createdAt,
       achievedAt: clearAchieved ? null : (achievedAt ?? this.achievedAt),
+      highlightOverride: highlightOverride ?? this.highlightOverride,
     );
   }
 
@@ -42,6 +48,7 @@ class Goal {
         'createdAt': createdAt.toUtc().toIso8601String(),
         if (achievedAt != null)
           'achievedAt': achievedAt!.toUtc().toIso8601String(),
+        if (highlightOverride) 'highlightOverride': true,
       };
 
   factory Goal.fromJson(Map<String, dynamic> json) => Goal(
@@ -51,5 +58,6 @@ class Goal {
         achievedAt: json['achievedAt'] == null
             ? null
             : DateTime.parse(json['achievedAt'] as String).toLocal(),
+        highlightOverride: json['highlightOverride'] as bool? ?? false,
       );
 }

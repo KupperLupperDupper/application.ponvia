@@ -198,5 +198,15 @@
   "notifNext": "Next: {when}",
   "@notifNext": { "placeholders": { "when": { "type": "String" } } },
   "notifDaySelected": "{day} selected",
-  "@notifDaySelected": { "placeholders": { "day": { "type": "String" } } }
+  "@notifDaySelected": { "placeholders": { "day": { "type": "String" } } },
+
+  "goalTargetLabel": "Target weight",
+  "goalLabelHint": "e.g. Summer goal",
+  "goalDirectionLabel": "Direction",
+  "goalDirectionLose": "Lose",
+  "goalDirectionGain": "Gain",
+  "goalDirectionUnknown": "Not enough data yet",
+  "goalHighlightOnHome": "Highlight on Home",
+  "goalHighlightOnHomeSub": "Show this goal's progress on Home",
+  "goalSave": "Save goal"
 }

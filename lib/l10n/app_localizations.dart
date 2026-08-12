@@ -1027,6 +1027,60 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'{day} selected'**
   String notifDaySelected(String day);
+
+  /// No description provided for @goalTargetLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Target weight'**
+  String get goalTargetLabel;
+
+  /// No description provided for @goalLabelHint.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. Summer goal'**
+  String get goalLabelHint;
+
+  /// No description provided for @goalDirectionLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Direction'**
+  String get goalDirectionLabel;
+
+  /// No description provided for @goalDirectionLose.
+  ///
+  /// In en, this message translates to:
+  /// **'Lose'**
+  String get goalDirectionLose;
+
+  /// No description provided for @goalDirectionGain.
+  ///
+  /// In en, this message translates to:
+  /// **'Gain'**
+  String get goalDirectionGain;
+
+  /// No description provided for @goalDirectionUnknown.
+  ///
+  /// In en, this message translates to:
+  /// **'Not enough data yet'**
+  String get goalDirectionUnknown;
+
+  /// No description provided for @goalHighlightOnHome.
+  ///
+  /// In en, this message translates to:
+  /// **'Highlight on Home'**
+  String get goalHighlightOnHome;
+
+  /// No description provided for @goalHighlightOnHomeSub.
+  ///
+  /// In en, this message translates to:
+  /// **'Show this goal\'s progress on Home'**
+  String get goalHighlightOnHomeSub;
+
+  /// No description provided for @goalSave.
+  ///
+  /// In en, this message translates to:
+  /// **'Save goal'**
+  String get goalSave;
 }
 
 class _AppLocalizationsDelegate

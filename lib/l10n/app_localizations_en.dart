@@ -533,4 +533,31 @@ class AppLocalizationsEn extends AppLocalizations {
   String notifDaySelected(String day) {
     return '$day selected';
   }
+
+  @override
+  String get goalTargetLabel => 'Target weight';
+
+  @override
+  String get goalLabelHint => 'e.g. Summer goal';
+
+  @override
+  String get goalDirectionLabel => 'Direction';
+
+  @override
+  String get goalDirectionLose => 'Lose';
+
+  @override
+  String get goalDirectionGain => 'Gain';
+
+  @override
+  String get goalDirectionUnknown => 'Not enough data yet';
+
+  @override
+  String get goalHighlightOnHome => 'Highlight on Home';
+
+  @override
+  String get goalHighlightOnHomeSub => 'Show this goal\'s progress on Home';
+
+  @override
+  String get goalSave => 'Save goal';
 }
