@@ -148,6 +148,12 @@ class AppLocalizationsDa extends AppLocalizations {
   String get rangeAll => 'Alle';
 
   @override
+  String get chartLegendWeight => 'Vægt';
+
+  @override
+  String get chartLegendTrend => 'Tendens';
+
+  @override
   String get goalsTitle => 'Mål';
 
   @override

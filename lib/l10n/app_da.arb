@@ -46,6 +46,8 @@
   "range3M": "3m",
   "range1Y": "1å",
   "rangeAll": "Alle",
+  "chartLegendWeight": "Vægt",
+  "chartLegendTrend": "Tendens",
 
   "goalsTitle": "Mål",
   "goalsEmpty": "Ingen mål endnu. Tryk på + for at tilføje et.",
