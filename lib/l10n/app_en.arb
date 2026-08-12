@@ -45,16 +45,24 @@
   "@homeToGo": { "placeholders": { "amount": { "type": "String" } } },
   "homeProgressFrom": "{percent}% of the way from {start}",
   "@homeProgressFrom": { "placeholders": { "percent": { "type": "int" }, "start": { "type": "String" } } },
+  "homeGoalEta": "At your recent pace · ~{date}",
+  "@homeGoalEta": { "placeholders": { "date": { "type": "String" } } },
   "homeCaloriesSlot": "Calories — coming soon",
 
   "historyTitle": "History",
   "historyEmpty": "No entries yet.",
   "historyEmptyRange": "No entries in this range.",
+  "historySummaryEyebrow": "THIS PERIOD",
+  "statMin": "Min",
+  "statAvg": "Avg",
+  "statMax": "Max",
   "range1W": "1W",
   "range1M": "1M",
   "range3M": "3M",
   "range1Y": "1Y",
   "rangeAll": "All",
+  "chartLegendWeight": "Weight",
+  "chartLegendTrend": "Trend",
 
   "goalsTitle": "Goals",
   "goalsEmpty": "No goals yet. Tap + to add one.",
@@ -71,6 +79,12 @@
   "goalReached": "Reached {date}",
   "@goalReached": { "placeholders": { "date": { "type": "String" } } },
   "goalClosest": "Closest goal",
+
+  "goalReachedTitle": "You reached it",
+  "goalReachedBody": "You've hit your {weight} goal.",
+  "@goalReachedBody": { "placeholders": { "weight": { "type": "String" } } },
+  "goalReachedKeepOpen": "Keep it open",
+  "goalReachedMarked": "Goal marked as reached",
 
   "logTitle": "Log weight",
   "logEditTitle": "Edit entry",
@@ -155,7 +169,7 @@
   "@exportFailed": { "placeholders": { "error": { "type": "String" } } },
 
   "clearDialogTitle": "Clear entries & goals?",
-  "clearDialogBody": "This permanently deletes all weight entries and goals. This cannot be undone.",
+  "clearDialogBody": "This permanently deletes all weight entries and goals — you can undo it right after. Export first if you want a lasting copy.",
 
   "onboardWelcomeTitle": "Welcome to Ponvia",
   "onboardWelcomeBody": "Log your weight in seconds and watch the trend take shape. No account, no cloud — everything stays on this phone.",
@@ -192,5 +206,15 @@
   "notifNext": "Next: {when}",
   "@notifNext": { "placeholders": { "when": { "type": "String" } } },
   "notifDaySelected": "{day} selected",
-  "@notifDaySelected": { "placeholders": { "day": { "type": "String" } } }
+  "@notifDaySelected": { "placeholders": { "day": { "type": "String" } } },
+
+  "goalTargetLabel": "Target weight",
+  "goalLabelHint": "e.g. Summer goal",
+  "goalDirectionLabel": "Direction",
+  "goalDirectionLose": "Lose",
+  "goalDirectionGain": "Gain",
+  "goalDirectionUnknown": "Not enough data yet",
+  "goalHighlightOnHome": "Highlight on Home",
+  "goalHighlightOnHomeSub": "Show this goal's progress on Home",
+  "goalSave": "Save goal"
 }

@@ -6,12 +6,23 @@ import 'package:intl/intl.dart';
 class PonviaDateFormatter {
   PonviaDateFormatter({String? locale})
       : _medium = DateFormat.yMMMd(locale),
+        _monthDay = DateFormat.MMMd(locale),
         _time = DateFormat.Hm(locale);
 
   final DateFormat _medium;
+  final DateFormat _monthDay;
   final DateFormat _time;
 
   String date(DateTime dt) => _medium.format(dt);
+
+  /// A compact day+month label without the year (e.g. "12 Oct" / "12. okt"),
+  /// used for near-term estimates like the goal ETA.
+  String monthDay(DateTime dt) => _monthDay.format(dt);
+
+  /// [monthDay] when [dt] is in [reference]'s year, else the full [date] with
+  /// the year — so a projection landing next year stays unambiguous.
+  String etaLabel(DateTime dt, DateTime reference) =>
+      dt.year == reference.year ? monthDay(dt) : date(dt);
 
   String time(DateTime dt) => _time.format(dt);
 

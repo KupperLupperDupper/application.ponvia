@@ -3,13 +3,17 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../app/providers.dart';
 import '../../app/theme/ponvia_colors.dart';
+import '../../app/theme/typography.dart';
 import '../../core/formatting/date_formatter.dart';
 import '../../core/formatting/weight_formatter.dart';
+import '../../core/ui/goal_eta_line.dart';
 import '../../core/ui/spacing.dart';
 import '../../core/ui/undo_snackbar.dart';
 import '../../core/units/weight_unit.dart';
 import '../../domain/models/goal.dart';
+import '../../domain/models/weight_entry.dart';
 import '../../l10n/app_localizations.dart';
+import '../logging/numeric_keypad.dart';
 
 /// Goals list styled to DESIGN_SPEC §6: a highlighted "closest goal" card plus
 /// regular / achieved / gain cards, each with progress and a footer.
@@ -37,7 +41,7 @@ class GoalsScreen extends ConsumerWidget {
           Padding(
             padding: const EdgeInsets.only(right: Insets.md),
             child: FilledButton.tonalIcon(
-              onPressed: () => _showGoalDialog(context, ref, settings.unit),
+              onPressed: () => _showGoalSheet(context),
               icon: const Icon(Icons.add, size: 18),
               label: Text(l10n.goalNew),
               style: FilledButton.styleFrom(
@@ -75,9 +79,9 @@ class GoalsScreen extends ConsumerWidget {
                       unit: settings.unit,
                       currentKg: currentKg,
                       startKg: startKg,
+                      entries: entries,
                       highlighted: g.id == closest?.id,
-                      onTap: () => _showGoalDialog(context, ref, settings.unit,
-                          existing: g),
+                      onTap: () => _showGoalSheet(context, existing: g),
                     ),
                   ),
                 ),
@@ -100,104 +104,435 @@ class GoalsScreen extends ConsumerWidget {
       onUndo: () => repo.add(Goal(
         targetWeightKg: g.targetWeightKg,
         label: g.label,
+        startWeightKg: g.startWeightKg,
         createdAt: g.createdAt,
         achievedAt: g.achievedAt,
+        reachedPromptShownAt: g.reachedPromptShownAt,
       )),
     );
   }
 
-  Future<void> _showGoalDialog(
-    BuildContext context,
-    WidgetRef ref,
-    WeightUnit unit, {
-    Goal? existing,
-  }) async {
-    final l10n = AppLocalizations.of(context);
-    final valueController = TextEditingController(
-      text: existing == null
-          ? ''
-          : WeightConverter.fromKg(existing.targetWeightKg, unit)
-              .toStringAsFixed(1),
-    );
-    final labelController = TextEditingController(text: existing?.label ?? '');
-    final repo = ref.read(goalRepositoryProvider);
-
-    final result = await showDialog<bool>(
+  /// Opens the add/edit-goal modal bottom sheet (DESIGN_SPEC §6), driven by the
+  /// app's custom [NumericKeypad] — mirroring the log-weight sheet.
+  Future<void> _showGoalSheet(BuildContext context, {Goal? existing}) {
+    return showModalBottomSheet<void>(
       context: context,
-      builder: (context) => AlertDialog(
-        title: Text(existing == null ? l10n.goalNew : l10n.goalEdit),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            TextField(
-              controller: valueController,
-              autofocus: true,
-              keyboardType:
-                  const TextInputType.numberWithOptions(decimal: true),
-              decoration:
-                  InputDecoration(labelText: l10n.goalTargetField(unit.code)),
-            ),
-            const SizedBox(height: Insets.md),
-            TextField(
-              controller: labelController,
-              decoration: InputDecoration(labelText: l10n.goalLabelField),
-            ),
-            if (existing != null) ...[
-              const SizedBox(height: Insets.sm),
-              Align(
-                alignment: Alignment.centerLeft,
-                child: TextButton.icon(
-                  icon: Icon(existing.isAchieved
-                      ? Icons.undo
-                      : Icons.check_circle_outline),
-                  label: Text(existing.isAchieved
-                      ? l10n.goalReopen
-                      : l10n.goalMarkAchieved),
-                  onPressed: () {
-                    repo.update(existing.isAchieved
-                        ? existing.copyWith(clearAchieved: true)
-                        : existing.copyWith(achievedAt: DateTime.now()));
-                    Navigator.pop(context, false);
-                  },
-                ),
-              ),
-            ],
-          ],
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context, false),
-            child: Text(l10n.actionCancel),
-          ),
-          FilledButton(
-            onPressed: () => Navigator.pop(context, true),
-            child: Text(existing == null ? l10n.actionAdd : l10n.actionSave),
-          ),
-        ],
-      ),
+      isScrollControlled: true,
+      useSafeArea: true,
+      // Present over the root navigator so the sheet covers the bottom nav
+      // (like the log-weight sheet) instead of opening behind it.
+      useRootNavigator: true,
+      showDragHandle: true,
+      builder: (context) => _GoalForm(existing: existing),
     );
+  }
+}
 
-    if (result != true) return;
-    final value =
-        double.tryParse(valueController.text.trim().replaceAll(',', '.'));
-    if (value == null) return;
-    final kg = WeightConverter.toKg(value, unit);
-    final label = labelController.text.trim();
+/// The add/edit-goal form: a themed sheet whose target-weight field is driven by
+/// the custom [NumericKeypad] (kg-canonical, locale decimal separator, one
+/// decimal place, range-validated). See DESIGN_SPEC §6.
+class _GoalForm extends ConsumerStatefulWidget {
+  const _GoalForm({this.existing});
+
+  final Goal? existing;
+
+  @override
+  ConsumerState<_GoalForm> createState() => _GoalFormState();
+}
+
+class _GoalFormState extends ConsumerState<_GoalForm> {
+  final _labelController = TextEditingController();
+  String _input = '';
+  bool _highlight = false;
+  bool _saving = false;
+  bool _prefilled = false;
+
+  bool get _isEditing => widget.existing != null;
+
+  @override
+  void initState() {
+    super.initState();
+    final g = widget.existing;
+    if (g != null) {
+      _labelController.text = g.label ?? '';
+      _highlight = g.highlightOverride;
+    }
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    // Pre-fill the target here, not in initState: it uses `_sep`, which reads
+    // Localizations.localeOf(context) — illegal before initState completes.
+    final g = widget.existing;
+    if (g != null && !_prefilled) {
+      _prefilled = true;
+      final unit = ref.read(settingsControllerProvider).unit;
+      _input = WeightConverter.fromKg(g.targetWeightKg, unit)
+          .toStringAsFixed(1)
+          .replaceAll('.', _sep);
+    }
+  }
+
+  String get _sep =>
+      Localizations.localeOf(context).languageCode == 'da' ? ',' : '.';
+
+  double? get _parsed {
+    if (_input.isEmpty) return null;
+    return double.tryParse(_input.replaceAll(_sep, '.'));
+  }
+
+  double? get _kg {
+    final v = _parsed;
+    if (v == null) return null;
+    return WeightConverter.toKg(v, ref.read(settingsControllerProvider).unit);
+  }
+
+  bool get _valid {
+    final kg = _kg;
+    return kg != null && kg >= 20 && kg <= 400;
+  }
+
+  @override
+  void dispose() {
+    _labelController.dispose();
+    super.dispose();
+  }
+
+  void _onKey(String k) {
+    setState(() {
+      if (k == _sep) {
+        if (!_input.contains(_sep)) {
+          _input = _input.isEmpty ? '0$_sep' : '$_input$_sep';
+        }
+        return;
+      }
+      // Enforce at most one decimal place.
+      final sepIndex = _input.indexOf(_sep);
+      if (sepIndex != -1 && _input.length - sepIndex > 1) return;
+      if (_input.replaceAll(_sep, '').length >= 5) return;
+      _input += k;
+    });
+  }
+
+  void _onBackspace() {
+    if (_input.isNotEmpty) {
+      setState(() => _input = _input.substring(0, _input.length - 1));
+    }
+  }
+
+  Future<void> _toggleAchieved() async {
+    final g = widget.existing!;
+    final repo = ref.read(goalRepositoryProvider);
+    await repo.update(g.isAchieved
+        ? g.copyWith(clearAchieved: true)
+        : g.copyWith(achievedAt: DateTime.now()));
+    if (mounted) Navigator.of(context).maybePop();
+  }
+
+  Future<void> _save() async {
+    final kg = _kg;
+    if (kg == null || !_valid) return;
+    setState(() => _saving = true);
+    final label = _labelController.text.trim();
+    final labelOrNull = label.isEmpty ? null : label;
+    final repo = ref.read(goalRepositoryProvider);
+    final existing = widget.existing;
+    final int id;
     if (existing == null) {
-      await repo.add(Goal(
+      // Anchor the goal's direction (lose vs gain) to the current weight.
+      final startKg = ref.read(latestWeightProvider).asData?.value?.weightKg;
+      id = await repo.add(Goal(
         targetWeightKg: kg,
-        label: label.isEmpty ? null : label,
+        label: labelOrNull,
+        startWeightKg: startKg,
         createdAt: DateTime.now(),
       ));
     } else {
+      id = existing.id!;
       await repo.update(Goal(
-        id: existing.id,
+        id: id,
         targetWeightKg: kg,
-        label: label.isEmpty ? null : label,
+        label: labelOrNull,
+        startWeightKg: existing.startWeightKg,
         createdAt: existing.createdAt,
         achievedAt: existing.achievedAt,
+        highlightOverride: existing.highlightOverride,
+        reachedPromptShownAt: existing.reachedPromptShownAt,
       ));
     }
+    // Apply the pin last so exclusivity (clearing other goals) always holds.
+    await repo.setHighlightOverride(id, _highlight);
+    if (mounted) Navigator.of(context).maybePop();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+    final scheme = Theme.of(context).colorScheme;
+    final text = Theme.of(context).textTheme;
+    final settings = ref.watch(settingsControllerProvider);
+    final unit = settings.unit;
+    final currentKg =
+        ref.watch(latestWeightProvider).asData?.value?.weightKg;
+    final showError = _input.isNotEmpty && !_valid;
+
+    // Direction is derived from the latest weight; unknown until we have both a
+    // valid target and a current weight to compare against.
+    final targetKg = _valid ? _kg : null;
+    final String directionText;
+    final IconData? directionIcon;
+    final Color directionColor;
+    if (targetKg == null || currentKg == null || targetKg == currentKg) {
+      directionText = l10n.goalDirectionUnknown;
+      directionIcon = null;
+      directionColor = scheme.onSurfaceVariant;
+    } else if (targetKg > currentKg) {
+      directionText = l10n.goalDirectionGain;
+      directionIcon = Icons.arrow_upward;
+      directionColor = scheme.onSurfaceVariant;
+    } else {
+      directionText = l10n.goalDirectionLose;
+      directionIcon = Icons.arrow_downward;
+      directionColor = scheme.onSurfaceVariant;
+    }
+
+    return Padding(
+      padding: EdgeInsets.only(
+        left: Insets.screenH,
+        right: Insets.screenH,
+        bottom: Insets.xxl + MediaQuery.viewInsetsOf(context).bottom,
+      ),
+      child: SingleChildScrollView(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            // Header
+            Row(
+              children: [
+                Text(_isEditing ? l10n.goalEdit : l10n.goalNew,
+                    style: text.titleLarge),
+                const Spacer(),
+                if (_isEditing)
+                  IconButton(
+                    tooltip: widget.existing!.isAchieved
+                        ? l10n.goalReopen
+                        : l10n.goalMarkAchieved,
+                    icon: Icon(widget.existing!.isAchieved
+                        ? Icons.undo
+                        : Icons.check_circle_outline),
+                    onPressed: _toggleAchieved,
+                  ),
+                IconButton(
+                  icon: const Icon(Icons.close),
+                  onPressed: () => Navigator.of(context).maybePop(),
+                ),
+              ],
+            ),
+            const SizedBox(height: Insets.md),
+            // TARGET WEIGHT label
+            Text(
+              l10n.goalTargetLabel.toUpperCase(),
+              style: TextStyle(
+                fontSize: 12,
+                fontWeight: FontWeight.w800,
+                letterSpacing: 0.6,
+                color: scheme.primary,
+              ),
+            ),
+            const SizedBox(height: Insets.sm),
+            // Target-weight field (2dp primary border) — driven by the keypad.
+            _TargetField(
+              input: _input,
+              unit: unit,
+              error: showError,
+            ),
+            SizedBox(
+              height: 22,
+              child: showError
+                  ? Padding(
+                      padding: const EdgeInsets.only(top: Insets.xs),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Icon(Icons.error_outline,
+                              size: 16, color: scheme.error),
+                          const SizedBox(width: Insets.xs),
+                          Text(l10n.logRangeError,
+                              style: text.bodySmall
+                                  ?.copyWith(color: scheme.error)),
+                        ],
+                      ),
+                    )
+                  : null,
+            ),
+            const SizedBox(height: Insets.sm),
+            // Optional label
+            TextField(
+              controller: _labelController,
+              textCapitalization: TextCapitalization.sentences,
+              textInputAction: TextInputAction.done,
+              decoration: InputDecoration(
+                hintText: l10n.goalLabelHint,
+                prefixIcon: const Icon(Icons.label_outline),
+              ),
+            ),
+            const SizedBox(height: Insets.md),
+            // Read-only direction row
+            Row(
+              children: [
+                Text(l10n.goalDirectionLabel,
+                    style: text.bodyLarge
+                        ?.copyWith(color: scheme.onSurfaceVariant)),
+                const Spacer(),
+                _DirectionChip(
+                  label: directionText,
+                  icon: directionIcon,
+                  color: directionColor,
+                ),
+              ],
+            ),
+            const Divider(height: Insets.xl),
+            // Highlight on Home switch
+            SwitchListTile(
+              contentPadding: EdgeInsets.zero,
+              value: _highlight,
+              onChanged: (v) => setState(() => _highlight = v),
+              title: Text(l10n.goalHighlightOnHome,
+                  style: text.bodyLarge?.copyWith(fontWeight: FontWeight.w700)),
+              subtitle: Text(l10n.goalHighlightOnHomeSub,
+                  style: text.bodySmall
+                      ?.copyWith(color: scheme.onSurfaceVariant)),
+            ),
+            const SizedBox(height: Insets.sm),
+            NumericKeypad(
+              onKey: _onKey,
+              onBackspace: _onBackspace,
+              decimalSeparator: _sep,
+            ),
+            const SizedBox(height: Insets.md),
+            // Footer: Cancel (flex 1) + Save goal (flex 1.4)
+            Row(
+              children: [
+                Expanded(
+                  flex: 10,
+                  child: SizedBox(
+                    height: 56,
+                    child: OutlinedButton(
+                      onPressed: () => Navigator.of(context).maybePop(),
+                      child: Text(l10n.actionCancel),
+                    ),
+                  ),
+                ),
+                const SizedBox(width: Insets.md),
+                Expanded(
+                  flex: 14,
+                  child: SizedBox(
+                    height: 56,
+                    child: FilledButton(
+                      onPressed: (_valid && !_saving) ? _save : null,
+                      child: _saving
+                          ? const SizedBox(
+                              height: 20,
+                              width: 20,
+                              child:
+                                  CircularProgressIndicator(strokeWidth: 2))
+                          : Text(l10n.goalSave),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+/// The 64dp target-weight field with a 2dp primary border, showing the keypad
+/// input as a 32sp value + 18sp unit (DESIGN_SPEC §6).
+class _TargetField extends StatelessWidget {
+  const _TargetField(
+      {required this.input, required this.unit, required this.error});
+
+  final String input;
+  final WeightUnit unit;
+  final bool error;
+
+  @override
+  Widget build(BuildContext context) {
+    final scheme = Theme.of(context).colorScheme;
+    final empty = input.isEmpty;
+    final borderColor = error ? scheme.error : scheme.primary;
+    final valueColor = empty
+        ? scheme.onSurfaceVariant
+        : (error ? scheme.error : scheme.onSurface);
+    return Container(
+      height: 64,
+      alignment: Alignment.center,
+      decoration: BoxDecoration(
+        color: scheme.surfaceContainer,
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: borderColor, width: 2),
+      ),
+      child: FittedBox(
+        fit: BoxFit.scaleDown,
+        child: Text.rich(
+          TextSpan(children: [
+            TextSpan(
+              text: empty ? '0' : input,
+              style: PonviaTypography.heroWeight
+                  .copyWith(fontSize: 32, color: valueColor),
+            ),
+            TextSpan(
+              text: ' ${unit.code}',
+              style: TextStyle(
+                fontFamily: PonviaTypography.family,
+                fontSize: 18,
+                fontWeight: FontWeight.w600,
+                color: scheme.onSurfaceVariant,
+              ),
+            ),
+          ]),
+        ),
+      ),
+    );
+  }
+}
+
+/// The read-only Direction chip (lose / gain / not-enough-data).
+class _DirectionChip extends StatelessWidget {
+  const _DirectionChip(
+      {required this.label, required this.icon, required this.color});
+
+  final String label;
+  final IconData? icon;
+  final Color color;
+
+  @override
+  Widget build(BuildContext context) {
+    final scheme = Theme.of(context).colorScheme;
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: Insets.md, vertical: 6),
+      decoration: BoxDecoration(
+        color: scheme.surfaceContainerHighest,
+        borderRadius: BorderRadius.circular(14),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          if (icon != null) ...[
+            Icon(icon, size: 16, color: color),
+            const SizedBox(width: Insets.xs),
+          ],
+          Text(label,
+              style: TextStyle(
+                  fontSize: 13, fontWeight: FontWeight.w700, color: color)),
+        ],
+      ),
+    );
   }
 }
 
@@ -257,6 +592,7 @@ class _GoalCard extends StatelessWidget {
     required this.unit,
     required this.currentKg,
     required this.startKg,
+    required this.entries,
     required this.highlighted,
     required this.onTap,
   });
@@ -267,6 +603,7 @@ class _GoalCard extends StatelessWidget {
   final WeightUnit unit;
   final double? currentKg;
   final double? startKg;
+  final List<WeightEntry> entries;
   final bool highlighted;
   final VoidCallback onTap;
 
@@ -392,21 +729,28 @@ class _GoalCard extends StatelessWidget {
       );
     }
     if (highlighted && startKg != null && progress != null) {
-      return Padding(
-        padding: const EdgeInsets.only(top: Insets.sm),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-              l10n.goalStarted(
-                  fmt.withUnit(startKg!), dateFmt.date(goal.createdAt)),
-              style: text.bodySmall?.copyWith(color: subColor),
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(top: Insets.sm),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  l10n.goalStarted(
+                      fmt.withUnit(startKg!), dateFmt.date(goal.createdAt)),
+                  style: text.bodySmall?.copyWith(color: subColor),
+                ),
+                Text('${(progress * 100).round()}%',
+                    style: text.bodySmall?.copyWith(
+                        color: subColor, fontWeight: FontWeight.w700)),
+              ],
             ),
-            Text('${(progress * 100).round()}%',
-                style: text.bodySmall
-                    ?.copyWith(color: subColor, fontWeight: FontWeight.w700)),
-          ],
-        ),
+          ),
+          GoalEtaLine(
+              entries: entries, targetKg: goal.targetWeightKg, color: subColor),
+        ],
       );
     }
     if (goal.label != null && goal.label!.isNotEmpty) {

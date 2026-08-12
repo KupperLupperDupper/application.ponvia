@@ -27,7 +27,7 @@ void showUndoSnackbar(
         elevation: 0,
         duration: duration,
         padding: EdgeInsets.zero,
-        margin: const EdgeInsets.only(left: 16, right: 16, bottom: 98),
+        margin: const EdgeInsets.only(left: 16, right: 16, bottom: 20),
         content: _UndoSnackContent(
           message: message,
           undoLabel: undoLabel,

@@ -5,11 +5,17 @@ import '../../app/providers.dart';
 import '../../app/router.dart';
 import '../../app/theme/typography.dart';
 import '../../core/formatting/date_formatter.dart';
+import '../../core/formatting/weight_formatter.dart';
 import '../../core/ui/spacing.dart';
 import '../../core/ui/undo_snackbar.dart';
 import '../../core/units/weight_unit.dart';
+import '../../data/repositories/goal_repository.dart';
+import '../../data/repositories/weight_repository.dart';
+import '../../domain/goals/goal_achievement.dart';
+import '../../domain/models/goal.dart';
 import '../../domain/models/weight_entry.dart';
 import '../../l10n/app_localizations.dart';
+import '../goals/goal_reached_sheet.dart';
 import 'numeric_keypad.dart';
 
 /// Opens the log/edit form as a modal bottom sheet (the design's logging model).
@@ -18,6 +24,9 @@ Future<void> showLogWeightSheet(BuildContext context, {WeightEntry? existing}) {
     context: context,
     isScrollControlled: true,
     useSafeArea: true,
+    // Present over the root navigator so the sheet always covers the bottom nav
+    // (e.g. when opened to edit an entry from the History tab).
+    useRootNavigator: true,
     showDragHandle: true,
     builder: (context) => LogWeightForm(existing: existing),
   );
@@ -57,6 +66,7 @@ class _LogWeightFormState extends ConsumerState<LogWeightForm> {
   String _input = '';
   late DateTime _timestamp;
   bool _saving = false;
+  bool _prefilled = false;
 
   bool get _isEditing => widget.existing != null;
 
@@ -65,12 +75,21 @@ class _LogWeightFormState extends ConsumerState<LogWeightForm> {
     super.initState();
     final e = widget.existing;
     _timestamp = e?.timestamp ?? DateTime.now();
-    if (e != null) {
+    _noteController.text = e?.note ?? '';
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    // Pre-fill the value here, not in initState: it uses `_sep`, which reads
+    // Localizations.localeOf(context) — illegal before initState completes.
+    final e = widget.existing;
+    if (e != null && !_prefilled) {
+      _prefilled = true;
       final unit = ref.read(settingsControllerProvider).unit;
       _input = WeightConverter.fromKg(e.weightKg, unit)
           .toStringAsFixed(1)
           .replaceAll('.', _sep);
-      _noteController.text = e.note ?? '';
     }
   }
 
@@ -156,13 +175,98 @@ class _LogWeightFormState extends ConsumerState<LogWeightForm> {
       weightKg: kg,
       note: note.isEmpty ? null : note,
     );
+    // Capture everything from `ref` before the sheet pops (this State is
+    // disposed on pop; the achievement moment is presented over the app root).
     final repo = ref.read(weightRepositoryProvider);
+    final goalRepo = ref.read(goalRepositoryProvider);
+    final unit = ref.read(settingsControllerProvider).unit;
+
+    final previousLatestKg = (await repo.latest())?.weightKg;
     if (_isEditing) {
       await repo.update(entry);
     } else {
       await repo.add(entry);
     }
+
+    // Did the new latest weight reach any active, un-prompted goals?
+    final reached = await _detectReachedGoals(repo, goalRepo, previousLatestKg);
+
     if (mounted) Navigator.of(context).maybePop();
+    if (reached.isNotEmpty) {
+      await _presentGoalReached(goalRepo, unit, reached);
+    }
+  }
+
+  /// Every active, un-prompted goal the new latest weight has reached, sorted
+  /// nearest-target-first. The nearest is shown in the calm moment; all of them
+  /// are marked complete together on confirm (a single weigh-in can pass more
+  /// than one goal).
+  Future<List<Goal>> _detectReachedGoals(
+    WeightRepository repo,
+    GoalRepository goalRepo,
+    double? previousLatestKg,
+  ) async {
+    final latest = await repo.latest();
+    if (latest == null) return const [];
+    final goals = await goalRepo.getAll();
+    final reached = GoalAchievement.allReached(
+      newLatestKg: latest.weightKg,
+      previousLatestKg: previousLatestKg,
+      goals: goals,
+    );
+    reached.sort((a, b) => (a.targetWeightKg - latest.weightKg)
+        .abs()
+        .compareTo((b.targetWeightKg - latest.weightKg).abs()));
+    return reached;
+  }
+
+  /// Presents the calm "you reached it" sheet over the app root (the log sheet
+  /// has already closed). Confirm sets `achievedAt`; keep-open just records that
+  /// the prompt was shown so it never re-opens for this goal.
+  Future<void> _presentGoalReached(
+    GoalRepository goalRepo,
+    WeightUnit unit,
+    List<Goal> reached,
+  ) async {
+    final ctx = rootNavigatorKey.currentContext;
+    if (ctx == null || !ctx.mounted) return;
+    final nearest = reached.first;
+    final fmt =
+        WeightFormatter(unit, locale: Localizations.localeOf(ctx).languageCode);
+    final weightLabel = fmt.withUnit(nearest.targetWeightKg);
+    // Let the log sheet's close animation finish before presenting.
+    await Future<void>.delayed(const Duration(milliseconds: 260));
+    if (!ctx.mounted) return;
+
+    final confirmed = await showGoalReachedSheet(ctx, weightLabel: weightLabel);
+    if (!ctx.mounted) return;
+    final l10n = AppLocalizations.of(ctx);
+    final now = DateTime.now();
+    if (confirmed == true) {
+      // A single weigh-in can pass several goals — mark them all complete.
+      for (final g in reached) {
+        await goalRepo.update(
+            g.copyWith(achievedAt: now, reachedPromptShownAt: now));
+      }
+      if (!ctx.mounted) return;
+      showUndoSnackbar(
+        ctx,
+        message: l10n.goalReachedMarked,
+        undoLabel: l10n.actionUndo,
+        icon: Icons.check_circle_outline,
+        onUndo: () {
+          for (final g in reached) {
+            goalRepo.update(
+                g.copyWith(clearAchieved: true, clearReachedPrompt: true));
+          }
+        },
+      );
+    } else {
+      // Keep them open: record the prompt on all so they won't re-nag.
+      for (final g in reached) {
+        await goalRepo.update(g.copyWith(reachedPromptShownAt: now));
+      }
+    }
   }
 
   Future<void> _delete() async {

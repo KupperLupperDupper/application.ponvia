@@ -36,16 +36,23 @@
   "homeGoalRow": "Mål · {target}",
   "homeToGo": "{amount} tilbage",
   "homeProgressFrom": "{percent} % af vejen fra {start}",
+  "homeGoalEta": "I dit nuværende tempo · ~{date}",
   "homeCaloriesSlot": "Kalorier — kommer snart",
 
   "historyTitle": "Historik",
   "historyEmpty": "Ingen målinger endnu.",
   "historyEmptyRange": "Ingen målinger i denne periode.",
+  "historySummaryEyebrow": "DENNE PERIODE",
+  "statMin": "Min",
+  "statAvg": "Gns.",
+  "statMax": "Maks",
   "range1W": "1u",
   "range1M": "1m",
   "range3M": "3m",
   "range1Y": "1å",
   "rangeAll": "Alle",
+  "chartLegendWeight": "Vægt",
+  "chartLegendTrend": "Tendens",
 
   "goalsTitle": "Mål",
   "goalsEmpty": "Ingen mål endnu. Tryk på + for at tilføje et.",
@@ -59,6 +66,11 @@
   "goalStarted": "Startede {weight} · {date}",
   "goalReached": "Nået {date}",
   "goalClosest": "Nærmeste mål",
+
+  "goalReachedTitle": "Du nåede det",
+  "goalReachedBody": "Du har nået dit mål på {weight}.",
+  "goalReachedKeepOpen": "Behold det åbne",
+  "goalReachedMarked": "Målet er markeret som nået",
 
   "logTitle": "Registrér vægt",
   "logEditTitle": "Redigér måling",
@@ -136,7 +148,7 @@
   "exportFailed": "Eksport mislykkedes: {error}",
 
   "clearDialogTitle": "Ryd målinger og mål?",
-  "clearDialogBody": "Dette sletter permanent alle vægtmålinger og mål. Dette kan ikke fortrydes.",
+  "clearDialogBody": "Dette sletter permanent alle vægtmålinger og mål — du kan fortryde det umiddelbart efter. Eksportér først, hvis du vil have en varig kopi.",
 
   "onboardWelcomeTitle": "Velkommen til Ponvia",
   "onboardWelcomeBody": "Registrér din vægt på sekunder og se tendensen tage form. Ingen konto, ingen sky — alt bliver på denne telefon.",
@@ -169,5 +181,15 @@
   "notifPushTitle": "Tid til at veje dig",
   "notifPushBody": "Registrér dagens vægt i Ponvia.",
   "notifNext": "Næste: {when}",
-  "notifDaySelected": "{day} valgt"
+  "notifDaySelected": "{day} valgt",
+
+  "goalTargetLabel": "Målvægt",
+  "goalLabelHint": "f.eks. Sommermål",
+  "goalDirectionLabel": "Retning",
+  "goalDirectionLose": "Tab",
+  "goalDirectionGain": "Tag på",
+  "goalDirectionUnknown": "Ikke nok data endnu",
+  "goalHighlightOnHome": "Fremhæv på forsiden",
+  "goalHighlightOnHomeSub": "Vis dette måls fremgang på forsiden",
+  "goalSave": "Gem mål"
 }

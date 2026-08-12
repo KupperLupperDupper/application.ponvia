@@ -4,10 +4,15 @@ import 'package:ponvia/domain/models/goal.dart';
 
 void main() {
   final base = DateTime(2026, 1, 1);
-  Goal goal(double target, {DateTime? createdAt, DateTime? achievedAt}) => Goal(
+  Goal goal(double target,
+          {DateTime? createdAt,
+          DateTime? achievedAt,
+          bool highlightOverride = false}) =>
+      Goal(
         targetWeightKg: target,
         createdAt: createdAt ?? base,
         achievedAt: achievedAt,
+        highlightOverride: highlightOverride,
       );
 
   test('suppressed when there is no current weight', () {
@@ -32,5 +37,34 @@ void main() {
   test('ignores achieved goals when a closer active one exists', () {
     final goals = [goal(79, achievedAt: base), goal(78)];
     expect(ClosestGoal.select(goals, 80)!.targetWeightKg, 78);
+  });
+
+  test('a pinned goal overrides the distance-based choice', () {
+    final goals = [goal(78), goal(90, highlightOverride: true)];
+    expect(ClosestGoal.select(goals, 80)!.targetWeightKg, 90);
+  });
+
+  test('a pinned goal is highlighted even without a current weight', () {
+    expect(
+      ClosestGoal.select([goal(90, highlightOverride: true)], null)
+          ?.targetWeightKg,
+      90,
+    );
+  });
+
+  test('an achieved pinned goal does not win', () {
+    final goals = [
+      goal(78),
+      goal(90, achievedAt: base, highlightOverride: true),
+    ];
+    expect(ClosestGoal.select(goals, 80)!.targetWeightKg, 78);
+  });
+
+  test('among multiple pins the most recently created wins', () {
+    final older =
+        goal(70, createdAt: DateTime(2026, 1, 1), highlightOverride: true);
+    final newer =
+        goal(95, createdAt: DateTime(2026, 2, 1), highlightOverride: true);
+    expect(ClosestGoal.select([older, newer], 80)!.targetWeightKg, 95);
   });
 }

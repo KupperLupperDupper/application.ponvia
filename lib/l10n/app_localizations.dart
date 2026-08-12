@@ -284,6 +284,12 @@ abstract class AppLocalizations {
   /// **'{percent}% of the way from {start}'**
   String homeProgressFrom(int percent, String start);
 
+  /// No description provided for @homeGoalEta.
+  ///
+  /// In en, this message translates to:
+  /// **'At your recent pace · ~{date}'**
+  String homeGoalEta(String date);
+
   /// No description provided for @homeCaloriesSlot.
   ///
   /// In en, this message translates to:
@@ -307,6 +313,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'No entries in this range.'**
   String get historyEmptyRange;
+
+  /// No description provided for @historySummaryEyebrow.
+  ///
+  /// In en, this message translates to:
+  /// **'THIS PERIOD'**
+  String get historySummaryEyebrow;
+
+  /// No description provided for @statMin.
+  ///
+  /// In en, this message translates to:
+  /// **'Min'**
+  String get statMin;
+
+  /// No description provided for @statAvg.
+  ///
+  /// In en, this message translates to:
+  /// **'Avg'**
+  String get statAvg;
+
+  /// No description provided for @statMax.
+  ///
+  /// In en, this message translates to:
+  /// **'Max'**
+  String get statMax;
 
   /// No description provided for @range1W.
   ///
@@ -337,6 +367,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'All'**
   String get rangeAll;
+
+  /// No description provided for @chartLegendWeight.
+  ///
+  /// In en, this message translates to:
+  /// **'Weight'**
+  String get chartLegendWeight;
+
+  /// No description provided for @chartLegendTrend.
+  ///
+  /// In en, this message translates to:
+  /// **'Trend'**
+  String get chartLegendTrend;
 
   /// No description provided for @goalsTitle.
   ///
@@ -409,6 +451,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Closest goal'**
   String get goalClosest;
+
+  /// No description provided for @goalReachedTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'You reached it'**
+  String get goalReachedTitle;
+
+  /// No description provided for @goalReachedBody.
+  ///
+  /// In en, this message translates to:
+  /// **'You\'ve hit your {weight} goal.'**
+  String goalReachedBody(String weight);
+
+  /// No description provided for @goalReachedKeepOpen.
+  ///
+  /// In en, this message translates to:
+  /// **'Keep it open'**
+  String get goalReachedKeepOpen;
+
+  /// No description provided for @goalReachedMarked.
+  ///
+  /// In en, this message translates to:
+  /// **'Goal marked as reached'**
+  String get goalReachedMarked;
 
   /// No description provided for @logTitle.
   ///
@@ -803,7 +869,7 @@ abstract class AppLocalizations {
   /// No description provided for @clearDialogBody.
   ///
   /// In en, this message translates to:
-  /// **'This permanently deletes all weight entries and goals. This cannot be undone.'**
+  /// **'This permanently deletes all weight entries and goals — you can undo it right after. Export first if you want a lasting copy.'**
   String get clearDialogBody;
 
   /// No description provided for @onboardWelcomeTitle.
@@ -991,6 +1057,60 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'{day} selected'**
   String notifDaySelected(String day);
+
+  /// No description provided for @goalTargetLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Target weight'**
+  String get goalTargetLabel;
+
+  /// No description provided for @goalLabelHint.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. Summer goal'**
+  String get goalLabelHint;
+
+  /// No description provided for @goalDirectionLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Direction'**
+  String get goalDirectionLabel;
+
+  /// No description provided for @goalDirectionLose.
+  ///
+  /// In en, this message translates to:
+  /// **'Lose'**
+  String get goalDirectionLose;
+
+  /// No description provided for @goalDirectionGain.
+  ///
+  /// In en, this message translates to:
+  /// **'Gain'**
+  String get goalDirectionGain;
+
+  /// No description provided for @goalDirectionUnknown.
+  ///
+  /// In en, this message translates to:
+  /// **'Not enough data yet'**
+  String get goalDirectionUnknown;
+
+  /// No description provided for @goalHighlightOnHome.
+  ///
+  /// In en, this message translates to:
+  /// **'Highlight on Home'**
+  String get goalHighlightOnHome;
+
+  /// No description provided for @goalHighlightOnHomeSub.
+  ///
+  /// In en, this message translates to:
+  /// **'Show this goal\'s progress on Home'**
+  String get goalHighlightOnHomeSub;
+
+  /// No description provided for @goalSave.
+  ///
+  /// In en, this message translates to:
+  /// **'Save goal'**
+  String get goalSave;
 }
 
 class _AppLocalizationsDelegate

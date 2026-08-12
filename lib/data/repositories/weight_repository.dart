@@ -30,6 +30,16 @@ class WeightRepository {
     return q.watchSingleOrNull().map((r) => r == null ? null : _toDomain(r));
   }
 
+  /// The single most recent entry by timestamp, or null when there are none.
+  /// A point-in-time read (not a stream) for the goal-achievement check.
+  Future<WeightEntry?> latest() async {
+    final q = _db.select(_db.weightEntries)
+      ..orderBy([(t) => OrderingTerm.desc(t.timestamp)])
+      ..limit(1);
+    final row = await q.getSingleOrNull();
+    return row == null ? null : _toDomain(row);
+  }
+
   Future<List<WeightEntry>> getAll() async {
     final q = _db.select(_db.weightEntries)
       ..orderBy([(t) => OrderingTerm.desc(t.timestamp)]);

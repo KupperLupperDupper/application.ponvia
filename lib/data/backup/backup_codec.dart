@@ -7,7 +7,10 @@ import '../../domain/models/goal.dart';
 import '../../domain/models/weight_entry.dart';
 
 /// Current JSON backup schema version. Bump when the envelope changes.
-const int kBackupSchemaVersion = 1;
+///
+/// v2 adds each goal's `startWeightKg` and `reachedPromptShownAt` (both
+/// optional); v1 backups still decode — the new fields default to null.
+const int kBackupSchemaVersion = 2;
 
 /// Thrown when a backup/CSV payload can't be parsed or is too new to restore.
 class BackupFormatException implements Exception {

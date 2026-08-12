@@ -120,6 +120,11 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String homeGoalEta(String date) {
+    return 'At your recent pace · ~$date';
+  }
+
+  @override
   String get homeCaloriesSlot => 'Calories — coming soon';
 
   @override
@@ -130,6 +135,18 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get historyEmptyRange => 'No entries in this range.';
+
+  @override
+  String get historySummaryEyebrow => 'THIS PERIOD';
+
+  @override
+  String get statMin => 'Min';
+
+  @override
+  String get statAvg => 'Avg';
+
+  @override
+  String get statMax => 'Max';
 
   @override
   String get range1W => '1W';
@@ -145,6 +162,12 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get rangeAll => 'All';
+
+  @override
+  String get chartLegendWeight => 'Weight';
+
+  @override
+  String get chartLegendTrend => 'Trend';
 
   @override
   String get goalsTitle => 'Goals';
@@ -187,6 +210,20 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get goalClosest => 'Closest goal';
+
+  @override
+  String get goalReachedTitle => 'You reached it';
+
+  @override
+  String goalReachedBody(String weight) {
+    return 'You\'ve hit your $weight goal.';
+  }
+
+  @override
+  String get goalReachedKeepOpen => 'Keep it open';
+
+  @override
+  String get goalReachedMarked => 'Goal marked as reached';
 
   @override
   String get logTitle => 'Log weight';
@@ -409,7 +446,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get clearDialogBody =>
-      'This permanently deletes all weight entries and goals. This cannot be undone.';
+      'This permanently deletes all weight entries and goals — you can undo it right after. Export first if you want a lasting copy.';
 
   @override
   String get onboardWelcomeTitle => 'Welcome to Ponvia';
@@ -515,4 +552,31 @@ class AppLocalizationsEn extends AppLocalizations {
   String notifDaySelected(String day) {
     return '$day selected';
   }
+
+  @override
+  String get goalTargetLabel => 'Target weight';
+
+  @override
+  String get goalLabelHint => 'e.g. Summer goal';
+
+  @override
+  String get goalDirectionLabel => 'Direction';
+
+  @override
+  String get goalDirectionLose => 'Lose';
+
+  @override
+  String get goalDirectionGain => 'Gain';
+
+  @override
+  String get goalDirectionUnknown => 'Not enough data yet';
+
+  @override
+  String get goalHighlightOnHome => 'Highlight on Home';
+
+  @override
+  String get goalHighlightOnHomeSub => 'Show this goal\'s progress on Home';
+
+  @override
+  String get goalSave => 'Save goal';
 }

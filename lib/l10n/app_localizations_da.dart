@@ -121,6 +121,11 @@ class AppLocalizationsDa extends AppLocalizations {
   }
 
   @override
+  String homeGoalEta(String date) {
+    return 'I dit nuværende tempo · ~$date';
+  }
+
+  @override
   String get homeCaloriesSlot => 'Kalorier — kommer snart';
 
   @override
@@ -131,6 +136,18 @@ class AppLocalizationsDa extends AppLocalizations {
 
   @override
   String get historyEmptyRange => 'Ingen målinger i denne periode.';
+
+  @override
+  String get historySummaryEyebrow => 'DENNE PERIODE';
+
+  @override
+  String get statMin => 'Min';
+
+  @override
+  String get statAvg => 'Gns.';
+
+  @override
+  String get statMax => 'Maks';
 
   @override
   String get range1W => '1u';
@@ -146,6 +163,12 @@ class AppLocalizationsDa extends AppLocalizations {
 
   @override
   String get rangeAll => 'Alle';
+
+  @override
+  String get chartLegendWeight => 'Vægt';
+
+  @override
+  String get chartLegendTrend => 'Tendens';
 
   @override
   String get goalsTitle => 'Mål';
@@ -188,6 +211,20 @@ class AppLocalizationsDa extends AppLocalizations {
 
   @override
   String get goalClosest => 'Nærmeste mål';
+
+  @override
+  String get goalReachedTitle => 'Du nåede det';
+
+  @override
+  String goalReachedBody(String weight) {
+    return 'Du har nået dit mål på $weight.';
+  }
+
+  @override
+  String get goalReachedKeepOpen => 'Behold det åbne';
+
+  @override
+  String get goalReachedMarked => 'Målet er markeret som nået';
 
   @override
   String get logTitle => 'Registrér vægt';
@@ -410,7 +447,7 @@ class AppLocalizationsDa extends AppLocalizations {
 
   @override
   String get clearDialogBody =>
-      'Dette sletter permanent alle vægtmålinger og mål. Dette kan ikke fortrydes.';
+      'Dette sletter permanent alle vægtmålinger og mål — du kan fortryde det umiddelbart efter. Eksportér først, hvis du vil have en varig kopi.';
 
   @override
   String get onboardWelcomeTitle => 'Velkommen til Ponvia';
@@ -515,4 +552,31 @@ class AppLocalizationsDa extends AppLocalizations {
   String notifDaySelected(String day) {
     return '$day valgt';
   }
+
+  @override
+  String get goalTargetLabel => 'Målvægt';
+
+  @override
+  String get goalLabelHint => 'f.eks. Sommermål';
+
+  @override
+  String get goalDirectionLabel => 'Retning';
+
+  @override
+  String get goalDirectionLose => 'Tab';
+
+  @override
+  String get goalDirectionGain => 'Tag på';
+
+  @override
+  String get goalDirectionUnknown => 'Ikke nok data endnu';
+
+  @override
+  String get goalHighlightOnHome => 'Fremhæv på forsiden';
+
+  @override
+  String get goalHighlightOnHomeSub => 'Vis dette måls fremgang på forsiden';
+
+  @override
+  String get goalSave => 'Gem mål';
 }

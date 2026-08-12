@@ -8,9 +8,11 @@ import '../../app/theme/ponvia_colors.dart';
 import '../../app/theme/typography.dart';
 import '../../core/formatting/date_formatter.dart';
 import '../../core/formatting/weight_formatter.dart';
+import '../../core/ui/goal_eta_line.dart';
 import '../../core/ui/spacing.dart';
 import '../../core/units/weight_unit.dart';
 import '../../domain/models/weight_entry.dart';
+import '../../domain/trend_weight.dart';
 import '../../l10n/app_localizations.dart';
 import '../logging/log_weight_screen.dart';
 
@@ -64,6 +66,7 @@ class HomeScreen extends ConsumerWidget {
                   currentKg: latest.weightKg,
                   startKg: entries.last.weightKg,
                   fmt: fmt,
+                  entries: entries,
                 ),
               ],
               const SizedBox(height: Insets.cardGap),
@@ -274,6 +277,7 @@ class _Sparkline extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final scheme = Theme.of(context).colorScheme;
     final recent = entries.take(30).toList().reversed.toList();
     final minMs = recent.first.timestamp.millisecondsSinceEpoch.toDouble();
     final spots = <FlSpot>[
@@ -282,6 +286,15 @@ class _Sparkline extends StatelessWidget {
             WeightConverter.fromKg(recent[i].weightKg, unit)),
     ];
     final lastX = spots.last.x;
+
+    // Smoothed "trend weight" overlay, quiet by design. Suppressed on very short
+    // series where it would just shadow the raw line without adding meaning.
+    final showTrend = recent.length >= TrendWeight.minRenderPoints;
+    final trendKg = TrendWeight.ema([for (final e in recent) e.weightKg]);
+    final trendSpots = <FlSpot>[
+      for (var i = 0; i < recent.length; i++)
+        FlSpot(spots[i].x, WeightConverter.fromKg(trendKg[i], unit)),
+    ];
 
     return LineChart(
       LineChartData(
@@ -313,6 +326,17 @@ class _Sparkline extends StatelessWidget {
               ),
             ),
           ),
+          // Trend line drawn on top of the raw fill so it stays visible; thin,
+          // neutral, dotless — a calm guide, not a second hero series.
+          if (showTrend)
+            LineChartBarData(
+              spots: trendSpots,
+              isCurved: true,
+              curveSmoothness: 0.25,
+              color: scheme.onSurfaceVariant,
+              barWidth: 1.5,
+              dotData: const FlDotData(show: false),
+            ),
         ],
       ),
     );
@@ -325,12 +349,14 @@ class _GoalCard extends StatelessWidget {
     required this.currentKg,
     required this.startKg,
     required this.fmt,
+    required this.entries,
   });
 
   final double targetKg;
   final double currentKg;
   final double startKg;
   final WeightFormatter fmt;
+  final List<WeightEntry> entries;
 
   @override
   Widget build(BuildContext context) {
@@ -380,6 +406,7 @@ class _GoalCard extends StatelessWidget {
           const SizedBox(height: Insets.sm),
           Text(l10n.homeProgressFrom(percent, fmt.withUnit(startKg)),
               style: text.bodySmall?.copyWith(color: scheme.onSurfaceVariant)),
+          GoalEtaLine(entries: entries, targetKg: targetKg),
         ],
       ),
     );
@@ -507,7 +534,8 @@ class _EmptyHome extends StatelessWidget {
                   size: 44, color: scheme.onSurfaceVariant),
             ),
             const SizedBox(height: Insets.xl),
-            Text(l10n.homeEmptyTitle, style: text.headlineMedium),
+            Text(l10n.homeEmptyTitle,
+                textAlign: TextAlign.center, style: text.headlineMedium),
             const SizedBox(height: Insets.sm),
             Text(l10n.homeEmptyBody,
                 textAlign: TextAlign.center,
