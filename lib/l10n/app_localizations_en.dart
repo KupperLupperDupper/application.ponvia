@@ -267,6 +267,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get actionUndo => 'Undo';
 
   @override
+  String get a11yLoading => 'Loading';
+
+  @override
   String get snackbarEntryDeleted => 'Entry deleted';
 
   @override

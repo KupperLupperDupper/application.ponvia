@@ -268,6 +268,9 @@ class AppLocalizationsDa extends AppLocalizations {
   String get actionUndo => 'Fortryd';
 
   @override
+  String get a11yLoading => 'Indlæser';
+
+  @override
   String get snackbarEntryDeleted => 'Registrering slettet';
 
   @override

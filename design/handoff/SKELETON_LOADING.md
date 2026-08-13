@@ -1,105 +1,139 @@
-# Ponvia — Skeleton loading (design brief)
+# Skeleton loading — Home, History, Goals
 
-**Round 10 — BRIEF, pre-mockup.** This is the prompt for the Claude-design step, not a
-resolved spec. Produce the frames listed at the end; the delivered handoff (frames in
-`Ponvia.dc.html`, tokens under `tokens.json → skeleton`, any copy in
-`strings.en-da.json`) then feeds implementation.
+Round 10. Frames live in `Ponvia.dc.html` §20–23 (ids `10a`–`10d`). Tokens in
+`tokens.json → skeleton`. No new strings.
 
-## The problem
-Home, History and Goals each read a Drift stream and, while it resolves, show a centred
-`CircularProgressIndicator`. Two things are wrong with that:
+The centred `CircularProgressIndicator` is removed from Home, History and Goals. What
+replaces it is a **timing rule with a skeleton attached** — on a healthy device the
+skeleton is unreachable, and that is the intended outcome.
 
-1. **A spinner says "working" — a skeleton says "your layout is about to appear here."**
-   For a screen that always resolves to the same shape, the skeleton is the calmer,
-   more oriented wait.
-2. **This is a local-first app.** The DB reads resolve in *milliseconds*, so today's
-   spinner barely flashes — and a naive skeleton would flash even more jarringly
-   (appear + vanish in ~50ms reads as a flicker/blink). **Any skeleton design here is
-   inseparable from its timing** (see below). A skeleton that isn't timing-guarded is a
-   regression, not an improvement.
+---
 
-## Non-negotiable tone
-Ponvia is quiet. The skeleton must be the *quietest possible* loading affordance:
-- Low contrast. The placeholder fill is `surfaceContainer` sitting on `surface` — a
-  barely-there step, not grey-on-white. Dark mode uses the dark `surfaceContainer`
-  (`#1F2724`) on `surface` (`#0E1412`) — equally faint.
-- No spinner anywhere on these three screens once this ships.
-- The animation (if any) is a **slow, low-amplitude** shimmer or pulse — a breath, not a
-  strobe. It must never draw the eye harder than real content would.
-- Placeholder blocks mirror the **real** layout's silhouette and radii so the transition
-  to content is a settling, not a swap.
+## 1. Lifecycle — the numbers
 
-## Timing (this is a design decision, spec it in the handoff)
-The skeleton is governed by two thresholds; pick and justify the values:
-- **Show delay** — don't render the skeleton until the load has already taken longer than
-  a threshold (proposed **~150ms**). Below that, show nothing (a blank body for one or two
-  frames) so a fast local read never flashes a skeleton at all.
-- **Minimum on-screen** — once shown, hold it for at least a floor (proposed **~400ms**)
-  so it can't blink out mid-fade.
-- **Fade to content** — proposed 200ms cross-fade (reuse `motion.durationIn` = 200).
-- **Reduced motion** (`MediaQuery.disableAnimations`) — no shimmer sweep and no scale;
-  the skeleton is a static, faint block, cross-fade becomes an instant cut.
+| Constant | Value | Scope |
+|---|---|---|
+| `showDelayMs` | **200** | app-wide, one constant |
+| `minVisibleMs` | **400** | per skeleton instance |
+| `fadeMs` | **200** | reuses `motion.splashToApp` easing |
 
-State clearly in the handoff whether the show-delay is per-screen or app-wide, and the
-exact numbers.
+**Sequence.** Stream subscribed → body renders **empty** (background only, live chrome
+present). If the stream has not emitted by 200ms, build the skeleton. Once built, hold it
+at least 400ms from its own first frame. When data has arrived *and* the floor has
+elapsed, cross-fade 200ms to content.
 
-## Per-screen anatomy
-Mirror each screen's real success-state silhouette. Screen padding matches the live
-screens (`Insets.screenH` horizontal). Every block: radius per its real sibling, fill
-`surfaceContainer`, optional 1dp `outline` only where the real card has one.
+**Why 200, not 150.** A local Drift read is a 10–40ms operation. Anything past 200ms means
+the device is contending for I/O — not that the query is large. 150ms fires during ordinary
+cold-start jank and shows a skeleton for a read that had already completed by the time the
+first frame painted. The threshold is a statement about the storage layer, so it is a
+single app-wide constant rather than three per-screen ones; a per-screen number would
+imply Home is inherently slower than Goals, which is not true.
 
-### Home (`_HeroCard` + optional `_GoalCard` + second-metric slot)
-- **Hero card** — the tall rounded card (radius 24). Inside, faint bars standing in for:
-  eyebrow (short, ~80w × 12h), the big hero value (wide, ~180w × 44h), the delta pill
-  (~64w × 24h pill), and a low sparkline band (full width × ~40h). This is the anchor of
-  the screen — the one block that must feel deliberate.
-- **Goal card** — a shorter rounded card (radius 24) with a label bar + a thin progress
-  track bar.
-- **Second-metric slot** — one dashed/quiet block matching the existing reserved slot.
-- Do **not** skeletonize things that are conditional on data (BMI tile only exists when a
-  height is set). The skeleton shows the *always-present* spine: hero + one secondary card.
+**Why a 400ms floor.** One full pulse cycle (1600ms) minus the fade would be a long hold;
+400ms is the shortest window in which the pulse reads as a breath rather than a flash, and
+it guarantees the skeleton can never blink out mid-descent.
 
-### History (range control + summary + chart + rows)
-- **Range segmented control** — a single pill-row skeleton (or keep the real control
-  visible but inert; the design picks — note that the real `SegmentedButton` could show
-  live since it's not data-bound, which may feel more grounded).
-- **Summary card** — rounded card with 3–4 short stat bars in a row.
-- **Chart card** — the largest block: a rounded card (radius 16) with a faint baseline and
-  a low, calm line/area silhouette. No axis numbers.
-- **List rows** — ~4 skeleton rows: each a small leading dot + a weight bar + a faint date
-  bar, matching the real history row rhythm. Don't over-fill; 4 rows implies "more below".
+**Happy path.** Blank for ~24ms, then content. No skeleton widget is ever constructed.
+The show-delay must be implemented as *don't build*, not *build and hide* — an opacity-0
+skeleton still costs a layout pass on every fast read.
 
-### Goals (`_GoalCard` list)
-- ~3 goal-card skeletons (radius 24; the first may take the highlighted radius 28 to hint
-  the closest-goal treatment). Each: a target-value bar, a label bar, and a thin progress
-  track. Stack with the real `Insets.cardGap`.
+---
 
-## Tokens to add (`tokens.json → skeleton`)
-Propose values for:
-- `base` — the placeholder fill (light + dark), i.e. `surfaceContainer` unless you refine.
-- `sheen` — the shimmer highlight, a hair lighter than `base` (light + dark). Keep the
-  delta small.
-- `shimmer.duration`, `shimmer.easing`, and the sweep direction/angle — or, if you choose
-  a pulse instead of a sweep, `pulse.duration` and the opacity range.
-- `showDelayMs`, `minVisibleMs`, `fadeMs`.
+## 2. Motion — pulse, not sweep
 
-## What this must not become
-- Not a full-page grey wireframe of every possible widget. Only the always-present spine.
-- Not a branded animation moment. No logo, no "Ponvia" wordmark, no mascot.
-- Not applied to modal sheets, Settings, Onboarding, or the lock screen — those are out of
-  scope for this round.
-- Not a reason to slow anything down: the show-delay means the *happy path stays instant*.
+`pulse`: opacity **1 → 0.55 → 1**, **1600ms**, `cubic-bezier(0.4,0,0.6,1)`, all blocks on
+**one shared clock** so the screen breathes as a single surface.
 
-## Frames to produce
-`skeleton.home.light.da`, `skeleton.home.dark.da`,
-`skeleton.history.light.da`, `skeleton.history.dark.da`,
-`skeleton.goals.light.da`, `skeleton.goals.dark.da`,
-plus one motion note frame `skeleton.shimmer-spec` showing the sweep/pulse timing and the
-reduced-motion static fallback.
+A sweep has direction, speed and a leading edge — three properties the eye tracks. That is
+right for an app that wants to look like it is working hard; it is wrong for one whose
+posture is "your data is already here." A sweep is also hard to keep quiet: a gradient
+faint enough for Ponvia's contrast step is invisible in motion, so in practice it gets
+dialled brighter until it isn't quiet any more. The pulse has one property and dialling it
+down never breaks it.
 
-## Open questions for the design step
-1. Shimmer **sweep** (a light band travelling across) or **pulse** (whole block breathing
-   opacity)? Recommend one; sweep tends to read busier, pulse calmer — lean calm.
-2. On History, real live `SegmentedButton` vs a skeleton pill-row — which grounds better?
-3. Are the proposed 150 / 400 / 200ms timings right for this device class, or should the
-   show-delay be higher so the skeleton is genuinely rare?
+`base` at 0.55 over `surface` lands on the `sheen` value (~3% lightness step). Implementations
+that prefer a colour lerp can animate `base → sheen` instead; the token carries both.
+
+**Reduced motion** (`MediaQuery.disableAnimations`): no pulse, no scale — blocks hold `base`
+at full opacity; the cross-fade becomes an instant cut. Timings are unchanged, including
+the 400ms floor, so the cut is not a blink.
+
+---
+
+## 3. Chrome stays live
+
+Never skeletonised: status bar, app bar title and actions, bottom nav, the centre add
+button, and **History's range segmented control**.
+
+None of these are data-bound. Drawing the range control as a grey pill would hide
+information the app already has (the range the pending query was built from), and
+disabling it would strand a user who opened the wrong range. The user can log a weight
+while Home is still resolving — the sheet opening over a skeleton is correct behaviour,
+not a bug.
+
+---
+
+## 4. Per-screen anatomy
+
+Screen padding, card radii, gaps and dividers are the **real** ones, so nothing changes
+position when content lands.
+
+### Home — `skeleton.home.{light,dark}.da`
+- **Hero card** (radius 24, `surface`, 1dp `outline`, padding 20, gap 14): eyebrow 80×12 r6
+  · hero value 180×44 r10 (the glyph's ink box, not its line box) · delta pill 64×24 r12 ·
+  sparkline band fill×40 r10.
+- **Goal card** (radius 24): label 110×12 r6 · progress track fill×6 r3.
+- **Second-metric slot — omitted.** The brief proposed a dashed placeholder; resolved
+  against. The slot only exists when a height is set, and the loader cannot know yet
+  whether it will, so a placeholder would be a promise the resolved screen breaks half the
+  time. BMI fades in afterwards on its own 250ms, exactly as on a warm screen.
+- The sparkline band is 40dp, not the real 68dp: a full-height mass is the loudest thing on
+  the screen.
+
+### History — `skeleton.history.{light,dark}.da`
+- **Range control** — live and enabled.
+- **Summary card** (radius 24): 3 stat pairs, label 52×10 r5 over value 68×20 r8.
+- **Chart card** (radius 16, height 170): a low, calm **area silhouette** in `base` plus a
+  2dp baseline. No stroke, no grid, no axis labels, no end marker — a stroke over a fill
+  starts to look like data. A flat 170dp slab reads as a broken image; this is the one
+  block that must not be a rectangle.
+- **Rows** — exactly **4**, on the real 64dp pitch with 1dp dividers inset 20dp. Bar widths
+  vary per row (weight 88/76/92/80, date 64/58/66/60): identical widths look like a printed
+  pattern, varied ones look like text. A fifth row would be a claim about how much data
+  exists.
+
+### Goals — `skeleton.goals.{light,dark}.da`
+- **3 cards** on the real `cardGap` 12. First card radius **28** (the resolved list always
+  highlights the closest goal in that shape — matching it means the corner does not tighten
+  under the user's eye).
+- Each: target value 140/124/132 × 32 r10 · label 96/112/88 × 12 r6 · progress track fill×6 r3.
+- Fewer than 3 real goals: extra cards **fade out**, never collapse-and-grow. An over-count
+  settling down is invisible; an under-count growing is a jump.
+
+---
+
+## 5. Boundaries
+
+- **Empty state is not a skeleton.** A user with no data sees the skeleton for at most
+  400ms and then the real empty state. The skeleton says "layout"; the empty state says
+  "nothing here". Never blended.
+- **No copy.** Zero strings — no "Indlæser…", no retry. Accessibility is one
+  `Semantics(label: 'Indlæser')` live region / `aria-busy` on the scroll body; decorative
+  blocks are excluded from the semantics tree so a reader hears one announcement, not eleven.
+- **Out of scope:** modal sheets, Settings, Onboarding, the lock screen. Those keep their
+  current behaviour this round.
+- **Not a wireframe.** Only the always-present spine. No logo, no wordmark, no branded
+  moment.
+
+---
+
+## 6. QA
+
+Verify behind a debug delay — on a healthy device the skeleton should be unreachable, and
+any sighting in normal use is a performance bug report, not a design success.
+
+Two failures to watch for:
+1. A skeleton visible for **under 400ms** (floor not applied, or applied from the request
+   rather than from the skeleton's first frame).
+2. A skeleton block at a **different position** than the content that replaces it — the
+   transition must be a settling, never a re-layout.

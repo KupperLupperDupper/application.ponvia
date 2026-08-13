@@ -554,6 +554,12 @@ abstract class AppLocalizations {
   /// **'Undo'**
   String get actionUndo;
 
+  /// No description provided for @a11yLoading.
+  ///
+  /// In en, this message translates to:
+  /// **'Loading'**
+  String get a11yLoading;
+
   /// No description provided for @snackbarEntryDeleted.
   ///
   /// In en, this message translates to:

@@ -7,6 +7,7 @@ import '../../app/theme/typography.dart';
 import '../../core/formatting/date_formatter.dart';
 import '../../core/formatting/weight_formatter.dart';
 import '../../core/ui/goal_eta_line.dart';
+import '../../core/ui/skeleton.dart';
 import '../../core/ui/spacing.dart';
 import '../../core/ui/undo_snackbar.dart';
 import '../../core/units/weight_unit.dart';
@@ -29,10 +30,13 @@ class GoalsScreen extends ConsumerWidget {
     final entries = ref.watch(entriesProvider).asData?.value ?? const [];
     final currentKg = entries.isEmpty ? null : entries.first.weightKg;
     final startKg = entries.isEmpty ? null : entries.last.weightKg;
-    final fmt = WeightFormatter(settings.unit,
-        locale: Localizations.localeOf(context).languageCode);
-    final dateFmt =
-        PonviaDateFormatter(locale: Localizations.localeOf(context).languageCode);
+    final fmt = WeightFormatter(
+      settings.unit,
+      locale: Localizations.localeOf(context).languageCode,
+    );
+    final dateFmt = PonviaDateFormatter(
+      locale: Localizations.localeOf(context).languageCode,
+    );
 
     return Scaffold(
       appBar: AppBar(
@@ -55,21 +59,25 @@ class GoalsScreen extends ConsumerWidget {
           ),
         ],
       ),
-      body: goalsAsync.when(
-        loading: () => const Center(child: CircularProgressIndicator()),
-        error: (e, _) => Center(child: Text('$e')),
-        data: (goals) {
+      body: SkeletonGate<List<Goal>>(
+        value: goalsAsync,
+        semanticsLabel: l10n.a11yLoading,
+        skeleton: (_) => const _GoalsSkeleton(),
+        data: (context, goals) {
           if (goals.isEmpty) return _EmptyGoals(l10n: l10n);
           return ListView(
             padding: const EdgeInsets.fromLTRB(
-                Insets.screenH, Insets.lg, Insets.screenH, 96),
+              Insets.screenH,
+              Insets.lg,
+              Insets.screenH,
+              96,
+            ),
             children: [
               for (final g in goals)
                 Padding(
                   padding: const EdgeInsets.only(bottom: Insets.cardGap),
                   child: _SwipeToDelete(
-                    dismissKey:
-                        ValueKey(g.id ?? g.createdAt.toIso8601String()),
+                    dismissKey: ValueKey(g.id ?? g.createdAt.toIso8601String()),
                     radius: g.id == closest?.id ? 28 : 24,
                     onDismissed: () => _delete(context, ref, g),
                     child: _GoalCard(
@@ -101,14 +109,16 @@ class GoalsScreen extends ConsumerWidget {
       message: l10n.snackbarGoalDeleted,
       undoLabel: l10n.actionUndo,
       icon: Icons.delete_outline,
-      onUndo: () => repo.add(Goal(
-        targetWeightKg: g.targetWeightKg,
-        label: g.label,
-        startWeightKg: g.startWeightKg,
-        createdAt: g.createdAt,
-        achievedAt: g.achievedAt,
-        reachedPromptShownAt: g.reachedPromptShownAt,
-      )),
+      onUndo: () => repo.add(
+        Goal(
+          targetWeightKg: g.targetWeightKg,
+          label: g.label,
+          startWeightKg: g.startWeightKg,
+          createdAt: g.createdAt,
+          achievedAt: g.achievedAt,
+          reachedPromptShownAt: g.reachedPromptShownAt,
+        ),
+      ),
     );
   }
 
@@ -168,9 +178,10 @@ class _GoalFormState extends ConsumerState<_GoalForm> {
     if (g != null && !_prefilled) {
       _prefilled = true;
       final unit = ref.read(settingsControllerProvider).unit;
-      _input = WeightConverter.fromKg(g.targetWeightKg, unit)
-          .toStringAsFixed(1)
-          .replaceAll('.', _sep);
+      _input = WeightConverter.fromKg(
+        g.targetWeightKg,
+        unit,
+      ).toStringAsFixed(1).replaceAll('.', _sep);
     }
   }
 
@@ -224,9 +235,11 @@ class _GoalFormState extends ConsumerState<_GoalForm> {
   Future<void> _toggleAchieved() async {
     final g = widget.existing!;
     final repo = ref.read(goalRepositoryProvider);
-    await repo.update(g.isAchieved
-        ? g.copyWith(clearAchieved: true)
-        : g.copyWith(achievedAt: DateTime.now()));
+    await repo.update(
+      g.isAchieved
+          ? g.copyWith(clearAchieved: true)
+          : g.copyWith(achievedAt: DateTime.now()),
+    );
     if (mounted) Navigator.of(context).maybePop();
   }
 
@@ -242,24 +255,28 @@ class _GoalFormState extends ConsumerState<_GoalForm> {
     if (existing == null) {
       // Anchor the goal's direction (lose vs gain) to the current weight.
       final startKg = ref.read(latestWeightProvider).asData?.value?.weightKg;
-      id = await repo.add(Goal(
-        targetWeightKg: kg,
-        label: labelOrNull,
-        startWeightKg: startKg,
-        createdAt: DateTime.now(),
-      ));
+      id = await repo.add(
+        Goal(
+          targetWeightKg: kg,
+          label: labelOrNull,
+          startWeightKg: startKg,
+          createdAt: DateTime.now(),
+        ),
+      );
     } else {
       id = existing.id!;
-      await repo.update(Goal(
-        id: id,
-        targetWeightKg: kg,
-        label: labelOrNull,
-        startWeightKg: existing.startWeightKg,
-        createdAt: existing.createdAt,
-        achievedAt: existing.achievedAt,
-        highlightOverride: existing.highlightOverride,
-        reachedPromptShownAt: existing.reachedPromptShownAt,
-      ));
+      await repo.update(
+        Goal(
+          id: id,
+          targetWeightKg: kg,
+          label: labelOrNull,
+          startWeightKg: existing.startWeightKg,
+          createdAt: existing.createdAt,
+          achievedAt: existing.achievedAt,
+          highlightOverride: existing.highlightOverride,
+          reachedPromptShownAt: existing.reachedPromptShownAt,
+        ),
+      );
     }
     // Apply the pin last so exclusivity (clearing other goals) always holds.
     await repo.setHighlightOverride(id, _highlight);
@@ -273,8 +290,7 @@ class _GoalFormState extends ConsumerState<_GoalForm> {
     final text = Theme.of(context).textTheme;
     final settings = ref.watch(settingsControllerProvider);
     final unit = settings.unit;
-    final currentKg =
-        ref.watch(latestWeightProvider).asData?.value?.weightKg;
+    final currentKg = ref.watch(latestWeightProvider).asData?.value?.weightKg;
     final showError = _input.isNotEmpty && !_valid;
 
     // Direction is derived from the latest weight; unknown until we have both a
@@ -311,17 +327,21 @@ class _GoalFormState extends ConsumerState<_GoalForm> {
             // Header
             Row(
               children: [
-                Text(_isEditing ? l10n.goalEdit : l10n.goalNew,
-                    style: text.titleLarge),
+                Text(
+                  _isEditing ? l10n.goalEdit : l10n.goalNew,
+                  style: text.titleLarge,
+                ),
                 const Spacer(),
                 if (_isEditing)
                   IconButton(
                     tooltip: widget.existing!.isAchieved
                         ? l10n.goalReopen
                         : l10n.goalMarkAchieved,
-                    icon: Icon(widget.existing!.isAchieved
-                        ? Icons.undo
-                        : Icons.check_circle_outline),
+                    icon: Icon(
+                      widget.existing!.isAchieved
+                          ? Icons.undo
+                          : Icons.check_circle_outline,
+                    ),
                     onPressed: _toggleAchieved,
                   ),
                 IconButton(
@@ -343,11 +363,7 @@ class _GoalFormState extends ConsumerState<_GoalForm> {
             ),
             const SizedBox(height: Insets.sm),
             // Target-weight field (2dp primary border) — driven by the keypad.
-            _TargetField(
-              input: _input,
-              unit: unit,
-              error: showError,
-            ),
+            _TargetField(input: _input, unit: unit, error: showError),
             SizedBox(
               height: 22,
               child: showError
@@ -356,12 +372,18 @@ class _GoalFormState extends ConsumerState<_GoalForm> {
                       child: Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          Icon(Icons.error_outline,
-                              size: 16, color: scheme.error),
+                          Icon(
+                            Icons.error_outline,
+                            size: 16,
+                            color: scheme.error,
+                          ),
                           const SizedBox(width: Insets.xs),
-                          Text(l10n.logRangeError,
-                              style: text.bodySmall
-                                  ?.copyWith(color: scheme.error)),
+                          Text(
+                            l10n.logRangeError,
+                            style: text.bodySmall?.copyWith(
+                              color: scheme.error,
+                            ),
+                          ),
                         ],
                       ),
                     )
@@ -382,9 +404,12 @@ class _GoalFormState extends ConsumerState<_GoalForm> {
             // Read-only direction row
             Row(
               children: [
-                Text(l10n.goalDirectionLabel,
-                    style: text.bodyLarge
-                        ?.copyWith(color: scheme.onSurfaceVariant)),
+                Text(
+                  l10n.goalDirectionLabel,
+                  style: text.bodyLarge?.copyWith(
+                    color: scheme.onSurfaceVariant,
+                  ),
+                ),
                 const Spacer(),
                 _DirectionChip(
                   label: directionText,
@@ -399,11 +424,14 @@ class _GoalFormState extends ConsumerState<_GoalForm> {
               contentPadding: EdgeInsets.zero,
               value: _highlight,
               onChanged: (v) => setState(() => _highlight = v),
-              title: Text(l10n.goalHighlightOnHome,
-                  style: text.bodyLarge?.copyWith(fontWeight: FontWeight.w700)),
-              subtitle: Text(l10n.goalHighlightOnHomeSub,
-                  style: text.bodySmall
-                      ?.copyWith(color: scheme.onSurfaceVariant)),
+              title: Text(
+                l10n.goalHighlightOnHome,
+                style: text.bodyLarge?.copyWith(fontWeight: FontWeight.w700),
+              ),
+              subtitle: Text(
+                l10n.goalHighlightOnHomeSub,
+                style: text.bodySmall?.copyWith(color: scheme.onSurfaceVariant),
+              ),
             ),
             const SizedBox(height: Insets.sm),
             NumericKeypad(
@@ -436,8 +464,8 @@ class _GoalFormState extends ConsumerState<_GoalForm> {
                           ? const SizedBox(
                               height: 20,
                               width: 20,
-                              child:
-                                  CircularProgressIndicator(strokeWidth: 2))
+                              child: CircularProgressIndicator(strokeWidth: 2),
+                            )
                           : Text(l10n.goalSave),
                     ),
                   ),
@@ -454,8 +482,11 @@ class _GoalFormState extends ConsumerState<_GoalForm> {
 /// The 64dp target-weight field with a 2dp primary border, showing the keypad
 /// input as a 32sp value + 18sp unit (DESIGN_SPEC §6).
 class _TargetField extends StatelessWidget {
-  const _TargetField(
-      {required this.input, required this.unit, required this.error});
+  const _TargetField({
+    required this.input,
+    required this.unit,
+    required this.error,
+  });
 
   final String input;
   final WeightUnit unit;
@@ -480,22 +511,26 @@ class _TargetField extends StatelessWidget {
       child: FittedBox(
         fit: BoxFit.scaleDown,
         child: Text.rich(
-          TextSpan(children: [
-            TextSpan(
-              text: empty ? '0' : input,
-              style: PonviaTypography.heroWeight
-                  .copyWith(fontSize: 32, color: valueColor),
-            ),
-            TextSpan(
-              text: ' ${unit.code}',
-              style: TextStyle(
-                fontFamily: PonviaTypography.family,
-                fontSize: 18,
-                fontWeight: FontWeight.w600,
-                color: scheme.onSurfaceVariant,
+          TextSpan(
+            children: [
+              TextSpan(
+                text: empty ? '0' : input,
+                style: PonviaTypography.heroWeight.copyWith(
+                  fontSize: 32,
+                  color: valueColor,
+                ),
               ),
-            ),
-          ]),
+              TextSpan(
+                text: ' ${unit.code}',
+                style: TextStyle(
+                  fontFamily: PonviaTypography.family,
+                  fontSize: 18,
+                  fontWeight: FontWeight.w600,
+                  color: scheme.onSurfaceVariant,
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -504,8 +539,11 @@ class _TargetField extends StatelessWidget {
 
 /// The read-only Direction chip (lose / gain / not-enough-data).
 class _DirectionChip extends StatelessWidget {
-  const _DirectionChip(
-      {required this.label, required this.icon, required this.color});
+  const _DirectionChip({
+    required this.label,
+    required this.icon,
+    required this.color,
+  });
 
   final String label;
   final IconData? icon;
@@ -527,9 +565,14 @@ class _DirectionChip extends StatelessWidget {
             Icon(icon, size: 16, color: color),
             const SizedBox(width: Insets.xs),
           ],
-          Text(label,
-              style: TextStyle(
-                  fontSize: 13, fontWeight: FontWeight.w700, color: color)),
+          Text(
+            label,
+            style: TextStyle(
+              fontSize: 13,
+              fontWeight: FontWeight.w700,
+              color: color,
+            ),
+          ),
         ],
       ),
     );
@@ -566,8 +609,7 @@ class _SwipeToDelete extends StatelessWidget {
               color: scheme.errorContainer,
               alignment: Alignment.centerRight,
               padding: const EdgeInsets.only(right: Insets.xl),
-              child: Icon(Icons.delete_outline,
-                  color: scheme.onErrorContainer),
+              child: Icon(Icons.delete_outline, color: scheme.onErrorContainer),
             ),
           ),
           Dismissible(
@@ -615,12 +657,14 @@ class _GoalCard extends StatelessWidget {
     final text = Theme.of(context).textTheme;
 
     final onColor = highlighted ? scheme.onPrimaryContainer : scheme.onSurface;
-    final subColor =
-        highlighted ? scheme.onPrimaryContainer.withValues(alpha: 0.8) : scheme.onSurfaceVariant;
+    final subColor = highlighted
+        ? scheme.onPrimaryContainer.withValues(alpha: 0.8)
+        : scheme.onSurfaceVariant;
 
     final isGain = currentKg != null && goal.targetWeightKg > currentKg!;
-    final remaining =
-        currentKg == null ? null : (goal.targetWeightKg - currentKg!).abs();
+    final remaining = currentKg == null
+        ? null
+        : (goal.targetWeightKg - currentKg!).abs();
 
     double? progress;
     if (goal.isAchieved) {
@@ -634,27 +678,43 @@ class _GoalCard extends StatelessWidget {
 
     Widget directionRow() {
       if (goal.isAchieved) {
-        return Row(mainAxisSize: MainAxisSize.min, children: [
-          Icon(Icons.check_circle, size: 18, color: scheme.primary),
-          const SizedBox(width: Insets.xs),
-          Text(l10n.goalAchieved,
-              style: text.bodyLarge
-                  ?.copyWith(fontWeight: FontWeight.w700, color: scheme.primary)),
-        ]);
+        return Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(Icons.check_circle, size: 18, color: scheme.primary),
+            const SizedBox(width: Insets.xs),
+            Text(
+              l10n.goalAchieved,
+              style: text.bodyLarge?.copyWith(
+                fontWeight: FontWeight.w700,
+                color: scheme.primary,
+              ),
+            ),
+          ],
+        );
       }
       if (remaining == null) return const SizedBox.shrink();
       final color = isGain ? ponvia.deltaUp : onColor;
-      return Row(mainAxisSize: MainAxisSize.min, children: [
-        Icon(isGain ? Icons.arrow_upward : Icons.arrow_downward,
-            size: 18, color: color),
-        const SizedBox(width: Insets.xs),
-        Text(
-          isGain
-              ? l10n.goalToGain(fmt.withUnit(remaining))
-              : l10n.goalToLose(fmt.withUnit(remaining)),
-          style: text.bodyLarge?.copyWith(fontWeight: FontWeight.w700, color: color),
-        ),
-      ]);
+      return Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(
+            isGain ? Icons.arrow_upward : Icons.arrow_downward,
+            size: 18,
+            color: color,
+          ),
+          const SizedBox(width: Insets.xs),
+          Text(
+            isGain
+                ? l10n.goalToGain(fmt.withUnit(remaining))
+                : l10n.goalToLose(fmt.withUnit(remaining)),
+            style: text.bodyLarge?.copyWith(
+              fontWeight: FontWeight.w700,
+              color: color,
+            ),
+          ),
+        ],
+      );
     }
 
     final showBar = progress != null && (!isGain || progress > 0);
@@ -682,16 +742,22 @@ class _GoalCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Text.rich(
-                  TextSpan(children: [
-                    TextSpan(
+                  TextSpan(
+                    children: [
+                      TextSpan(
                         text: fmt.value(goal.targetWeightKg),
                         style: text.headlineMedium?.copyWith(
-                            fontSize: highlighted ? 40 : 32, color: onColor)),
-                    if (unit != WeightUnit.st)
-                      TextSpan(
+                          fontSize: highlighted ? 40 : 32,
+                          color: onColor,
+                        ),
+                      ),
+                      if (unit != WeightUnit.st)
+                        TextSpan(
                           text: ' ${unit.code}',
-                          style: text.titleMedium?.copyWith(color: subColor)),
-                  ]),
+                          style: text.titleMedium?.copyWith(color: subColor),
+                        ),
+                    ],
+                  ),
                 ),
                 const Spacer(),
                 directionRow(),
@@ -718,14 +784,20 @@ class _GoalCard extends StatelessWidget {
     );
   }
 
-  Widget _footer(BuildContext context, AppLocalizations l10n, Color subColor,
-      double? progress) {
+  Widget _footer(
+    BuildContext context,
+    AppLocalizations l10n,
+    Color subColor,
+    double? progress,
+  ) {
     final text = Theme.of(context).textTheme;
     if (goal.isAchieved && goal.achievedAt != null) {
       return Padding(
         padding: const EdgeInsets.only(top: Insets.sm),
-        child: Text(l10n.goalReached(dateFmt.date(goal.achievedAt!)),
-            style: text.bodySmall?.copyWith(color: subColor)),
+        child: Text(
+          l10n.goalReached(dateFmt.date(goal.achievedAt!)),
+          style: text.bodySmall?.copyWith(color: subColor),
+        ),
       );
     }
     if (highlighted && startKg != null && progress != null) {
@@ -739,24 +811,36 @@ class _GoalCard extends StatelessWidget {
               children: [
                 Text(
                   l10n.goalStarted(
-                      fmt.withUnit(startKg!), dateFmt.date(goal.createdAt)),
+                    fmt.withUnit(startKg!),
+                    dateFmt.date(goal.createdAt),
+                  ),
                   style: text.bodySmall?.copyWith(color: subColor),
                 ),
-                Text('${(progress * 100).round()}%',
-                    style: text.bodySmall?.copyWith(
-                        color: subColor, fontWeight: FontWeight.w700)),
+                Text(
+                  '${(progress * 100).round()}%',
+                  style: text.bodySmall?.copyWith(
+                    color: subColor,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
               ],
             ),
           ),
           GoalEtaLine(
-              entries: entries, targetKg: goal.targetWeightKg, color: subColor),
+            entries: entries,
+            targetKg: goal.targetWeightKg,
+            color: subColor,
+          ),
         ],
       );
     }
     if (goal.label != null && goal.label!.isNotEmpty) {
       return Padding(
         padding: const EdgeInsets.only(top: Insets.sm),
-        child: Text(goal.label!, style: text.bodySmall?.copyWith(color: subColor)),
+        child: Text(
+          goal.label!,
+          style: text.bodySmall?.copyWith(color: subColor),
+        ),
       );
     }
     return const SizedBox.shrink();
@@ -781,14 +865,72 @@ class _ClosestChip extends StatelessWidget {
         children: [
           Icon(Icons.star, size: 16, color: scheme.onPrimary),
           const SizedBox(width: Insets.xs),
-          Text(label,
-              style: TextStyle(
-                  color: scheme.onPrimary,
-                  fontSize: 12,
-                  fontWeight: FontWeight.w800,
-                  letterSpacing: 0.5)),
+          Text(
+            label,
+            style: TextStyle(
+              color: scheme.onPrimary,
+              fontSize: 12,
+              fontWeight: FontWeight.w800,
+              letterSpacing: 0.5,
+            ),
+          ),
         ],
       ),
+    );
+  }
+}
+
+/// Loading placeholder for Goals: three goal cards on the real card gap. The
+/// first takes the highlighted radius (28) so the closest-goal corner doesn't
+/// tighten when content lands; the rest are 24. Bar widths vary per card so the
+/// rows read as text, not a printed pattern.
+/// See `design/handoff/SKELETON_LOADING.md`.
+class _GoalsSkeleton extends StatelessWidget {
+  const _GoalsSkeleton();
+
+  static Widget _card(
+    BuildContext context, {
+    required double radius,
+    required double targetWidth,
+    required double labelWidth,
+  }) {
+    final scheme = Theme.of(context).colorScheme;
+    return Container(
+      margin: const EdgeInsets.only(bottom: Insets.cardGap),
+      padding: const EdgeInsets.all(Insets.xl),
+      decoration: BoxDecoration(
+        color: scheme.surfaceContainerHighest,
+        borderRadius: BorderRadius.circular(radius),
+        border: Border.all(color: scheme.outline),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          SkeletonBlock(width: targetWidth, height: 32, radius: 10), // target
+          const SizedBox(height: Insets.sm),
+          SkeletonBlock(width: labelWidth, height: 12, radius: 6), // label
+          const SizedBox(height: Insets.md),
+          const SkeletonBlock(height: 6, radius: 3), // progress track (fill)
+        ],
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView(
+      physics: const NeverScrollableScrollPhysics(),
+      padding: const EdgeInsets.fromLTRB(
+        Insets.screenH,
+        Insets.lg,
+        Insets.screenH,
+        96,
+      ),
+      children: [
+        _card(context, radius: 28, targetWidth: 140, labelWidth: 96),
+        _card(context, radius: 24, targetWidth: 124, labelWidth: 112),
+        _card(context, radius: 24, targetWidth: 132, labelWidth: 88),
+      ],
     );
   }
 }
@@ -811,12 +953,17 @@ class _EmptyGoals extends StatelessWidget {
               width: 96,
               height: 96,
               decoration: BoxDecoration(
-                  color: scheme.surfaceContainer, shape: BoxShape.circle),
+                color: scheme.surfaceContainer,
+                shape: BoxShape.circle,
+              ),
               child: Icon(Icons.flag, size: 40, color: scheme.onSurfaceVariant),
             ),
             const SizedBox(height: Insets.xl),
-            Text(l10n.goalsEmpty,
-                textAlign: TextAlign.center, style: text.bodyLarge),
+            Text(
+              l10n.goalsEmpty,
+              textAlign: TextAlign.center,
+              style: text.bodyLarge,
+            ),
           ],
         ),
       ),

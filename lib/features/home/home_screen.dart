@@ -9,6 +9,7 @@ import '../../app/theme/typography.dart';
 import '../../core/formatting/date_formatter.dart';
 import '../../core/formatting/weight_formatter.dart';
 import '../../core/ui/goal_eta_line.dart';
+import '../../core/ui/skeleton.dart';
 import '../../core/ui/spacing.dart';
 import '../../core/units/weight_unit.dart';
 import '../../domain/bmi.dart';
@@ -26,10 +27,14 @@ class HomeScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = AppLocalizations.of(context);
     final settings = ref.watch(settingsControllerProvider);
     final entriesAsync = ref.watch(entriesProvider);
     final closest = ref.watch(closestGoalProvider);
-    final fmt = WeightFormatter(settings.unit, locale: Localizations.localeOf(context).languageCode);
+    final fmt = WeightFormatter(
+      settings.unit,
+      locale: Localizations.localeOf(context).languageCode,
+    );
 
     return Scaffold(
       appBar: AppBar(
@@ -42,17 +47,23 @@ class HomeScreen extends ConsumerWidget {
           const SizedBox(width: Insets.xs),
         ],
       ),
-      body: entriesAsync.when(
-        loading: () => const Center(child: CircularProgressIndicator()),
-        error: (e, _) => Center(child: Text('$e')),
-        data: (entries) {
+      body: SkeletonGate<List<WeightEntry>>(
+        value: entriesAsync,
+        semanticsLabel: l10n.a11yLoading,
+        skeleton: (_) => const _HomeSkeleton(),
+        data: (context, entries) {
           if (entries.isEmpty) return const _EmptyHome();
           final latest = entries.first;
-          final deltaKg =
-              entries.length >= 2 ? latest.weightKg - entries[1].weightKg : null;
+          final deltaKg = entries.length >= 2
+              ? latest.weightKg - entries[1].weightKg
+              : null;
           return ListView(
             padding: const EdgeInsets.fromLTRB(
-                Insets.screenH, Insets.sm, Insets.screenH, 96),
+              Insets.screenH,
+              Insets.sm,
+              Insets.screenH,
+              96,
+            ),
             children: [
               _HeroCard(
                 entry: latest,
@@ -74,7 +85,9 @@ class HomeScreen extends ConsumerWidget {
               if (settings.heightCm != null) ...[
                 const SizedBox(height: Insets.cardGap),
                 _BmiTile(
-                    weightKg: latest.weightKg, heightCm: settings.heightCm!),
+                  weightKg: latest.weightKg,
+                  heightCm: settings.heightCm!,
+                ),
               ],
               const SizedBox(height: Insets.cardGap),
               const _SecondMetricSlot(),
@@ -107,15 +120,16 @@ class _HeroCard extends StatelessWidget {
     final scheme = Theme.of(context).colorScheme;
     final ponvia = Theme.of(context).extension<PonviaColors>()!;
     final text = Theme.of(context).textTheme;
-    final dateFmt =
-        PonviaDateFormatter(locale: Localizations.localeOf(context).languageCode);
+    final dateFmt = PonviaDateFormatter(
+      locale: Localizations.localeOf(context).languageCode,
+    );
     final now = DateTime.now();
     final daysAgo = PonviaDateFormatter.daysAgo(entry.timestamp, now);
     final when = daysAgo == 0
         ? l10n.today
         : daysAgo == 1
-            ? l10n.yesterday
-            : dateFmt.date(entry.timestamp);
+        ? l10n.yesterday
+        : dateFmt.date(entry.timestamp);
 
     // Trend window for the footer.
     final window = recent.take(30).toList();
@@ -126,12 +140,19 @@ class _HeroCard extends StatelessWidget {
     return _PanelCard(
       radius: 28,
       color: scheme.surfaceContainerHighest,
-      padding: const EdgeInsets.fromLTRB(Insets.xl, Insets.xxl, Insets.xl, Insets.lg),
+      padding: const EdgeInsets.fromLTRB(
+        Insets.xl,
+        Insets.xxl,
+        Insets.xl,
+        Insets.lg,
+      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(l10n.homeLatestWeight.toUpperCase(),
-              style: text.labelSmall?.copyWith(color: scheme.onSurfaceVariant)),
+          Text(
+            l10n.homeLatestWeight.toUpperCase(),
+            style: text.labelSmall?.copyWith(color: scheme.onSurfaceVariant),
+          ),
           const SizedBox(height: Insets.md),
           FittedBox(
             fit: BoxFit.scaleDown,
@@ -141,10 +162,13 @@ class _HeroCard extends StatelessWidget {
           const SizedBox(height: Insets.lg),
           Row(
             children: [
-              Text('$when · ${dateFmt.time(entry.timestamp)}',
-                  style: text.bodyMedium?.copyWith(
-                      color: scheme.onSurfaceVariant,
-                      fontWeight: FontWeight.w600)),
+              Text(
+                '$when · ${dateFmt.time(entry.timestamp)}',
+                style: text.bodyMedium?.copyWith(
+                  color: scheme.onSurfaceVariant,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
               const SizedBox(width: Insets.md),
               if (deltaKg != null)
                 _DeltaChip(deltaKg: deltaKg!, fmt: fmt, ponvia: ponvia),
@@ -153,22 +177,29 @@ class _HeroCard extends StatelessWidget {
           if (recent.length >= 2) ...[
             const SizedBox(height: Insets.lg),
             SizedBox(
-                height: 68,
-                child: _Sparkline(entries: recent, unit: unit, color: ponvia)),
+              height: 68,
+              child: _Sparkline(entries: recent, unit: unit, color: ponvia),
+            ),
             const SizedBox(height: Insets.sm),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(l10n.homeTrendFooter(spanDays),
-                    style: text.labelSmall?.copyWith(
-                        color: scheme.onSurfaceVariant,
-                        letterSpacing: 0,
-                        fontWeight: FontWeight.w600)),
-                Text(fmt.delta(totalKg),
-                    style: text.labelSmall?.copyWith(
-                        color: scheme.onSurfaceVariant,
-                        letterSpacing: 0,
-                        fontWeight: FontWeight.w600)),
+                Text(
+                  l10n.homeTrendFooter(spanDays),
+                  style: text.labelSmall?.copyWith(
+                    color: scheme.onSurfaceVariant,
+                    letterSpacing: 0,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                Text(
+                  fmt.delta(totalKg),
+                  style: text.labelSmall?.copyWith(
+                    color: scheme.onSurfaceVariant,
+                    letterSpacing: 0,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
               ],
             ),
           ],
@@ -198,18 +229,20 @@ class _HeroValue extends StatelessWidget {
       return Text(fmt.value(kg), style: base);
     }
     return Text.rich(
-      TextSpan(children: [
-        TextSpan(text: fmt.value(kg), style: base),
-        TextSpan(
-          text: ' ${unit.code}',
-          style: TextStyle(
-            fontFamily: PonviaTypography.family,
-            fontSize: 26,
-            fontWeight: FontWeight.w600,
-            color: scheme.onSurfaceVariant,
+      TextSpan(
+        children: [
+          TextSpan(text: fmt.value(kg), style: base),
+          TextSpan(
+            text: ' ${unit.code}',
+            style: TextStyle(
+              fontFamily: PonviaTypography.family,
+              fontSize: 26,
+              fontWeight: FontWeight.w600,
+              color: scheme.onSurfaceVariant,
+            ),
           ),
-        ),
-      ]),
+        ],
+      ),
     );
   }
 }
@@ -217,8 +250,11 @@ class _HeroValue extends StatelessWidget {
 /// Delta pill: icon + word + amount, colour paired with an icon+word so colour
 /// is never the sole signal (accessibility).
 class _DeltaChip extends StatelessWidget {
-  const _DeltaChip(
-      {required this.deltaKg, required this.fmt, required this.ponvia});
+  const _DeltaChip({
+    required this.deltaKg,
+    required this.fmt,
+    required this.ponvia,
+  });
 
   final double deltaKg;
   final WeightFormatter fmt;
@@ -235,21 +271,21 @@ class _DeltaChip extends StatelessWidget {
             scheme.primaryContainer,
             scheme.onPrimaryContainer,
             Icons.arrow_downward,
-            l10n.homeDeltaDown(amount)
+            l10n.homeDeltaDown(amount),
           )
         : deltaKg > 0
-            ? (
-                ponvia.deltaUpContainer,
-                ponvia.onDeltaUpContainer,
-                Icons.arrow_upward,
-                l10n.homeDeltaUp(amount)
-              )
-            : (
-                scheme.surfaceContainer,
-                scheme.onSurfaceVariant,
-                Icons.remove,
-                l10n.homeDeltaFlat
-              );
+        ? (
+            ponvia.deltaUpContainer,
+            ponvia.onDeltaUpContainer,
+            Icons.arrow_upward,
+            l10n.homeDeltaUp(amount),
+          )
+        : (
+            scheme.surfaceContainer,
+            scheme.onSurfaceVariant,
+            Icons.remove,
+            l10n.homeDeltaFlat,
+          );
 
     return Container(
       height: 32,
@@ -263,11 +299,10 @@ class _DeltaChip extends StatelessWidget {
         children: [
           Icon(icon, size: 18, color: fg),
           const SizedBox(width: Insets.xs),
-          Text(label,
-              style: Theme.of(context)
-                  .textTheme
-                  .labelLarge
-                  ?.copyWith(color: fg)),
+          Text(
+            label,
+            style: Theme.of(context).textTheme.labelLarge?.copyWith(color: fg),
+          ),
         ],
       ),
     );
@@ -275,8 +310,11 @@ class _DeltaChip extends StatelessWidget {
 }
 
 class _Sparkline extends StatelessWidget {
-  const _Sparkline(
-      {required this.entries, required this.unit, required this.color});
+  const _Sparkline({
+    required this.entries,
+    required this.unit,
+    required this.color,
+  });
 
   final List<WeightEntry> entries; // newest-first
   final WeightUnit unit;
@@ -289,8 +327,10 @@ class _Sparkline extends StatelessWidget {
     final minMs = recent.first.timestamp.millisecondsSinceEpoch.toDouble();
     final spots = <FlSpot>[
       for (var i = 0; i < recent.length; i++)
-        FlSpot(recent[i].timestamp.millisecondsSinceEpoch - minMs,
-            WeightConverter.fromKg(recent[i].weightKg, unit)),
+        FlSpot(
+          recent[i].timestamp.millisecondsSinceEpoch - minMs,
+          WeightConverter.fromKg(recent[i].weightKg, unit),
+        ),
     ];
     final lastX = spots.last.x;
 
@@ -319,7 +359,10 @@ class _Sparkline extends StatelessWidget {
             dotData: FlDotData(
               checkToShowDot: (spot, _) => spot.x == lastX,
               getDotPainter: (spot, _, _, _) => FlDotCirclePainter(
-                  radius: 4.5, color: color.chartLine, strokeWidth: 0),
+                radius: 4.5,
+                color: color.chartLine,
+                strokeWidth: 0,
+              ),
             ),
             belowBarData: BarAreaData(
               show: true,
@@ -380,7 +423,12 @@ class _GoalCard extends StatelessWidget {
     return _PanelCard(
       radius: 24,
       color: scheme.surfaceContainerHighest,
-      padding: const EdgeInsets.fromLTRB(Insets.xl, Insets.lg, Insets.xl, Insets.lg),
+      padding: const EdgeInsets.fromLTRB(
+        Insets.xl,
+        Insets.lg,
+        Insets.xl,
+        Insets.lg,
+      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -389,15 +437,21 @@ class _GoalCard extends StatelessWidget {
               Icon(Icons.flag, size: 20, color: scheme.primary),
               const SizedBox(width: Insets.sm),
               Expanded(
-                child: Text(l10n.homeGoalRow(fmt.withUnit(targetKg)),
-                    style: text.bodyLarge?.copyWith(fontWeight: FontWeight.w700),
-                    overflow: TextOverflow.ellipsis),
+                child: Text(
+                  l10n.homeGoalRow(fmt.withUnit(targetKg)),
+                  style: text.bodyLarge?.copyWith(fontWeight: FontWeight.w700),
+                  overflow: TextOverflow.ellipsis,
+                ),
               ),
               const SizedBox(width: Insets.sm),
-              Text(l10n.homeToGo(fmt.withUnit(remainingKg)),
-                  softWrap: false,
-                  style: text.bodyLarge?.copyWith(
-                      fontWeight: FontWeight.w700, color: scheme.primary)),
+              Text(
+                l10n.homeToGo(fmt.withUnit(remainingKg)),
+                softWrap: false,
+                style: text.bodyLarge?.copyWith(
+                  fontWeight: FontWeight.w700,
+                  color: scheme.primary,
+                ),
+              ),
             ],
           ),
           const SizedBox(height: Insets.md),
@@ -411,8 +465,10 @@ class _GoalCard extends StatelessWidget {
             ),
           ),
           const SizedBox(height: Insets.sm),
-          Text(l10n.homeProgressFrom(percent, fmt.withUnit(startKg)),
-              style: text.bodySmall?.copyWith(color: scheme.onSurfaceVariant)),
+          Text(
+            l10n.homeProgressFrom(percent, fmt.withUnit(startKg)),
+            style: text.bodySmall?.copyWith(color: scheme.onSurfaceVariant),
+          ),
           GoalEtaLine(entries: entries, targetKg: targetKg),
         ],
       ),
@@ -442,8 +498,9 @@ class _BmiTile extends StatelessWidget {
       BmiBand.above => l10n.bmiBandAbove,
     };
     final locale = Localizations.localeOf(context).languageCode;
-    final value =
-        bmi.toStringAsFixed(1).replaceAll('.', locale == 'da' ? ',' : '.');
+    final value = bmi
+        .toStringAsFixed(1)
+        .replaceAll('.', locale == 'da' ? ',' : '.');
 
     return Material(
       color: scheme.surfaceContainerHighest,
@@ -461,17 +518,24 @@ class _BmiTile extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text(l10n.bmiLabel,
-                  style: text.bodySmall?.copyWith(color: scheme.onSurfaceVariant)),
+              Text(
+                l10n.bmiLabel,
+                style: text.bodySmall?.copyWith(color: scheme.onSurfaceVariant),
+              ),
               const SizedBox(height: Insets.xs),
-              Text(value,
-                  style: text.headlineMedium?.copyWith(
-                      fontSize: 24,
-                      fontWeight: FontWeight.w800,
-                      color: scheme.onSurface)),
+              Text(
+                value,
+                style: text.headlineMedium?.copyWith(
+                  fontSize: 24,
+                  fontWeight: FontWeight.w800,
+                  color: scheme.onSurface,
+                ),
+              ),
               const SizedBox(height: 2),
-              Text(band,
-                  style: text.bodySmall?.copyWith(color: scheme.onSurfaceVariant)),
+              Text(
+                band,
+                style: text.bodySmall?.copyWith(color: scheme.onSurfaceVariant),
+              ),
             ],
           ),
         ),
@@ -495,14 +559,18 @@ class _SecondMetricSlot extends StatelessWidget {
           child: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Icon(Icons.add_circle_outline,
-                  size: 20, color: scheme.onSurfaceVariant),
+              Icon(
+                Icons.add_circle_outline,
+                size: 20,
+                color: scheme.onSurfaceVariant,
+              ),
               const SizedBox(width: Insets.sm),
-              Text(l10n.homeCaloriesSlot,
-                  style: Theme.of(context)
-                      .textTheme
-                      .bodyMedium
-                      ?.copyWith(color: scheme.onSurfaceVariant)),
+              Text(
+                l10n.homeCaloriesSlot,
+                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                  color: scheme.onSurfaceVariant,
+                ),
+              ),
             ],
           ),
         ),
@@ -576,6 +644,74 @@ class _PanelCard extends StatelessWidget {
   }
 }
 
+/// Loading placeholder for Home: the always-present spine only — hero card and
+/// goal card. The second-metric/BMI slot is intentionally omitted (it exists
+/// only when a height is set, which the loader can't yet know). Card geometry
+/// matches the real cards so nothing shifts when content lands.
+/// See `design/handoff/SKELETON_LOADING.md`.
+class _HomeSkeleton extends StatelessWidget {
+  const _HomeSkeleton();
+
+  @override
+  Widget build(BuildContext context) {
+    final scheme = Theme.of(context).colorScheme;
+    return ListView(
+      physics: const NeverScrollableScrollPhysics(),
+      padding: const EdgeInsets.fromLTRB(
+        Insets.screenH,
+        Insets.sm,
+        Insets.screenH,
+        96,
+      ),
+      children: [
+        // Hero card — radius 28, surfaceContainerHighest, the real hero padding.
+        _PanelCard(
+          radius: 28,
+          color: scheme.surfaceContainerHighest,
+          padding: const EdgeInsets.fromLTRB(
+            Insets.xl,
+            Insets.xxl,
+            Insets.xl,
+            Insets.lg,
+          ),
+          child: const Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SkeletonBlock(width: 80, height: 12, radius: 6), // eyebrow
+              SizedBox(height: 14),
+              SkeletonBlock(width: 180, height: 44, radius: 10), // hero value
+              SizedBox(height: 14),
+              SkeletonBlock(width: 64, height: 24, radius: 12), // delta pill
+              SizedBox(height: 14),
+              SkeletonBlock(height: 40, radius: 10), // sparkline band (fill)
+            ],
+          ),
+        ),
+        const SizedBox(height: Insets.cardGap),
+        // Goal card — radius 24, the real goal-card padding.
+        _PanelCard(
+          radius: 24,
+          color: scheme.surfaceContainerHighest,
+          padding: const EdgeInsets.fromLTRB(
+            Insets.xl,
+            Insets.lg,
+            Insets.xl,
+            Insets.lg,
+          ),
+          child: const Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SkeletonBlock(width: 110, height: 12, radius: 6), // label
+              SizedBox(height: Insets.md),
+              SkeletonBlock(height: 6, radius: 3), // progress track (fill)
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+}
+
 class _EmptyHome extends StatelessWidget {
   const _EmptyHome();
 
@@ -597,16 +733,24 @@ class _EmptyHome extends StatelessWidget {
                 color: scheme.surfaceContainer,
                 shape: BoxShape.circle,
               ),
-              child: Icon(Icons.monitor_weight_outlined,
-                  size: 44, color: scheme.onSurfaceVariant),
+              child: Icon(
+                Icons.monitor_weight_outlined,
+                size: 44,
+                color: scheme.onSurfaceVariant,
+              ),
             ),
             const SizedBox(height: Insets.xl),
-            Text(l10n.homeEmptyTitle,
-                textAlign: TextAlign.center, style: text.headlineMedium),
+            Text(
+              l10n.homeEmptyTitle,
+              textAlign: TextAlign.center,
+              style: text.headlineMedium,
+            ),
             const SizedBox(height: Insets.sm),
-            Text(l10n.homeEmptyBody,
-                textAlign: TextAlign.center,
-                style: text.bodyLarge?.copyWith(color: scheme.onSurfaceVariant)),
+            Text(
+              l10n.homeEmptyBody,
+              textAlign: TextAlign.center,
+              style: text.bodyLarge?.copyWith(color: scheme.onSurfaceVariant),
+            ),
             const SizedBox(height: Insets.xxl),
             Builder(
               builder: (context) => FilledButton.icon(

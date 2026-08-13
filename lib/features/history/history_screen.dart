@@ -7,6 +7,7 @@ import '../../app/providers.dart';
 import '../../app/theme/ponvia_colors.dart';
 import '../../core/formatting/date_formatter.dart';
 import '../../core/formatting/weight_formatter.dart';
+import '../../core/ui/skeleton.dart';
 import '../../core/ui/spacing.dart';
 import '../../core/ui/undo_snackbar.dart';
 import '../../core/units/weight_unit.dart';
@@ -28,12 +29,12 @@ enum _Range {
   final Duration? duration;
 
   String label(AppLocalizations l10n) => switch (this) {
-        _Range.week => l10n.range1W,
-        _Range.month => l10n.range1M,
-        _Range.threeMonths => l10n.range3M,
-        _Range.year => l10n.range1Y,
-        _Range.all => l10n.rangeAll,
-      };
+    _Range.week => l10n.range1W,
+    _Range.month => l10n.range1M,
+    _Range.threeMonths => l10n.range3M,
+    _Range.year => l10n.range1Y,
+    _Range.all => l10n.rangeAll,
+  };
 }
 
 /// History: a trend chart in a card, then month-grouped entry rows. Styled to
@@ -55,28 +56,30 @@ class _HistoryScreenState extends ConsumerState<HistoryScreen> {
     final entriesAsync = ref.watch(entriesProvider);
     // Closest unachieved goal (null when none / no weight yet) → marker line.
     final goalTargetKg = ref.watch(closestGoalProvider)?.targetWeightKg;
-    final fmt = WeightFormatter(settings.unit, locale: Localizations.localeOf(context).languageCode);
-    final dateFmt = PonviaDateFormatter(locale: Localizations.localeOf(context).languageCode);
+    final fmt = WeightFormatter(
+      settings.unit,
+      locale: Localizations.localeOf(context).languageCode,
+    );
+    final dateFmt = PonviaDateFormatter(
+      locale: Localizations.localeOf(context).languageCode,
+    );
 
     return Scaffold(
       appBar: AppBar(title: Text(l10n.historyTitle)),
-      body: entriesAsync.when(
-        loading: () => const Center(child: CircularProgressIndicator()),
-        error: (e, _) => Center(child: Text('$e')),
-        data: (all) {
-          if (all.isEmpty) return _EmptyHistory(l10n: l10n);
-          final cutoff = _range.duration == null
-              ? null
-              : DateTime.now().subtract(_range.duration!);
-          final inRange = cutoff == null
-              ? all
-              : all.where((e) => e.timestamp.isAfter(cutoff)).toList();
-
-          // Header widgets (few) stay eager; the entry rows build lazily via
-          // SliverList.builder so a long "All" history doesn't build every row
-          // (and its Dismissible) up front.
-          final header = <Widget>[
-            SegmentedButton<_Range>(
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          // The range control is chrome — always live, never skeletonised — so a
+          // pending query never hides the range it was built from, and the user
+          // can switch ranges while the body is still resolving.
+          Padding(
+            padding: const EdgeInsets.fromLTRB(
+              Insets.screenH,
+              Insets.md,
+              Insets.screenH,
+              Insets.lg,
+            ),
+            child: SegmentedButton<_Range>(
               segments: [
                 for (final r in _Range.values)
                   ButtonSegment(value: r, label: Text(r.label(l10n))),
@@ -85,93 +88,141 @@ class _HistoryScreenState extends ConsumerState<HistoryScreen> {
               showSelectedIcon: false,
               onSelectionChanged: (s) => setState(() => _range = s.first),
             ),
-            const SizedBox(height: Insets.lg),
-            if (inRange.isNotEmpty) ...[
-              _SummaryCard(stats: computeRangeStats(inRange)!, fmt: fmt),
-              const SizedBox(height: Insets.md),
-            ],
-            if (inRange.length >= 2)
-              _ChartCard(
-                entries: inRange,
-                unit: settings.unit,
-                fmt: fmt,
-                dateFmt: dateFmt,
-                goalTargetKg: goalTargetKg,
-              ),
-            if (inRange.isEmpty)
-              Padding(
-                padding: const EdgeInsets.only(top: Insets.xxxl),
-                child: Center(
-                  child: Text(l10n.historyEmptyRange,
-                      style: Theme.of(context).textTheme.bodyMedium),
-                ),
-              ),
-          ];
+          ),
+          Expanded(
+            child: SkeletonGate<List<WeightEntry>>(
+              value: entriesAsync,
+              semanticsLabel: l10n.a11yLoading,
+              skeleton: (_) => const _HistorySkeleton(),
+              data: (context, all) {
+                if (all.isEmpty) return _EmptyHistory(l10n: l10n);
+                final cutoff = _range.duration == null
+                    ? null
+                    : DateTime.now().subtract(_range.duration!);
+                final inRange = cutoff == null
+                    ? all
+                    : all.where((e) => e.timestamp.isAfter(cutoff)).toList();
 
-          // Lightweight row descriptors (cheap structs); widgets built on demand.
-          final items = <_HistoryItem>[];
-          int? lastMonthKey;
-          for (var i = 0; i < inRange.length; i++) {
-            final e = inRange[i];
-            final monthKey = e.timestamp.year * 100 + e.timestamp.month;
-            if (monthKey != lastMonthKey) {
-              lastMonthKey = monthKey;
-              items.add(_HistoryItem.month(e.timestamp));
-            }
-            items.add(_HistoryItem.entry(
-                e, i + 1 < inRange.length ? inRange[i + 1] : null));
-          }
-          final monthFmt =
-              DateFormat.yMMMM(Localizations.localeOf(context).languageCode);
+                // Header widgets (few) stay eager; the entry rows build lazily via
+                // SliverList.builder so a long "All" history doesn't build every row
+                // (and its Dismissible) up front.
+                final header = <Widget>[
+                  if (inRange.isNotEmpty) ...[
+                    _SummaryCard(stats: computeRangeStats(inRange)!, fmt: fmt),
+                    const SizedBox(height: Insets.md),
+                  ],
+                  if (inRange.length >= 2)
+                    _ChartCard(
+                      entries: inRange,
+                      unit: settings.unit,
+                      fmt: fmt,
+                      dateFmt: dateFmt,
+                      goalTargetKg: goalTargetKg,
+                    ),
+                  if (inRange.isEmpty)
+                    Padding(
+                      padding: const EdgeInsets.only(top: Insets.xxxl),
+                      child: Center(
+                        child: Text(
+                          l10n.historyEmptyRange,
+                          style: Theme.of(context).textTheme.bodyMedium,
+                        ),
+                      ),
+                    ),
+                ];
 
-          return CustomScrollView(
-            slivers: [
-              SliverPadding(
-                padding: const EdgeInsets.fromLTRB(
-                    Insets.screenH, Insets.md, Insets.screenH, 0),
-                sliver: SliverList(delegate: SliverChildListDelegate(header)),
-              ),
-              SliverPadding(
-                padding: const EdgeInsets.fromLTRB(
-                    Insets.screenH, 0, Insets.screenH, 96),
-                sliver: SliverList.builder(
-                  itemCount: items.length,
-                  itemBuilder: (context, i) =>
-                      _buildRow(context, items[i], fmt, dateFmt, monthFmt),
-                ),
-              ),
-            ],
-          );
-        },
+                // Lightweight row descriptors (cheap structs); widgets built on demand.
+                final items = <_HistoryItem>[];
+                int? lastMonthKey;
+                for (var i = 0; i < inRange.length; i++) {
+                  final e = inRange[i];
+                  final monthKey = e.timestamp.year * 100 + e.timestamp.month;
+                  if (monthKey != lastMonthKey) {
+                    lastMonthKey = monthKey;
+                    items.add(_HistoryItem.month(e.timestamp));
+                  }
+                  items.add(
+                    _HistoryItem.entry(
+                      e,
+                      i + 1 < inRange.length ? inRange[i + 1] : null,
+                    ),
+                  );
+                }
+                final monthFmt = DateFormat.yMMMM(
+                  Localizations.localeOf(context).languageCode,
+                );
+
+                return CustomScrollView(
+                  slivers: [
+                    SliverPadding(
+                      padding: const EdgeInsets.fromLTRB(
+                        Insets.screenH,
+                        0,
+                        Insets.screenH,
+                        0,
+                      ),
+                      sliver: SliverList(
+                        delegate: SliverChildListDelegate(header),
+                      ),
+                    ),
+                    SliverPadding(
+                      padding: const EdgeInsets.fromLTRB(
+                        Insets.screenH,
+                        0,
+                        Insets.screenH,
+                        96,
+                      ),
+                      sliver: SliverList.builder(
+                        itemCount: items.length,
+                        itemBuilder: (context, i) => _buildRow(
+                          context,
+                          items[i],
+                          fmt,
+                          dateFmt,
+                          monthFmt,
+                        ),
+                      ),
+                    ),
+                  ],
+                );
+              },
+            ),
+          ),
+        ],
       ),
     );
   }
 
-  Widget _buildRow(BuildContext context, _HistoryItem item,
-      WeightFormatter fmt, PonviaDateFormatter dateFmt, DateFormat monthFmt) {
+  Widget _buildRow(
+    BuildContext context,
+    _HistoryItem item,
+    WeightFormatter fmt,
+    PonviaDateFormatter dateFmt,
+    DateFormat monthFmt,
+  ) {
     final l10n = AppLocalizations.of(context);
     final scheme = Theme.of(context).colorScheme;
 
     if (item.isMonth) {
       return Padding(
         padding: const EdgeInsets.fromLTRB(Insets.xs, Insets.lg, 0, Insets.sm),
-        child: Text(monthFmt.format(item.monthDate!).toUpperCase(),
-            style: Theme.of(context)
-                .textTheme
-                .labelSmall
-                ?.copyWith(color: scheme.onSurfaceVariant)),
+        child: Text(
+          monthFmt.format(item.monthDate!).toUpperCase(),
+          style: Theme.of(
+            context,
+          ).textTheme.labelSmall?.copyWith(color: scheme.onSurfaceVariant),
+        ),
       );
     }
 
     final e = item.entry!;
-    final deltaKg =
-        item.prev == null ? null : e.weightKg - item.prev!.weightKg;
+    final deltaKg = item.prev == null ? null : e.weightKg - item.prev!.weightKg;
     final relDay = PonviaDateFormatter.daysAgo(e.timestamp, DateTime.now());
     final when = relDay == 0
         ? l10n.today
         : relDay == 1
-            ? l10n.yesterday
-            : dateFmt.date(e.timestamp);
+        ? l10n.yesterday
+        : dateFmt.date(e.timestamp);
 
     return Dismissible(
       key: ValueKey(e.id ?? e.timestamp.toIso8601String()),
@@ -191,8 +242,13 @@ class _HistoryScreenState extends ConsumerState<HistoryScreen> {
           message: l10n.snackbarEntryDeleted,
           undoLabel: l10n.actionUndo,
           icon: Icons.delete_outline,
-          onUndo: () => repo.add(WeightEntry(
-              timestamp: e.timestamp, weightKg: e.weightKg, note: e.note)),
+          onUndo: () => repo.add(
+            WeightEntry(
+              timestamp: e.timestamp,
+              weightKg: e.weightKg,
+              note: e.note,
+            ),
+          ),
         );
       },
       child: _EntryRow(
@@ -211,9 +267,7 @@ class _HistoryScreenState extends ConsumerState<HistoryScreen> {
 /// (with its previous entry, for the delta). Cheap to create in bulk; the
 /// widgets are built lazily by SliverList.builder.
 class _HistoryItem {
-  const _HistoryItem.month(this.monthDate)
-      : entry = null,
-        prev = null;
+  const _HistoryItem.month(this.monthDate) : entry = null, prev = null;
   const _HistoryItem.entry(this.entry, this.prev) : monthDate = null;
 
   final DateTime? monthDate;
@@ -250,7 +304,9 @@ class _EntryRow extends StatelessWidget {
       onTap: onTap,
       child: Container(
         padding: const EdgeInsets.symmetric(
-            vertical: Insets.md, horizontal: Insets.xs),
+          vertical: Insets.md,
+          horizontal: Insets.xs,
+        ),
         decoration: BoxDecoration(
           border: Border(bottom: BorderSide(color: scheme.outline)),
         ),
@@ -260,22 +316,34 @@ class _EntryRow extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(title,
-                      style: text.bodyLarge?.copyWith(fontWeight: FontWeight.w700)),
+                  Text(
+                    title,
+                    style: text.bodyLarge?.copyWith(
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
                   if (note != null && note!.isNotEmpty)
-                    Text(note!,
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: text.bodySmall
-                            ?.copyWith(color: scheme.onSurfaceVariant)),
+                    Text(
+                      note!,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: text.bodySmall?.copyWith(
+                        color: scheme.onSurfaceVariant,
+                      ),
+                    ),
                 ],
               ),
             ),
             const SizedBox(width: Insets.md),
-            Text(value,
-                style: text.titleMedium?.copyWith(fontWeight: FontWeight.w800)),
+            Text(
+              value,
+              style: text.titleMedium?.copyWith(fontWeight: FontWeight.w800),
+            ),
             const SizedBox(width: Insets.md),
-            SizedBox(width: 62, child: _DeltaCell(deltaKg: deltaKg, fmt: fmt, ponvia: ponvia)),
+            SizedBox(
+              width: 62,
+              child: _DeltaCell(deltaKg: deltaKg, fmt: fmt, ponvia: ponvia),
+            ),
           ],
         ),
       ),
@@ -284,8 +352,11 @@ class _EntryRow extends StatelessWidget {
 }
 
 class _DeltaCell extends StatelessWidget {
-  const _DeltaCell(
-      {required this.deltaKg, required this.fmt, required this.ponvia});
+  const _DeltaCell({
+    required this.deltaKg,
+    required this.fmt,
+    required this.ponvia,
+  });
 
   final double? deltaKg;
   final WeightFormatter fmt;
@@ -298,16 +369,21 @@ class _DeltaCell extends StatelessWidget {
     final (Color color, IconData icon) = d < 0
         ? (ponvia.deltaDown, Icons.arrow_downward)
         : d > 0
-            ? (ponvia.deltaUp, Icons.arrow_upward)
-            : (ponvia.deltaFlat, Icons.remove);
+        ? (ponvia.deltaUp, Icons.arrow_upward)
+        : (ponvia.deltaFlat, Icons.remove);
     return Row(
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
         Icon(icon, size: 18, color: color),
         const SizedBox(width: 2),
-        Text(fmt.magnitudeShort(d.abs()),
-            style: TextStyle(
-                fontWeight: FontWeight.w700, fontSize: 14, color: color)),
+        Text(
+          fmt.magnitudeShort(d.abs()),
+          style: TextStyle(
+            fontWeight: FontWeight.w700,
+            fontSize: 14,
+            color: color,
+          ),
+        ),
       ],
     );
   }
@@ -335,8 +411,12 @@ class _SummaryCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(24),
         border: Border.all(color: scheme.outline),
       ),
-      padding:
-          const EdgeInsets.fromLTRB(Insets.xl, Insets.lg, Insets.lg, Insets.lg),
+      padding: const EdgeInsets.fromLTRB(
+        Insets.xl,
+        Insets.lg,
+        Insets.lg,
+        Insets.lg,
+      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -361,14 +441,23 @@ class _SummaryCard extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Expanded(
-                  child: _StatCell(
-                      label: l10n.statMin, value: fmt.withUnit(stats.minKg))),
+                child: _StatCell(
+                  label: l10n.statMin,
+                  value: fmt.withUnit(stats.minKg),
+                ),
+              ),
               Expanded(
-                  child: _StatCell(
-                      label: l10n.statAvg, value: fmt.withUnit(stats.avgKg))),
+                child: _StatCell(
+                  label: l10n.statAvg,
+                  value: fmt.withUnit(stats.avgKg),
+                ),
+              ),
               Expanded(
-                  child: _StatCell(
-                      label: l10n.statMax, value: fmt.withUnit(stats.maxKg))),
+                child: _StatCell(
+                  label: l10n.statMax,
+                  value: fmt.withUnit(stats.maxKg),
+                ),
+              ),
             ],
           ),
         ],
@@ -390,14 +479,20 @@ class _StatCell extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(label.toUpperCase(),
-            style: text.labelSmall
-                ?.copyWith(color: scheme.onSurfaceVariant, letterSpacing: 0.4)),
+        Text(
+          label.toUpperCase(),
+          style: text.labelSmall?.copyWith(
+            color: scheme.onSurfaceVariant,
+            letterSpacing: 0.4,
+          ),
+        ),
         const SizedBox(height: Insets.xs),
-        Text(value,
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-            style: text.titleMedium?.copyWith(fontWeight: FontWeight.w800)),
+        Text(
+          value,
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
+          style: text.titleMedium?.copyWith(fontWeight: FontWeight.w800),
+        ),
       ],
     );
   }
@@ -407,8 +502,11 @@ class _StatCell extends StatelessWidget {
 /// a decrease, ochre for an increase, neutral for no change. Icon + word carry
 /// the direction so colour is never the only signal.
 class _NetChip extends StatelessWidget {
-  const _NetChip(
-      {required this.netKg, required this.fmt, required this.ponvia});
+  const _NetChip({
+    required this.netKg,
+    required this.fmt,
+    required this.ponvia,
+  });
 
   final double netKg;
   final WeightFormatter fmt;
@@ -425,21 +523,21 @@ class _NetChip extends StatelessWidget {
             scheme.primaryContainer,
             scheme.onPrimaryContainer,
             Icons.arrow_downward,
-            l10n.homeDeltaDown(amount)
+            l10n.homeDeltaDown(amount),
           )
         : netKg > 0
-            ? (
-                ponvia.deltaUpContainer,
-                ponvia.onDeltaUpContainer,
-                Icons.arrow_upward,
-                l10n.homeDeltaUp(amount)
-              )
-            : (
-                scheme.surfaceContainer,
-                scheme.onSurfaceVariant,
-                Icons.remove,
-                l10n.homeDeltaFlat
-              );
+        ? (
+            ponvia.deltaUpContainer,
+            ponvia.onDeltaUpContainer,
+            Icons.arrow_upward,
+            l10n.homeDeltaUp(amount),
+          )
+        : (
+            scheme.surfaceContainer,
+            scheme.onSurfaceVariant,
+            Icons.remove,
+            l10n.homeDeltaFlat,
+          );
 
     return Container(
       height: 32,
@@ -453,9 +551,10 @@ class _NetChip extends StatelessWidget {
         children: [
           Icon(icon, size: 18, color: fg),
           const SizedBox(width: Insets.xs),
-          Text(label,
-              style:
-                  Theme.of(context).textTheme.labelLarge?.copyWith(color: fg)),
+          Text(
+            label,
+            style: Theme.of(context).textTheme.labelLarge?.copyWith(color: fg),
+          ),
         ],
       ),
     );
@@ -490,33 +589,45 @@ class _ChartCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(24),
         border: Border.all(color: scheme.outline),
       ),
-      padding: const EdgeInsets.fromLTRB(Insets.lg, Insets.md, Insets.md, Insets.md),
+      padding: const EdgeInsets.fromLTRB(
+        Insets.lg,
+        Insets.md,
+        Insets.md,
+        Insets.md,
+      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           if (showLegend)
             Padding(
-              padding: const EdgeInsets.only(right: Insets.xs, bottom: Insets.sm),
+              padding: const EdgeInsets.only(
+                right: Insets.xs,
+                bottom: Insets.sm,
+              ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   _LegendItem(
-                      color: ponvia.chartLine, label: l10n.chartLegendWeight),
+                    color: ponvia.chartLine,
+                    label: l10n.chartLegendWeight,
+                  ),
                   const SizedBox(width: Insets.md),
                   _LegendItem(
-                      color: scheme.onSurfaceVariant,
-                      label: l10n.chartLegendTrend),
+                    color: scheme.onSurfaceVariant,
+                    label: l10n.chartLegendTrend,
+                  ),
                 ],
               ),
             ),
           SizedBox(
             height: 170,
             child: _TrendChart(
-                entries: entries,
-                unit: unit,
-                fmt: fmt,
-                dateFmt: dateFmt,
-                goalTargetKg: goalTargetKg),
+              entries: entries,
+              unit: unit,
+              fmt: fmt,
+              dateFmt: dateFmt,
+              goalTargetKg: goalTargetKg,
+            ),
           ),
         ],
       ),
@@ -543,12 +654,194 @@ class _LegendItem extends StatelessWidget {
           decoration: BoxDecoration(color: color, shape: BoxShape.circle),
         ),
         const SizedBox(width: Insets.xs),
-        Text(label,
-            style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                color: scheme.onSurfaceVariant, letterSpacing: 0)),
+        Text(
+          label,
+          style: Theme.of(context).textTheme.labelSmall?.copyWith(
+            color: scheme.onSurfaceVariant,
+            letterSpacing: 0,
+          ),
+        ),
       ],
     );
   }
+}
+
+/// Loading placeholder for History (below the live range control): a summary
+/// card, a chart card with a calm area silhouette (not a flat slab), and four
+/// entry rows on the real 64dp pitch. Card geometry matches the real cards.
+/// See `design/handoff/SKELETON_LOADING.md`.
+class _HistorySkeleton extends StatelessWidget {
+  const _HistorySkeleton();
+
+  static const _weightWidths = [88.0, 76.0, 92.0, 80.0];
+  static const _dateWidths = [64.0, 58.0, 66.0, 60.0];
+
+  Widget _cardShell(
+    BuildContext context, {
+    required double radius,
+    required EdgeInsets padding,
+    required Widget child,
+  }) {
+    final scheme = Theme.of(context).colorScheme;
+    return Container(
+      decoration: BoxDecoration(
+        color: scheme.surfaceContainerHighest,
+        borderRadius: BorderRadius.circular(radius),
+        border: Border.all(color: scheme.outline),
+      ),
+      padding: padding,
+      child: child,
+    );
+  }
+
+  Widget _statPair() => const Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      SkeletonBlock(width: 52, height: 10, radius: 5),
+      SizedBox(height: Insets.sm),
+      SkeletonBlock(width: 68, height: 20, radius: 8),
+    ],
+  );
+
+  Widget _row(BuildContext context, int i) {
+    final scheme = Theme.of(context).colorScheme;
+    return SizedBox(
+      height: 64,
+      child: Column(
+        children: [
+          Expanded(
+            child: Row(
+              children: [
+                const SkeletonBlock(width: 10, height: 10, radius: 5), // dot
+                const SizedBox(width: Insets.md),
+                SkeletonBlock(width: _weightWidths[i], height: 14, radius: 6),
+                const Spacer(),
+                SkeletonBlock(width: _dateWidths[i], height: 12, radius: 6),
+              ],
+            ),
+          ),
+          Divider(height: 1, thickness: 1, indent: 20, color: scheme.outline),
+        ],
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView(
+      physics: const NeverScrollableScrollPhysics(),
+      padding: const EdgeInsets.fromLTRB(Insets.screenH, 0, Insets.screenH, 96),
+      children: [
+        // Summary card — an eyebrow bar over three stat pairs.
+        _cardShell(
+          context,
+          radius: 24,
+          padding: const EdgeInsets.fromLTRB(
+            Insets.xl,
+            Insets.lg,
+            Insets.lg,
+            Insets.lg,
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const SkeletonBlock(width: 120, height: 12, radius: 6),
+              const SizedBox(height: Insets.lg),
+              Row(
+                children: [
+                  Expanded(child: _statPair()),
+                  Expanded(child: _statPair()),
+                  Expanded(child: _statPair()),
+                ],
+              ),
+            ],
+          ),
+        ),
+        const SizedBox(height: Insets.md),
+        // Chart card — the calm area silhouette (height 170), never a slab.
+        _cardShell(
+          context,
+          radius: 24,
+          padding: const EdgeInsets.fromLTRB(
+            Insets.lg,
+            Insets.md,
+            Insets.md,
+            Insets.md,
+          ),
+          child: const SizedBox(height: 170, child: _SkeletonAreaChart()),
+        ),
+        const SizedBox(height: Insets.lg),
+        for (var i = 0; i < 4; i++) _row(context, i),
+      ],
+    );
+  }
+}
+
+/// A low, calm area silhouette used as the chart placeholder — a filled curve
+/// with a 2dp baseline, pulsed on the shared skeleton clock. Deliberately not a
+/// rectangle: a flat slab reads as a broken image.
+class _SkeletonAreaChart extends StatelessWidget {
+  const _SkeletonAreaChart();
+
+  @override
+  Widget build(BuildContext context) {
+    final base = Theme.of(context).colorScheme.surfaceContainer;
+    final opacity = SkeletonScope.of(context).opacity;
+    return ExcludeSemantics(
+      child: AnimatedBuilder(
+        animation: opacity,
+        builder: (context, _) => Opacity(
+          opacity: opacity.value,
+          child: CustomPaint(size: Size.infinite, painter: _AreaPainter(base)),
+        ),
+      ),
+    );
+  }
+}
+
+class _AreaPainter extends CustomPainter {
+  _AreaPainter(this.color);
+
+  final Color color;
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final w = size.width;
+    final h = size.height;
+    final baseY = h;
+    // A gentle, fixed waveline (fractions of height from the top).
+    final pts = <Offset>[
+      Offset(0, h * 0.60),
+      Offset(w * 0.20, h * 0.48),
+      Offset(w * 0.40, h * 0.66),
+      Offset(w * 0.60, h * 0.40),
+      Offset(w * 0.80, h * 0.54),
+      Offset(w, h * 0.44),
+    ];
+    final path = Path()
+      ..moveTo(0, baseY)
+      ..lineTo(pts.first.dx, pts.first.dy);
+    for (var i = 0; i < pts.length - 1; i++) {
+      final p0 = pts[i];
+      final p1 = pts[i + 1];
+      final midX = (p0.dx + p1.dx) / 2;
+      path.cubicTo(midX, p0.dy, midX, p1.dy, p1.dx, p1.dy);
+    }
+    path
+      ..lineTo(w, baseY)
+      ..close();
+    canvas.drawPath(path, Paint()..color = color);
+    canvas.drawLine(
+      Offset(0, baseY - 1),
+      Offset(w, baseY - 1),
+      Paint()
+        ..color = color
+        ..strokeWidth = 2,
+    );
+  }
+
+  @override
+  bool shouldRepaint(_AreaPainter old) => old.color != color;
 }
 
 class _EmptyHistory extends StatelessWidget {
@@ -569,12 +862,21 @@ class _EmptyHistory extends StatelessWidget {
               width: 96,
               height: 96,
               decoration: BoxDecoration(
-                  color: scheme.surfaceContainer, shape: BoxShape.circle),
-              child: Icon(Icons.show_chart, size: 40, color: scheme.onSurfaceVariant),
+                color: scheme.surfaceContainer,
+                shape: BoxShape.circle,
+              ),
+              child: Icon(
+                Icons.show_chart,
+                size: 40,
+                color: scheme.onSurfaceVariant,
+              ),
             ),
             const SizedBox(height: Insets.xl),
-            Text(l10n.historyEmpty,
-                textAlign: TextAlign.center, style: text.headlineMedium),
+            Text(
+              l10n.historyEmpty,
+              textAlign: TextAlign.center,
+              style: text.headlineMedium,
+            ),
           ],
         ),
       ),
@@ -603,8 +905,9 @@ class _TrendChart extends StatelessWidget {
     final ponvia = Theme.of(context).extension<PonviaColors>()!;
     final scheme = Theme.of(context).colorScheme;
     final l10n = AppLocalizations.of(context);
-    final axisDate =
-        DateFormat.MMMd(Localizations.localeOf(context).languageCode);
+    final axisDate = DateFormat.MMMd(
+      Localizations.localeOf(context).languageCode,
+    );
     final chrono = entries.reversed.toList();
     final values = [
       for (final e in chrono) WeightConverter.fromKg(e.weightKg, unit),
@@ -656,10 +959,10 @@ class _TrendChart extends StatelessWidget {
                       labelResolver: (_) =>
                           l10n.homeTarget(fmt.withUnit(goalTargetKg!)),
                       style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                            color: scheme.onSurfaceVariant,
-                            fontWeight: FontWeight.w700,
-                            letterSpacing: 0,
-                          ),
+                        color: scheme.onSurfaceVariant,
+                        fontWeight: FontWeight.w700,
+                        letterSpacing: 0,
+                      ),
                     ),
                   ),
                 ],
@@ -672,10 +975,12 @@ class _TrendChart extends StatelessWidget {
         ),
         borderData: FlBorderData(show: false),
         titlesData: FlTitlesData(
-          topTitles:
-              const AxisTitles(sideTitles: SideTitles(showTitles: false)),
-          rightTitles:
-              const AxisTitles(sideTitles: SideTitles(showTitles: false)),
+          topTitles: const AxisTitles(
+            sideTitles: SideTitles(showTitles: false),
+          ),
+          rightTitles: const AxisTitles(
+            sideTitles: SideTitles(showTitles: false),
+          ),
           leftTitles: AxisTitles(
             sideTitles: SideTitles(
               showTitles: true,
@@ -686,7 +991,9 @@ class _TrendChart extends StatelessWidget {
                 child: Text(
                   value.toStringAsFixed(yDecimals),
                   style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                      color: scheme.onSurfaceVariant, letterSpacing: 0),
+                    color: scheme.onSurfaceVariant,
+                    letterSpacing: 0,
+                  ),
                 ),
               ),
             ),
@@ -698,14 +1005,17 @@ class _TrendChart extends StatelessWidget {
               interval: xInterval,
               getTitlesWidget: (value, meta) {
                 final dt = DateTime.fromMillisecondsSinceEpoch(
-                    (value + minXms).toInt());
+                  (value + minXms).toInt(),
+                );
                 return SideTitleWidget(
                   meta: meta,
                   fitInside: SideTitleFitInsideData.fromTitleMeta(meta),
                   child: Text(
                     axisDate.format(dt),
                     style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                        color: scheme.onSurfaceVariant, letterSpacing: 0),
+                      color: scheme.onSurfaceVariant,
+                      letterSpacing: 0,
+                    ),
                   ),
                 );
               },
@@ -721,8 +1031,9 @@ class _TrendChart extends StatelessWidget {
                   ? null
                   : TouchedSpotIndicatorData(
                       FlLine(
-                          color: ponvia.chartLine.withValues(alpha: 0.4),
-                          strokeWidth: 2),
+                        color: ponvia.chartLine.withValues(alpha: 0.4),
+                        strokeWidth: 2,
+                      ),
                       const FlDotData(show: false),
                     ),
           ],
@@ -757,7 +1068,10 @@ class _TrendChart extends StatelessWidget {
             dotData: FlDotData(
               show: true,
               getDotPainter: (spot, _, _, _) => FlDotCirclePainter(
-                  radius: 3, color: ponvia.chartLine, strokeWidth: 0),
+                radius: 3,
+                color: ponvia.chartLine,
+                strokeWidth: 0,
+              ),
             ),
             belowBarData: BarAreaData(
               show: true,
