@@ -9,6 +9,26 @@ history — update the **Unreleased** section as you work, and cut it into a ver
 
 ## [Unreleased]
 
+## [0.5.0] - 2026-08-13
+### Added
+- **Skeleton loading** — Home, History and Goals now settle in with calm, layout-shaped
+  placeholders instead of a spinner. On a fast local read you won't even see them; a short
+  delay keeps them from flickering.
+- **Stone (st + lb) entry** — when your unit is stone, weigh-ins and goals are entered as
+  separate stone and pounds fields (with auto-advance) instead of decimal stone.
+- **Multi-weekday reminders** — a weekly reminder can now fire on several weekdays at once
+  (e.g. Mon · Wed · Fri), not just one.
+- **Open-source licenses** — a new Settings › About entry listing the libraries Ponvia uses.
+
+### Changed
+- The out-of-range weight hint now shows the limits in your unit — e.g. "between 3 st 2 lb
+  and 63 st 0 lb" or "between 44 lb and 882 lb" — instead of always in kilograms.
+
+### Fixed
+- "All data cleared" now uses correct singular/plural wording (no more "1 entries").
+- History chart y-axis labels no longer overlap at the top and bottom of the range, and the
+  numbers are rounded to cleaner values.
+
 ## [0.4.0] - 2026-08-13
 ### Added
 - **Height & BMI** — set your height (optional) to see a quiet, neutral BMI tile on Home.
