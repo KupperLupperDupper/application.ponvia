@@ -611,4 +611,76 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get bmiBandAbove => 'Above the normal range';
+
+  @override
+  String get appLockGroup => 'Security';
+
+  @override
+  String get appLockToggle => 'App lock';
+
+  @override
+  String get appLockToggleSub => 'Require a PIN when Ponvia opens';
+
+  @override
+  String get appLockBiometric => 'Fingerprint';
+
+  @override
+  String get appLockBiometricSub =>
+      'Unlock with your fingerprint instead of the PIN';
+
+  @override
+  String get appLockBiometricNeedsLock => 'Turn on app lock first';
+
+  @override
+  String get appLockBiometricUnavailable => 'No fingerprints on this phone';
+
+  @override
+  String get appLockChangePin => 'Change PIN';
+
+  @override
+  String get appLockOnDeviceNote =>
+      'The PIN is stored only on your phone. Ponvia sends nothing anywhere, and there is no account to recover it with.';
+
+  @override
+  String get appLockChoosePin => 'Choose a PIN';
+
+  @override
+  String get appLockConfirmPin => 'Confirm the PIN';
+
+  @override
+  String get appLockConfirmPinBody => 'Enter the same four digits again.';
+
+  @override
+  String get appLockPinMismatch => 'The PINs don\'t match. Try again.';
+
+  @override
+  String get appLockEnterPin => 'Enter your PIN';
+
+  @override
+  String get appLockFourDigits => '4 digits';
+
+  @override
+  String get appLockWaitingFingerprint => 'Waiting for fingerprint…';
+
+  @override
+  String get appLockWrongPin => 'Wrong PIN. Try again.';
+
+  @override
+  String get appLockUnlocking => 'Unlocking';
+
+  @override
+  String get appLockForgotPin => 'Forgotten your PIN?';
+
+  @override
+  String get appLockForgotPinBody =>
+      'Your PIN exists only on this phone, so we can\'t reset it. The only way back in is to clear Ponvia\'s data — your weigh-ins go with it unless you have an export.';
+
+  @override
+  String get appLockForgotPinClear => 'Clear data';
+
+  @override
+  String get appLockBiometricPromptTitle => 'Unlock Ponvia';
+
+  @override
+  String get appLockFooter => 'Everything stays on your phone';
 }

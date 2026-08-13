@@ -4,6 +4,7 @@ import 'package:file_selector/file_selector.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:local_auth/local_auth.dart';
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
@@ -16,6 +17,9 @@ import '../../data/backup/backup_service.dart';
 import '../../domain/models/app_settings.dart';
 import '../../domain/models/reminder_config.dart';
 import '../../l10n/app_localizations.dart';
+import '../security/app_lock_controller.dart';
+import '../security/set_pin_screen.dart';
+import '../security/verify_pin_sheet.dart';
 import 'height_sheet.dart';
 
 String _freqLabel(AppLocalizations l10n, ReminderFrequency f) => switch (f) {
@@ -59,6 +63,10 @@ class SettingsScreen extends ConsumerWidget {
       final totalIn = (h / 2.54).round();
       heightValue = '${totalIn ~/ 12} ft ${totalIn % 12} in';
     }
+
+    final lock = ref.watch(appLockControllerProvider);
+    final biometricAvailable =
+        ref.watch(biometricAvailableProvider).asData?.value ?? false;
 
     return Scaffold(
       appBar: AppBar(title: Text(l10n.navSettings)),
@@ -109,6 +117,47 @@ class SettingsScreen extends ConsumerWidget {
             title: l10n.settingsNotifications,
             trailing: _valueChevron(context, notifValue),
             onTap: () => context.push('/reminders'),
+          ),
+          _Header(l10n.appLockGroup),
+          _SettingRow(
+            icon: Icons.lock_outline,
+            title: l10n.appLockToggle,
+            subtitle: l10n.appLockToggleSub,
+            trailing: Switch(
+              value: lock.enabled,
+              onChanged: (v) => _toggleLock(context, ref, v),
+            ),
+          ),
+          // Fingerprint only appears once the lock (and its PIN) exist.
+          if (lock.enabled)
+            _SettingRow(
+              icon: Icons.fingerprint,
+              title: l10n.appLockBiometric,
+              subtitle: biometricAvailable
+                  ? l10n.appLockBiometricSub
+                  : l10n.appLockBiometricUnavailable,
+              trailing: Switch(
+                value: lock.biometricEnabled,
+                onChanged: biometricAvailable
+                    ? (v) => _toggleBiometric(context, ref, v)
+                    : null,
+              ),
+            ),
+          if (lock.enabled)
+            _SettingRow(
+              icon: Icons.password_outlined,
+              title: l10n.appLockChangePin,
+              trailing: Icon(Icons.chevron_right,
+                  size: 20,
+                  color: Theme.of(context).colorScheme.onSurfaceVariant),
+              onTap: () => _changePin(context, ref),
+            ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(
+                Insets.lg, Insets.xs, Insets.lg, Insets.sm),
+            child: Text(l10n.appLockOnDeviceNote,
+                style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                    color: Theme.of(context).colorScheme.onSurfaceVariant)),
           ),
           _Header(l10n.settingsData),
           _SettingRow(
@@ -429,6 +478,46 @@ class SettingsScreen extends ConsumerWidget {
       onUndo: () => backup.importJson(snapshot, replace: true),
     );
   }
+
+  Future<void> _toggleLock(BuildContext context, WidgetRef ref, bool on) async {
+    final notifier = ref.read(appLockControllerProvider.notifier);
+    if (on) {
+      final pin = await SetPinScreen.show(context);
+      if (pin != null) await notifier.enable(pin);
+    } else {
+      final ok = await showVerifyPinSheet(context);
+      if (ok == true) await notifier.disable();
+    }
+  }
+
+  Future<void> _toggleBiometric(
+      BuildContext context, WidgetRef ref, bool on) async {
+    final notifier = ref.read(appLockControllerProvider.notifier);
+    if (!on) {
+      await notifier.setBiometric(false);
+      return;
+    }
+    final reason = AppLocalizations.of(context).appLockBiometricPromptTitle;
+    var ok = false;
+    try {
+      ok = await LocalAuthentication().authenticate(
+        localizedReason: reason,
+        options: const AuthenticationOptions(stickyAuth: true),
+      );
+    } catch (_) {
+      ok = false;
+    }
+    if (ok) await notifier.setBiometric(true);
+  }
+
+  Future<void> _changePin(BuildContext context, WidgetRef ref) async {
+    final ok = await showVerifyPinSheet(context);
+    if (ok != true || !context.mounted) return;
+    final pin = await SetPinScreen.show(context);
+    if (pin != null) {
+      await ref.read(appLockControllerProvider.notifier).changePin(pin);
+    }
+  }
 }
 
 class _Header extends StatelessWidget {
@@ -463,7 +552,8 @@ class _SettingRow extends StatelessWidget {
   final IconData icon;
   final String title;
 
-  /// Optional second line — makes the row two-line (e.g. Height while unset).
+  /// Optional second line — makes the row two-line (e.g. Height unset, or the
+  /// app-lock switches).
   final String? subtitle;
   final Widget? trailing;
   final VoidCallback? onTap;

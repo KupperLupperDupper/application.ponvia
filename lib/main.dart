@@ -7,7 +7,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'app/app.dart';
 import 'app/providers.dart';
 import 'app/router.dart';
+import 'data/security/app_lock_store.dart';
 import 'features/notifications/notification_service.dart';
+import 'features/security/app_lock_controller.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -20,6 +22,18 @@ Future<void> main() async {
   ]);
 
   final prefs = await SharedPreferences.getInstance();
+
+  // Load the app-lock state before the first frame so the router can gate it
+  // without flashing the home screen, and arm FLAG_SECURE if the lock is on.
+  final appLockStore = AppLockStore();
+  final lockEnabled = await appLockStore.hasPin();
+  final biometricEnabled = lockEnabled && await appLockStore.isBiometricEnabled();
+  if (lockEnabled) await setWindowSecure(true);
+  final initialLock = AppLockState(
+    enabled: lockEnabled,
+    biometricEnabled: biometricEnabled,
+    unlocked: !lockEnabled,
+  );
 
   final notifications = NotificationService();
   await notifications.init();
@@ -34,6 +48,8 @@ Future<void> main() async {
       overrides: [
         sharedPreferencesProvider.overrideWithValue(prefs),
         notificationServiceProvider.overrideWithValue(notifications),
+        appLockStoreProvider.overrideWithValue(appLockStore),
+        initialAppLockStateProvider.overrideWithValue(initialLock),
       ],
       child: const PonviaApp(),
     ),
