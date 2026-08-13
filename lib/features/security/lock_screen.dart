@@ -3,7 +3,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:local_auth/local_auth.dart';
 
-import '../../app/providers.dart';
 import '../../core/ui/spacing.dart';
 import '../../l10n/app_localizations.dart';
 import 'app_lock_controller.dart';
@@ -20,11 +19,25 @@ class LockScreen extends ConsumerStatefulWidget {
 }
 
 class _LockScreenState extends ConsumerState<LockScreen>
-    with SingleTickerProviderStateMixin, PinShakeMixin {
+    with TickerProviderStateMixin, PinShakeMixin {
   String _entry = '';
   bool _wrong = false;
   bool _accepted = false;
   bool _waitingBiometric = false;
+
+  // The "unlocked" flourish — the disc gives a soft bounce as the lock opens.
+  late final AnimationController _acceptController = AnimationController(
+      vsync: this, duration: const Duration(milliseconds: 420));
+  late final Animation<double> _discScale = TweenSequence<double>([
+    TweenSequenceItem(
+        tween: Tween(begin: 1.0, end: 1.06)
+            .chain(CurveTween(curve: Curves.easeOut)),
+        weight: 45),
+    TweenSequenceItem(
+        tween: Tween(begin: 1.06, end: 1.0)
+            .chain(CurveTween(curve: Curves.easeInOut)),
+        weight: 55),
+  ]).animate(_acceptController);
 
   @override
   void initState() {
@@ -39,6 +52,7 @@ class _LockScreenState extends ConsumerState<LockScreen>
 
   @override
   void dispose() {
+    _acceptController.dispose();
     disposeShake();
     super.dispose();
   }
@@ -91,34 +105,12 @@ class _LockScreenState extends ConsumerState<LockScreen>
 
   Future<void> _unlock() async {
     setState(() => _accepted = true);
-    await Future<void>.delayed(const Duration(milliseconds: 260));
+    HapticFeedback.mediumImpact();
+    _acceptController.forward(from: 0);
+    // Let the lock-open crossfade + disc bounce play before handing off to Home.
+    await Future<void>.delayed(const Duration(milliseconds: 380));
     if (!mounted) return;
     ref.read(appLockControllerProvider.notifier).markUnlocked();
-  }
-
-  Future<void> _forgotPin() async {
-    final l10n = AppLocalizations.of(context);
-    final confirmed = await showDialog<bool>(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: Text(l10n.appLockForgotPin),
-        content: Text(l10n.appLockForgotPinBody),
-        actions: [
-          TextButton(
-              onPressed: () => Navigator.pop(context, false),
-              child: Text(l10n.actionCancel)),
-          FilledButton(
-            style: FilledButton.styleFrom(
-                backgroundColor: Theme.of(context).colorScheme.error),
-            onPressed: () => Navigator.pop(context, true),
-            child: Text(l10n.appLockForgotPinClear),
-          ),
-        ],
-      ),
-    );
-    if (confirmed != true || !mounted) return;
-    await ref.read(databaseProvider).clearAllData();
-    await ref.read(appLockControllerProvider.notifier).disable();
   }
 
   @override
@@ -147,18 +139,21 @@ class _LockScreenState extends ConsumerState<LockScreen>
           child: Column(
             children: [
               const Spacer(flex: 2),
-              // Disc + (lock → lock_open) icon.
-              Container(
-                width: 72,
-                height: 72,
-                decoration: BoxDecoration(
-                    color: scheme.primaryContainer, shape: BoxShape.circle),
-                child: AnimatedSwitcher(
-                  duration: const Duration(milliseconds: 180),
-                  child: Icon(_accepted ? Icons.lock_open : Icons.lock,
-                      key: ValueKey(_accepted),
-                      size: 36,
-                      color: scheme.onPrimaryContainer),
+              // Disc + (lock → lock_open) icon, with a soft bounce on unlock.
+              ScaleTransition(
+                scale: _discScale,
+                child: Container(
+                  width: 72,
+                  height: 72,
+                  decoration: BoxDecoration(
+                      color: scheme.primaryContainer, shape: BoxShape.circle),
+                  child: AnimatedSwitcher(
+                    duration: const Duration(milliseconds: 180),
+                    child: Icon(_accepted ? Icons.lock_open : Icons.lock,
+                        key: ValueKey(_accepted),
+                        size: 36,
+                        color: scheme.onPrimaryContainer),
+                  ),
                 ),
               ),
               const SizedBox(height: Insets.lg),
@@ -191,22 +186,7 @@ class _LockScreenState extends ConsumerState<LockScreen>
                 onBackspace: _onBackspace,
                 onBiometric: biometricOn ? _authBiometric : null,
               ),
-              const SizedBox(height: Insets.md),
-              TextButton(
-                  onPressed: _forgotPin, child: Text(l10n.appLockForgotPin)),
-              const SizedBox(height: Insets.sm),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(Icons.phone_android,
-                      size: 16, color: scheme.onSurfaceVariant),
-                  const SizedBox(width: Insets.xs),
-                  Text(l10n.appLockFooter,
-                      style: text.bodySmall
-                          ?.copyWith(color: scheme.onSurfaceVariant)),
-                ],
-              ),
-              const SizedBox(height: Insets.md),
+              const SizedBox(height: Insets.xl),
             ],
           ),
         ),
