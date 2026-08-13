@@ -9,6 +9,19 @@ history — update the **Unreleased** section as you work, and cut it into a ver
 
 ## [Unreleased]
 
+## [0.4.0] - 2026-08-13
+### Added
+- **Height & BMI** — set your height (optional) to see a quiet, neutral BMI tile on Home.
+  Height stays on your device like everything else; the tile only appears once you've set
+  a height, and the tone is non-judgmental.
+- **App lock** — an optional 4-digit PIN that locks the app on launch and when it returns
+  to the foreground, with optional fingerprint unlock. The PIN is stored only as a salted
+  hash in secure storage; screenshots of the app are blocked while the lock is enabled.
+
+### Changed
+- Android build now targets `compileSdk 37` (up from 36), required by the secure-storage
+  dependency behind the app lock.
+
 ## [0.3.0] - 2026-08-12
 ### Added
 - **History summary** — a min / average / max / net-change card for the selected range.

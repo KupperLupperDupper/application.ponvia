@@ -191,7 +191,7 @@ class SettingsScreen extends ConsumerWidget {
           _SettingRow(
             icon: Icons.info_outline,
             title: 'Ponvia',
-            trailing: Text(l10n.settingsVersion('0.3.0'),
+            trailing: Text(l10n.settingsVersion('0.4.0'),
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                     color: Theme.of(context).colorScheme.onSurfaceVariant)),
           ),
