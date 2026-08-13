@@ -579,4 +579,36 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get goalSave => 'Save goal';
+
+  @override
+  String get heightLabel => 'Height';
+
+  @override
+  String get heightSublabel => 'Optional — unlocks BMI on Home';
+
+  @override
+  String get heightUnset => 'Not set';
+
+  @override
+  String get heightSheetNote => 'Only used to work out BMI, on your phone.';
+
+  @override
+  String get heightRemove => 'Remove height';
+
+  @override
+  String heightStoredAs(int cm) {
+    return 'Stored as $cm cm';
+  }
+
+  @override
+  String get bmiLabel => 'BMI';
+
+  @override
+  String get bmiBandBelow => 'Below the normal range';
+
+  @override
+  String get bmiBandNormal => 'Normal range';
+
+  @override
+  String get bmiBandAbove => 'Above the normal range';
 }

@@ -191,5 +191,18 @@
   "goalDirectionUnknown": "Ikke nok data endnu",
   "goalHighlightOnHome": "Fremhæv på forsiden",
   "goalHighlightOnHomeSub": "Vis dette måls fremgang på forsiden",
-  "goalSave": "Gem mål"
+  "goalSave": "Gem mål",
+
+  "heightLabel": "Højde",
+  "heightSublabel": "Valgfri — låser op for BMI på forsiden",
+  "heightUnset": "Ikke angivet",
+  "heightSheetNote": "Bruges kun til at beregne BMI på din telefon.",
+  "heightRemove": "Fjern højde",
+  "heightStoredAs": "Gemmes som {cm} cm",
+  "@heightStoredAs": { "placeholders": { "cm": { "type": "int" } } },
+
+  "bmiLabel": "BMI",
+  "bmiBandBelow": "Under normalområdet",
+  "bmiBandNormal": "Normalområdet",
+  "bmiBandAbove": "Over normalområdet"
 }

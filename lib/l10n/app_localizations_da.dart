@@ -579,4 +579,36 @@ class AppLocalizationsDa extends AppLocalizations {
 
   @override
   String get goalSave => 'Gem mål';
+
+  @override
+  String get heightLabel => 'Højde';
+
+  @override
+  String get heightSublabel => 'Valgfri — låser op for BMI på forsiden';
+
+  @override
+  String get heightUnset => 'Ikke angivet';
+
+  @override
+  String get heightSheetNote => 'Bruges kun til at beregne BMI på din telefon.';
+
+  @override
+  String get heightRemove => 'Fjern højde';
+
+  @override
+  String heightStoredAs(int cm) {
+    return 'Gemmes som $cm cm';
+  }
+
+  @override
+  String get bmiLabel => 'BMI';
+
+  @override
+  String get bmiBandBelow => 'Under normalområdet';
+
+  @override
+  String get bmiBandNormal => 'Normalområdet';
+
+  @override
+  String get bmiBandAbove => 'Over normalområdet';
 }

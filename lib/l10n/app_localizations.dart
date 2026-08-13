@@ -1111,6 +1111,66 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Save goal'**
   String get goalSave;
+
+  /// No description provided for @heightLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Height'**
+  String get heightLabel;
+
+  /// No description provided for @heightSublabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Optional — unlocks BMI on Home'**
+  String get heightSublabel;
+
+  /// No description provided for @heightUnset.
+  ///
+  /// In en, this message translates to:
+  /// **'Not set'**
+  String get heightUnset;
+
+  /// No description provided for @heightSheetNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Only used to work out BMI, on your phone.'**
+  String get heightSheetNote;
+
+  /// No description provided for @heightRemove.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove height'**
+  String get heightRemove;
+
+  /// No description provided for @heightStoredAs.
+  ///
+  /// In en, this message translates to:
+  /// **'Stored as {cm} cm'**
+  String heightStoredAs(int cm);
+
+  /// No description provided for @bmiLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'BMI'**
+  String get bmiLabel;
+
+  /// No description provided for @bmiBandBelow.
+  ///
+  /// In en, this message translates to:
+  /// **'Below the normal range'**
+  String get bmiBandBelow;
+
+  /// No description provided for @bmiBandNormal.
+  ///
+  /// In en, this message translates to:
+  /// **'Normal range'**
+  String get bmiBandNormal;
+
+  /// No description provided for @bmiBandAbove.
+  ///
+  /// In en, this message translates to:
+  /// **'Above the normal range'**
+  String get bmiBandAbove;
 }
 
 class _AppLocalizationsDelegate

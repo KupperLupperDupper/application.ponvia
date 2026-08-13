@@ -216,5 +216,18 @@
   "goalDirectionUnknown": "Not enough data yet",
   "goalHighlightOnHome": "Highlight on Home",
   "goalHighlightOnHomeSub": "Show this goal's progress on Home",
-  "goalSave": "Save goal"
+  "goalSave": "Save goal",
+
+  "heightLabel": "Height",
+  "heightSublabel": "Optional — unlocks BMI on Home",
+  "heightUnset": "Not set",
+  "heightSheetNote": "Only used to work out BMI, on your phone.",
+  "heightRemove": "Remove height",
+  "heightStoredAs": "Stored as {cm} cm",
+  "@heightStoredAs": { "placeholders": { "cm": { "type": "int" } } },
+
+  "bmiLabel": "BMI",
+  "bmiBandBelow": "Below the normal range",
+  "bmiBandNormal": "Normal range",
+  "bmiBandAbove": "Above the normal range"
 }

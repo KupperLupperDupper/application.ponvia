@@ -16,6 +16,7 @@ import '../../data/backup/backup_service.dart';
 import '../../domain/models/app_settings.dart';
 import '../../domain/models/reminder_config.dart';
 import '../../l10n/app_localizations.dart';
+import 'height_sheet.dart';
 
 String _freqLabel(AppLocalizations l10n, ReminderFrequency f) => switch (f) {
       ReminderFrequency.daily => l10n.freqDaily,
@@ -47,6 +48,17 @@ class SettingsScreen extends ConsumerWidget {
         ? l10n.notifSummary(_freqLabel(l10n, r.frequency),
             TimeOfDay(hour: r.hour, minute: r.minute).format(context))
         : l10n.notifOff;
+
+    final h = settings.heightCm;
+    final String heightValue;
+    if (h == null) {
+      heightValue = l10n.heightUnset;
+    } else if (settings.unit == WeightUnit.kg) {
+      heightValue = '$h cm';
+    } else {
+      final totalIn = (h / 2.54).round();
+      heightValue = '${totalIn ~/ 12} ft ${totalIn % 12} in';
+    }
 
     return Scaffold(
       appBar: AppBar(title: Text(l10n.navSettings)),
@@ -84,6 +96,13 @@ class SettingsScreen extends ConsumerWidget {
                   .read(settingsControllerProvider.notifier)
                   .setUnit(s.first),
             ),
+          ),
+          _SettingRow(
+            icon: Icons.height,
+            title: l10n.heightLabel,
+            subtitle: h == null ? l10n.heightSublabel : null,
+            trailing: _valueChevron(context, heightValue),
+            onTap: () => showHeightSheet(context),
           ),
           _SettingRow(
             icon: Icons.notifications_outlined,
@@ -435,6 +454,7 @@ class _SettingRow extends StatelessWidget {
   const _SettingRow({
     required this.icon,
     required this.title,
+    this.subtitle,
     this.trailing,
     this.onTap,
     this.error = false,
@@ -442,6 +462,9 @@ class _SettingRow extends StatelessWidget {
 
   final IconData icon;
   final String title;
+
+  /// Optional second line — makes the row two-line (e.g. Height while unset).
+  final String? subtitle;
   final Widget? trailing;
   final VoidCallback? onTap;
   final bool error;
@@ -461,11 +484,25 @@ class _SettingRow extends StatelessWidget {
                 size: 24, color: error ? scheme.error : scheme.onSurfaceVariant),
             const SizedBox(width: Insets.lg),
             Expanded(
-              child: Text(title,
-                  style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                        color: color,
-                        fontWeight: error ? FontWeight.w700 : FontWeight.w600,
-                      )),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(title,
+                      style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                            color: color,
+                            fontWeight:
+                                error ? FontWeight.w700 : FontWeight.w600,
+                          )),
+                  if (subtitle != null)
+                    Padding(
+                      padding: const EdgeInsets.only(top: 2),
+                      child: Text(subtitle!,
+                          style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                              color: scheme.onSurfaceVariant)),
+                    ),
+                ],
+              ),
             ),
             ?trailing,
           ],

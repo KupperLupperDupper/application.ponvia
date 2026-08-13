@@ -11,10 +11,12 @@ import '../../core/formatting/weight_formatter.dart';
 import '../../core/ui/goal_eta_line.dart';
 import '../../core/ui/spacing.dart';
 import '../../core/units/weight_unit.dart';
+import '../../domain/bmi.dart';
 import '../../domain/models/weight_entry.dart';
 import '../../domain/trend_weight.dart';
 import '../../l10n/app_localizations.dart';
 import '../logging/log_weight_screen.dart';
+import '../settings/height_sheet.dart';
 
 /// The weight-first dashboard, styled to `design/handoff/DESIGN_SPEC.md` §3:
 /// hero card (eyebrow, value, delta pill, sparkline + footer), goal card with
@@ -68,6 +70,11 @@ class HomeScreen extends ConsumerWidget {
                   fmt: fmt,
                   entries: entries,
                 ),
+              ],
+              if (settings.heightCm != null) ...[
+                const SizedBox(height: Insets.cardGap),
+                _BmiTile(
+                    weightKg: latest.weightKg, heightCm: settings.heightCm!),
               ],
               const SizedBox(height: Insets.cardGap),
               const _SecondMetricSlot(),
@@ -408,6 +415,66 @@ class _GoalCard extends StatelessWidget {
               style: text.bodySmall?.copyWith(color: scheme.onSurfaceVariant)),
           GoalEtaLine(entries: entries, targetKg: targetKg),
         ],
+      ),
+    );
+  }
+}
+
+/// The optional BMI tile — shown on Home only when a height is set. Neutral by
+/// design: one colour for every value, a single band word relative to the
+/// normal range, no gauge or colour coding. Tapping opens Settings › Height.
+class _BmiTile extends StatelessWidget {
+  const _BmiTile({required this.weightKg, required this.heightCm});
+
+  final double weightKg;
+  final int heightCm;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+    final scheme = Theme.of(context).colorScheme;
+    final text = Theme.of(context).textTheme;
+    final bmi = bmiValue(weightKg, heightCm);
+    if (bmi == null) return const SizedBox.shrink();
+    final band = switch (bmiBand(bmi)) {
+      BmiBand.below => l10n.bmiBandBelow,
+      BmiBand.normal => l10n.bmiBandNormal,
+      BmiBand.above => l10n.bmiBandAbove,
+    };
+    final locale = Localizations.localeOf(context).languageCode;
+    final value =
+        bmi.toStringAsFixed(1).replaceAll('.', locale == 'da' ? ',' : '.');
+
+    return Material(
+      color: scheme.surfaceContainerHighest,
+      clipBehavior: Clip.antiAlias,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(24),
+        side: BorderSide(color: scheme.outline),
+      ),
+      child: InkWell(
+        onTap: () => showHeightSheet(context),
+        child: Container(
+          constraints: const BoxConstraints(minHeight: 104),
+          padding: const EdgeInsets.fromLTRB(20, 18, 20, 18),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(l10n.bmiLabel,
+                  style: text.bodySmall?.copyWith(color: scheme.onSurfaceVariant)),
+              const SizedBox(height: Insets.xs),
+              Text(value,
+                  style: text.headlineMedium?.copyWith(
+                      fontSize: 24,
+                      fontWeight: FontWeight.w800,
+                      color: scheme.onSurface)),
+              const SizedBox(height: 2),
+              Text(band,
+                  style: text.bodySmall?.copyWith(color: scheme.onSurfaceVariant)),
+            ],
+          ),
+        ),
       ),
     );
   }

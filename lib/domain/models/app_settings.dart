@@ -29,6 +29,7 @@ class AppSettings {
     this.unit = WeightUnit.kg,
     this.hasOnboarded = false,
     this.reminder = ReminderConfig.disabled,
+    this.heightCm,
   });
 
   /// `null` follows the system locale; otherwise `'en'` or `'da'`.
@@ -37,6 +38,10 @@ class AppSettings {
   final WeightUnit unit;
   final bool hasOnboarded;
   final ReminderConfig reminder;
+
+  /// Optional body height in centimetres (canonical), used only to derive BMI.
+  /// `null` when unset — the BMI tile is hidden and nothing else depends on it.
+  final int? heightCm;
 
   static const AppSettings defaults = AppSettings();
 
@@ -47,6 +52,8 @@ class AppSettings {
     WeightUnit? unit,
     bool? hasOnboarded,
     ReminderConfig? reminder,
+    int? heightCm,
+    bool clearHeight = false,
   }) {
     return AppSettings(
       localeCode: clearLocale ? null : (localeCode ?? this.localeCode),
@@ -54,6 +61,7 @@ class AppSettings {
       unit: unit ?? this.unit,
       hasOnboarded: hasOnboarded ?? this.hasOnboarded,
       reminder: reminder ?? this.reminder,
+      heightCm: clearHeight ? null : (heightCm ?? this.heightCm),
     );
   }
 
@@ -63,6 +71,7 @@ class AppSettings {
         'unit': unit.code,
         'hasOnboarded': hasOnboarded,
         'reminder': reminder.toJson(),
+        if (heightCm != null) 'heightCm': heightCm,
       };
 
   factory AppSettings.fromJson(Map<String, dynamic> json) => AppSettings(
@@ -74,5 +83,6 @@ class AppSettings {
             ? ReminderConfig.disabled
             : ReminderConfig.fromJson(
                 (json['reminder'] as Map).cast<String, dynamic>()),
+        heightCm: (json['heightCm'] as num?)?.toInt(),
       );
 }
