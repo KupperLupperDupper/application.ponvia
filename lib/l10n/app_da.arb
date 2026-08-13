@@ -88,7 +88,7 @@
 
   "snackbarEntryDeleted": "Registrering slettet",
   "snackbarGoalDeleted": "Mål slettet",
-  "snackbarAllDataCleared": "Alle data er slettet — {entries} registreringer og {goals} mål",
+  "snackbarAllDataCleared": "Alle data er slettet — {entries, plural, =1{1 registrering} other{{entries} registreringer}} og {goals, plural, =1{1 mål} other{{goals} mål}}",
   "@snackbarAllDataCleared": {
     "placeholders": {
       "entries": { "type": "int" },
@@ -122,6 +122,7 @@
   "settingsVersion": "Version {version}",
   "settingsPrivacy": "Privatliv",
   "settingsPrivacyBody": "Alle data bliver på din enhed.",
+  "settingsLicenses": "Open source-licenser",
 
   "privacyLead": "Ponvia kører udelukkende på denne telefon. Der er ingen konto, ingen server, og intet du skal fravælge.",
   "privacyNoAccountTitle": "Ingen konto — nogensinde",

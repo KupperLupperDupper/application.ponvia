@@ -569,7 +569,7 @@ abstract class AppLocalizations {
   /// No description provided for @snackbarAllDataCleared.
   ///
   /// In en, this message translates to:
-  /// **'All data cleared — {entries} entries and {goals} goals'**
+  /// **'All data cleared — {entries, plural, =1{1 entry} other{{entries} entries}} and {goals, plural, =1{1 goal} other{{goals} goals}}'**
   String snackbarAllDataCleared(int entries, int goals);
 
   /// No description provided for @snackbarDataReplaced.
@@ -727,6 +727,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'All data stays on your device.'**
   String get settingsPrivacyBody;
+
+  /// No description provided for @settingsLicenses.
+  ///
+  /// In en, this message translates to:
+  /// **'Open-source licenses'**
+  String get settingsLicenses;
 
   /// No description provided for @privacyLead.
   ///

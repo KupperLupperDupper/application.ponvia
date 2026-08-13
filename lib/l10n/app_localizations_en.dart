@@ -274,7 +274,19 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String snackbarAllDataCleared(int entries, int goals) {
-    return 'All data cleared — $entries entries and $goals goals';
+    String _temp0 = intl.Intl.pluralLogic(
+      entries,
+      locale: localeName,
+      other: '$entries entries',
+      one: '1 entry',
+    );
+    String _temp1 = intl.Intl.pluralLogic(
+      goals,
+      locale: localeName,
+      other: '$goals goals',
+      one: '1 goal',
+    );
+    return 'All data cleared — $_temp0 and $_temp1';
   }
 
   @override
@@ -356,6 +368,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get settingsPrivacyBody => 'All data stays on your device.';
+
+  @override
+  String get settingsLicenses => 'Open-source licenses';
 
   @override
   String get privacyLead =>

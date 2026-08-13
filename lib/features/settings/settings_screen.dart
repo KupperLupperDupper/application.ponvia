@@ -189,6 +189,19 @@ class SettingsScreen extends ConsumerWidget {
             onTap: () => context.push('/privacy'),
           ),
           _SettingRow(
+            icon: Icons.description_outlined,
+            title: l10n.settingsLicenses,
+            trailing: Icon(Icons.chevron_right,
+                size: 20,
+                color: Theme.of(context).colorScheme.onSurfaceVariant),
+            onTap: () => showLicensePage(
+              context: context,
+              applicationName: 'Ponvia',
+              applicationVersion: '0.4.0',
+              useRootNavigator: true,
+            ),
+          ),
+          _SettingRow(
             icon: Icons.info_outline,
             title: 'Ponvia',
             trailing: Text(l10n.settingsVersion('0.4.0'),

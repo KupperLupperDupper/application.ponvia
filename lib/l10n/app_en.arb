@@ -103,7 +103,7 @@
 
   "snackbarEntryDeleted": "Entry deleted",
   "snackbarGoalDeleted": "Goal deleted",
-  "snackbarAllDataCleared": "All data cleared — {entries} entries and {goals} goals",
+  "snackbarAllDataCleared": "All data cleared — {entries, plural, =1{1 entry} other{{entries} entries}} and {goals, plural, =1{1 goal} other{{goals} goals}}",
   "@snackbarAllDataCleared": {
     "placeholders": {
       "entries": { "type": "int" },
@@ -138,6 +138,7 @@
   "@settingsVersion": { "placeholders": { "version": { "type": "String" } } },
   "settingsPrivacy": "Privacy",
   "settingsPrivacyBody": "All data stays on your device.",
+  "settingsLicenses": "Open-source licenses",
 
   "privacyLead": "Ponvia runs entirely on this phone. There is no account, no server, and nothing to opt out of.",
   "privacyNoAccountTitle": "No account, ever",
