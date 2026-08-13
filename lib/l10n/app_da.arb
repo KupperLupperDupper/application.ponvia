@@ -211,7 +211,6 @@
   "appLockToggleSub": "Kræv pinkode når Ponvia åbnes",
   "appLockBiometric": "Fingeraftryk",
   "appLockBiometricSub": "Lås op med fingeraftryk i stedet for pinkoden",
-  "appLockBiometricNeedsLock": "Slå app-lås til først",
   "appLockBiometricUnavailable": "Ingen fingeraftryk på denne telefon",
   "appLockChangePin": "Skift pinkode",
   "appLockOnDeviceNote": "Pinkoden gemmes kun på din telefon. Ponvia sender intet videre, og der er ingen konto at gendanne den med.",
@@ -224,9 +223,5 @@
   "appLockWaitingFingerprint": "Venter på fingeraftryk…",
   "appLockWrongPin": "Forkert pinkode. Prøv igen.",
   "appLockUnlocking": "Låser op",
-  "appLockForgotPin": "Glemt din pinkode?",
-  "appLockForgotPinBody": "Din pinkode findes kun på denne telefon, så vi kan ikke nulstille den. Den eneste vej ind er at slette Ponvias data — dine vejninger går med, medmindre du har en eksport.",
-  "appLockForgotPinClear": "Slet data",
-  "appLockBiometricPromptTitle": "Lås Ponvia op",
-  "appLockFooter": "Alt bliver på din telefon"
+  "appLockBiometricPromptTitle": "Lås Ponvia op"
 }

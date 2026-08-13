@@ -629,9 +629,6 @@ class AppLocalizationsEn extends AppLocalizations {
       'Unlock with your fingerprint instead of the PIN';
 
   @override
-  String get appLockBiometricNeedsLock => 'Turn on app lock first';
-
-  @override
   String get appLockBiometricUnavailable => 'No fingerprints on this phone';
 
   @override
@@ -669,18 +666,5 @@ class AppLocalizationsEn extends AppLocalizations {
   String get appLockUnlocking => 'Unlocking';
 
   @override
-  String get appLockForgotPin => 'Forgotten your PIN?';
-
-  @override
-  String get appLockForgotPinBody =>
-      'Your PIN exists only on this phone, so we can\'t reset it. The only way back in is to clear Ponvia\'s data — your weigh-ins go with it unless you have an export.';
-
-  @override
-  String get appLockForgotPinClear => 'Clear data';
-
-  @override
   String get appLockBiometricPromptTitle => 'Unlock Ponvia';
-
-  @override
-  String get appLockFooter => 'Everything stays on your phone';
 }

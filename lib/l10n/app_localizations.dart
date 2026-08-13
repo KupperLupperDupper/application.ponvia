@@ -1202,12 +1202,6 @@ abstract class AppLocalizations {
   /// **'Unlock with your fingerprint instead of the PIN'**
   String get appLockBiometricSub;
 
-  /// No description provided for @appLockBiometricNeedsLock.
-  ///
-  /// In en, this message translates to:
-  /// **'Turn on app lock first'**
-  String get appLockBiometricNeedsLock;
-
   /// No description provided for @appLockBiometricUnavailable.
   ///
   /// In en, this message translates to:
@@ -1280,35 +1274,11 @@ abstract class AppLocalizations {
   /// **'Unlocking'**
   String get appLockUnlocking;
 
-  /// No description provided for @appLockForgotPin.
-  ///
-  /// In en, this message translates to:
-  /// **'Forgotten your PIN?'**
-  String get appLockForgotPin;
-
-  /// No description provided for @appLockForgotPinBody.
-  ///
-  /// In en, this message translates to:
-  /// **'Your PIN exists only on this phone, so we can\'t reset it. The only way back in is to clear Ponvia\'s data — your weigh-ins go with it unless you have an export.'**
-  String get appLockForgotPinBody;
-
-  /// No description provided for @appLockForgotPinClear.
-  ///
-  /// In en, this message translates to:
-  /// **'Clear data'**
-  String get appLockForgotPinClear;
-
   /// No description provided for @appLockBiometricPromptTitle.
   ///
   /// In en, this message translates to:
   /// **'Unlock Ponvia'**
   String get appLockBiometricPromptTitle;
-
-  /// No description provided for @appLockFooter.
-  ///
-  /// In en, this message translates to:
-  /// **'Everything stays on your phone'**
-  String get appLockFooter;
 }
 
 class _AppLocalizationsDelegate
