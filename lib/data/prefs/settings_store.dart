@@ -18,6 +18,7 @@ class SettingsStore {
   static const _kUnit = 'settings.unit';
   static const _kOnboarded = 'settings.hasOnboarded';
   static const _kReminder = 'settings.reminder';
+  static const _kHeight = 'settings.heightCm';
 
   AppSettings read() {
     final reminderRaw = _prefs.getString(_kReminder);
@@ -30,6 +31,7 @@ class SettingsStore {
           ? ReminderConfig.disabled
           : ReminderConfig.fromJson(
               (jsonDecode(reminderRaw) as Map).cast<String, dynamic>()),
+      heightCm: _prefs.getInt(_kHeight),
     );
   }
 
@@ -43,6 +45,11 @@ class SettingsStore {
     await _prefs.setString(_kUnit, s.unit.code);
     await _prefs.setBool(_kOnboarded, s.hasOnboarded);
     await _prefs.setString(_kReminder, jsonEncode(s.reminder.toJson()));
+    if (s.heightCm == null) {
+      await _prefs.remove(_kHeight);
+    } else {
+      await _prefs.setInt(_kHeight, s.heightCm!);
+    }
   }
 
   Future<void> clear() async {
@@ -51,5 +58,6 @@ class SettingsStore {
     await _prefs.remove(_kUnit);
     await _prefs.remove(_kOnboarded);
     await _prefs.remove(_kReminder);
+    await _prefs.remove(_kHeight);
   }
 }

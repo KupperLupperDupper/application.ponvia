@@ -77,6 +77,12 @@ class SettingsController extends Notifier<AppSettings> {
     return _persist();
   }
 
+  /// Sets (or clears, with null) the optional body height in cm.
+  Future<void> setHeight(int? cm) {
+    state = state.copyWith(heightCm: cm, clearHeight: cm == null);
+    return _persist();
+  }
+
   Future<void> completeOnboarding() {
     state = state.copyWith(hasOnboarded: true);
     return _persist();
