@@ -135,3 +135,32 @@ alternatives rejected**. Newest decisions can be appended over time.
   flow than a bare save dialog. `file_picker` also conflicted with `share_plus` on win32.
 - **Rejected:** `file_picker` (build failure), keeping `share_plus`+`file_picker` (win32
   conflict), writing exports only to app storage (poor discoverability).
+
+## ADR-016 — EU AI Act: not applicable today; conditions that would change that
+- **Context:** Flagged as a thing to keep in view for the future. The EU AI Act
+  (Regulation (EU) 2024/1689) regulates *AI systems* — machine-based systems that, for
+  explicit or implicit objectives, infer from input how to generate outputs such as
+  predictions, content, recommendations, or decisions (Art. 3(1)).
+- **Decision:** As of this writing Ponvia contains **no AI system**, so the AI Act imposes
+  **no obligations** on it. We note the fact here rather than adding any compliance
+  machinery. Health *data* handling is covered by our local-only/privacy posture (see the
+  Privacy page and the app's no-network design), which is a GDPR matter, not an AI-Act one.
+- **Rationale:** Every "smart-looking" feature in Ponvia is deterministic maths, not
+  inference: the EMA **trend-weight** line, **BMI**, the **goal-ETA** projection, and the
+  **closest-goal** selection are fixed formulas/statistics with no learned model and no
+  training. They produce the same output for the same input every time and are not AI
+  systems under Art. 3(1).
+- **Reassess before shipping any of these** (each *introduces* an AI system and re-opens
+  the analysis — do a fresh review, and get legal sign-off; this note is engineering
+  guidance, not legal advice):
+  - AI/ML **food or calorie recognition** (photo → food/calories), or any learned
+    calorie/nutrition **estimation** model — the most likely trigger given the calorie
+    roadmap.
+  - Predictive **health insights** or recommendations derived from a trained model.
+  - An **LLM/assistant** or any generative feature. If a user interacts with an AI system
+    or sees AI-generated content, the **transparency duties (Art. 50)** apply — disclose
+    it clearly.
+  - Anything making a **health/medical claim, diagnosis, or treatment suggestion** — that
+    can pull the feature toward **high-risk** classification and also engages medical-device
+    rules (MDR); treat as a hard stop pending review.
+  Keep this ADR current when calorie tracking or any model-backed feature is designed.
