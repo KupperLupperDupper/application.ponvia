@@ -611,4 +611,77 @@ class AppLocalizationsDa extends AppLocalizations {
 
   @override
   String get bmiBandAbove => 'Over normalområdet';
+
+  @override
+  String get appLockGroup => 'Sikkerhed';
+
+  @override
+  String get appLockToggle => 'App-lås';
+
+  @override
+  String get appLockToggleSub => 'Kræv pinkode når Ponvia åbnes';
+
+  @override
+  String get appLockBiometric => 'Fingeraftryk';
+
+  @override
+  String get appLockBiometricSub =>
+      'Lås op med fingeraftryk i stedet for pinkoden';
+
+  @override
+  String get appLockBiometricNeedsLock => 'Slå app-lås til først';
+
+  @override
+  String get appLockBiometricUnavailable =>
+      'Ingen fingeraftryk på denne telefon';
+
+  @override
+  String get appLockChangePin => 'Skift pinkode';
+
+  @override
+  String get appLockOnDeviceNote =>
+      'Pinkoden gemmes kun på din telefon. Ponvia sender intet videre, og der er ingen konto at gendanne den med.';
+
+  @override
+  String get appLockChoosePin => 'Vælg en pinkode';
+
+  @override
+  String get appLockConfirmPin => 'Bekræft pinkoden';
+
+  @override
+  String get appLockConfirmPinBody => 'Indtast de samme fire cifre igen.';
+
+  @override
+  String get appLockPinMismatch => 'Pinkoderne er ikke ens. Prøv igen.';
+
+  @override
+  String get appLockEnterPin => 'Indtast din pinkode';
+
+  @override
+  String get appLockFourDigits => '4 cifre';
+
+  @override
+  String get appLockWaitingFingerprint => 'Venter på fingeraftryk…';
+
+  @override
+  String get appLockWrongPin => 'Forkert pinkode. Prøv igen.';
+
+  @override
+  String get appLockUnlocking => 'Låser op';
+
+  @override
+  String get appLockForgotPin => 'Glemt din pinkode?';
+
+  @override
+  String get appLockForgotPinBody =>
+      'Din pinkode findes kun på denne telefon, så vi kan ikke nulstille den. Den eneste vej ind er at slette Ponvias data — dine vejninger går med, medmindre du har en eksport.';
+
+  @override
+  String get appLockForgotPinClear => 'Slet data';
+
+  @override
+  String get appLockBiometricPromptTitle => 'Lås Ponvia op';
+
+  @override
+  String get appLockFooter => 'Alt bliver på din telefon';
 }

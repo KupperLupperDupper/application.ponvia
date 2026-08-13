@@ -2,18 +2,46 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../domain/models/app_settings.dart';
+import '../features/security/app_lock_controller.dart';
 import '../l10n/app_localizations.dart';
 import 'providers.dart';
 import 'router.dart';
 import 'theme/app_theme.dart';
 
-/// Root widget. Wires the router and light/dark themes, and reacts to the
-/// user's theme-mode setting.
-class PonviaApp extends ConsumerWidget {
+/// Root widget. Wires the router and light/dark themes, reacts to the user's
+/// theme-mode setting, and re-arms the app lock when backgrounded.
+class PonviaApp extends ConsumerStatefulWidget {
   const PonviaApp({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<PonviaApp> createState() => _PonviaAppState();
+}
+
+class _PonviaAppState extends ConsumerState<PonviaApp>
+    with WidgetsBindingObserver {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    // Re-lock only on a full background (not `inactive`, which fires during the
+    // biometric prompt) — no timer, the lock returns the moment you leave.
+    if (state == AppLifecycleState.paused) {
+      ref.read(appLockControllerProvider.notifier).relock();
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final themeMode =
         ref.watch(settingsControllerProvider.select((s) => s.themeMode));
     final localeCode =

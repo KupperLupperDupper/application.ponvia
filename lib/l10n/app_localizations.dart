@@ -1171,6 +1171,144 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Above the normal range'**
   String get bmiBandAbove;
+
+  /// No description provided for @appLockGroup.
+  ///
+  /// In en, this message translates to:
+  /// **'Security'**
+  String get appLockGroup;
+
+  /// No description provided for @appLockToggle.
+  ///
+  /// In en, this message translates to:
+  /// **'App lock'**
+  String get appLockToggle;
+
+  /// No description provided for @appLockToggleSub.
+  ///
+  /// In en, this message translates to:
+  /// **'Require a PIN when Ponvia opens'**
+  String get appLockToggleSub;
+
+  /// No description provided for @appLockBiometric.
+  ///
+  /// In en, this message translates to:
+  /// **'Fingerprint'**
+  String get appLockBiometric;
+
+  /// No description provided for @appLockBiometricSub.
+  ///
+  /// In en, this message translates to:
+  /// **'Unlock with your fingerprint instead of the PIN'**
+  String get appLockBiometricSub;
+
+  /// No description provided for @appLockBiometricNeedsLock.
+  ///
+  /// In en, this message translates to:
+  /// **'Turn on app lock first'**
+  String get appLockBiometricNeedsLock;
+
+  /// No description provided for @appLockBiometricUnavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'No fingerprints on this phone'**
+  String get appLockBiometricUnavailable;
+
+  /// No description provided for @appLockChangePin.
+  ///
+  /// In en, this message translates to:
+  /// **'Change PIN'**
+  String get appLockChangePin;
+
+  /// No description provided for @appLockOnDeviceNote.
+  ///
+  /// In en, this message translates to:
+  /// **'The PIN is stored only on your phone. Ponvia sends nothing anywhere, and there is no account to recover it with.'**
+  String get appLockOnDeviceNote;
+
+  /// No description provided for @appLockChoosePin.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a PIN'**
+  String get appLockChoosePin;
+
+  /// No description provided for @appLockConfirmPin.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm the PIN'**
+  String get appLockConfirmPin;
+
+  /// No description provided for @appLockConfirmPinBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter the same four digits again.'**
+  String get appLockConfirmPinBody;
+
+  /// No description provided for @appLockPinMismatch.
+  ///
+  /// In en, this message translates to:
+  /// **'The PINs don\'t match. Try again.'**
+  String get appLockPinMismatch;
+
+  /// No description provided for @appLockEnterPin.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter your PIN'**
+  String get appLockEnterPin;
+
+  /// No description provided for @appLockFourDigits.
+  ///
+  /// In en, this message translates to:
+  /// **'4 digits'**
+  String get appLockFourDigits;
+
+  /// No description provided for @appLockWaitingFingerprint.
+  ///
+  /// In en, this message translates to:
+  /// **'Waiting for fingerprint…'**
+  String get appLockWaitingFingerprint;
+
+  /// No description provided for @appLockWrongPin.
+  ///
+  /// In en, this message translates to:
+  /// **'Wrong PIN. Try again.'**
+  String get appLockWrongPin;
+
+  /// No description provided for @appLockUnlocking.
+  ///
+  /// In en, this message translates to:
+  /// **'Unlocking'**
+  String get appLockUnlocking;
+
+  /// No description provided for @appLockForgotPin.
+  ///
+  /// In en, this message translates to:
+  /// **'Forgotten your PIN?'**
+  String get appLockForgotPin;
+
+  /// No description provided for @appLockForgotPinBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Your PIN exists only on this phone, so we can\'t reset it. The only way back in is to clear Ponvia\'s data — your weigh-ins go with it unless you have an export.'**
+  String get appLockForgotPinBody;
+
+  /// No description provided for @appLockForgotPinClear.
+  ///
+  /// In en, this message translates to:
+  /// **'Clear data'**
+  String get appLockForgotPinClear;
+
+  /// No description provided for @appLockBiometricPromptTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Unlock Ponvia'**
+  String get appLockBiometricPromptTitle;
+
+  /// No description provided for @appLockFooter.
+  ///
+  /// In en, this message translates to:
+  /// **'Everything stays on your phone'**
+  String get appLockFooter;
 }
 
 class _AppLocalizationsDelegate

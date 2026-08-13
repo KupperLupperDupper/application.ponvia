@@ -9,6 +9,8 @@ import '../features/home/home_shell.dart';
 import '../features/logging/log_weight_screen.dart';
 import '../features/notifications/notifications_screen.dart';
 import '../features/onboarding/onboarding_screen.dart';
+import '../features/security/app_lock_controller.dart';
+import '../features/security/lock_screen.dart';
 import '../features/settings/privacy_screen.dart';
 import '../features/settings/settings_screen.dart';
 import 'providers.dart';
@@ -16,15 +18,27 @@ import 'providers.dart';
 /// Root navigator key — lets the notification tap handler deep-link to `/log`.
 final rootNavigatorKey = GlobalKey<NavigatorState>();
 
-/// App routing. A redirect gates first-run onboarding; the four destinations
-/// live in a persistent bottom-nav shell; logging is pushed over the shell.
+/// App routing. Redirects gate the app lock and first-run onboarding; the four
+/// destinations live in a persistent bottom-nav shell; logging is pushed over it.
 final routerProvider = Provider<GoRouter>((ref) {
+  // Re-run redirects when the lock state changes (unlock, resume-relock).
+  final refresh = ValueNotifier(0);
+  ref.listen(appLockControllerProvider, (_, _) => refresh.value++);
+  ref.onDispose(refresh.dispose);
+
   return GoRouter(
     navigatorKey: rootNavigatorKey,
     initialLocation: '/',
+    refreshListenable: refresh,
     redirect: (context, state) {
+      final loc = state.matchedLocation;
+      // Lock gate takes priority — a set PIN means the user has onboarded.
+      final locked = ref.read(appLockControllerProvider).isLocked;
+      if (locked) return loc == '/lock' ? null : '/lock';
+      if (loc == '/lock') return '/';
+
       final onboarded = ref.read(settingsControllerProvider).hasOnboarded;
-      final atOnboarding = state.matchedLocation == '/onboarding';
+      final atOnboarding = loc == '/onboarding';
       if (!onboarded && !atOnboarding) return '/onboarding';
       if (onboarded && atOnboarding) return '/';
       return null;
@@ -69,6 +83,10 @@ final routerProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: '/privacy',
         builder: (context, state) => const PrivacyScreen(),
+      ),
+      GoRoute(
+        path: '/lock',
+        builder: (context, state) => const LockScreen(),
       ),
     ],
   );

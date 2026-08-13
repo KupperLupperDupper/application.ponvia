@@ -19,7 +19,8 @@ if (hasReleaseSigning) {
 
 android {
     namespace = "io.github.kupperlupperdupper.ponvia"
-    compileSdk = flutter.compileSdkVersion
+    // flutter_secure_storage 11.x (app-lock PIN storage) requires compileSdk 37.
+    compileSdk = 37
     ndkVersion = flutter.ndkVersion
 
     compileOptions {
