@@ -12,6 +12,8 @@ import '../../domain/models/app_settings.dart';
 import '../../domain/models/weight_entry.dart';
 import '../../l10n/app_localizations.dart';
 import '../logging/numeric_keypad.dart';
+import '../logging/stone_fields.dart';
+import '../logging/stone_input.dart';
 
 /// First-run introduction, styled to DESIGN_SPEC §2: welcome → language → theme
 /// → unit → optional first weight → all set, with a progress bar and localized,
@@ -26,6 +28,9 @@ class OnboardingScreen extends ConsumerStatefulWidget {
 class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
   final _pageController = PageController();
   String _weightInput = '';
+  // Split st+lb entry for the optional first weight; used only while the chosen
+  // unit is stone (the unit is picked on the step before this one).
+  final StoneInput _stone = StoneInput();
   int _index = 0;
 
   static const _lastIndex = 5; // welcome, language, theme, unit, weight, done
@@ -40,12 +45,20 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
   }
 
   Future<void> _next() async {
-    if (_index == 4 && _weightInput.isNotEmpty) {
+    if (_index == 4) {
       final unit = ref.read(settingsControllerProvider).unit;
-      final v = double.tryParse(_weightInput.replaceAll(_sep, '.'));
-      if (v != null && v > 0 && v <= 1000) {
-        await ref.read(weightRepositoryProvider).add(WeightEntry(
-            timestamp: DateTime.now(), weightKg: WeightConverter.toKg(v, unit)));
+      double? kg;
+      if (unit == WeightUnit.st) {
+        if (!_stone.isEmpty && _stone.kg > 0 && _stone.kg <= 1000) {
+          kg = _stone.kg;
+        }
+      } else if (_weightInput.isNotEmpty) {
+        final v = double.tryParse(_weightInput.replaceAll(_sep, '.'));
+        if (v != null && v > 0 && v <= 1000) kg = WeightConverter.toKg(v, unit);
+      }
+      if (kg != null) {
+        await ref.read(weightRepositoryProvider).add(
+            WeightEntry(timestamp: DateTime.now(), weightKg: kg));
       }
     }
     if (_index >= _lastIndex) {
@@ -66,7 +79,12 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
   String _primaryLabel(AppLocalizations l10n) {
     if (_index >= _lastIndex) return l10n.onboardStartTracking;
     if (_index == 0) return l10n.onboardGetStarted;
-    if (_index == 4 && _weightInput.isNotEmpty) return l10n.actionSave;
+    if (_index == 4) {
+      final isStone =
+          ref.read(settingsControllerProvider).unit == WeightUnit.st;
+      final hasWeight = isStone ? !_stone.isEmpty : _weightInput.isNotEmpty;
+      if (hasWeight) return l10n.actionSave;
+    }
     return l10n.actionNext;
   }
 
@@ -139,7 +157,15 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
                     unit: settings.unit,
                     input: _weightInput,
                     separator: _sep,
+                    locale: Localizations.localeOf(context).languageCode,
+                    stone: _stone,
+                    onTapSt: () => setState(() => _stone.focusLb = false),
+                    onTapLb: () => setState(() => _stone.focusLb = true),
                     onKey: (k) => setState(() {
+                      if (settings.unit == WeightUnit.st) {
+                        _stone.onDigit(k);
+                        return;
+                      }
                       if (k == _sep && _weightInput.contains(_sep)) return;
                       if (_weightInput.replaceAll(_sep, '').length >= 5) return;
                       _weightInput += _weightInput.isEmpty && k == _sep
@@ -147,6 +173,10 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
                           : k;
                     }),
                     onBackspace: () => setState(() {
+                      if (settings.unit == WeightUnit.st) {
+                        _stone.onBackspace();
+                        return;
+                      }
                       if (_weightInput.isNotEmpty) {
                         _weightInput =
                             _weightInput.substring(0, _weightInput.length - 1);
@@ -455,6 +485,10 @@ class _FirstWeightStep extends StatelessWidget {
     required this.unit,
     required this.input,
     required this.separator,
+    required this.locale,
+    required this.stone,
+    required this.onTapSt,
+    required this.onTapLb,
     required this.onKey,
     required this.onBackspace,
   });
@@ -463,38 +497,61 @@ class _FirstWeightStep extends StatelessWidget {
   final WeightUnit unit;
   final String input;
   final String separator;
+  final String locale;
+  final StoneInput stone;
+  final VoidCallback onTapSt;
+  final VoidCallback onTapLb;
   final ValueChanged<String> onKey;
   final VoidCallback onBackspace;
 
   @override
   Widget build(BuildContext context) {
     final scheme = Theme.of(context).colorScheme;
+    final isStone = unit == WeightUnit.st;
     return _StepScaffold(
       title: l10n.onboardFirstWeightTitle,
       subtitle: l10n.onboardFirstWeightBody,
       child: Column(
         children: [
-          FittedBox(
-            fit: BoxFit.scaleDown,
-            child: Text.rich(TextSpan(children: [
-              TextSpan(
-                  text: input.isEmpty ? '0' : input,
-                  style: PonviaTypography.heroWeight
-                      .copyWith(fontSize: 64, color: scheme.onSurface)),
-              TextSpan(
-                  text: ' ${unit.code}',
-                  style: TextStyle(
-                      fontFamily: PonviaTypography.family,
-                      fontSize: 24,
-                      fontWeight: FontWeight.w600,
-                      color: scheme.onSurfaceVariant)),
-            ])),
-          ),
-          const SizedBox(height: Insets.sm),
-          Container(width: 200, height: 2, color: scheme.primary),
+          if (isStone) ...[
+            StoneFields(
+              stone: stone,
+              boxed: false,
+              onTapSt: onTapSt,
+              onTapLb: onTapLb,
+            ),
+            const SizedBox(height: Insets.sm),
+            SizedBox(
+              height: 20,
+              child: Center(child: StoneEchoLine(stone: stone, locale: locale)),
+            ),
+          ] else ...[
+            FittedBox(
+              fit: BoxFit.scaleDown,
+              child: Text.rich(TextSpan(children: [
+                TextSpan(
+                    text: input.isEmpty ? '0' : input,
+                    style: PonviaTypography.heroWeight
+                        .copyWith(fontSize: 64, color: scheme.onSurface)),
+                TextSpan(
+                    text: ' ${unit.code}',
+                    style: TextStyle(
+                        fontFamily: PonviaTypography.family,
+                        fontSize: 24,
+                        fontWeight: FontWeight.w600,
+                        color: scheme.onSurfaceVariant)),
+              ])),
+            ),
+            const SizedBox(height: Insets.sm),
+            Container(width: 200, height: 2, color: scheme.primary),
+          ],
           const SizedBox(height: Insets.xl),
           NumericKeypad(
-              onKey: onKey, onBackspace: onBackspace, decimalSeparator: separator),
+            onKey: onKey,
+            onBackspace: onBackspace,
+            decimalSeparator: separator,
+            decimalEnabled: !isStone,
+          ),
         ],
       ),
     );

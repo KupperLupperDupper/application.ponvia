@@ -17,6 +17,8 @@ import '../../domain/models/weight_entry.dart';
 import '../../l10n/app_localizations.dart';
 import '../goals/goal_reached_sheet.dart';
 import 'numeric_keypad.dart';
+import 'stone_fields.dart';
+import 'stone_input.dart';
 
 /// Opens the log/edit form as a modal bottom sheet (the design's logging model).
 Future<void> showLogWeightSheet(BuildContext context, {WeightEntry? existing}) {
@@ -68,6 +70,10 @@ class _LogWeightFormState extends ConsumerState<LogWeightForm> {
   bool _saving = false;
   bool _prefilled = false;
 
+  /// Split st+lb entry state, non-null only when the display unit is stone.
+  late final bool _isStone;
+  StoneInput? _stone;
+
   bool get _isEditing => widget.existing != null;
 
   @override
@@ -76,6 +82,12 @@ class _LogWeightFormState extends ConsumerState<LogWeightForm> {
     final e = widget.existing;
     _timestamp = e?.timestamp ?? DateTime.now();
     _noteController.text = e?.note ?? '';
+    _isStone = ref.read(settingsControllerProvider).unit == WeightUnit.st;
+    if (_isStone) {
+      _stone =
+          e != null ? StoneInput.fromKg(e.weightKg) : StoneInput();
+      _prefilled = true; // stone read-back needs no locale separator
+    }
   }
 
   @override
@@ -102,6 +114,7 @@ class _LogWeightFormState extends ConsumerState<LogWeightForm> {
   }
 
   double? get _kg {
+    if (_isStone) return _stone!.kg;
     final v = _parsed;
     if (v == null) return null;
     return WeightConverter.toKg(v, ref.read(settingsControllerProvider).unit);
@@ -119,6 +132,10 @@ class _LogWeightFormState extends ConsumerState<LogWeightForm> {
   }
 
   void _onKey(String k) {
+    if (_isStone) {
+      setState(() => _stone!.onDigit(k));
+      return;
+    }
     setState(() {
       if (k == _sep) {
         if (!_input.contains(_sep)) {
@@ -135,6 +152,10 @@ class _LogWeightFormState extends ConsumerState<LogWeightForm> {
   }
 
   void _onBackspace() {
+    if (_isStone) {
+      setState(() => _stone!.onBackspace());
+      return;
+    }
     if (_input.isNotEmpty) {
       setState(() => _input = _input.substring(0, _input.length - 1));
     }
@@ -294,7 +315,10 @@ class _LogWeightFormState extends ConsumerState<LogWeightForm> {
     final scheme = Theme.of(context).colorScheme;
     final settings = ref.watch(settingsControllerProvider);
     final unit = settings.unit;
-    final dateFmt = PonviaDateFormatter(locale: Localizations.localeOf(context).languageCode);
+    final locale = Localizations.localeOf(context).languageCode;
+    final dateFmt = PonviaDateFormatter(locale: locale);
+    final fmt = WeightFormatter(unit, locale: locale);
+    final rangeError = l10n.logRangeError(fmt.limit(20), fmt.limit(400));
     final showError = _input.isNotEmpty && !_valid;
 
     final relDay = PonviaDateFormatter.daysAgo(_timestamp, DateTime.now());
@@ -332,29 +356,44 @@ class _LogWeightFormState extends ConsumerState<LogWeightForm> {
             ],
           ),
           const SizedBox(height: Insets.md),
-          // Value + underline
-          _ValueDisplay(
-            input: _input.isEmpty ? '0' : _input,
-            unit: unit,
-            error: showError,
-          ),
+          // Value + underline (single field), or the split st + lb columns.
+          if (_isStone)
+            StoneFields(
+              stone: _stone!,
+              boxed: false,
+              onTapSt: () => setState(() => _stone!.focusLb = false),
+              onTapLb: () => setState(() => _stone!.focusLb = true),
+            )
+          else
+            _ValueDisplay(
+              input: _input.isEmpty ? '0' : _input,
+              unit: unit,
+              error: showError,
+            ),
           const SizedBox(height: Insets.sm),
           SizedBox(
             height: 20,
-            child: showError
-                ? Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Icon(Icons.error_outline, size: 16, color: scheme.error),
-                      const SizedBox(width: Insets.xs),
-                      Text(l10n.logRangeError,
-                          style: Theme.of(context)
-                              .textTheme
-                              .bodySmall
-                              ?.copyWith(color: scheme.error)),
-                    ],
+            child: _isStone
+                ? StoneEchoLine(
+                    stone: _stone!,
+                    locale: locale,
+                    helperText: rangeError,
                   )
-                : null,
+                : showError
+                    ? Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Icon(Icons.error_outline,
+                              size: 16, color: scheme.error),
+                          const SizedBox(width: Insets.xs),
+                          Text(rangeError,
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodySmall
+                                  ?.copyWith(color: scheme.error)),
+                        ],
+                      )
+                    : null,
           ),
           const SizedBox(height: Insets.md),
           // Date / time
@@ -394,6 +433,7 @@ class _LogWeightFormState extends ConsumerState<LogWeightForm> {
             onKey: _onKey,
             onBackspace: _onBackspace,
             decimalSeparator: _sep,
+            decimalEnabled: !_isStone,
           ),
           const SizedBox(height: Insets.sm),
           SizedBox(

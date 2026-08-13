@@ -259,7 +259,9 @@ class AppLocalizationsDa extends AppLocalizations {
   String get logAddNote => 'Tilføj en note (valgfri)';
 
   @override
-  String get logRangeError => 'Indtast en vægt mellem 20 og 400 kg';
+  String logRangeError(String min, String max) {
+    return 'Indtast en vægt mellem $min og $max';
+  }
 
   @override
   String get logDeleted => 'Måling slettet';
@@ -537,7 +539,7 @@ class AppLocalizationsDa extends AppLocalizations {
   String get freqMonthly => 'Månedligt';
 
   @override
-  String get notifDayOfWeek => 'Ugedag';
+  String get notifDaysHeader => 'Dage';
 
   @override
   String get notifDayOfMonth => 'Dag i måneden';
@@ -567,8 +569,8 @@ class AppLocalizationsDa extends AppLocalizations {
   }
 
   @override
-  String notifDaySelected(String day) {
-    return '$day valgt';
+  String notifDaysSummary(String days) {
+    return '$days';
   }
 
   @override

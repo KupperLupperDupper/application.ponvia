@@ -10,12 +10,17 @@ class NumericKeypad extends StatelessWidget {
     required this.onKey,
     required this.onBackspace,
     this.decimalSeparator = '.',
+    this.decimalEnabled = true,
   });
 
   /// Called with the tapped digit ('0'–'9') or the decimal separator.
   final ValueChanged<String> onKey;
   final VoidCallback onBackspace;
   final String decimalSeparator;
+
+  /// When false the decimal key is non-interactive and rendered at 38% opacity
+  /// (stone mode, where pounds are whole). Digits and backspace are unaffected.
+  final bool decimalEnabled;
 
   @override
   Widget build(BuildContext context) {
@@ -33,29 +38,32 @@ class NumericKeypad extends StatelessWidget {
   Widget _row(BuildContext context, List<String> keys) {
     return Row(
       children: [
-        for (final k in keys)
-          Expanded(
-            child: _Key(
-              label: k,
-              onTap: k == '⌫' ? onBackspace : () => onKey(k),
-            ),
-          ),
+        for (final k in keys) Expanded(child: _keyFor(k)),
       ],
     );
+  }
+
+  Widget _keyFor(String k) {
+    if (k == '⌫') return _Key(label: k, onTap: onBackspace);
+    if (k == decimalSeparator && !decimalEnabled) {
+      return _Key(label: k, onTap: null, opacity: 0.38);
+    }
+    return _Key(label: k, onTap: () => onKey(k));
   }
 }
 
 class _Key extends StatelessWidget {
-  const _Key({required this.label, required this.onTap});
+  const _Key({required this.label, required this.onTap, this.opacity = 1});
 
   final String label;
-  final VoidCallback onTap;
+  final VoidCallback? onTap;
+  final double opacity;
 
   @override
   Widget build(BuildContext context) {
     final scheme = Theme.of(context).colorScheme;
     final isBackspace = label == '⌫';
-    return InkWell(
+    final child = InkWell(
       onTap: onTap,
       borderRadius: BorderRadius.circular(16),
       child: SizedBox(
@@ -75,5 +83,6 @@ class _Key extends StatelessWidget {
         ),
       ),
     );
+    return opacity == 1 ? child : Opacity(opacity: opacity, child: child);
   }
 }

@@ -539,8 +539,8 @@ abstract class AppLocalizations {
   /// No description provided for @logRangeError.
   ///
   /// In en, this message translates to:
-  /// **'Enter a weight between 20 and 400 kg'**
-  String get logRangeError;
+  /// **'Enter a weight between {min} and {max}'**
+  String logRangeError(String min, String max);
 
   /// No description provided for @logDeleted.
   ///
@@ -1010,11 +1010,11 @@ abstract class AppLocalizations {
   /// **'Monthly'**
   String get freqMonthly;
 
-  /// No description provided for @notifDayOfWeek.
+  /// No description provided for @notifDaysHeader.
   ///
   /// In en, this message translates to:
-  /// **'Day of week'**
-  String get notifDayOfWeek;
+  /// **'Days'**
+  String get notifDaysHeader;
 
   /// No description provided for @notifDayOfMonth.
   ///
@@ -1064,11 +1064,11 @@ abstract class AppLocalizations {
   /// **'Next: {when}'**
   String notifNext(String when);
 
-  /// No description provided for @notifDaySelected.
+  /// No description provided for @notifDaysSummary.
   ///
   /// In en, this message translates to:
-  /// **'{day} selected'**
-  String notifDaySelected(String day);
+  /// **'{days}'**
+  String notifDaysSummary(String days);
 
   /// No description provided for @goalTargetLabel.
   ///

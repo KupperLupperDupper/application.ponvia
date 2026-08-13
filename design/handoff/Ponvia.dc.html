@@ -26,6 +26,459 @@ a:hover{color:#134A40;}
 
 
 
+<section style="padding:72px 72px 56px;display:flex;flex-direction:column;gap:56px;background:#B7C9C3;font-family:Manrope,sans-serif;color:#171D1B;border-bottom:1px solid #D3DBD8">
+  <header style="display:flex;flex-direction:column;gap:16px;max-width:880px">
+    <div style="display:flex;align-items:center;gap:12px"><span style="font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:500;padding:4px 10px;border-radius:999px;background:#1F6A5C;color:#fff">11</span><span style="font-size:13px;font-weight:700;letter-spacing:.08em;color:#59635F">STONE ENTRY · MULTI-WEEKDAY REMINDERS</span></div>
+    <h1 style="margin:0;font-size:40px;font-weight:800;letter-spacing:-0.03em;line-height:1.1">Two coupled fields, and seven circles that can all be lit</h1>
+    <p style="margin:-8px 0 0;font-size:15px;line-height:1.55;color:#59635F;max-width:840px;text-wrap:pretty">Both changes are the same kind of move: an existing control learns a second value. Stone entry stops asking for decimal stone and takes <strong>st + lb</strong> in the ft/in pattern the height sheet already ships. Weekly reminders stop being single-select and become a <strong>toggle set</strong>. Neither invents a new component; the whole design job is settling numbers, focus and edge behaviour so the two features feel like they were always there.</p>
+    <p style="margin:-8px 0 0;font-size:15px;line-height:1.55;color:#59635F;max-width:840px;text-wrap:pretty"><strong>Decisions taken here.</strong> Pounds are <strong>whole</strong> (0–13) and the keypad's decimal key renders visibly disabled in st mode. lb <strong>clamps, never rolls over</strong>. Blank lb reads as <strong>0 lb</strong>. New entries open with the <strong>st</strong> field focused and auto-advance on the first digit; read-back focuses <strong>lb</strong>. Weekly keeps at least <strong>one</strong> day lit — the last one simply can't be cleared — <strong>all seven stays weekly</strong>, and the summary is a Mon-first middot set.</p>
+  </header>
+
+  <div id="11a" data-screen-label="Stone log sheet" style="display:flex;flex-direction:column;gap:24px">
+    <h2 style="margin:0;font-size:26px;font-weight:700;letter-spacing:-0.02em">24 · Log weight in stone — empty and mid-typing</h2>
+    <p style="margin:-10px 0 0;font-size:15px;line-height:1.55;color:#59635F;max-width:860px;text-wrap:pretty">The hero value splits into two 150dp columns with a 22dp gap — 322dp inside the sheet's 20dp padding, so both fit at <strong>48sp/800</strong> with their 20sp suffixes and still leave air at <code>textScaleFactor 1.3</code> (the 72sp single-field treatment does not survive two fields, so st entry drops to the height sheet's 48sp). The focused column carries the 2dp <code>primary</code> underline; the other keeps a 1dp <code>outline</code>. Empty state is <code>0 st 0 lb</code> with <strong>st</strong> focused and Save disabled — the existing range helper is shown in <code>onSurfaceVariant</code>, not <code>error</code>, because nothing has gone wrong yet.</p>
+    <div style="display:flex;gap:40px;flex-wrap:wrap;align-items:flex-start">
+
+      <div style="display:flex;flex-direction:column;gap:12px"><div style="--bg:#F6F8F7;--surf:#FFFFFF;--surf2:#EAEFEC;--out:#D3DBD8;--on:#171D1B;--dim:#59635F;--pri:#1F6A5C;--pric:#B3EEDD;--onpri:#FFFFFF;position:relative;width:390px;height:844px;border-radius:36px;overflow:hidden;background:var(--bg);color:var(--on);font-family:Manrope,sans-serif;box-shadow:0 12px 32px rgba(16,32,28,.14)">
+        <div style="height:44px;display:flex;align-items:center;justify-content:space-between;padding:0 26px;font-size:13px;font-weight:600"><span>9:41</span><span style="font-family:'Material Symbols Rounded';font-size:16px">signal_cellular_alt wifi battery_full</span></div>
+        <div style="height:56px;padding:0 24px;display:flex;align-items:center"><span style="font-size:22px;font-weight:800;letter-spacing:-0.02em">Ponvia</span></div>
+        <div style="padding:8px 16px"><div style="padding:24px 20px;border-radius:28px;background:var(--surf);border:1px solid var(--out);display:flex;flex-direction:column;gap:10px"><span style="font-size:12px;font-weight:800;letter-spacing:.06em;color:var(--dim)">SENESTE VÆGT</span><div style="display:flex;align-items:baseline;gap:8px;font-variant-numeric:tabular-nums"><span style="font-size:56px;font-weight:800;letter-spacing:-0.04em;line-height:1">12</span><span style="font-size:22px;font-weight:600;color:var(--dim)">st</span><span style="font-size:56px;font-weight:800;letter-spacing:-0.04em;line-height:1">13</span><span style="font-size:22px;font-weight:600;color:var(--dim)">lb</span></div></div></div>
+        <div style="position:absolute;inset:0;background:rgba(10,20,17,.42)"></div>
+        <div style="position:absolute;left:0;right:0;bottom:0;height:664px;border-radius:28px 28px 0 0;background:var(--surf);box-shadow:0 -8px 24px rgba(16,32,28,.20);display:flex;flex-direction:column">
+          <div style="height:20px;display:flex;align-items:center;justify-content:center;padding-top:12px"><div style="width:36px;height:4px;border-radius:2px;background:var(--out)"></div></div>
+          <div style="height:56px;padding:0 8px 0 20px;display:flex;align-items:center;justify-content:space-between"><span style="font-size:20px;font-weight:800;letter-spacing:-0.01em">Registrér vægt</span><span style="width:48px;height:48px;display:flex;align-items:center;justify-content:center;font-family:'Material Symbols Rounded';font-size:24px;color:var(--dim)">close</span></div>
+          <div style="padding:12px 20px 0;display:flex;flex-direction:column;align-items:center;gap:12px">
+            <div style="display:flex;gap:22px">
+              <div style="width:150px;display:flex;flex-direction:column;gap:8px">
+                <div style="height:58px;display:flex;align-items:flex-end;justify-content:center;gap:8px"><span style="font-size:48px;font-weight:800;line-height:1;letter-spacing:-0.03em;font-variant-numeric:tabular-nums;color:var(--dim)">0</span><span style="font-size:20px;font-weight:600;color:var(--dim);padding-bottom:5px">st</span></div>
+                <div style="height:2px;border-radius:1px;background:var(--pri)"></div>
+              </div>
+              <div style="width:150px;display:flex;flex-direction:column;gap:8px">
+                <div style="height:58px;display:flex;align-items:flex-end;justify-content:center;gap:8px"><span style="font-size:48px;font-weight:800;line-height:1;letter-spacing:-0.03em;font-variant-numeric:tabular-nums;color:var(--dim)">0</span><span style="font-size:20px;font-weight:600;color:var(--dim);padding-bottom:5px">lb</span></div>
+                <div style="height:1px;background:var(--out);margin-bottom:1px"></div>
+              </div>
+            </div>
+            <span style="font-size:13px;font-weight:600;color:var(--dim)">Indtast en vægt mellem 20 og 400 kg</span>
+          </div>
+          <div style="padding:14px 16px 0;display:flex;flex-direction:column;gap:10px">
+            <div style="display:flex;gap:10px">
+              <div style="flex:1;height:56px;border-radius:16px;background:var(--surf2);display:flex;align-items:center;gap:12px;padding:0 14px"><span style="font-family:'Material Symbols Rounded';font-size:20px;color:var(--dim)">event</span><div style="display:flex;flex-direction:column;gap:2px"><span style="font-size:11px;font-weight:700;letter-spacing:.04em;color:var(--dim)">DATO</span><span style="font-size:15px;font-weight:700">I dag</span></div></div>
+              <div style="flex:1;height:56px;border-radius:16px;background:var(--surf2);display:flex;align-items:center;gap:12px;padding:0 14px"><span style="font-family:'Material Symbols Rounded';font-size:20px;color:var(--dim)">schedule</span><div style="display:flex;flex-direction:column;gap:2px"><span style="font-size:11px;font-weight:700;letter-spacing:.04em;color:var(--dim)">TID</span><span style="font-size:15px;font-weight:700">08.14</span></div></div>
+            </div>
+            <div style="height:56px;border-radius:16px;border:1px solid var(--out);display:flex;align-items:center;gap:12px;padding:0 14px"><span style="font-family:'Material Symbols Rounded';font-size:20px;color:var(--dim)">edit_note</span><span style="font-size:15px;color:var(--dim)">Tilføj en note (valgfrit)</span></div>
+          </div>
+          <div style="padding:12px 16px 0;display:grid;grid-template-columns:repeat(3,1fr);gap:4px;font-size:26px;font-weight:600;font-variant-numeric:tabular-nums">
+            <div style="height:52px;display:flex;align-items:center;justify-content:center">1</div><div style="height:52px;display:flex;align-items:center;justify-content:center">2</div><div style="height:52px;display:flex;align-items:center;justify-content:center">3</div>
+            <div style="height:52px;display:flex;align-items:center;justify-content:center">4</div><div style="height:52px;display:flex;align-items:center;justify-content:center">5</div><div style="height:52px;display:flex;align-items:center;justify-content:center">6</div>
+            <div style="height:52px;display:flex;align-items:center;justify-content:center">7</div><div style="height:52px;display:flex;align-items:center;justify-content:center">8</div><div style="height:52px;display:flex;align-items:center;justify-content:center">9</div>
+            <div style="height:52px;display:flex;align-items:center;justify-content:center;opacity:.38">,</div><div style="height:52px;display:flex;align-items:center;justify-content:center">0</div><div style="height:52px;display:flex;align-items:center;justify-content:center"><span style="font-family:'Material Symbols Rounded';font-size:26px">backspace</span></div>
+          </div>
+          <div style="padding:14px 16px 28px"><div style="height:56px;border-radius:28px;background:var(--surf2);display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:700;color:#A9B3AF">Gem</div></div>
+        </div>
+      </div><span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#59635F">stone.entry.log-empty.light.da.png</span></div>
+
+      <div style="display:flex;flex-direction:column;gap:12px"><div style="--bg:#0E1412;--surf:#161D1B;--surf2:#1F2724;--out:#333C39;--on:#DEE4E1;--dim:#A6B0AC;--pri:#8ED8C4;--pric:#005046;--onpri:#00382F;position:relative;width:390px;height:844px;border-radius:36px;overflow:hidden;background:var(--bg);color:var(--on);font-family:Manrope,sans-serif;box-shadow:0 12px 32px rgba(16,32,28,.14)">
+        <div style="height:44px;display:flex;align-items:center;justify-content:space-between;padding:0 26px;font-size:13px;font-weight:600"><span>9:41</span><span style="font-family:'Material Symbols Rounded';font-size:16px">signal_cellular_alt wifi battery_full</span></div>
+        <div style="height:56px;padding:0 24px;display:flex;align-items:center"><span style="font-size:22px;font-weight:800;letter-spacing:-0.02em">Ponvia</span></div>
+        <div style="padding:8px 16px"><div style="padding:24px 20px;border-radius:28px;background:var(--surf);border:1px solid var(--out);display:flex;flex-direction:column;gap:10px"><span style="font-size:12px;font-weight:800;letter-spacing:.06em;color:var(--dim)">LATEST WEIGHT</span><div style="display:flex;align-items:baseline;gap:8px;font-variant-numeric:tabular-nums"><span style="font-size:56px;font-weight:800;letter-spacing:-0.04em;line-height:1">12</span><span style="font-size:22px;font-weight:600;color:var(--dim)">st</span><span style="font-size:56px;font-weight:800;letter-spacing:-0.04em;line-height:1">13</span><span style="font-size:22px;font-weight:600;color:var(--dim)">lb</span></div></div></div>
+        <div style="position:absolute;inset:0;background:rgba(0,0,0,.60)"></div>
+        <div style="position:absolute;left:0;right:0;bottom:0;height:664px;border-radius:28px 28px 0 0;background:var(--surf);box-shadow:0 -8px 24px rgba(0,0,0,.55);display:flex;flex-direction:column">
+          <div style="height:20px;display:flex;align-items:center;justify-content:center;padding-top:12px"><div style="width:36px;height:4px;border-radius:2px;background:var(--out)"></div></div>
+          <div style="height:56px;padding:0 8px 0 20px;display:flex;align-items:center;justify-content:space-between"><span style="font-size:20px;font-weight:800;letter-spacing:-0.01em">Log weight</span><span style="width:48px;height:48px;display:flex;align-items:center;justify-content:center;font-family:'Material Symbols Rounded';font-size:24px;color:var(--dim)">close</span></div>
+          <div style="padding:12px 20px 0;display:flex;flex-direction:column;align-items:center;gap:12px">
+            <div style="display:flex;gap:22px">
+              <div style="width:150px;display:flex;flex-direction:column;gap:8px">
+                <div style="height:58px;display:flex;align-items:flex-end;justify-content:center;gap:8px"><span style="font-size:48px;font-weight:800;line-height:1;letter-spacing:-0.03em;font-variant-numeric:tabular-nums">12</span><span style="font-size:20px;font-weight:600;color:var(--dim);padding-bottom:5px">st</span></div>
+                <div style="height:1px;background:var(--out);margin-bottom:1px"></div>
+              </div>
+              <div style="width:150px;display:flex;flex-direction:column;gap:8px">
+                <div style="height:58px;display:flex;align-items:flex-end;justify-content:center;gap:8px"><span style="font-size:48px;font-weight:800;line-height:1;letter-spacing:-0.03em;font-variant-numeric:tabular-nums;color:var(--dim)">0</span><span style="font-size:20px;font-weight:600;color:var(--dim);padding-bottom:5px">lb</span></div>
+                <div style="height:2px;border-radius:1px;background:var(--pri)"></div>
+              </div>
+            </div>
+            <span style="font-size:13px;font-weight:600;color:var(--dim);font-variant-numeric:tabular-nums">12 st 0 lb · 76.2 kg</span>
+          </div>
+          <div style="padding:14px 16px 0;display:flex;flex-direction:column;gap:10px">
+            <div style="display:flex;gap:10px">
+              <div style="flex:1;height:56px;border-radius:16px;background:var(--surf2);display:flex;align-items:center;gap:12px;padding:0 14px"><span style="font-family:'Material Symbols Rounded';font-size:20px;color:var(--dim)">event</span><div style="display:flex;flex-direction:column;gap:2px"><span style="font-size:11px;font-weight:700;letter-spacing:.04em;color:var(--dim)">DATE</span><span style="font-size:15px;font-weight:700">Today</span></div></div>
+              <div style="flex:1;height:56px;border-radius:16px;background:var(--surf2);display:flex;align-items:center;gap:12px;padding:0 14px"><span style="font-family:'Material Symbols Rounded';font-size:20px;color:var(--dim)">schedule</span><div style="display:flex;flex-direction:column;gap:2px"><span style="font-size:11px;font-weight:700;letter-spacing:.04em;color:var(--dim)">TIME</span><span style="font-size:15px;font-weight:700">08:14</span></div></div>
+            </div>
+            <div style="height:56px;border-radius:16px;border:1px solid var(--out);display:flex;align-items:center;gap:12px;padding:0 14px"><span style="font-family:'Material Symbols Rounded';font-size:20px;color:var(--dim)">edit_note</span><span style="font-size:15px;color:var(--dim)">Add a note (optional)</span></div>
+          </div>
+          <div style="padding:12px 16px 0;display:grid;grid-template-columns:repeat(3,1fr);gap:4px;font-size:26px;font-weight:600;font-variant-numeric:tabular-nums">
+            <div style="height:52px;display:flex;align-items:center;justify-content:center">1</div><div style="height:52px;display:flex;align-items:center;justify-content:center">2</div><div style="height:52px;display:flex;align-items:center;justify-content:center">3</div>
+            <div style="height:52px;display:flex;align-items:center;justify-content:center">4</div><div style="height:52px;display:flex;align-items:center;justify-content:center">5</div><div style="height:52px;display:flex;align-items:center;justify-content:center">6</div>
+            <div style="height:52px;display:flex;align-items:center;justify-content:center">7</div><div style="height:52px;display:flex;align-items:center;justify-content:center">8</div><div style="height:52px;display:flex;align-items:center;justify-content:center">9</div>
+            <div style="height:52px;display:flex;align-items:center;justify-content:center;opacity:.38">.</div><div style="height:52px;display:flex;align-items:center;justify-content:center">0</div><div style="height:52px;display:flex;align-items:center;justify-content:center"><span style="font-family:'Material Symbols Rounded';font-size:26px">backspace</span></div>
+          </div>
+          <div style="padding:14px 16px 28px"><div style="height:56px;border-radius:28px;background:var(--pri);display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:700;color:var(--onpri)">Save</div></div>
+        </div>
+      </div><span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#59635F">stone.entry.log-typing.dark.en.png</span></div>
+
+      <div style="display:flex;flex-direction:column;gap:16px;max-width:400px;padding-top:8px">
+        <div style="padding:20px 22px;border-radius:20px;background:#EEF3F1;border:1px solid #D3DBD8;display:flex;flex-direction:column;gap:8px">
+          <span style="font-size:13px;font-weight:700;letter-spacing:.06em;color:#59635F">WHOLE POUNDS — DECIDED</span>
+          <p style="margin:0;font-size:14px;line-height:1.6;color:#3D4744;text-wrap:pretty">lb is an integer <strong>0–13</strong>. The decimal key is dead in st mode, exactly as it is for ft/in — but it renders at <strong>38% opacity</strong> rather than silently swallowing taps, so a user reaching for half-pounds gets an answer instead of a non-response. Rationale: a stone reading is spoken in whole pounds, and half-pound precision is 0.23 kg — below the noise floor of the same scale that reports it. Anyone who wants that precision has lb or kg as their display unit.</p>
+        </div>
+        <div style="padding:20px 22px;border-radius:20px;background:#EEF3F1;border:1px solid #D3DBD8;display:flex;flex-direction:column;gap:8px">
+          <span style="font-size:13px;font-weight:700;letter-spacing:.06em;color:#59635F">THE ECHO LINE</span>
+          <p style="margin:0;font-size:14px;line-height:1.6;color:#3D4744;text-wrap:pretty">One 13sp <code>onSurfaceVariant</code> line sits under the fields and does double duty. While the value is invalid it is the existing range helper; once valid it is the <code>WeightFormatter</code> output plus the canonical kg — "12 st 0 lb · 76.2 kg". That answers brief question 6 visibly: what you type reads back in the same formatting History and Home use, and the kg tail makes it obvious that storage never changed.</p>
+        </div>
+        <div style="padding:20px 22px;border-radius:20px;background:#EEF3F1;border:1px solid #D3DBD8;display:flex;flex-direction:column;gap:8px">
+          <span style="font-size:13px;font-weight:700;letter-spacing:.06em;color:#59635F">UNIT SWITCH MID-SHEET — MOOT</span>
+          <p style="margin:0;font-size:14px;line-height:1.6;color:#3D4744;text-wrap:pretty">Open question 2 resolves itself: the display unit is only changeable from Settings and the Settings row is not reachable while a modal entry sheet is open, so no live reflow is required. Build the field layout as a function of the unit at <code>build</code> time (it will reflow correctly anyway if a future surface changes the unit under it) and ship <strong>fresh opens only</strong> as the tested path.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div id="11b" data-screen-label="Stone goal and readback" style="display:flex;flex-direction:column;gap:24px">
+    <h2 style="margin:0;font-size:26px;font-weight:700;letter-spacing:-0.02em">25 · Goal target in stone, and editing an existing entry</h2>
+    <p style="margin:-10px 0 0;font-size:15px;line-height:1.55;color:#59635F;max-width:860px;text-wrap:pretty">The goal sheet keeps its own field treatment — <strong>boxed</strong>, not underlined — so st + lb there is two 64dp fields side by side, the focused one with the 2dp <code>primary</code> border and the other at 1dp <code>outline</code>, values 32sp/800 with 18sp suffixes. Read-back on edit prefills both fields from <code>kgToStoneParts</code> and focuses <strong>lb</strong>, mirroring the height sheet: the stone number is rarely what changed.</p>
+    <div style="display:flex;gap:40px;flex-wrap:wrap;align-items:flex-start">
+
+      <div style="display:flex;flex-direction:column;gap:12px"><div style="--bg:#F6F8F7;--surf:#FFFFFF;--surf2:#EAEFEC;--out:#D3DBD8;--on:#171D1B;--dim:#59635F;--pri:#1F6A5C;--pric:#B3EEDD;--onpri:#FFFFFF;position:relative;width:390px;height:844px;border-radius:36px;overflow:hidden;background:var(--bg);color:var(--on);font-family:Manrope,sans-serif;box-shadow:0 12px 32px rgba(16,32,28,.14)">
+        <div style="height:44px;display:flex;align-items:center;justify-content:space-between;padding:0 26px;font-size:13px;font-weight:600"><span>9:41</span><span style="font-family:'Material Symbols Rounded';font-size:16px">signal_cellular_alt wifi battery_full</span></div>
+        <div style="height:56px;padding:0 24px;display:flex;align-items:center"><span style="font-size:22px;font-weight:800;letter-spacing:-0.02em">Mål</span></div>
+        <div style="padding:8px 16px"><div style="padding:20px;border-radius:28px;background:var(--pric);color:#00201A;display:flex;flex-direction:column;gap:12px"><div style="height:28px;width:132px;border-radius:14px;background:var(--pri);color:var(--onpri);display:flex;align-items:center;justify-content:center;gap:6px;font-size:12px;font-weight:800;letter-spacing:.04em"><span style="font-family:'Material Symbols Rounded';font-size:16px">star</span>NÆRMESTE MÅL</div><div style="display:flex;align-items:baseline;gap:6px;font-variant-numeric:tabular-nums"><span style="font-size:44px;font-weight:800;line-height:1">12</span><span style="font-size:18px;font-weight:600">st</span><span style="font-size:44px;font-weight:800;line-height:1">4</span><span style="font-size:18px;font-weight:600">lb</span></div></div></div>
+        <div style="position:absolute;inset:0;background:rgba(10,20,17,.42)"></div>
+        <div style="position:absolute;left:0;right:0;bottom:0;height:556px;border-radius:28px 28px 0 0;background:var(--surf);box-shadow:0 -8px 24px rgba(16,32,28,.20);display:flex;flex-direction:column">
+          <div style="height:20px;display:flex;align-items:center;justify-content:center;padding-top:12px"><div style="width:36px;height:4px;border-radius:2px;background:var(--out)"></div></div>
+          <div style="height:56px;padding:0 8px 0 20px;display:flex;align-items:center;justify-content:space-between"><span style="font-size:20px;font-weight:800;letter-spacing:-0.01em">Nyt mål</span><span style="width:48px;height:48px;display:flex;align-items:center;justify-content:center;font-family:'Material Symbols Rounded';font-size:24px;color:var(--dim)">close</span></div>
+          <div style="padding:4px 20px 0;display:flex;flex-direction:column;gap:10px">
+            <span style="font-size:12px;font-weight:800;letter-spacing:.06em;color:var(--pri)">MÅLVÆGT</span>
+            <div style="display:flex;gap:12px">
+              <div style="flex:1;height:64px;border-radius:16px;background:var(--surf2);border:2px solid var(--pri);display:flex;align-items:baseline;justify-content:center;gap:6px;padding-top:14px"><span style="font-size:32px;font-weight:800;line-height:1;font-variant-numeric:tabular-nums">11</span><span style="font-size:18px;font-weight:600;color:var(--dim)">st</span></div>
+              <div style="flex:1;height:64px;border-radius:16px;background:var(--surf2);border:1px solid var(--out);display:flex;align-items:baseline;justify-content:center;gap:6px;padding-top:15px"><span style="font-size:32px;font-weight:800;line-height:1;font-variant-numeric:tabular-nums;color:var(--dim)">0</span><span style="font-size:18px;font-weight:600;color:var(--dim)">lb</span></div>
+            </div>
+            <span style="font-size:13px;font-weight:600;color:var(--dim);font-variant-numeric:tabular-nums">11 st 0 lb · 69,9 kg</span>
+            <div style="height:56px;border-radius:16px;border:1px solid var(--out);display:flex;align-items:center;padding:0 14px;font-size:15px;color:var(--dim)">fx. Sommermål</div>
+            <div style="height:56px;display:flex;align-items:center;justify-content:space-between"><span style="font-size:15px;font-weight:600">Retning</span><div style="height:32px;border-radius:16px;background:var(--pric);color:#00201A;display:flex;align-items:center;gap:6px;padding:0 12px;font-size:14px;font-weight:700"><span style="font-family:'Material Symbols Rounded';font-size:18px">arrow_downward</span>1 st 13 lb at tabe</div></div>
+            <div style="height:1px;background:var(--out)"></div>
+            <div style="height:60px;display:flex;align-items:center;justify-content:space-between"><span style="font-size:15px;font-weight:600">Fremhæv på Hjem</span><div style="width:52px;height:32px;border-radius:16px;background:var(--pri);display:flex;align-items:center;justify-content:flex-end;padding:0 4px"><div style="width:24px;height:24px;border-radius:12px;background:var(--onpri);display:flex;align-items:center;justify-content:center"><span style="font-family:'Material Symbols Rounded';font-size:16px;color:var(--pri)">check</span></div></div></div>
+          </div>
+          <div style="padding:6px 16px 0;display:grid;grid-template-columns:repeat(3,1fr);gap:4px;font-size:24px;font-weight:600;font-variant-numeric:tabular-nums">
+            <div style="height:48px;display:flex;align-items:center;justify-content:center">1</div><div style="height:48px;display:flex;align-items:center;justify-content:center">2</div><div style="height:48px;display:flex;align-items:center;justify-content:center">3</div>
+            <div style="height:48px;display:flex;align-items:center;justify-content:center">4</div><div style="height:48px;display:flex;align-items:center;justify-content:center">5</div><div style="height:48px;display:flex;align-items:center;justify-content:center">6</div>
+            <div style="height:48px;display:flex;align-items:center;justify-content:center">7</div><div style="height:48px;display:flex;align-items:center;justify-content:center">8</div><div style="height:48px;display:flex;align-items:center;justify-content:center">9</div>
+            <div style="height:48px;display:flex;align-items:center;justify-content:center;opacity:.38">,</div><div style="height:48px;display:flex;align-items:center;justify-content:center">0</div><div style="height:48px;display:flex;align-items:center;justify-content:center"><span style="font-family:'Material Symbols Rounded';font-size:24px">backspace</span></div>
+          </div>
+          <div style="padding:12px 16px 24px;display:flex;gap:12px">
+            <div style="flex:1;height:56px;border-radius:28px;border:1px solid var(--out);display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:700;color:var(--pri)">Annuller</div>
+            <div style="flex:1.4;height:56px;border-radius:28px;background:var(--pri);color:var(--onpri);display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:700">Gem mål</div>
+          </div>
+        </div>
+      </div><span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#59635F">stone.entry.goal.light.da.png</span></div>
+
+      <div style="display:flex;flex-direction:column;gap:12px"><div style="--bg:#0E1412;--surf:#161D1B;--surf2:#1F2724;--out:#333C39;--on:#DEE4E1;--dim:#A6B0AC;--pri:#8ED8C4;--pric:#005046;--onpri:#00382F;position:relative;width:390px;height:844px;border-radius:36px;overflow:hidden;background:var(--bg);color:var(--on);font-family:Manrope,sans-serif;box-shadow:0 12px 32px rgba(16,32,28,.14)">
+        <div style="height:44px;display:flex;align-items:center;justify-content:space-between;padding:0 26px;font-size:13px;font-weight:600"><span>9:41</span><span style="font-family:'Material Symbols Rounded';font-size:16px">signal_cellular_alt wifi battery_full</span></div>
+        <div style="height:56px;padding:0 24px;display:flex;align-items:center"><span style="font-size:22px;font-weight:800;letter-spacing:-0.02em">History</span></div>
+        <div style="padding:8px 16px"><div style="border-radius:24px;background:var(--surf);border:1px solid var(--out);overflow:hidden"><div style="height:64px;padding:0 20px;display:flex;align-items:center;justify-content:space-between"><span style="font-size:16px;font-weight:700">Today · 08:14</span><span style="font-size:18px;font-weight:800;font-variant-numeric:tabular-nums">12 st 7 lb</span></div></div></div>
+        <div style="position:absolute;inset:0;background:rgba(0,0,0,.60)"></div>
+        <div style="position:absolute;left:0;right:0;bottom:0;height:664px;border-radius:28px 28px 0 0;background:var(--surf);box-shadow:0 -8px 24px rgba(0,0,0,.55);display:flex;flex-direction:column">
+          <div style="height:20px;display:flex;align-items:center;justify-content:center;padding-top:12px"><div style="width:36px;height:4px;border-radius:2px;background:var(--out)"></div></div>
+          <div style="height:56px;padding:0 8px 0 20px;display:flex;align-items:center;justify-content:space-between"><span style="font-size:20px;font-weight:800;letter-spacing:-0.01em">Edit entry</span><div style="display:flex"><span style="width:48px;height:48px;display:flex;align-items:center;justify-content:center;font-family:'Material Symbols Rounded';font-size:24px;color:var(--dim)">delete</span><span style="width:48px;height:48px;display:flex;align-items:center;justify-content:center;font-family:'Material Symbols Rounded';font-size:24px;color:var(--dim)">close</span></div></div>
+          <div style="padding:12px 20px 0;display:flex;flex-direction:column;align-items:center;gap:12px">
+            <div style="display:flex;gap:22px">
+              <div style="width:150px;display:flex;flex-direction:column;gap:8px">
+                <div style="height:58px;display:flex;align-items:flex-end;justify-content:center;gap:8px"><span style="font-size:48px;font-weight:800;line-height:1;letter-spacing:-0.03em;font-variant-numeric:tabular-nums">12</span><span style="font-size:20px;font-weight:600;color:var(--dim);padding-bottom:5px">st</span></div>
+                <div style="height:1px;background:var(--out);margin-bottom:1px"></div>
+              </div>
+              <div style="width:150px;display:flex;flex-direction:column;gap:8px">
+                <div style="height:58px;display:flex;align-items:flex-end;justify-content:center;gap:8px"><span style="font-size:48px;font-weight:800;line-height:1;letter-spacing:-0.03em;font-variant-numeric:tabular-nums">7</span><span style="font-size:20px;font-weight:600;color:var(--dim);padding-bottom:5px">lb</span></div>
+                <div style="height:2px;border-radius:1px;background:var(--pri)"></div>
+              </div>
+            </div>
+            <span style="font-size:13px;font-weight:600;color:var(--dim);font-variant-numeric:tabular-nums">12 st 7 lb · 79.4 kg</span>
+          </div>
+          <div style="padding:14px 16px 0;display:flex;flex-direction:column;gap:10px">
+            <div style="display:flex;gap:10px">
+              <div style="flex:1;height:56px;border-radius:16px;background:var(--surf2);display:flex;align-items:center;gap:12px;padding:0 14px"><span style="font-family:'Material Symbols Rounded';font-size:20px;color:var(--dim)">event</span><div style="display:flex;flex-direction:column;gap:2px"><span style="font-size:11px;font-weight:700;letter-spacing:.04em;color:var(--dim)">DATE</span><span style="font-size:15px;font-weight:700">Today</span></div></div>
+              <div style="flex:1;height:56px;border-radius:16px;background:var(--surf2);display:flex;align-items:center;gap:12px;padding:0 14px"><span style="font-family:'Material Symbols Rounded';font-size:20px;color:var(--dim)">schedule</span><div style="display:flex;flex-direction:column;gap:2px"><span style="font-size:11px;font-weight:700;letter-spacing:.04em;color:var(--dim)">TIME</span><span style="font-size:15px;font-weight:700">08:14</span></div></div>
+            </div>
+            <div style="height:56px;border-radius:16px;border:1px solid var(--pri);display:flex;align-items:center;gap:12px;padding:0 14px"><span style="font-family:'Material Symbols Rounded';font-size:20px;color:var(--pri)">edit_note</span><span style="font-size:15px">After the morning run</span></div>
+          </div>
+          <div style="padding:12px 16px 0;display:grid;grid-template-columns:repeat(3,1fr);gap:4px;font-size:26px;font-weight:600;font-variant-numeric:tabular-nums">
+            <div style="height:52px;display:flex;align-items:center;justify-content:center">1</div><div style="height:52px;display:flex;align-items:center;justify-content:center">2</div><div style="height:52px;display:flex;align-items:center;justify-content:center">3</div>
+            <div style="height:52px;display:flex;align-items:center;justify-content:center">4</div><div style="height:52px;display:flex;align-items:center;justify-content:center">5</div><div style="height:52px;display:flex;align-items:center;justify-content:center">6</div>
+            <div style="height:52px;display:flex;align-items:center;justify-content:center">7</div><div style="height:52px;display:flex;align-items:center;justify-content:center">8</div><div style="height:52px;display:flex;align-items:center;justify-content:center">9</div>
+            <div style="height:52px;display:flex;align-items:center;justify-content:center;opacity:.38">.</div><div style="height:52px;display:flex;align-items:center;justify-content:center">0</div><div style="height:52px;display:flex;align-items:center;justify-content:center"><span style="font-family:'Material Symbols Rounded';font-size:26px">backspace</span></div>
+          </div>
+          <div style="padding:14px 16px 28px"><div style="height:56px;border-radius:28px;background:var(--pri);display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:700;color:var(--onpri)">Save changes</div></div>
+        </div>
+      </div><span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#59635F">stone.entry.readback.dark.en.png</span></div>
+
+      <div style="display:flex;flex-direction:column;gap:16px;max-width:400px;padding-top:8px">
+        <div style="padding:20px 22px;border-radius:20px;background:#EEF3F1;border:1px solid #D3DBD8;display:flex;flex-direction:column;gap:8px">
+          <span style="font-size:13px;font-weight:700;letter-spacing:.06em;color:#59635F">DERIVED TEXT IN STONE</span>
+          <p style="margin:0;font-size:14px;line-height:1.6;color:#3D4744;text-wrap:pretty">The goal sheet's read-only Direction chip is derived, so it has to speak stone too: "1 st 13 lb at tabe", not a bare lb figure. Where a distance is under 14 lb the existing Home rule stands and it reads in lb only ("9.7 lb to go") — one unit is calmer than "0 st 9.7 lb".</p>
+        </div>
+        <div style="padding:20px 22px;border-radius:20px;background:#EEF3F1;border:1px solid #D3DBD8;display:flex;flex-direction:column;gap:8px">
+          <span style="font-size:13px;font-weight:700;letter-spacing:.06em;color:#59635F">WHY lb TAKES FOCUS ON EDIT</span>
+          <p style="margin:0;font-size:14px;line-height:1.6;color:#3D4744;text-wrap:pretty">Corrections in stone are almost always sub-stone. Focusing lb means the common edit is two taps and no field switch, and backspace from an empty lb still walks back to st for the rarer case. Identical to the height sheet's ft/in read-back, so there is one rule to remember, not two.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div id="11c" data-screen-label="Stone entry spec" style="display:flex;flex-direction:column;gap:24px">
+    <h2 style="margin:0;font-size:26px;font-weight:700;letter-spacing:-0.02em">26 · stone.entry.spec — metrics and routing</h2>
+    <div style="display:flex;gap:40px;flex-wrap:wrap;align-items:flex-start">
+      <div style="width:520px;padding:28px;border-radius:24px;background:#FFFFFF;border:1px solid #D3DBD8;display:flex;flex-direction:column;gap:22px;font-family:Manrope,sans-serif">
+        <span style="font-size:12px;font-weight:800;letter-spacing:.06em;color:#59635F">FIELD METRICS · LOG SHEET</span>
+        <div style="display:flex;gap:22px;align-items:flex-start">
+          <div style="width:150px;display:flex;flex-direction:column;gap:8px">
+            <div style="height:58px;display:flex;align-items:flex-end;justify-content:center;gap:8px;background:#F2F6F4;border-radius:8px"><span style="font-size:48px;font-weight:800;line-height:1;letter-spacing:-0.03em">12</span><span style="font-size:20px;font-weight:600;color:#59635F;padding-bottom:5px">st</span></div>
+            <div style="height:2px;background:#1F6A5C"></div>
+            <span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#59635F;text-align:center">150 × 58 · underline 2dp</span>
+          </div>
+          <div style="width:22px;height:58px;display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:10px;color:#59635F">22</div>
+          <div style="width:150px;display:flex;flex-direction:column;gap:8px">
+            <div style="height:58px;display:flex;align-items:flex-end;justify-content:center;gap:8px;background:#F2F6F4;border-radius:8px"><span style="font-size:48px;font-weight:800;line-height:1;letter-spacing:-0.03em;color:#59635F">7</span><span style="font-size:20px;font-weight:600;color:#59635F;padding-bottom:5px">lb</span></div>
+            <div style="height:1px;background:#D3DBD8"></div>
+            <span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#59635F;text-align:center">150 × 58 · underline 1dp</span>
+          </div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:10px;font-size:14px;line-height:1.55;color:#3D4744">
+          <div style="display:flex;gap:12px"><span style="font-family:'JetBrains Mono',monospace;font-size:12px;color:#1F6A5C;min-width:96px">value</span><span>48sp / 800 / −0.03em, tabular, centred in its column. Suffix 20sp/600 <code>onSurfaceVariant</code>, baseline-aligned, 8dp gap.</span></div>
+          <div style="display:flex;gap:12px"><span style="font-family:'JetBrains Mono',monospace;font-size:12px;color:#1F6A5C;min-width:96px">focus</span><span>2dp <code>primary</code> underline on the focused column, 1dp <code>outline</code> on the other. Digits in the unfocused column stay <code>onSurface</code> when set, <code>onSurfaceVariant</code> when still 0.</span></div>
+          <div style="display:flex;gap:12px"><span style="font-family:'JetBrains Mono',monospace;font-size:12px;color:#1F6A5C;min-width:96px">hit area</span><span>Whole 150 × 90 column (value + underline + slack) toggles focus. No cursor, no caret blink — the underline is the only focus signal, as in the height sheet.</span></div>
+          <div style="display:flex;gap:12px"><span style="font-family:'JetBrains Mono',monospace;font-size:12px;color:#1F6A5C;min-width:96px">goal sheet</span><span>Two 64dp boxed fields, flex 1 each, 12dp gap; 32sp/800 value + 18sp suffix; focused = 2dp <code>primary</code> border on <code>surfaceContainer</code>.</span></div>
+          <div style="display:flex;gap:12px"><span style="font-family:'JetBrains Mono',monospace;font-size:12px;color:#1F6A5C;min-width:96px">1.3× scale</span><span>Value caps at 1.15× (55sp); suffixes scale freely. Above that the two columns keep their widths and the sheet grows — they never stack.</span></div>
+        </div>
+      </div>
+
+      <div style="width:520px;padding:28px;border-radius:24px;background:#FFFFFF;border:1px solid #D3DBD8;display:flex;flex-direction:column;gap:18px;font-family:Manrope,sans-serif">
+        <span style="font-size:12px;font-weight:800;letter-spacing:.06em;color:#59635F">KEY ROUTING · st MODE ONLY</span>
+        <div style="display:flex;flex-direction:column;gap:12px;font-size:14px;line-height:1.55;color:#3D4744">
+          <div style="display:flex;gap:12px"><span style="font-family:'JetBrains Mono',monospace;font-size:12px;color:#1F6A5C;min-width:110px">onKey(d) → st</span><span>Digits append, max two, clamped at 63. <strong>Focus auto-advances to lb as soon as a further digit is impossible</strong> — i.e. after the second digit, or after the first if it is 7–9 (a second would exceed 63). Typing 1 then 2 gives 12 st and the focus lands on lb; typing 9 gives 9 st and advances immediately. This is the ft/in rule with 63 in place of ft's ceiling.</span></div>
+          <div style="display:flex;gap:12px"><span style="font-family:'JetBrains Mono',monospace;font-size:12px;color:#1F6A5C;min-width:110px">onKey(d) → lb</span><span>Accepts one or two digits; a value that would land ≥ 14 or a third digit is <strong>rejected outright</strong> — the field keeps its current value, no rollover into st, no error text. Matches the height sheet clamping inches at ≤ 11.</span></div>
+          <div style="display:flex;gap:12px"><span style="font-family:'JetBrains Mono',monospace;font-size:12px;color:#1F6A5C;min-width:110px">decimal key</span><span>Rendered at 38% opacity, taps ignored. Live in kg and lb modes, dead in st.</span></div>
+          <div style="display:flex;gap:12px"><span style="font-family:'JetBrains Mono',monospace;font-size:12px;color:#1F6A5C;min-width:110px">onBackspace</span><span>Deletes the last digit of the focused field. <strong>At the start of lb, focus returns to st</strong> (and the following backspace edits st). At the start of st it is a no-op.</span></div>
+          <div style="display:flex;gap:12px"><span style="font-family:'JetBrains Mono',monospace;font-size:12px;color:#1F6A5C;min-width:110px">blank lb</span><span>Treated as <strong>0 lb</strong>. An empty lb is never a validation failure on its own.</span></div>
+          <div style="display:flex;gap:12px"><span style="font-family:'JetBrains Mono',monospace;font-size:12px;color:#1F6A5C;min-width:110px">validation</span><span><code>stonePartsToKg(st, lb ?? 0)</code> must fall in <strong>20–400 kg</strong> (≈ 3 st 2 lb – 62 st 13 lb). Save disabled outside it; the helper line switches to <code>error</code> only after a save attempt or once the value leaves the range, exactly as kg/lb do today.</span></div>
+          <div style="display:flex;gap:12px"><span style="font-family:'JetBrains Mono',monospace;font-size:12px;color:#1F6A5C;min-width:110px">a11y</span><span>Two <code>Semantics</code> nodes: "Stone, 12" / "Pounds, 7", each announcing the focus change on auto-advance. The echo line is a live region announcing the combined value.</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="11d" data-screen-label="Weekly multi-select" style="display:flex;flex-direction:column;gap:24px">
+    <h2 style="margin:0;font-size:26px;font-weight:700;letter-spacing:-0.02em">27 · Weekly reminders — several days lit</h2>
+    <p style="margin:-10px 0 0;font-size:15px;line-height:1.55;color:#59635F;max-width:860px;text-wrap:pretty">Same seven 44dp circles, same tokens: lit is the filled <code>primary</code> disc with <code>onPrimary</code> 800 narrow name, unlit is the 1dp <code>outline</code> ring in <code>onSurfaceVariant</code>. The only change is that several can be lit. Below them the helper becomes a <strong>set summary</strong> in circle order, middot-separated — "Man · Ons · Fre" — and the master row keeps the single <strong>next-fire</strong> line, now the earliest across the set.</p>
+    <div style="display:flex;gap:40px;flex-wrap:wrap;align-items:flex-start">
+
+      <div style="display:flex;flex-direction:column;gap:12px"><div style="--bg:#F6F8F7;--surf:#FFFFFF;--surf2:#EAEFEC;--out:#D3DBD8;--on:#171D1B;--dim:#59635F;--pri:#1F6A5C;--pric:#B3EEDD;--onpri:#FFFFFF;position:relative;width:390px;height:844px;border-radius:36px;overflow:hidden;background:var(--bg);color:var(--on);font-family:Manrope,sans-serif;box-shadow:0 12px 32px rgba(16,32,28,.14)">
+        <div style="height:44px;display:flex;align-items:center;justify-content:space-between;padding:0 26px;font-size:13px;font-weight:600"><span>9:41</span><span style="font-family:'Material Symbols Rounded';font-size:16px">signal_cellular_alt wifi battery_full</span></div>
+        <div style="height:56px;padding:0 8px;display:flex;align-items:center;gap:4px"><span style="width:48px;height:48px;display:flex;align-items:center;justify-content:center;font-family:'Material Symbols Rounded';font-size:24px">arrow_back</span><span style="font-size:20px;font-weight:800;letter-spacing:-0.01em">Påmindelser</span></div>
+        <div style="padding:8px 16px;display:flex;flex-direction:column;gap:20px">
+          <div style="height:72px;border-radius:24px;background:var(--pric);color:#00201A;display:flex;align-items:center;justify-content:space-between;padding:0 20px">
+            <div style="display:flex;flex-direction:column;gap:2px"><span style="font-size:16px;font-weight:700">Vejepåmindelse</span><span style="font-size:13px;font-variant-numeric:tabular-nums">Næste: ons 12. aug, 07.30</span></div>
+            <div style="width:52px;height:32px;border-radius:16px;background:var(--pri);display:flex;align-items:center;justify-content:flex-end;padding:0 4px"><div style="width:24px;height:24px;border-radius:12px;background:var(--onpri);display:flex;align-items:center;justify-content:center"><span style="font-family:'Material Symbols Rounded';font-size:16px;color:var(--pri)">check</span></div></div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:10px">
+            <span style="font-size:12px;font-weight:800;letter-spacing:.06em;color:var(--pri)">HYPPIGHED</span>
+            <div style="height:48px;border-radius:24px;border:1px solid var(--out);display:grid;grid-template-columns:1fr 1.25fr 1fr;overflow:hidden;font-size:15px;font-weight:700">
+              <div style="display:flex;align-items:center;justify-content:center;color:var(--dim)">Dagligt</div>
+              <div style="display:flex;align-items:center;justify-content:center;gap:6px;background:var(--pric);color:#00201A;font-weight:800;border-left:1px solid var(--out);border-right:1px solid var(--out)"><span style="font-family:'Material Symbols Rounded';font-size:18px">check</span>Ugentligt</div>
+              <div style="display:flex;align-items:center;justify-content:center;color:var(--dim)">Månedligt</div>
+            </div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:14px">
+            <span style="font-size:12px;font-weight:800;letter-spacing:.06em;color:var(--pri)">DAGE</span>
+            <div style="display:flex;justify-content:space-between">
+              <div style="width:44px;height:44px;border-radius:22px;background:var(--pri);color:var(--onpri);display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:800">M</div>
+              <div style="width:44px;height:44px;border-radius:22px;border:1px solid var(--out);color:var(--dim);display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:700">T</div>
+              <div style="width:44px;height:44px;border-radius:22px;background:var(--pri);color:var(--onpri);display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:800">O</div>
+              <div style="width:44px;height:44px;border-radius:22px;border:1px solid var(--out);color:var(--dim);display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:700">T</div>
+              <div style="width:44px;height:44px;border-radius:22px;background:var(--pri);color:var(--onpri);display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:800">F</div>
+              <div style="width:44px;height:44px;border-radius:22px;border:1px solid var(--out);color:var(--dim);display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:700">L</div>
+              <div style="width:44px;height:44px;border-radius:22px;border:1px solid var(--out);color:var(--dim);display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:700">S</div>
+            </div>
+            <span style="font-size:13px;font-weight:600;color:var(--dim)">Man · Ons · Fre</span>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:10px">
+            <span style="font-size:12px;font-weight:800;letter-spacing:.06em;color:var(--pri)">TIDSPUNKT</span>
+            <div style="height:88px;border-radius:24px;background:var(--surf);border:1px solid var(--out);display:flex;align-items:center;justify-content:center;gap:8px">
+              <div style="width:60px;height:60px;border-radius:14px;background:var(--pric);color:#00201A;display:flex;align-items:center;justify-content:center;font-size:28px;font-weight:800;font-variant-numeric:tabular-nums">07</div>
+              <span style="font-size:28px;font-weight:800;color:var(--dim);padding-bottom:6px">.</span>
+              <div style="width:60px;height:60px;border-radius:14px;background:var(--surf2);display:flex;align-items:center;justify-content:center;font-size:28px;font-weight:800;font-variant-numeric:tabular-nums">30</div>
+            </div>
+          </div>
+        </div>
+        <div style="position:absolute;left:16px;right:16px;bottom:32px"><div style="height:56px;border-radius:28px;background:var(--pri);color:var(--onpri);display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:700">Gem</div></div>
+      </div><span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#59635F">reminders.weekly-multi.light.da.png</span></div>
+
+      <div style="display:flex;flex-direction:column;gap:12px"><div style="--bg:#0E1412;--surf:#161D1B;--surf2:#1F2724;--out:#333C39;--on:#DEE4E1;--dim:#A6B0AC;--pri:#8ED8C4;--pric:#005046;--onpri:#00382F;position:relative;width:390px;height:844px;border-radius:36px;overflow:hidden;background:var(--bg);color:var(--on);font-family:Manrope,sans-serif;box-shadow:0 12px 32px rgba(16,32,28,.14)">
+        <div style="height:44px;display:flex;align-items:center;justify-content:space-between;padding:0 26px;font-size:13px;font-weight:600"><span>9:41</span><span style="font-family:'Material Symbols Rounded';font-size:16px">signal_cellular_alt wifi battery_full</span></div>
+        <div style="height:56px;padding:0 8px;display:flex;align-items:center;gap:4px"><span style="width:48px;height:48px;display:flex;align-items:center;justify-content:center;font-family:'Material Symbols Rounded';font-size:24px">arrow_back</span><span style="font-size:20px;font-weight:800;letter-spacing:-0.01em">Reminders</span></div>
+        <div style="padding:8px 16px;display:flex;flex-direction:column;gap:20px">
+          <div style="height:72px;border-radius:24px;background:var(--pric);color:#B3EEDD;display:flex;align-items:center;justify-content:space-between;padding:0 20px">
+            <div style="display:flex;flex-direction:column;gap:2px"><span style="font-size:16px;font-weight:700">Weigh-in reminder</span><span style="font-size:13px;font-variant-numeric:tabular-nums">Next: Sat 15 Aug, 07:30</span></div>
+            <div style="width:52px;height:32px;border-radius:16px;background:var(--pri);display:flex;align-items:center;justify-content:flex-end;padding:0 4px"><div style="width:24px;height:24px;border-radius:12px;background:var(--onpri);display:flex;align-items:center;justify-content:center"><span style="font-family:'Material Symbols Rounded';font-size:16px;color:var(--pri)">check</span></div></div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:10px">
+            <span style="font-size:12px;font-weight:800;letter-spacing:.06em;color:var(--pri)">FREQUENCY</span>
+            <div style="height:48px;border-radius:24px;border:1px solid var(--out);display:grid;grid-template-columns:1fr 1.25fr 1fr;overflow:hidden;font-size:15px;font-weight:700">
+              <div style="display:flex;align-items:center;justify-content:center;color:var(--dim)">Daily</div>
+              <div style="display:flex;align-items:center;justify-content:center;gap:6px;background:var(--pric);color:#B3EEDD;font-weight:800;border-left:1px solid var(--out);border-right:1px solid var(--out)"><span style="font-family:'Material Symbols Rounded';font-size:18px">check</span>Weekly</div>
+              <div style="display:flex;align-items:center;justify-content:center;color:var(--dim)">Monthly</div>
+            </div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:14px">
+            <span style="font-size:12px;font-weight:800;letter-spacing:.06em;color:var(--pri)">DAYS</span>
+            <div style="display:flex;justify-content:space-between">
+              <div style="width:44px;height:44px;border-radius:22px;border:1px solid var(--out);color:var(--dim);display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:700">M</div>
+              <div style="width:44px;height:44px;border-radius:22px;background:var(--pri);color:var(--onpri);display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:800">T</div>
+              <div style="width:44px;height:44px;border-radius:22px;border:1px solid var(--out);color:var(--dim);display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:700">W</div>
+              <div style="width:44px;height:44px;border-radius:22px;border:1px solid var(--out);color:var(--dim);display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:700">T</div>
+              <div style="width:44px;height:44px;border-radius:22px;border:1px solid var(--out);color:var(--dim);display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:700">F</div>
+              <div style="width:44px;height:44px;border-radius:22px;background:var(--pri);color:var(--onpri);display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:800">S</div>
+              <div style="width:44px;height:44px;border-radius:22px;background:var(--pri);color:var(--onpri);display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:800">S</div>
+            </div>
+            <span style="font-size:13px;font-weight:600;color:var(--dim)">Tue · Sat · Sun</span>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:10px">
+            <span style="font-size:12px;font-weight:800;letter-spacing:.06em;color:var(--pri)">TIME OF DAY</span>
+            <div style="height:88px;border-radius:24px;background:var(--surf);border:1px solid var(--out);display:flex;align-items:center;justify-content:center;gap:8px">
+              <div style="width:60px;height:60px;border-radius:14px;background:var(--pric);color:#B3EEDD;display:flex;align-items:center;justify-content:center;font-size:28px;font-weight:800;font-variant-numeric:tabular-nums">07</div>
+              <span style="font-size:28px;font-weight:800;color:var(--dim);padding-bottom:6px">:</span>
+              <div style="width:60px;height:60px;border-radius:14px;background:var(--surf2);display:flex;align-items:center;justify-content:center;font-size:28px;font-weight:800;font-variant-numeric:tabular-nums">30</div>
+            </div>
+          </div>
+        </div>
+        <div style="position:absolute;left:16px;right:16px;bottom:32px"><div style="height:56px;border-radius:28px;background:var(--pri);color:var(--onpri);display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:700">Save</div></div>
+      </div><span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#59635F">reminders.weekly-multi.dark.en.png</span></div>
+
+      <div style="display:flex;flex-direction:column;gap:16px;max-width:400px;padding-top:8px">
+        <div style="padding:20px 22px;border-radius:20px;background:#EEF3F1;border:1px solid #D3DBD8;display:flex;flex-direction:column;gap:8px">
+          <span style="font-size:13px;font-weight:700;letter-spacing:.06em;color:#59635F">A SECTION HEADER APPEARS</span>
+          <p style="margin:0;font-size:14px;line-height:1.6;color:#3D4744;text-wrap:pretty">One addition beyond the brief: the circle row gets a <code>labelSmall</code> header — <strong>DAGE / DAYS</strong> — matching FREQUENCY and TIME OF DAY. With a single selection the row read as an extension of the frequency control; as a multi-select set it is its own field and needs its own label. No new concept, one new string per locale.</p>
+        </div>
+        <div style="padding:20px 22px;border-radius:20px;background:#EEF3F1;border:1px solid #D3DBD8;display:flex;flex-direction:column;gap:8px">
+          <span style="font-size:13px;font-weight:700;letter-spacing:.06em;color:#59635F">SUMMARY FORMAT</span>
+          <p style="margin:0;font-size:14px;line-height:1.6;color:#3D4744;text-wrap:pretty">13sp/600 <code>onSurfaceVariant</code>, short weekday names, <strong>middot with hair spaces</strong> (" · "), always in Mon-first circle order — never selection order, so the line is stable while tapping. It replaces <code>notifDaySelected</code> entirely: no "Next reminder:" prefix, because the next fire already has a home in the master row and repeating it twice on one screen is noise. All seven lit renders all seven names and wraps to a second line; that is acceptable and is the honest reading of the state.</p>
+        </div>
+        <div style="padding:20px 22px;border-radius:20px;background:#EEF3F1;border:1px solid #D3DBD8;display:flex;flex-direction:column;gap:8px">
+          <span style="font-size:13px;font-weight:700;letter-spacing:.06em;color:#59635F">ALL SEVEN STAYS WEEKLY</span>
+          <p style="margin:0;font-size:14px;line-height:1.6;color:#3D4744;text-wrap:pretty">Lighting every circle does <strong>not</strong> flip the segmented control to Dagligt. Moving a control the user didn't touch is the worse sin, and the two states schedule identically (seven weekly matches vs one daily match). Daily remains the shortcut, not the destination.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div id="11e" data-screen-label="Weekly last day" style="display:flex;flex-direction:column;gap:24px">
+    <h2 style="margin:0;font-size:26px;font-weight:700;letter-spacing:-0.02em">28 · One day left — the last one can't be cleared</h2>
+    <p style="margin:-10px 0 0;font-size:15px;line-height:1.55;color:#59635F;max-width:860px;text-wrap:pretty">Decision 1 resolves to <strong>block</strong>. With exactly one day lit, tapping it plays the normal 120ms <code>InkWell</code> state layer and nothing else changes — no snackbar, no error, no toast. The reminder can never be silently dead, and the user learns the rule in one tap without being told off. Zero new strings.</p>
+    <div style="display:flex;gap:40px;flex-wrap:wrap;align-items:flex-start">
+
+      <div style="display:flex;flex-direction:column;gap:12px"><div style="--bg:#F6F8F7;--surf:#FFFFFF;--surf2:#EAEFEC;--out:#D3DBD8;--on:#171D1B;--dim:#59635F;--pri:#1F6A5C;--pric:#B3EEDD;--onpri:#FFFFFF;position:relative;width:390px;height:844px;border-radius:36px;overflow:hidden;background:var(--bg);color:var(--on);font-family:Manrope,sans-serif;box-shadow:0 12px 32px rgba(16,32,28,.14)">
+        <div style="height:44px;display:flex;align-items:center;justify-content:space-between;padding:0 26px;font-size:13px;font-weight:600"><span>9:41</span><span style="font-family:'Material Symbols Rounded';font-size:16px">signal_cellular_alt wifi battery_full</span></div>
+        <div style="height:56px;padding:0 8px;display:flex;align-items:center;gap:4px"><span style="width:48px;height:48px;display:flex;align-items:center;justify-content:center;font-family:'Material Symbols Rounded';font-size:24px">arrow_back</span><span style="font-size:20px;font-weight:800;letter-spacing:-0.01em">Påmindelser</span></div>
+        <div style="padding:8px 16px;display:flex;flex-direction:column;gap:20px">
+          <div style="height:72px;border-radius:24px;background:var(--pric);color:#00201A;display:flex;align-items:center;justify-content:space-between;padding:0 20px">
+            <div style="display:flex;flex-direction:column;gap:2px"><span style="font-size:16px;font-weight:700">Vejepåmindelse</span><span style="font-size:13px;font-variant-numeric:tabular-nums">Næste: ons 12. aug, 07.30</span></div>
+            <div style="width:52px;height:32px;border-radius:16px;background:var(--pri);display:flex;align-items:center;justify-content:flex-end;padding:0 4px"><div style="width:24px;height:24px;border-radius:12px;background:var(--onpri);display:flex;align-items:center;justify-content:center"><span style="font-family:'Material Symbols Rounded';font-size:16px;color:var(--pri)">check</span></div></div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:10px">
+            <span style="font-size:12px;font-weight:800;letter-spacing:.06em;color:var(--pri)">HYPPIGHED</span>
+            <div style="height:48px;border-radius:24px;border:1px solid var(--out);display:grid;grid-template-columns:1fr 1.25fr 1fr;overflow:hidden;font-size:15px;font-weight:700">
+              <div style="display:flex;align-items:center;justify-content:center;color:var(--dim)">Dagligt</div>
+              <div style="display:flex;align-items:center;justify-content:center;gap:6px;background:var(--pric);color:#00201A;font-weight:800;border-left:1px solid var(--out);border-right:1px solid var(--out)"><span style="font-family:'Material Symbols Rounded';font-size:18px">check</span>Ugentligt</div>
+              <div style="display:flex;align-items:center;justify-content:center;color:var(--dim)">Månedligt</div>
+            </div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:14px">
+            <span style="font-size:12px;font-weight:800;letter-spacing:.06em;color:var(--pri)">DAGE</span>
+            <div style="display:flex;justify-content:space-between">
+              <div style="width:44px;height:44px;border-radius:22px;border:1px solid var(--out);color:var(--dim);display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:700">M</div>
+              <div style="width:44px;height:44px;border-radius:22px;border:1px solid var(--out);color:var(--dim);display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:700">T</div>
+              <div style="position:relative;width:44px;height:44px"><div style="position:absolute;inset:-6px;border-radius:28px;background:rgba(31,106,92,.12)"></div><div style="position:absolute;inset:0;border-radius:22px;background:var(--pri);color:var(--onpri);display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:800">O</div></div>
+              <div style="width:44px;height:44px;border-radius:22px;border:1px solid var(--out);color:var(--dim);display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:700">T</div>
+              <div style="width:44px;height:44px;border-radius:22px;border:1px solid var(--out);color:var(--dim);display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:700">F</div>
+              <div style="width:44px;height:44px;border-radius:22px;border:1px solid var(--out);color:var(--dim);display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:700">L</div>
+              <div style="width:44px;height:44px;border-radius:22px;border:1px solid var(--out);color:var(--dim);display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:700">S</div>
+            </div>
+            <span style="font-size:13px;font-weight:600;color:var(--dim)">Ons</span>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:10px">
+            <span style="font-size:12px;font-weight:800;letter-spacing:.06em;color:var(--pri)">TIDSPUNKT</span>
+            <div style="height:88px;border-radius:24px;background:var(--surf);border:1px solid var(--out);display:flex;align-items:center;justify-content:center;gap:8px">
+              <div style="width:60px;height:60px;border-radius:14px;background:var(--pric);color:#00201A;display:flex;align-items:center;justify-content:center;font-size:28px;font-weight:800;font-variant-numeric:tabular-nums">07</div>
+              <span style="font-size:28px;font-weight:800;color:var(--dim);padding-bottom:6px">.</span>
+              <div style="width:60px;height:60px;border-radius:14px;background:var(--surf2);display:flex;align-items:center;justify-content:center;font-size:28px;font-weight:800;font-variant-numeric:tabular-nums">30</div>
+            </div>
+          </div>
+        </div>
+        <div style="position:absolute;left:16px;right:16px;bottom:32px"><div style="height:56px;border-radius:28px;background:var(--pri);color:var(--onpri);display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:700">Gem</div></div>
+      </div><span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#59635F">reminders.weekly-one-left.light.da.png</span></div>
+
+      <div style="display:flex;flex-direction:column;gap:16px;max-width:440px;padding-top:8px">
+        <div style="padding:20px 22px;border-radius:20px;background:#FFFFFF;border:1px solid #D3DBD8;display:flex;flex-direction:column;gap:12px">
+          <span style="font-size:13px;font-weight:700;letter-spacing:.06em;color:#59635F">WHAT THE FRAME SHOWS</span>
+          <p style="margin:0;font-size:14px;line-height:1.6;color:#3D4744;text-wrap:pretty">Wednesday is the only lit day and is drawn <strong>mid-press</strong>: the 12% <code>primary</code> state layer extended 6dp past the disc. That is the entire response to a tap that would clear it. The disc does not shake, dim, or grow, and the summary line stays "Ons".</p>
+          <div style="display:flex;gap:14px;align-items:center;padding:12px 14px;border-radius:14px;background:#F2F6F4">
+            <div style="position:relative;width:44px;height:44px;flex:none"><div style="position:absolute;inset:-6px;border-radius:28px;background:rgba(31,106,92,.12)"></div><div style="position:absolute;inset:0;border-radius:22px;background:#1F6A5C;color:#fff;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:800;font-family:Manrope,sans-serif">O</div></div>
+            <span style="font-family:'JetBrains Mono',monospace;font-size:11px;line-height:1.6;color:#59635F">state layer 12% primary<br>ring inset −6dp · 120ms in / out<br>selection unchanged</span>
+          </div>
+        </div>
+        <div style="padding:20px 22px;border-radius:20px;background:#EEF3F1;border:1px solid #D3DBD8;display:flex;flex-direction:column;gap:8px">
+          <span style="font-size:13px;font-weight:700;letter-spacing:.06em;color:#59635F">WHY NOT "ALLOW ZERO"</span>
+          <p style="margin:0;font-size:14px;line-height:1.6;color:#3D4744;text-wrap:pretty">Option (b) — allow an empty set and annotate the reminder as inactive — adds a third reminder state (on, off, on-but-never-fires), a new error string, and a Save that has to refuse. Blocking costs one <code>if (selected.length == 1) return;</code> and no copy. The master switch is already the way to turn reminders off.</p>
+        </div>
+        <div style="padding:20px 22px;border-radius:20px;background:#EEF3F1;border:1px solid #D3DBD8;display:flex;flex-direction:column;gap:8px">
+          <span style="font-size:13px;font-weight:700;letter-spacing:.06em;color:#59635F">A11Y</span>
+          <p style="margin:0;font-size:14px;line-height:1.6;color:#3D4744;text-wrap:pretty">Each circle is a <code>Semantics(button, checked:)</code> node labelled with the <strong>full</strong> weekday name, not the narrow letter — "Onsdag, valgt". The sole remaining day also carries <code>enabled: false</code> for its clear action so screen-reader users are told it can't be turned off rather than tapping into silence.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div id="11f" data-screen-label="Reminders spec" style="display:flex;flex-direction:column;gap:24px">
+    <h2 style="margin:0;font-size:26px;font-weight:700;letter-spacing:-0.02em">29 · reminders.weekly-multi.spec — toggle and summary</h2>
+    <div style="display:flex;gap:40px;flex-wrap:wrap;align-items:flex-start">
+      <div style="width:520px;padding:28px;border-radius:24px;background:#FFFFFF;border:1px solid #D3DBD8;display:flex;flex-direction:column;gap:20px;font-family:Manrope,sans-serif">
+        <span style="font-size:12px;font-weight:800;letter-spacing:.06em;color:#59635F">CIRCLE METRICS</span>
+        <div style="display:flex;gap:16px;align-items:center">
+          <div style="width:44px;height:44px;border-radius:22px;background:#1F6A5C;color:#fff;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:800">M</div>
+          <div style="width:44px;height:44px;border-radius:22px;border:1px solid #D3DBD8;color:#59635F;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:700">T</div>
+          <span style="font-family:'JetBrains Mono',monospace;font-size:11px;line-height:1.6;color:#59635F">44dp visual / 48dp hit area · row is space-between across the 358dp content width (44×7 = 308, gaps ≈ 8.3)<br>lit: <span style="color:#1F6A5C">primary</span> fill, onPrimary, 15sp/800<br>unlit: 1dp outline, onSurfaceVariant, 15sp/700</span>
+        </div>
+        <div style="height:1px;background:#EAEFEC"></div>
+        <div style="display:flex;flex-direction:column;gap:12px;font-size:14px;line-height:1.55;color:#3D4744">
+          <div style="display:flex;gap:12px"><span style="font-family:'JetBrains Mono',monospace;font-size:12px;color:#1F6A5C;min-width:104px">onTap</span><span>Toggle membership in <code>Set&lt;int&gt;</code>. Cross-fade fill/ring over <strong>120ms</strong> standard easing (the existing chip-selection duration); no scale, no bounce.</span></div>
+          <div style="display:flex;gap:12px"><span style="font-family:'JetBrains Mono',monospace;font-size:12px;color:#1F6A5C;min-width:104px">min 1</span><span>Clearing the last lit day is a no-op — state layer only. Never disable the circle visually: a greyed disc would misread as "not selected".</span></div>
+          <div style="display:flex;gap:12px"><span style="font-family:'JetBrains Mono',monospace;font-size:12px;color:#1F6A5C;min-width:104px">order</span><span><strong>Mon-first, always</strong>, independent of the device's first-day-of-week. Locale-aware ordering is a later refinement and would also have to reorder the summary.</span></div>
+          <div style="display:flex;gap:12px"><span style="font-family:'JetBrains Mono',monospace;font-size:12px;color:#1F6A5C;min-width:104px">summary</span><span>13sp/600 <code>onSurfaceVariant</code>, 14dp under the row. <code>selected.sorted().map(shortName).join(' · ')</code>. Wraps freely; no truncation, no "+2 more".</span></div>
+          <div style="display:flex;gap:12px"><span style="font-family:'JetBrains Mono',monospace;font-size:12px;color:#1F6A5C;min-width:104px">next fire</span><span>Master-row line only, and only when the reminder is on: <strong>earliest</strong> <code>nextReminderInstance</code> across the set. Not repeated under the circles.</span></div>
+          <div style="display:flex;gap:12px"><span style="font-family:'JetBrains Mono',monospace;font-size:12px;color:#1F6A5C;min-width:104px">frequency</span><span>Switching Weekly → Daily/Monthly keeps the set in memory so switching back restores it; the 250ms height + 150ms cross-fade of the conditional block is unchanged.</span></div>
+        </div>
+      </div>
+
+      <div style="width:520px;padding:28px;border-radius:24px;background:#FFFFFF;border:1px solid #D3DBD8;display:flex;flex-direction:column;gap:18px;font-family:Manrope,sans-serif">
+        <span style="font-size:12px;font-weight:800;letter-spacing:.06em;color:#59635F">BEHIND THE UI — FLAGGED, NOT DESIGNED</span>
+        <div style="display:flex;flex-direction:column;gap:12px;font-size:14px;line-height:1.55;color:#3D4744">
+          <div style="display:flex;gap:12px"><span style="font-family:'JetBrains Mono',monospace;font-size:12px;color:#1F6A5C;min-width:104px">model</span><span><code>ReminderConfig.weekday: int</code> → <code>weekdays: Set&lt;int&gt;</code> (1 = Mon … 7 = Sun) through <code>copyWith</code>, <code>toJson</code>, <code>fromJson</code> and the backup codec.</span></div>
+          <div style="display:flex;gap:12px"><span style="font-family:'JetBrains Mono',monospace;font-size:12px;color:#1F6A5C;min-width:104px">migration</span><span>An old single <code>weekday</code> reads as a one-element set; a missing/empty set falls back to the stored value and, failing that, to Monday. No user ever lands on an empty set.</span></div>
+          <div style="display:flex;gap:12px"><span style="font-family:'JetBrains Mono',monospace;font-size:12px;color:#1F6A5C;min-width:104px">scheduling</span><span>One notification per selected weekday, id <code>1000 + weekday</code>, each with its own weekly <code>dayOfWeekAndTime</code> match. <code>cancelAll</code> before every reschedule stays. The legacy id 1001 collides with Monday by design — <code>cancelAll</code> makes that safe.</span></div>
+          <div style="display:flex;gap:12px"><span style="font-family:'JetBrains Mono',monospace;font-size:12px;color:#1F6A5C;min-width:104px">tests</span><span>Extend the date-math cases: nearest next day within the set, wrap-around across the week boundary, all-seven, single-day, and the existing DST cases per selected day.</span></div>
+          <div style="display:flex;gap:12px"><span style="font-family:'JetBrains Mono',monospace;font-size:12px;color:#1F6A5C;min-width:104px">unchanged</span><span>Daily, monthly, the time picker, the day-of-month grid, notification copy, the <code>/log</code> deep link and the Android-13 permission flow.</span></div>
+        </div>
+        <div style="height:1px;background:#EAEFEC"></div>
+        <span style="font-size:12px;font-weight:800;letter-spacing:.06em;color:#59635F">NEW STRINGS — TWO, TOTAL</span>
+        <div style="display:flex;flex-direction:column;gap:8px;font-family:'JetBrains Mono',monospace;font-size:12px;line-height:1.7;color:#3D4744">
+          <span><span style="color:#1F6A5C">notifDaysHeader</span> → "DAYS" / "DAGE"</span>
+          <span><span style="color:#1F6A5C">notifDaysSummary</span> → the joined set (no prefix; replaces <span style="color:#1F6A5C">notifDaySelected</span>, which is deleted)</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
 <section style="padding:72px 72px 56px;display:flex;flex-direction:column;gap:56px;background:#C1D1CB;font-family:Manrope,sans-serif;color:#171D1B;border-bottom:1px solid #D3DBD8">
   <header style="display:flex;flex-direction:column;gap:16px;max-width:880px">
     <div style="display:flex;align-items:center;gap:12px"><span style="font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:500;padding:4px 10px;border-radius:999px;background:#1F6A5C;color:#fff">10</span><span style="font-size:13px;font-weight:700;letter-spacing:.08em;color:#59635F">SKELETON LOADING</span></div>

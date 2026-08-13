@@ -80,7 +80,6 @@ class NotificationService {
     await _plugin.cancelAll();
     if (!config.enabled) return;
 
-    final when = nextReminderInstance(config, tz.TZDateTime.now(tz.local));
     const details = NotificationDetails(
       android: AndroidNotificationDetails(
         _channelId,
@@ -92,11 +91,30 @@ class NotificationService {
       iOS: DarwinNotificationDetails(),
     );
 
+    // Weekly can fire on several weekdays — schedule one recurring notification
+    // per selected day, each with a distinct id (1000 + weekday). cancelAll()
+    // above clears any prior ids, so the legacy 1001 (= 1000 + Monday) is safe.
+    if (config.frequency == ReminderFrequency.weekly) {
+      final now = tz.TZDateTime.now(tz.local);
+      for (final wd in config.weekdays) {
+        await _plugin.zonedSchedule(
+          id: 1000 + wd,
+          title: title,
+          body: body,
+          scheduledDate: nextWeeklyInstance(config, wd, now),
+          notificationDetails: details,
+          androidScheduleMode: AndroidScheduleMode.inexactAllowWhileIdle,
+          matchDateTimeComponents: DateTimeComponents.dayOfWeekAndTime,
+        );
+      }
+      return;
+    }
+
     await _plugin.zonedSchedule(
       id: _notificationId,
       title: title,
       body: body,
-      scheduledDate: when,
+      scheduledDate: nextReminderInstance(config, tz.TZDateTime.now(tz.local)),
       notificationDetails: details,
       androidScheduleMode: AndroidScheduleMode.inexactAllowWhileIdle,
       matchDateTimeComponents: _match(config.frequency),

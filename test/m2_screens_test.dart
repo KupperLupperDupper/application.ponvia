@@ -86,6 +86,8 @@ void main() {
     await tester.tap(find.text('5'));
     await tester.pumpAndSettle();
 
-    expect(find.textContaining('between 20 and 400'), findsOneWidget);
+    // The range hint shows the limits in the active unit (kg here).
+    expect(find.textContaining('20 kg'), findsOneWidget);
+    expect(find.textContaining('400 kg'), findsOneWidget);
   });
 }

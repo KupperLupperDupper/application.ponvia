@@ -28,7 +28,7 @@ void main() {
     const c = ReminderConfig(
         enabled: true,
         frequency: ReminderFrequency.weekly,
-        weekday: DateTime.monday,
+        weekdays: {DateTime.monday},
         hour: 7,
         minute: 0);
     final now = tz.TZDateTime(utc, 2026, 8, 8, 9);
@@ -36,6 +36,73 @@ void main() {
     expect(n.weekday, DateTime.monday);
     expect(n.isAfter(now), isTrue);
     expect(n.difference(now).inDays, lessThanOrEqualTo(7));
+  });
+
+  group('multi-weekday weekly', () {
+    // Aug 2026: 10th = Mon, 11th = Tue, 12th = Wed, 13th = Thu, 14th = Fri,
+    // 15th = Sat, 16th = Sun.
+    const c = ReminderConfig(
+        enabled: true,
+        frequency: ReminderFrequency.weekly,
+        weekdays: {DateTime.monday, DateTime.wednesday, DateTime.friday},
+        hour: 7,
+        minute: 0);
+
+    test('returns the nearest selected day ahead', () {
+      // Tuesday → next is Wednesday.
+      final n = nextReminderInstance(c, tz.TZDateTime(utc, 2026, 8, 11, 9));
+      expect(n.weekday, DateTime.wednesday);
+      expect(n.day, 12);
+    });
+
+    test('skips today once its time has passed, to the next selected day', () {
+      // Wednesday after 07:00 → Friday.
+      final n = nextReminderInstance(c, tz.TZDateTime(utc, 2026, 8, 12, 9));
+      expect(n.weekday, DateTime.friday);
+      expect(n.day, 14);
+    });
+
+    test('wraps across the week end back to the earliest selected day', () {
+      // Saturday → next is Monday.
+      final n = nextReminderInstance(c, tz.TZDateTime(utc, 2026, 8, 15, 9));
+      expect(n.weekday, DateTime.monday);
+      expect(n.day, 17);
+    });
+
+    test('fires today if the time is still ahead', () {
+      // Wednesday before 07:00 → today.
+      final n = nextReminderInstance(c, tz.TZDateTime(utc, 2026, 8, 12, 6));
+      expect(n.weekday, DateTime.wednesday);
+      expect(n.day, 12);
+    });
+  });
+
+  group('ReminderConfig weekday migration', () {
+    test('legacy single "weekday" int reads as a one-element set', () {
+      final c = ReminderConfig.fromJson({
+        'enabled': true,
+        'frequency': 'weekly',
+        'weekday': DateTime.thursday,
+        'hour': 8,
+        'minute': 0,
+      });
+      expect(c.weekdays, {DateTime.thursday});
+    });
+
+    test('new "weekdays" list round-trips', () {
+      const c = ReminderConfig(
+          frequency: ReminderFrequency.weekly,
+          weekdays: {DateTime.tuesday, DateTime.saturday});
+      final back = ReminderConfig.fromJson(c.toJson());
+      expect(back.weekdays, {DateTime.tuesday, DateTime.saturday});
+    });
+
+    test('missing/empty weekday data falls back to Monday, never empty', () {
+      final c = ReminderConfig.fromJson({'frequency': 'weekly'});
+      expect(c.weekdays, {DateTime.monday});
+      final empty = ReminderConfig.fromJson({'weekdays': <int>[]});
+      expect(empty.weekdays, {DateTime.monday});
+    });
   });
 
   test('monthly clamps the day to a short month', () {

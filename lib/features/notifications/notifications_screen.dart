@@ -54,6 +54,17 @@ class _NotificationsScreenState extends ConsumerState<NotificationsScreen> {
     await _update(config.copyWith(enabled: on));
   }
 
+  /// Short weekday names for the selected set, Monday-first (never selection
+  /// order), joined with " · " — e.g. "Man · Ons · Fre".
+  String _weekdaysSummary(String locale, Set<int> days) {
+    final sorted = days.toList()..sort();
+    final fmt = DateFormat.E(locale);
+    return sorted.map((w) {
+      final s = fmt.format(DateTime(2024, 1, w)).replaceAll('.', '');
+      return s.isEmpty ? s : s[0].toUpperCase() + s.substring(1);
+    }).join(' · ');
+  }
+
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
@@ -136,16 +147,24 @@ class _NotificationsScreenState extends ConsumerState<NotificationsScreen> {
             ),
             if (config.frequency == ReminderFrequency.weekly) ...[
               const SizedBox(height: Insets.xl),
-              _Header(l10n.notifDayOfWeek),
+              _Header(l10n.notifDaysHeader),
               _WeekdayCircles(
-                selected: config.weekday,
+                selected: config.weekdays,
                 locale: locale,
-                onSelected: (w) => _update(config.copyWith(weekday: w)),
+                onToggle: (w) {
+                  final next = {...config.weekdays};
+                  if (next.contains(w)) {
+                    if (next.length == 1) return; // keep at least one day lit
+                    next.remove(w);
+                  } else {
+                    next.add(w);
+                  }
+                  _update(config.copyWith(weekdays: next));
+                },
               ),
               const SizedBox(height: Insets.sm),
               Text(
-                l10n.notifDaySelected(DateFormat.EEEE(locale)
-                    .format(DateTime(2024, 1, config.weekday))),
+                l10n.notifDaysSummary(_weekdaysSummary(locale, config.weekdays)),
                 style: Theme.of(context)
                     .textTheme
                     .bodyMedium
@@ -201,44 +220,63 @@ class _Header extends StatelessWidget {
   }
 }
 
+/// The weekly weekday picker as a multi-select toggle set. Any subset of 1–7
+/// can be lit; the sole remaining day can't be cleared (its clear action is
+/// marked disabled for a11y, and the tap is a no-op upstream).
 class _WeekdayCircles extends StatelessWidget {
   const _WeekdayCircles(
-      {required this.selected, required this.locale, required this.onSelected});
+      {required this.selected, required this.locale, required this.onToggle});
 
-  final int selected;
+  final Set<int> selected;
   final String locale;
-  final ValueChanged<int> onSelected;
+  final ValueChanged<int> onToggle;
 
   @override
   Widget build(BuildContext context) {
     final scheme = Theme.of(context).colorScheme;
     final narrow = DateFormat('EEEEE', locale);
+    final full = DateFormat.EEEE(locale);
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         for (var w = 1; w <= 7; w++)
-          InkWell(
-            onTap: () => onSelected(w),
-            customBorder: const CircleBorder(),
-            child: Container(
-              width: 44,
-              height: 44,
-              alignment: Alignment.center,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: selected == w ? scheme.primary : null,
-                border: selected == w
-                    ? null
-                    : Border.all(color: scheme.outline),
-              ),
-              child: Text(
-                narrow.format(DateTime(2024, 1, w)),
-                style: TextStyle(
-                  fontWeight: FontWeight.w800,
-                  color: selected == w ? scheme.onPrimary : scheme.onSurface,
+          Builder(
+            builder: (context) {
+              final isSelected = selected.contains(w);
+              final isOnly = isSelected && selected.length == 1;
+              return Semantics(
+                button: true,
+                checked: isSelected,
+                enabled: !isOnly, // the last remaining day can't be cleared
+                label: full.format(DateTime(2024, 1, w)),
+                child: InkWell(
+                  onTap: () => onToggle(w),
+                  customBorder: const CircleBorder(),
+                  child: Container(
+                    width: 44,
+                    height: 44,
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: isSelected ? scheme.primary : null,
+                      border:
+                          isSelected ? null : Border.all(color: scheme.outline),
+                    ),
+                    child: Text(
+                      narrow.format(DateTime(2024, 1, w)),
+                      style: TextStyle(
+                        fontSize: 15,
+                        fontWeight:
+                            isSelected ? FontWeight.w800 : FontWeight.w700,
+                        color: isSelected
+                            ? scheme.onPrimary
+                            : scheme.onSurfaceVariant,
+                      ),
+                    ),
+                  ),
                 ),
-              ),
-            ),
+              );
+            },
           ),
       ],
     );

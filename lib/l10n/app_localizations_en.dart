@@ -258,7 +258,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get logAddNote => 'Add a note (optional)';
 
   @override
-  String get logRangeError => 'Enter a weight between 20 and 400 kg';
+  String logRangeError(String min, String max) {
+    return 'Enter a weight between $min and $max';
+  }
 
   @override
   String get logDeleted => 'Entry deleted';
@@ -537,7 +539,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get freqMonthly => 'Monthly';
 
   @override
-  String get notifDayOfWeek => 'Day of week';
+  String get notifDaysHeader => 'Days';
 
   @override
   String get notifDayOfMonth => 'Day of month';
@@ -567,8 +569,8 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String notifDaySelected(String day) {
-    return '$day selected';
+  String notifDaysSummary(String days) {
+    return '$days';
   }
 
   @override

@@ -15,6 +15,8 @@ import '../../domain/models/goal.dart';
 import '../../domain/models/weight_entry.dart';
 import '../../l10n/app_localizations.dart';
 import '../logging/numeric_keypad.dart';
+import '../logging/stone_fields.dart';
+import '../logging/stone_input.dart';
 
 /// Goals list styled to DESIGN_SPEC §6: a highlighted "closest goal" card plus
 /// regular / achieved / gain cards, each with progress and a footer.
@@ -157,6 +159,10 @@ class _GoalFormState extends ConsumerState<_GoalForm> {
   bool _saving = false;
   bool _prefilled = false;
 
+  /// Split st+lb entry state, non-null only when the display unit is stone.
+  late final bool _isStone;
+  StoneInput? _stone;
+
   bool get _isEditing => widget.existing != null;
 
   @override
@@ -166,6 +172,11 @@ class _GoalFormState extends ConsumerState<_GoalForm> {
     if (g != null) {
       _labelController.text = g.label ?? '';
       _highlight = g.highlightOverride;
+    }
+    _isStone = ref.read(settingsControllerProvider).unit == WeightUnit.st;
+    if (_isStone) {
+      _stone = g != null ? StoneInput.fromKg(g.targetWeightKg) : StoneInput();
+      _prefilled = true; // stone read-back needs no locale separator
     }
   }
 
@@ -194,6 +205,7 @@ class _GoalFormState extends ConsumerState<_GoalForm> {
   }
 
   double? get _kg {
+    if (_isStone) return _stone!.kg;
     final v = _parsed;
     if (v == null) return null;
     return WeightConverter.toKg(v, ref.read(settingsControllerProvider).unit);
@@ -211,6 +223,10 @@ class _GoalFormState extends ConsumerState<_GoalForm> {
   }
 
   void _onKey(String k) {
+    if (_isStone) {
+      setState(() => _stone!.onDigit(k));
+      return;
+    }
     setState(() {
       if (k == _sep) {
         if (!_input.contains(_sep)) {
@@ -227,6 +243,10 @@ class _GoalFormState extends ConsumerState<_GoalForm> {
   }
 
   void _onBackspace() {
+    if (_isStone) {
+      setState(() => _stone!.onBackspace());
+      return;
+    }
     if (_input.isNotEmpty) {
       setState(() => _input = _input.substring(0, _input.length - 1));
     }
@@ -290,6 +310,9 @@ class _GoalFormState extends ConsumerState<_GoalForm> {
     final text = Theme.of(context).textTheme;
     final settings = ref.watch(settingsControllerProvider);
     final unit = settings.unit;
+    final locale = Localizations.localeOf(context).languageCode;
+    final fmt = WeightFormatter(unit, locale: locale);
+    final rangeError = l10n.logRangeError(fmt.limit(20), fmt.limit(400));
     final currentKg = ref.watch(latestWeightProvider).asData?.value?.weightKg;
     final showError = _input.isNotEmpty && !_valid;
 
@@ -362,32 +385,50 @@ class _GoalFormState extends ConsumerState<_GoalForm> {
               ),
             ),
             const SizedBox(height: Insets.sm),
-            // Target-weight field (2dp primary border) — driven by the keypad.
-            _TargetField(input: _input, unit: unit, error: showError),
+            // Target-weight field (2dp primary border) — driven by the keypad;
+            // stone shows two boxed st + lb columns instead.
+            if (_isStone)
+              StoneFields(
+                stone: _stone!,
+                boxed: true,
+                onTapSt: () => setState(() => _stone!.focusLb = false),
+                onTapLb: () => setState(() => _stone!.focusLb = true),
+              )
+            else
+              _TargetField(input: _input, unit: unit, error: showError),
             SizedBox(
               height: 22,
-              child: showError
+              child: _isStone
                   ? Padding(
                       padding: const EdgeInsets.only(top: Insets.xs),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Icon(
-                            Icons.error_outline,
-                            size: 16,
-                            color: scheme.error,
-                          ),
-                          const SizedBox(width: Insets.xs),
-                          Text(
-                            l10n.logRangeError,
-                            style: text.bodySmall?.copyWith(
-                              color: scheme.error,
-                            ),
-                          ),
-                        ],
+                      child: StoneEchoLine(
+                        stone: _stone!,
+                        locale: locale,
+                        helperText: rangeError,
                       ),
                     )
-                  : null,
+                  : showError
+                      ? Padding(
+                          padding: const EdgeInsets.only(top: Insets.xs),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Icon(
+                                Icons.error_outline,
+                                size: 16,
+                                color: scheme.error,
+                              ),
+                              const SizedBox(width: Insets.xs),
+                              Text(
+                                rangeError,
+                                style: text.bodySmall?.copyWith(
+                                  color: scheme.error,
+                                ),
+                              ),
+                            ],
+                          ),
+                        )
+                      : null,
             ),
             const SizedBox(height: Insets.sm),
             // Optional label
@@ -438,6 +479,7 @@ class _GoalFormState extends ConsumerState<_GoalForm> {
               onKey: _onKey,
               onBackspace: _onBackspace,
               decimalSeparator: _sep,
+              decimalEnabled: !_isStone,
             ),
             const SizedBox(height: Insets.md),
             // Footer: Cancel (flex 1) + Save goal (flex 1.4)
@@ -706,8 +748,8 @@ class _GoalCard extends StatelessWidget {
           const SizedBox(width: Insets.xs),
           Text(
             isGain
-                ? l10n.goalToGain(fmt.withUnit(remaining))
-                : l10n.goalToLose(fmt.withUnit(remaining)),
+                ? l10n.goalToGain(fmt.distance(remaining))
+                : l10n.goalToLose(fmt.distance(remaining)),
             style: text.bodyLarge?.copyWith(
               fontWeight: FontWeight.w700,
               color: color,

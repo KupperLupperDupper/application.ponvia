@@ -38,6 +38,36 @@ class WeightFormatter {
     return '${value(kg)} ${unit.code}';
   }
 
+  /// A remaining/distance magnitude in the display unit. For kg/lb this is just
+  /// [withUnit]. For stone it shows **whole pounds** — `1 st 13 lb` — but a
+  /// distance under a whole stone keeps the single-unit rule (`9.7 lb`), never
+  /// `0 st 9.7 lb`.
+  String distance(double kg) {
+    if (unit != WeightUnit.st) return withUnit(kg);
+    final totalLb = WeightConverter.fromKg(kg, WeightUnit.lb);
+    if (totalLb < WeightConverter.lbPerStone) {
+      return '${_lb.format(totalLb)} lb';
+    }
+    final rounded = totalLb.round();
+    final stone = rounded ~/ WeightConverter.lbPerStone.toInt();
+    final pounds = rounded % WeightConverter.lbPerStone.toInt();
+    return '$stone st $pounds lb';
+  }
+
+  /// A round range-limit label in the display unit, for the entry hint ("enter
+  /// a weight between … and …"): whole kg / lb, or whole `st + lb` for stone —
+  /// a limit never carries a decimal.
+  String limit(double kg) {
+    switch (unit) {
+      case WeightUnit.kg:
+        return '${_int.format(kg.roundToDouble())} kg';
+      case WeightUnit.lb:
+        return '${_int.format(WeightConverter.fromKg(kg, WeightUnit.lb).roundToDouble())} lb';
+      case WeightUnit.st:
+        return distance(kg);
+    }
+  }
+
   /// The magnitude of a weight in the display unit with no unit label, e.g.
   /// `0.6`. For stone it falls back to the composite string.
   String magnitudeShort(double kg) {
