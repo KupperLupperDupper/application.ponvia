@@ -25,6 +25,400 @@ a:hover{color:#134A40;}
 
 
 
+<section style="padding:72px 72px 56px;display:flex;flex-direction:column;gap:56px;background:#CBD8D3;font-family:Manrope,sans-serif;color:#171D1B;border-bottom:1px solid #D3DBD8">
+  <header style="display:flex;flex-direction:column;gap:16px;max-width:880px">
+    <div style="display:flex;align-items:center;gap:12px"><span style="font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:500;padding:4px 10px;border-radius:999px;background:#1F6A5C;color:#fff">9</span><span style="font-size:13px;font-weight:700;letter-spacing:.08em;color:#59635F">HEIGHT → BMI · APP LOCK</span></div>
+    <h1 style="margin:0;font-size:40px;font-weight:800;letter-spacing:-0.03em;line-height:1.1">Two things you opt into</h1>
+    <p style="margin:-8px 0 0;font-size:15px;line-height:1.55;color:#59635F;max-width:840px;text-wrap:pretty">Both features are off until the user turns them on, and nothing else in the app depends on either. Height is one row in Preferences that fills Home's reserved second-metric slot with a BMI readout — a number, a unit, and at most one plain category word. No scale, no colour coding, no arrow. App lock is a new <strong>Security</strong> group and a launch screen built from the Privacy page's lock motif, so the feature reads as part of Ponvia's privacy identity rather than a bolt-on.</p>
+    <p style="margin:-8px 0 0;font-size:15px;line-height:1.55;color:#59635F;max-width:840px;text-wrap:pretty"><strong>Resolved — imperial height entry: ft/in, not cm.</strong> Someone weighing in lb or st does not know their height in centimetres, so cm would force mental conversion for the one value we ask them to type. The keypad stays exactly as it is: two fields (ft, in) sit above it and it fills them in sequence — ft takes one digit and auto-advances, in takes two and clamps at 11. Metric users get a single cm field. Storage is always cm; the display converts.</p>
+  </header>
+
+  <div id="9a" data-screen-label="Height setting" style="display:flex;flex-direction:column;gap:24px">
+    <h2 style="margin:0;font-size:26px;font-weight:700;letter-spacing:-0.02em">16 · Height — Settings row and entry</h2>
+    <div style="display:flex;gap:40px;flex-wrap:wrap;align-items:flex-start">
+
+      <div style="display:flex;flex-direction:column;gap:12px"><div style="--bg:#F6F8F7;--surf:#FFFFFF;--surf2:#EAEFEC;--on:#171D1B;--dim:#59635F;--out:#D3DBD8;--pri:#1F6A5C;--onpri:#FFFFFF;--pric:#B3EEDD;position:relative;width:390px;height:844px;border-radius:36px;overflow:hidden;background:var(--bg);color:var(--on);font-family:Manrope,sans-serif;box-shadow:0 12px 32px rgba(16,32,28,.14)">
+        <div style="height:44px;display:flex;align-items:center;justify-content:space-between;padding:0 26px;font-size:13px;font-weight:600"><span>9:41</span><span style="font-family:'Material Symbols Rounded';font-size:16px">signal_cellular_alt wifi battery_full</span></div>
+        <div style="height:56px;padding:0 24px;display:flex;align-items:center"><span style="font-size:22px;font-weight:800;letter-spacing:-0.02em">Indstillinger</span></div>
+        <div style="padding:8px 16px 0;display:flex;flex-direction:column;gap:8px">
+          <span style="padding:0 8px;font-size:13px;font-weight:700;letter-spacing:.06em;color:var(--pri)">PRÆFERENCER</span>
+          <div style="border-radius:24px;background:var(--surf);border:1px solid var(--out);overflow:hidden">
+            <div style="height:60px;padding:0 20px;display:flex;align-items:center;gap:16px"><span style="font-family:'Material Symbols Rounded';font-size:24px;color:var(--dim)">translate</span><span style="flex:1;font-size:16px;font-weight:600">Sprog</span><span style="font-size:15px;color:var(--dim)">Dansk</span></div>
+            <div style="height:1px;margin-left:60px;background:var(--out)"></div>
+            <div style="height:60px;padding:0 20px;display:flex;align-items:center;gap:16px"><span style="font-family:'Material Symbols Rounded';font-size:24px;color:var(--dim)">contrast</span><span style="flex:1;font-size:16px;font-weight:600">Tema</span><span style="font-size:15px;color:var(--dim)">System</span></div>
+            <div style="height:1px;margin-left:60px;background:var(--out)"></div>
+            <div style="height:60px;padding:0 20px;display:flex;align-items:center;gap:16px"><span style="font-family:'Material Symbols Rounded';font-size:24px;color:var(--dim)">scale</span><span style="flex:1;font-size:16px;font-weight:600">Vægtenhed</span><span style="font-size:15px;color:var(--dim)">kg</span></div>
+            <div style="height:1px;margin-left:60px;background:var(--out)"></div>
+            <div style="min-height:72px;padding:12px 20px;display:flex;align-items:center;gap:16px;background:var(--surf2)"><span style="font-family:'Material Symbols Rounded';font-size:24px;color:var(--dim)">height</span><div style="flex:1;display:flex;flex-direction:column;gap:2px"><span style="font-size:16px;font-weight:600">Højde</span><span style="font-size:13px;color:var(--dim);line-height:1.35;text-wrap:pretty">Valgfri — låser op for BMI på forsiden</span></div><span style="font-size:15px;color:var(--dim)">Ikke angivet</span></div>
+            <div style="height:1px;margin-left:60px;background:var(--out)"></div>
+            <div style="height:60px;padding:0 20px;display:flex;align-items:center;gap:16px"><span style="font-family:'Material Symbols Rounded';font-size:24px;color:var(--dim)">notifications</span><span style="flex:1;font-size:16px;font-weight:600">Påmindelser</span><span style="font-size:15px;color:var(--dim)">Fra</span></div>
+          </div>
+        </div>
+      </div><span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#59635F">height.row-empty.light.da.png</span></div>
+
+      <div style="display:flex;flex-direction:column;gap:12px"><div style="--bg:#0E1412;--surf:#161D1B;--surf2:#1D2523;--shi:#2A322F;--on:#DEE4E1;--dim:#A6B0AC;--out:#333C39;--pri:#8ED8C4;--onpri:#00382F;--pric:#005046;position:relative;width:390px;height:844px;border-radius:36px;overflow:hidden;background:var(--bg);color:var(--on);font-family:Manrope,sans-serif;box-shadow:0 12px 32px rgba(16,32,28,.14)">
+        <div style="height:44px;display:flex;align-items:center;justify-content:space-between;padding:0 26px;font-size:13px;font-weight:600"><span>9:41</span><span style="font-family:'Material Symbols Rounded';font-size:16px">signal_cellular_alt wifi battery_full</span></div>
+        <div style="height:56px;padding:0 24px;display:flex;align-items:center"><span style="font-size:22px;font-weight:800;letter-spacing:-0.02em">Indstillinger</span></div>
+        <div style="padding:8px 16px 0;display:flex;flex-direction:column;gap:8px">
+          <span style="padding:0 8px;font-size:13px;font-weight:700;letter-spacing:.06em;color:var(--pri)">PRÆFERENCER</span>
+          <div style="border-radius:24px;background:var(--surf);border:1px solid var(--out);overflow:hidden">
+            <div style="height:60px;padding:0 20px;display:flex;align-items:center;gap:16px"><span style="font-family:'Material Symbols Rounded';font-size:24px;color:var(--dim)">translate</span><span style="flex:1;font-size:16px;font-weight:600">Sprog</span><span style="font-size:15px;color:var(--dim)">Dansk</span></div>
+            <div style="height:1px;margin-left:60px;background:var(--out)"></div>
+            <div style="height:60px;padding:0 20px;display:flex;align-items:center;gap:16px"><span style="font-family:'Material Symbols Rounded';font-size:24px;color:var(--dim)">scale</span><span style="flex:1;font-size:16px;font-weight:600">Vægtenhed</span><span style="font-size:15px;color:var(--dim)">kg</span></div>
+            <div style="height:1px;margin-left:60px;background:var(--out)"></div>
+            <div style="height:60px;padding:0 20px;display:flex;align-items:center;gap:16px"><span style="font-family:'Material Symbols Rounded';font-size:24px;color:var(--pri)">height</span><span style="flex:1;font-size:16px;font-weight:600">Højde</span><span style="font-size:15px;color:var(--on);font-variant-numeric:tabular-nums">178 cm</span></div>
+          </div>
+        </div>
+        <div style="position:absolute;inset:0;background:rgba(0,0,0,.60)"></div>
+        <div style="position:absolute;left:0;right:0;bottom:0;border-radius:28px 28px 0 0;background:var(--shi);box-shadow:0 -2px 16px rgba(0,0,0,.4);padding:12px 24px 28px;display:flex;flex-direction:column;align-items:center">
+          <div style="width:36px;height:4px;border-radius:2px;background:var(--dim);opacity:.4"></div>
+          <span style="margin-top:20px;font-size:20px;font-weight:800;letter-spacing:-.02em">Højde</span>
+          <p style="margin:6px 0 0;font-size:14px;color:var(--dim);text-align:center;text-wrap:pretty">Bruges kun til at beregne BMI på din telefon.</p>
+          <div style="margin-top:20px;display:flex;align-items:flex-end;gap:8px;padding-bottom:10px;border-bottom:2px solid var(--pri)"><span style="font-size:48px;font-weight:800;letter-spacing:-.03em;font-variant-numeric:tabular-nums;line-height:1">178</span><span style="font-size:18px;font-weight:600;color:var(--dim);padding-bottom:6px">cm</span></div>
+          <div style="margin-top:24px;width:100%;display:grid;grid-template-columns:repeat(3,1fr);gap:8px">
+            <div style="height:56px;border-radius:20px;background:var(--surf2);display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:700;font-variant-numeric:tabular-nums">1</div>
+            <div style="height:56px;border-radius:20px;background:var(--surf2);display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:700;font-variant-numeric:tabular-nums">2</div>
+            <div style="height:56px;border-radius:20px;background:var(--surf2);display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:700;font-variant-numeric:tabular-nums">3</div>
+            <div style="height:56px;border-radius:20px;background:var(--surf2);display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:700;font-variant-numeric:tabular-nums">4</div>
+            <div style="height:56px;border-radius:20px;background:var(--surf2);display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:700;font-variant-numeric:tabular-nums">5</div>
+            <div style="height:56px;border-radius:20px;background:var(--surf2);display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:700;font-variant-numeric:tabular-nums">6</div>
+            <div style="height:56px;border-radius:20px;background:var(--surf2);display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:700;font-variant-numeric:tabular-nums">7</div>
+            <div style="height:56px;border-radius:20px;background:var(--surf2);display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:700;font-variant-numeric:tabular-nums">8</div>
+            <div style="height:56px;border-radius:20px;background:var(--surf2);display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:700;font-variant-numeric:tabular-nums">9</div>
+            <div style="height:56px;border-radius:20px;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:700;color:var(--dim)">Ryd</div>
+            <div style="height:56px;border-radius:20px;background:var(--surf2);display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:700;font-variant-numeric:tabular-nums">0</div>
+            <div style="height:56px;border-radius:20px;display:flex;align-items:center;justify-content:center;color:var(--dim)"><span style="font-family:'Material Symbols Rounded';font-size:24px">backspace</span></div>
+          </div>
+          <div style="margin-top:20px;width:100%;height:56px;border-radius:28px;background:var(--pri);color:var(--onpri);display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:700">Gem</div>
+          <div style="margin-top:8px;height:48px;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:700;color:var(--pri)">Fjern højde</div>
+        </div>
+      </div><span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#59635F">height.entry-cm.dark.da.png</span></div>
+
+      <div style="display:flex;flex-direction:column;gap:12px"><div style="--shi:#E4EAE7;--surf2:#FFFFFF;--on:#171D1B;--dim:#59635F;--out:#7A8480;--pri:#1F6A5C;--onpri:#FFFFFF;width:390px;border-radius:28px 28px 36px 36px;background:var(--shi);font-family:Manrope,sans-serif;box-shadow:0 12px 32px rgba(16,32,28,.14);padding:12px 24px 28px;display:flex;flex-direction:column;align-items:center;color:var(--on)">
+        <div style="width:36px;height:4px;border-radius:2px;background:var(--out);opacity:.4"></div>
+        <span style="margin-top:20px;font-size:20px;font-weight:800;letter-spacing:-.02em">Height</span>
+        <p style="margin:6px 0 0;font-size:14px;color:var(--dim);text-align:center">Only used to work out BMI, on your phone.</p>
+        <div style="margin-top:20px;display:flex;align-items:flex-end;gap:20px">
+          <div style="display:flex;align-items:flex-end;gap:6px;padding:0 4px 10px;border-bottom:2px solid var(--out)"><span style="font-size:48px;font-weight:800;letter-spacing:-.03em;font-variant-numeric:tabular-nums;line-height:1">5</span><span style="font-size:18px;font-weight:600;color:var(--dim);padding-bottom:6px">ft</span></div>
+          <div style="display:flex;align-items:flex-end;gap:6px;padding:0 4px 10px;border-bottom:2px solid var(--pri)"><span style="font-size:48px;font-weight:800;letter-spacing:-.03em;font-variant-numeric:tabular-nums;line-height:1">10</span><span style="font-size:18px;font-weight:600;color:var(--dim);padding-bottom:6px">in</span></div>
+        </div>
+        <span style="margin-top:10px;font-size:13px;color:var(--dim);font-variant-numeric:tabular-nums">Stored as 178 cm</span>
+        <div style="margin-top:20px;width:100%;display:grid;grid-template-columns:repeat(3,1fr);gap:8px">
+          <div style="height:56px;border-radius:20px;background:var(--surf2);display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:700;font-variant-numeric:tabular-nums">1</div>
+          <div style="height:56px;border-radius:20px;background:var(--surf2);display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:700;font-variant-numeric:tabular-nums">2</div>
+          <div style="height:56px;border-radius:20px;background:var(--surf2);display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:700;font-variant-numeric:tabular-nums">3</div>
+          <div style="height:56px;border-radius:20px;background:var(--surf2);display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:700;font-variant-numeric:tabular-nums">4</div>
+          <div style="height:56px;border-radius:20px;background:var(--surf2);display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:700;font-variant-numeric:tabular-nums">5</div>
+          <div style="height:56px;border-radius:20px;background:var(--surf2);display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:700;font-variant-numeric:tabular-nums">6</div>
+          <div style="height:56px;border-radius:20px;background:var(--surf2);display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:700;font-variant-numeric:tabular-nums">7</div>
+          <div style="height:56px;border-radius:20px;background:var(--surf2);display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:700;font-variant-numeric:tabular-nums">8</div>
+          <div style="height:56px;border-radius:20px;background:var(--surf2);display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:700;font-variant-numeric:tabular-nums">9</div>
+          <div style="height:56px;border-radius:20px;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:700;color:var(--dim)">Clear</div>
+          <div style="height:56px;border-radius:20px;background:var(--surf2);display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:700;font-variant-numeric:tabular-nums">0</div>
+          <div style="height:56px;border-radius:20px;display:flex;align-items:center;justify-content:center;color:var(--dim)"><span style="font-family:'Material Symbols Rounded';font-size:24px">backspace</span></div>
+        </div>
+        <div style="margin-top:20px;width:100%;height:56px;border-radius:28px;background:var(--pri);color:var(--onpri);display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:700">Save</div>
+      </div><span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#59635F">height.entry-ftin.light.en.png · imperial, in focused</span></div>
+
+    </div>
+  </div>
+
+  <div id="9b" data-screen-label="BMI on Home" style="display:flex;flex-direction:column;gap:24px">
+    <h2 style="margin:0;font-size:26px;font-weight:700;letter-spacing:-0.02em">17 · BMI in Home's second-metric slot</h2>
+    <div style="display:flex;gap:40px;flex-wrap:wrap;align-items:flex-start">
+
+      <div style="display:flex;flex-direction:column;gap:12px"><div style="--bg:#F6F8F7;--surf:#FFFFFF;--on:#171D1B;--dim:#59635F;--out:#D3DBD8;--pri:#1F6A5C;position:relative;width:390px;height:844px;border-radius:36px;overflow:hidden;background:var(--bg);color:var(--on);font-family:Manrope,sans-serif;box-shadow:0 12px 32px rgba(16,32,28,.14)">
+        <div style="height:44px;display:flex;align-items:center;justify-content:space-between;padding:0 26px;font-size:13px;font-weight:600"><span>9:41</span><span style="font-family:'Material Symbols Rounded';font-size:16px">signal_cellular_alt wifi battery_full</span></div>
+        <div style="height:56px;padding:0 24px;display:flex;align-items:center"><span style="font-size:22px;font-weight:800;letter-spacing:-0.02em">I dag</span></div>
+        <div style="padding:8px 16px;display:flex;flex-direction:column;gap:12px">
+          <div style="padding:20px;border-radius:24px;background:var(--surf);border:1px solid var(--out);display:flex;flex-direction:column;gap:4px"><span style="font-size:13px;color:var(--dim)">Seneste vægt</span><span style="font-size:32px;font-weight:800;letter-spacing:-.02em;font-variant-numeric:tabular-nums">74,8 kg</span><span style="font-size:13px;color:var(--dim);font-variant-numeric:tabular-nums">−0,4 kg siden i går</span></div>
+          <div style="padding:18px 20px;border-radius:24px;background:var(--surf);border:1px solid var(--out);display:flex;flex-direction:column;gap:4px;min-height:104px;justify-content:center"><span style="font-size:13px;color:var(--dim)">7-dages snit</span><span style="font-size:24px;font-weight:800;letter-spacing:-.02em;font-variant-numeric:tabular-nums">75,1 kg</span></div>
+          <div style="padding:18px 20px;border-radius:24px;background:var(--surf);border:1px solid var(--out)"><svg viewBox="0 0 320 120" style="width:100%;height:120px;display:block"><polyline points="0,18 53,32 106,26 160,46 213,56 266,72 315,84" fill="none" stroke="var(--pri)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"></polyline><circle cx="315" cy="84" r="6" fill="var(--pri)"></circle></svg></div>
+        </div>
+      </div><span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#59635F">bmi.no-height.light.da.png · nothing added, nothing missing</span></div>
+
+      <div style="display:flex;flex-direction:column;gap:12px"><div style="--bg:#0E1412;--surf:#161D1B;--on:#DEE4E1;--dim:#A6B0AC;--out:#333C39;--pri:#8ED8C4;--pric:#005046;position:relative;width:390px;height:844px;border-radius:36px;overflow:hidden;background:var(--bg);color:var(--on);font-family:Manrope,sans-serif;box-shadow:0 12px 32px rgba(16,32,28,.14)">
+        <div style="height:44px;display:flex;align-items:center;justify-content:space-between;padding:0 26px;font-size:13px;font-weight:600"><span>9:41</span><span style="font-family:'Material Symbols Rounded';font-size:16px">signal_cellular_alt wifi battery_full</span></div>
+        <div style="height:56px;padding:0 24px;display:flex;align-items:center"><span style="font-size:22px;font-weight:800;letter-spacing:-0.02em">I dag</span></div>
+        <div style="padding:8px 16px;display:flex;flex-direction:column;gap:12px">
+          <div style="padding:20px;border-radius:24px;background:var(--surf);border:1px solid var(--out);display:flex;flex-direction:column;gap:4px"><span style="font-size:13px;color:var(--dim)">Seneste vægt</span><span style="font-size:32px;font-weight:800;letter-spacing:-.02em;font-variant-numeric:tabular-nums">74,8 kg</span><span style="font-size:13px;color:var(--dim);font-variant-numeric:tabular-nums">−0,4 kg siden i går</span></div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+            <div style="padding:18px 20px;border-radius:24px;background:var(--surf);border:1px solid var(--out);display:flex;flex-direction:column;gap:4px;min-height:104px;justify-content:center"><span style="font-size:13px;color:var(--dim)">7-dages snit</span><span style="font-size:24px;font-weight:800;letter-spacing:-.02em;font-variant-numeric:tabular-nums">75,1 kg</span></div>
+            <div style="padding:18px 20px;border-radius:24px;background:var(--surf);border:1px solid var(--out);display:flex;flex-direction:column;gap:4px;min-height:104px;justify-content:center"><span style="font-size:13px;color:var(--dim)">BMI</span><span style="font-size:24px;font-weight:800;letter-spacing:-.02em;font-variant-numeric:tabular-nums">23,6</span><span style="font-size:13px;color:var(--dim)">Normalområdet</span></div>
+          </div>
+          <div style="padding:18px 20px;border-radius:24px;background:var(--surf);border:1px solid var(--out)"><svg viewBox="0 0 320 120" style="width:100%;height:120px;display:block"><polyline points="0,18 53,32 106,26 160,46 213,56 266,72 315,84" fill="none" stroke="var(--pri)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"></polyline><circle cx="315" cy="84" r="6" fill="var(--pri)"></circle></svg></div>
+        </div>
+      </div><span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#59635F">bmi.slot-filled.dark.da.png</span></div>
+
+      <div style="display:flex;flex-direction:column;gap:16px;max-width:430px;padding-top:8px">
+        <div style="display:flex;gap:12px;flex-wrap:wrap">
+          <div style="width:183px;padding:18px 20px;border-radius:24px;background:#FFFFFF;border:1px solid #D3DBD8;display:flex;flex-direction:column;gap:4px;min-height:104px;justify-content:center;color:#171D1B"><span style="font-size:13px;color:#59635F">BMI</span><span style="font-size:24px;font-weight:800;letter-spacing:-.02em;font-variant-numeric:tabular-nums">23,6</span><span style="font-size:13px;color:#59635F">Normalområdet</span></div>
+          <div style="width:183px;padding:18px 20px;border-radius:24px;background:#FFFFFF;border:1px solid #D3DBD8;display:flex;flex-direction:column;gap:4px;min-height:104px;justify-content:center;color:#171D1B"><span style="font-size:13px;color:#59635F">BMI</span><span style="font-size:24px;font-weight:800;letter-spacing:-.02em;font-variant-numeric:tabular-nums">31,2</span><span style="font-size:13px;color:#59635F">Over normalområdet</span></div>
+        </div>
+        <div style="padding:20px 22px;border-radius:20px;background:#EEF3F1;border:1px solid #D3DBD8;display:flex;flex-direction:column;gap:8px">
+          <span style="font-size:13px;font-weight:700;letter-spacing:.06em;color:#59635F">TONE RULES</span>
+          <p style="margin:0;font-size:14px;line-height:1.6;color:#3D4744;text-wrap:pretty">Every BMI value renders in the same colours — <code>onSurface</code> number, <code>onSurfaceVariant</code> label — whatever the number is. The category line is neutral and relative ("Normalområdet", "Over normalområdet", "Under normalområdet"), never "overweight"/"obese", never coloured, never a bar or a gauge. One decimal, tabular figures, locale separator. Tapping the tile opens Height, not a BMI explainer.</p>
+        </div>
+        <div style="padding:20px 22px;border-radius:20px;background:#EEF3F1;border:1px solid #D3DBD8;display:flex;flex-direction:column;gap:8px">
+          <span style="font-size:13px;font-weight:700;letter-spacing:.06em;color:#59635F">NO HEIGHT = NO SLOT</span>
+          <p style="margin:0;font-size:14px;line-height:1.6;color:#3D4744;text-wrap:pretty">Home never advertises BMI. With no height set there is no tile, no dashed placeholder and no prompt — the 7-day average simply takes the full width and the screen reads as complete. The feature is discovered in Settings, and the moment a height is saved the tile appears (250ms fade, the average card reflowing to half width in the same beat). Removing the height removes the tile again just as quietly.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div id="9c" data-screen-label="App lock screen" style="display:flex;flex-direction:column;gap:24px">
+    <h2 style="margin:0;font-size:26px;font-weight:700;letter-spacing:-0.02em">18 · App lock — launch and unlock</h2>
+    <p style="margin:-10px 0 0;font-size:15px;line-height:1.55;color:#59635F;max-width:860px;text-wrap:pretty">Launch lands straight on the PIN view — always, whether or not fingerprint is on. The PIN is the floor that can't fail, so it's what the screen is built around; when fingerprint is enabled the OS prompt fires automatically on top of it, and dismissing it leaves the user already where they need to be rather than on a dead "Unlock" screen. <strong>No submit button:</strong> the fourth digit verifies, and a correct PIN or an accepted fingerprint goes straight to Home. No timeout setting — the lock is either on or off, and it applies on cold start and on resume.</p>
+    <div style="display:flex;gap:40px;flex-wrap:wrap;align-items:flex-start">
+
+      <div style="display:flex;flex-direction:column;gap:12px"><div style="--bg:#F6F8F7;--surf:#FFFFFF;--surf2:#EAEFEC;--on:#171D1B;--dim:#59635F;--out:#D3DBD8;--pri:#1F6A5C;--onpri:#FFFFFF;--pric:#B3EEDD;--err:#BA1A1A;--errc:#FFDAD6;position:relative;width:390px;height:844px;border-radius:36px;overflow:hidden;background:var(--bg);color:var(--on);font-family:Manrope,sans-serif;box-shadow:0 12px 32px rgba(16,32,28,.14);display:flex;flex-direction:column">
+        <div style="height:44px;flex:none;display:flex;align-items:center;justify-content:space-between;padding:0 26px;font-size:13px;font-weight:600"><span>9:41</span><span style="font-family:'Material Symbols Rounded';font-size:16px">signal_cellular_alt wifi battery_full</span></div>
+        <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0 40px;gap:0">
+          <div style="width:72px;height:72px;border-radius:50%;background:var(--pric);display:flex;align-items:center;justify-content:center;color:var(--pri)"><span style="font-family:'Material Symbols Rounded';font-size:36px;line-height:1">lock</span></div>
+          <span style="margin-top:20px;font-size:14px;font-weight:700;letter-spacing:.18em;color:var(--dim)">PONVIA</span>
+          <h3 style="margin:10px 0 0;font-size:22px;font-weight:800;letter-spacing:-.02em;text-align:center">Indtast din pinkode</h3>
+          <div style="margin-top:28px"><div style="display:flex;gap:20px"><div style="width:14px;height:14px;border-radius:50%;border:1.5px solid var(--out);box-sizing:border-box"></div><div style="width:14px;height:14px;border-radius:50%;border:1.5px solid var(--out);box-sizing:border-box"></div><div style="width:14px;height:14px;border-radius:50%;border:1.5px solid var(--out);box-sizing:border-box"></div><div style="width:14px;height:14px;border-radius:50%;border:1.5px solid var(--out);box-sizing:border-box"></div></div></div>
+          <div style="margin-top:18px;min-height:20px;display:flex;align-items:center"><span style="font-size:14px;color:var(--dim)">4 cifre</span></div>
+        </div>
+        <div style="flex:none;padding:0 24px 34px;display:flex;flex-direction:column;align-items:center;gap:18px">
+          <div style="width:100%;display:grid;grid-template-columns:repeat(3,1fr);gap:12px">
+            <div style="height:64px;border-radius:22px;background:var(--surf);border:1px solid var(--out);display:flex;align-items:center;justify-content:center;font-size:26px;font-weight:700;font-variant-numeric:tabular-nums">1</div>
+            <div style="height:64px;border-radius:22px;background:var(--surf);border:1px solid var(--out);display:flex;align-items:center;justify-content:center;font-size:26px;font-weight:700;font-variant-numeric:tabular-nums">2</div>
+            <div style="height:64px;border-radius:22px;background:var(--surf);border:1px solid var(--out);display:flex;align-items:center;justify-content:center;font-size:26px;font-weight:700;font-variant-numeric:tabular-nums">3</div>
+            <div style="height:64px;border-radius:22px;background:var(--surf);border:1px solid var(--out);display:flex;align-items:center;justify-content:center;font-size:26px;font-weight:700;font-variant-numeric:tabular-nums">4</div>
+            <div style="height:64px;border-radius:22px;background:var(--surf);border:1px solid var(--out);display:flex;align-items:center;justify-content:center;font-size:26px;font-weight:700;font-variant-numeric:tabular-nums">5</div>
+            <div style="height:64px;border-radius:22px;background:var(--surf);border:1px solid var(--out);display:flex;align-items:center;justify-content:center;font-size:26px;font-weight:700;font-variant-numeric:tabular-nums">6</div>
+            <div style="height:64px;border-radius:22px;background:var(--surf);border:1px solid var(--out);display:flex;align-items:center;justify-content:center;font-size:26px;font-weight:700;font-variant-numeric:tabular-nums">7</div>
+            <div style="height:64px;border-radius:22px;background:var(--surf);border:1px solid var(--out);display:flex;align-items:center;justify-content:center;font-size:26px;font-weight:700;font-variant-numeric:tabular-nums">8</div>
+            <div style="height:64px;border-radius:22px;background:var(--surf);border:1px solid var(--out);display:flex;align-items:center;justify-content:center;font-size:26px;font-weight:700;font-variant-numeric:tabular-nums">9</div>
+            <div></div>
+            <div style="height:64px;border-radius:22px;background:var(--surf);border:1px solid var(--out);display:flex;align-items:center;justify-content:center;font-size:26px;font-weight:700;font-variant-numeric:tabular-nums">0</div>
+            <div style="height:64px;border-radius:22px;display:flex;align-items:center;justify-content:center;color:var(--dim)"><span style="font-family:'Material Symbols Rounded';font-size:26px">backspace</span></div>
+          </div>
+          <div style="height:44px;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;color:var(--pri)">Glemt din pinkode?</div>
+          <div style="display:flex;align-items:center;justify-content:center;gap:8px;color:var(--dim)"><span style="font-family:'Material Symbols Rounded';font-size:18px">phone_android</span><span style="font-size:13px">Alt bliver på din telefon</span></div>
+        </div>
+        
+      </div><span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#59635F">lock.pin-idle.light.da.png</span></div>
+
+      <div style="display:flex;flex-direction:column;gap:12px"><div style="--bg:#0E1412;--surf:#161D1B;--surf2:#1D2523;--shi:#2A322F;--on:#DEE4E1;--dim:#A6B0AC;--out:#333C39;--pri:#8ED8C4;--onpri:#00382F;--pric:#005046;--err:#FFB4AB;--errc:#93000A;position:relative;width:390px;height:844px;border-radius:36px;overflow:hidden;background:var(--bg);color:var(--on);font-family:Manrope,sans-serif;box-shadow:0 12px 32px rgba(16,32,28,.14);display:flex;flex-direction:column">
+        <div style="height:44px;flex:none;display:flex;align-items:center;justify-content:space-between;padding:0 26px;font-size:13px;font-weight:600"><span>9:41</span><span style="font-family:'Material Symbols Rounded';font-size:16px">signal_cellular_alt wifi battery_full</span></div>
+        <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0 40px;gap:0">
+          <div style="width:72px;height:72px;border-radius:50%;background:var(--pric);display:flex;align-items:center;justify-content:center;color:var(--pri);box-shadow:0 0 0 10px rgba(142,216,196,.10)"><span style="font-family:'Material Symbols Rounded';font-size:36px;line-height:1">lock</span></div>
+          <span style="margin-top:20px;font-size:14px;font-weight:700;letter-spacing:.18em;color:var(--dim)">PONVIA</span>
+          <h3 style="margin:10px 0 0;font-size:22px;font-weight:800;letter-spacing:-.02em;text-align:center">Indtast din pinkode</h3>
+          <div style="margin-top:28px"><div style="display:flex;gap:20px"><div style="width:14px;height:14px;border-radius:50%;border:1.5px solid var(--out);box-sizing:border-box"></div><div style="width:14px;height:14px;border-radius:50%;border:1.5px solid var(--out);box-sizing:border-box"></div><div style="width:14px;height:14px;border-radius:50%;border:1.5px solid var(--out);box-sizing:border-box"></div><div style="width:14px;height:14px;border-radius:50%;border:1.5px solid var(--out);box-sizing:border-box"></div></div></div>
+          <div style="margin-top:18px;min-height:20px;display:flex;align-items:center"><span style="font-size:14px;color:var(--dim)">Venter på fingeraftryk…</span></div>
+        </div>
+        <div style="flex:none;padding:0 24px 34px;display:flex;flex-direction:column;align-items:center;gap:18px">
+          <div style="width:100%;display:grid;grid-template-columns:repeat(3,1fr);gap:12px">
+            <div style="height:64px;border-radius:22px;background:var(--surf);border:1px solid var(--out);display:flex;align-items:center;justify-content:center;font-size:26px;font-weight:700;font-variant-numeric:tabular-nums">1</div>
+            <div style="height:64px;border-radius:22px;background:var(--surf);border:1px solid var(--out);display:flex;align-items:center;justify-content:center;font-size:26px;font-weight:700;font-variant-numeric:tabular-nums">2</div>
+            <div style="height:64px;border-radius:22px;background:var(--surf);border:1px solid var(--out);display:flex;align-items:center;justify-content:center;font-size:26px;font-weight:700;font-variant-numeric:tabular-nums">3</div>
+            <div style="height:64px;border-radius:22px;background:var(--surf);border:1px solid var(--out);display:flex;align-items:center;justify-content:center;font-size:26px;font-weight:700;font-variant-numeric:tabular-nums">4</div>
+            <div style="height:64px;border-radius:22px;background:var(--surf);border:1px solid var(--out);display:flex;align-items:center;justify-content:center;font-size:26px;font-weight:700;font-variant-numeric:tabular-nums">5</div>
+            <div style="height:64px;border-radius:22px;background:var(--surf);border:1px solid var(--out);display:flex;align-items:center;justify-content:center;font-size:26px;font-weight:700;font-variant-numeric:tabular-nums">6</div>
+            <div style="height:64px;border-radius:22px;background:var(--surf);border:1px solid var(--out);display:flex;align-items:center;justify-content:center;font-size:26px;font-weight:700;font-variant-numeric:tabular-nums">7</div>
+            <div style="height:64px;border-radius:22px;background:var(--surf);border:1px solid var(--out);display:flex;align-items:center;justify-content:center;font-size:26px;font-weight:700;font-variant-numeric:tabular-nums">8</div>
+            <div style="height:64px;border-radius:22px;background:var(--surf);border:1px solid var(--out);display:flex;align-items:center;justify-content:center;font-size:26px;font-weight:700;font-variant-numeric:tabular-nums">9</div>
+            <div style="height:64px;border-radius:22px;display:flex;align-items:center;justify-content:center;color:var(--pri)"><span style="font-family:'Material Symbols Rounded';font-size:26px">fingerprint</span></div>
+            <div style="height:64px;border-radius:22px;background:var(--surf);border:1px solid var(--out);display:flex;align-items:center;justify-content:center;font-size:26px;font-weight:700;font-variant-numeric:tabular-nums">0</div>
+            <div style="height:64px;border-radius:22px;display:flex;align-items:center;justify-content:center;color:var(--dim)"><span style="font-family:'Material Symbols Rounded';font-size:26px">backspace</span></div>
+          </div>
+          
+          <div style="display:flex;align-items:center;justify-content:center;gap:8px;color:var(--dim)"><span style="font-family:'Material Symbols Rounded';font-size:18px">phone_android</span><span style="font-size:13px">Alt bliver på din telefon</span></div>
+        </div>
+        <div style="position:absolute;inset:0;background:rgba(0,0,0,.60)"></div>
+        <div style="position:absolute;left:0;right:0;bottom:0;border-radius:28px 28px 0 0;background:var(--shi);padding:28px 24px 34px;display:flex;flex-direction:column;align-items:center;box-shadow:0 -2px 16px rgba(0,0,0,.4)">
+          <span style="font-size:12px;font-weight:700;letter-spacing:.1em;color:var(--dim)">SYSTEMDIALOG</span>
+          <span style="margin-top:16px;font-family:'Material Symbols Rounded';font-size:44px;color:var(--pri)">fingerprint</span>
+          <span style="margin-top:16px;font-size:18px;font-weight:700">Lås Ponvia op</span>
+          <p style="margin:8px 0 0;font-size:14px;color:var(--dim);text-align:center">Rør ved fingeraftrykssensoren</p>
+          <div style="margin-top:24px;width:100%;display:flex;justify-content:flex-end;font-size:15px;font-weight:700;color:var(--pri)"><span>Annullér</span></div>
+        </div>
+      </div><span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#59635F">lock.biometric-auto.dark.da.png</span></div>
+
+      <div style="display:flex;flex-direction:column;gap:12px"><div style="--bg:#F6F8F7;--surf:#FFFFFF;--surf2:#EAEFEC;--on:#171D1B;--dim:#59635F;--out:#D3DBD8;--pri:#1F6A5C;--onpri:#FFFFFF;--pric:#B3EEDD;--err:#BA1A1A;--errc:#FFDAD6;position:relative;width:390px;height:844px;border-radius:36px;overflow:hidden;background:var(--bg);color:var(--on);font-family:Manrope,sans-serif;box-shadow:0 12px 32px rgba(16,32,28,.14);display:flex;flex-direction:column">
+        <div style="height:44px;flex:none;display:flex;align-items:center;justify-content:space-between;padding:0 26px;font-size:13px;font-weight:600"><span>9:41</span><span style="font-family:'Material Symbols Rounded';font-size:16px">signal_cellular_alt wifi battery_full</span></div>
+        <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0 40px;gap:0">
+          <div style="width:72px;height:72px;border-radius:50%;background:var(--pric);display:flex;align-items:center;justify-content:center;color:var(--pri)"><span style="font-family:'Material Symbols Rounded';font-size:36px;line-height:1">lock</span></div>
+          <span style="margin-top:20px;font-size:14px;font-weight:700;letter-spacing:.18em;color:var(--dim)">PONVIA</span>
+          <h3 style="margin:10px 0 0;font-size:22px;font-weight:800;letter-spacing:-.02em;text-align:center">Indtast din pinkode</h3>
+          <div style="margin-top:28px"><div style="display:flex;gap:20px"><div style="width:14px;height:14px;border-radius:50%;background:var(--err)"></div><div style="width:14px;height:14px;border-radius:50%;background:var(--err)"></div><div style="width:14px;height:14px;border-radius:50%;background:var(--err)"></div><div style="width:14px;height:14px;border-radius:50%;background:var(--err)"></div></div></div>
+          <div style="margin-top:18px;min-height:20px;display:flex;align-items:center"><span style="padding:8px 14px;border-radius:14px;background:var(--errc);color:var(--err);font-size:14px;font-weight:600;display:flex;align-items:center;gap:8px"><span style="font-family:'Material Symbols Rounded';font-size:18px">info</span>Forkert pinkode. Prøv igen.</span></div>
+        </div>
+        <div style="flex:none;padding:0 24px 34px;display:flex;flex-direction:column;align-items:center;gap:18px">
+          <div style="width:100%;display:grid;grid-template-columns:repeat(3,1fr);gap:12px">
+            <div style="height:64px;border-radius:22px;background:var(--surf);border:1px solid var(--out);display:flex;align-items:center;justify-content:center;font-size:26px;font-weight:700;font-variant-numeric:tabular-nums">1</div>
+            <div style="height:64px;border-radius:22px;background:var(--surf);border:1px solid var(--out);display:flex;align-items:center;justify-content:center;font-size:26px;font-weight:700;font-variant-numeric:tabular-nums">2</div>
+            <div style="height:64px;border-radius:22px;background:var(--surf);border:1px solid var(--out);display:flex;align-items:center;justify-content:center;font-size:26px;font-weight:700;font-variant-numeric:tabular-nums">3</div>
+            <div style="height:64px;border-radius:22px;background:var(--surf);border:1px solid var(--out);display:flex;align-items:center;justify-content:center;font-size:26px;font-weight:700;font-variant-numeric:tabular-nums">4</div>
+            <div style="height:64px;border-radius:22px;background:var(--surf);border:1px solid var(--out);display:flex;align-items:center;justify-content:center;font-size:26px;font-weight:700;font-variant-numeric:tabular-nums">5</div>
+            <div style="height:64px;border-radius:22px;background:var(--surf);border:1px solid var(--out);display:flex;align-items:center;justify-content:center;font-size:26px;font-weight:700;font-variant-numeric:tabular-nums">6</div>
+            <div style="height:64px;border-radius:22px;background:var(--surf);border:1px solid var(--out);display:flex;align-items:center;justify-content:center;font-size:26px;font-weight:700;font-variant-numeric:tabular-nums">7</div>
+            <div style="height:64px;border-radius:22px;background:var(--surf);border:1px solid var(--out);display:flex;align-items:center;justify-content:center;font-size:26px;font-weight:700;font-variant-numeric:tabular-nums">8</div>
+            <div style="height:64px;border-radius:22px;background:var(--surf);border:1px solid var(--out);display:flex;align-items:center;justify-content:center;font-size:26px;font-weight:700;font-variant-numeric:tabular-nums">9</div>
+            <div style="height:64px;border-radius:22px;display:flex;align-items:center;justify-content:center;color:var(--pri)"><span style="font-family:'Material Symbols Rounded';font-size:26px">fingerprint</span></div>
+            <div style="height:64px;border-radius:22px;background:var(--surf);border:1px solid var(--out);display:flex;align-items:center;justify-content:center;font-size:26px;font-weight:700;font-variant-numeric:tabular-nums">0</div>
+            <div style="height:64px;border-radius:22px;display:flex;align-items:center;justify-content:center;color:var(--dim)"><span style="font-family:'Material Symbols Rounded';font-size:26px">backspace</span></div>
+          </div>
+          <div style="height:44px;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;color:var(--pri)">Glemt din pinkode?</div>
+          <div style="display:flex;align-items:center;justify-content:center;gap:8px;color:var(--dim)"><span style="font-family:'Material Symbols Rounded';font-size:18px">phone_android</span><span style="font-size:13px">Alt bliver på din telefon</span></div>
+        </div>
+        
+      </div><span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#59635F">lock.wrong-pin.light.da.png</span></div>
+
+      <div style="display:flex;flex-direction:column;gap:12px"><div style="--bg:#0E1412;--surf:#161D1B;--surf2:#1D2523;--shi:#2A322F;--on:#DEE4E1;--dim:#A6B0AC;--out:#333C39;--pri:#8ED8C4;--onpri:#00382F;--pric:#005046;--err:#FFB4AB;--errc:#93000A;position:relative;width:390px;height:844px;border-radius:36px;overflow:hidden;background:var(--bg);color:var(--on);font-family:Manrope,sans-serif;box-shadow:0 12px 32px rgba(16,32,28,.14);display:flex;flex-direction:column">
+        <div style="height:44px;flex:none;display:flex;align-items:center;justify-content:space-between;padding:0 26px;font-size:13px;font-weight:600"><span>9:41</span><span style="font-family:'Material Symbols Rounded';font-size:16px">signal_cellular_alt wifi battery_full</span></div>
+        <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0 40px;gap:0">
+          <div style="width:72px;height:72px;border-radius:50%;background:var(--pric);display:flex;align-items:center;justify-content:center;color:var(--pri)"><span style="font-family:'Material Symbols Rounded';font-size:36px;line-height:1">lock_open</span></div>
+          <span style="margin-top:20px;font-size:14px;font-weight:700;letter-spacing:.18em;color:var(--dim)">PONVIA</span>
+          <h3 style="margin:10px 0 0;font-size:22px;font-weight:800;letter-spacing:-.02em;text-align:center">Låser op</h3>
+          <div style="margin-top:28px"><div style="display:flex;gap:20px"><div style="width:14px;height:14px;border-radius:50%;background:var(--pri)"></div><div style="width:14px;height:14px;border-radius:50%;background:var(--pri)"></div><div style="width:14px;height:14px;border-radius:50%;background:var(--pri)"></div><div style="width:14px;height:14px;border-radius:50%;background:var(--pri)"></div></div></div>
+          <div style="margin-top:18px;min-height:20px;display:flex;align-items:center"><span style="font-size:14px;color:var(--dim)"></span></div>
+        </div>
+        <div style="flex:none;padding:0 24px 34px;display:flex;flex-direction:column;align-items:center;gap:18px">
+          <div style="width:100%;display:grid;grid-template-columns:repeat(3,1fr);gap:12px">
+            <div style="height:64px;border-radius:22px;background:var(--surf);border:1px solid var(--out);display:flex;align-items:center;justify-content:center;font-size:26px;font-weight:700;font-variant-numeric:tabular-nums">1</div>
+            <div style="height:64px;border-radius:22px;background:var(--surf);border:1px solid var(--out);display:flex;align-items:center;justify-content:center;font-size:26px;font-weight:700;font-variant-numeric:tabular-nums">2</div>
+            <div style="height:64px;border-radius:22px;background:var(--surf);border:1px solid var(--out);display:flex;align-items:center;justify-content:center;font-size:26px;font-weight:700;font-variant-numeric:tabular-nums">3</div>
+            <div style="height:64px;border-radius:22px;background:var(--surf);border:1px solid var(--out);display:flex;align-items:center;justify-content:center;font-size:26px;font-weight:700;font-variant-numeric:tabular-nums">4</div>
+            <div style="height:64px;border-radius:22px;background:var(--surf);border:1px solid var(--out);display:flex;align-items:center;justify-content:center;font-size:26px;font-weight:700;font-variant-numeric:tabular-nums">5</div>
+            <div style="height:64px;border-radius:22px;background:var(--surf);border:1px solid var(--out);display:flex;align-items:center;justify-content:center;font-size:26px;font-weight:700;font-variant-numeric:tabular-nums">6</div>
+            <div style="height:64px;border-radius:22px;background:var(--surf);border:1px solid var(--out);display:flex;align-items:center;justify-content:center;font-size:26px;font-weight:700;font-variant-numeric:tabular-nums">7</div>
+            <div style="height:64px;border-radius:22px;background:var(--surf);border:1px solid var(--out);display:flex;align-items:center;justify-content:center;font-size:26px;font-weight:700;font-variant-numeric:tabular-nums">8</div>
+            <div style="height:64px;border-radius:22px;background:var(--surf);border:1px solid var(--out);display:flex;align-items:center;justify-content:center;font-size:26px;font-weight:700;font-variant-numeric:tabular-nums">9</div>
+            <div style="height:64px;border-radius:22px;display:flex;align-items:center;justify-content:center;color:var(--dim)"><span style="font-family:'Material Symbols Rounded';font-size:26px">fingerprint</span></div>
+            <div style="height:64px;border-radius:22px;background:var(--surf);border:1px solid var(--out);display:flex;align-items:center;justify-content:center;font-size:26px;font-weight:700;font-variant-numeric:tabular-nums">0</div>
+            <div style="height:64px;border-radius:22px;display:flex;align-items:center;justify-content:center;color:var(--dim)"><span style="font-family:'Material Symbols Rounded';font-size:26px">backspace</span></div>
+          </div>
+          
+          <div style="display:flex;align-items:center;justify-content:center;gap:8px;color:var(--dim)"><span style="font-family:'Material Symbols Rounded';font-size:18px">phone_android</span><span style="font-size:13px">Alt bliver på din telefon</span></div>
+        </div>
+        
+      </div><span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#59635F">lock.accepted.dark.da.png · last frame before Home</span></div>
+
+      <div style="display:flex;flex-direction:column;gap:16px;max-width:420px;padding-top:8px">
+        <div style="padding:20px 22px;border-radius:20px;background:#EEF3F1;border:1px solid #D3DBD8;display:flex;flex-direction:column;gap:10px">
+          <span style="font-size:13px;font-weight:700;letter-spacing:.06em;color:#59635F">MICRO-ANIMATIONS</span>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:12px;line-height:1.85;color:#171D1B">screen in&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;250ms fade, no slide<br>disc + dots&nbsp;&nbsp;&nbsp;40ms-staggered fade, scale .94→1<br>digit press&nbsp;&nbsp;key scale .96, 90ms, releases back<br>dot fill&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;scale 0→1 + fade, 140ms emphasized<br>dot clear&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;reverse, 100ms<br>wrong pin&nbsp;&nbsp;&nbsp;&nbsp;dots → error, 320ms 3-cycle shake ±6dp,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;then dots clear; one light haptic tick<br>accepted&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dots settle, lock→lock_open crossfade<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;180ms, disc scale 1→1.04→1<br>to Home&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;220ms fade-through, no push<br>reduced motion: fades only, no shake, no scale</div>
+        </div>
+        <div style="padding:20px 22px;border-radius:20px;background:#EEF3F1;border:1px solid #D3DBD8;display:flex;flex-direction:column;gap:10px">
+          <span style="font-size:13px;font-weight:700;letter-spacing:.06em;color:#59635F">SPEC</span>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:12px;line-height:1.85;color:#171D1B">disc = 72, primaryContainer, lock 36 primary<br>wordmark = 14sp/700, .18em, onSurfaceVariant<br>title = 22sp/800 onSurface<br>dots = 4 × 14, gap 20; empty 1.5 outline,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;filled primary, wrong error<br>hint row = 14sp, reserved 20 height (no reflow)<br>keypad = 3 cols, key h64 r22, gap 12,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;surface + 1 outline, digit 26sp/700<br>keypad ll = fingerprint (only if enabled)<br>keypad lr = backspace<br>screen pad = 24 h / 34 bottom, 40 h for text<br>no submit button — verify on 4th digit</div>
+        </div>
+        <div style="padding:20px 22px;border-radius:20px;background:#EEF3F1;border:1px solid #D3DBD8;display:flex;flex-direction:column;gap:8px">
+          <span style="font-size:13px;font-weight:700;letter-spacing:.06em;color:#59635F">NEVER LOCKED OUT</span>
+          <p style="margin:0;font-size:14px;line-height:1.6;color:#3D4744;text-wrap:pretty">The PIN is Ponvia's own, stored only as a salted hash in platform secure storage — no account, no recovery service, nothing to sync. Fingerprint is a shortcut, never the only way in: if the sensor fails, is unenrolled, or the user cancels, the PIN view is already on screen. Wrong entries are not counted and never trigger a Ponvia-side cooldown. <strong>Glemt din pinkode?</strong> is honest rather than helpful — a plain dialog explains the PIN exists only on this phone, so the only way back in is clearing Ponvia's data, and points at Export first.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div id="9d" data-screen-label="Security group" style="display:flex;flex-direction:column;gap:24px">
+    <h2 style="margin:0;font-size:26px;font-weight:700;letter-spacing:-0.02em">19 · Settings — Security group and enabling</h2>
+    <p style="margin:-10px 0 0;font-size:15px;line-height:1.55;color:#59635F;max-width:860px;text-wrap:pretty"><strong>Two independent switches in a new Sikkerhed group</strong> — Preferences is for consequence-free cosmetic choices, and a launch lock isn't one. <em>App-lås</em> is the parent: turning it on asks for a 4-digit PIN twice on the shared keypad. <em>Fingeraftryk</em> is nested under it, disabled until the lock is on, and turning it on requires one successful fingerprint right there so nobody enables a shortcut they can't actually use. Three states: nothing → PIN only → PIN + fingerprint. There is no lock timer.</p>
+    <div style="display:flex;gap:40px;flex-wrap:wrap;align-items:flex-start">
+
+      <div style="display:flex;flex-direction:column;gap:12px"><div style="--bg:#F6F8F7;--surf:#FFFFFF;--surf2:#EAEFEC;--on:#171D1B;--dim:#59635F;--out:#D3DBD8;--pri:#1F6A5C;--onpri:#FFFFFF;--pric:#B3EEDD;--err:#BA1A1A;--errc:#FFDAD6;position:relative;width:390px;height:844px;border-radius:36px;overflow:hidden;background:var(--bg);color:var(--on);font-family:Manrope,sans-serif;box-shadow:0 12px 32px rgba(16,32,28,.14)">
+        <div style="height:44px;flex:none;display:flex;align-items:center;justify-content:space-between;padding:0 26px;font-size:13px;font-weight:600"><span>9:41</span><span style="font-family:'Material Symbols Rounded';font-size:16px">signal_cellular_alt wifi battery_full</span></div>
+        <div style="height:56px;padding:0 24px;display:flex;align-items:center"><span style="font-size:22px;font-weight:800;letter-spacing:-0.02em">Indstillinger</span></div>
+        <div style="padding:8px 16px 0;display:flex;flex-direction:column;gap:20px">
+          <div style="display:flex;flex-direction:column;gap:8px">
+            <span style="padding:0 8px;font-size:13px;font-weight:700;letter-spacing:.06em;color:var(--pri)">PRÆFERENCER</span>
+            <div style="border-radius:24px;background:var(--surf);border:1px solid var(--out);overflow:hidden">
+              <div style="height:60px;padding:0 20px;display:flex;align-items:center;gap:16px"><span style="font-family:'Material Symbols Rounded';font-size:24px;color:var(--dim)">scale</span><span style="flex:1;font-size:16px;font-weight:600">Vægtenhed</span><span style="font-size:15px;color:var(--dim)">kg</span></div>
+              <div style="height:1px;margin-left:60px;background:var(--out)"></div>
+              <div style="height:60px;padding:0 20px;display:flex;align-items:center;gap:16px"><span style="font-family:'Material Symbols Rounded';font-size:24px;color:var(--dim)">height</span><span style="flex:1;font-size:16px;font-weight:600">Højde</span><span style="font-size:15px;color:var(--on);font-variant-numeric:tabular-nums">178 cm</span></div>
+              <div style="height:1px;margin-left:60px;background:var(--out)"></div>
+              <div style="height:60px;padding:0 20px;display:flex;align-items:center;gap:16px"><span style="font-family:'Material Symbols Rounded';font-size:24px;color:var(--dim)">notifications</span><span style="flex:1;font-size:16px;font-weight:600">Påmindelser</span><span style="font-size:15px;color:var(--dim)">Fra</span></div>
+            </div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:8px">
+            <span style="padding:0 8px;font-size:13px;font-weight:700;letter-spacing:.06em;color:var(--pri)">SIKKERHED</span>
+            <div style="border-radius:24px;background:var(--surf);border:1px solid var(--out);overflow:hidden">
+              <div style="min-height:76px;padding:14px 20px;display:flex;align-items:center;gap:16px"><span style="font-family:'Material Symbols Rounded';font-size:24px;color:var(--pri)">lock</span><div style="flex:1;display:flex;flex-direction:column;gap:2px"><span style="font-size:16px;font-weight:600">App-lås</span><span style="font-size:13px;color:var(--dim);line-height:1.35;text-wrap:pretty">Kræv pinkode når Ponvia åbnes</span></div><div style="width:52px;height:32px;border-radius:16px;background:var(--pri);display:flex;align-items:center;justify-content:flex-end;padding:0 4px;box-sizing:border-box"><div style="width:24px;height:24px;border-radius:50%;background:var(--onpri)"></div></div></div>
+              <div style="height:1px;margin-left:60px;background:var(--out)"></div>
+              <div style="min-height:76px;padding:14px 20px 14px 60px;display:flex;align-items:center;gap:16px"><span style="font-family:'Material Symbols Rounded';font-size:24px;color:var(--pri)">fingerprint</span><div style="flex:1;display:flex;flex-direction:column;gap:2px"><span style="font-size:16px;font-weight:600">Fingeraftryk</span><span style="font-size:13px;color:var(--dim);line-height:1.35;text-wrap:pretty">Lås op med fingeraftryk i stedet for pinkoden</span></div><div style="width:52px;height:32px;border-radius:16px;background:var(--pri);display:flex;align-items:center;justify-content:flex-end;padding:0 4px;box-sizing:border-box"><div style="width:24px;height:24px;border-radius:50%;background:var(--onpri)"></div></div></div>
+              <div style="height:1px;margin-left:60px;background:var(--out)"></div>
+              <div style="height:60px;padding:0 20px;display:flex;align-items:center;gap:16px"><span style="font-family:'Material Symbols Rounded';font-size:24px;color:var(--dim)">pin</span><span style="flex:1;font-size:16px;font-weight:600">Skift pinkode</span><span style="font-family:'Material Symbols Rounded';font-size:20px;color:var(--dim)">chevron_right</span></div>
+            </div>
+            <div style="padding:8px 8px 0;display:flex;gap:8px;align-items:flex-start"><span style="font-family:'Material Symbols Rounded';font-size:16px;color:var(--dim);line-height:1.4">phone_android</span><span style="font-size:13px;line-height:1.45;color:var(--dim);text-wrap:pretty">Pinkoden gemmes kun på din telefon. Ponvia sender intet videre, og der er ingen konto at gendanne den med.</span></div>
+          </div>
+        </div>
+      </div><span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#59635F">settings.security-both-on.light.da.png</span></div>
+
+      <div style="display:flex;flex-direction:column;gap:12px"><div style="--bg:#0E1412;--surf:#161D1B;--surf2:#1D2523;--shi:#2A322F;--on:#DEE4E1;--dim:#A6B0AC;--out:#333C39;--pri:#8ED8C4;--onpri:#00382F;--pric:#005046;--err:#FFB4AB;--errc:#93000A;position:relative;width:390px;height:844px;border-radius:36px;overflow:hidden;background:var(--bg);color:var(--on);font-family:Manrope,sans-serif;box-shadow:0 12px 32px rgba(16,32,28,.14)">
+        <div style="height:44px;flex:none;display:flex;align-items:center;justify-content:space-between;padding:0 26px;font-size:13px;font-weight:600"><span>9:41</span><span style="font-family:'Material Symbols Rounded';font-size:16px">signal_cellular_alt wifi battery_full</span></div>
+        <div style="height:56px;padding:0 24px;display:flex;align-items:center"><span style="font-size:22px;font-weight:800;letter-spacing:-0.02em">Indstillinger</span></div>
+        <div style="padding:8px 16px 0;display:flex;flex-direction:column;gap:20px">
+          <div style="display:flex;flex-direction:column;gap:8px">
+            <span style="padding:0 8px;font-size:13px;font-weight:700;letter-spacing:.06em;color:var(--pri)">PRÆFERENCER</span>
+            <div style="border-radius:24px;background:var(--surf);border:1px solid var(--out);overflow:hidden">
+              <div style="height:60px;padding:0 20px;display:flex;align-items:center;gap:16px"><span style="font-family:'Material Symbols Rounded';font-size:24px;color:var(--dim)">scale</span><span style="flex:1;font-size:16px;font-weight:600">Vægtenhed</span><span style="font-size:15px;color:var(--dim)">kg</span></div>
+              <div style="height:1px;margin-left:60px;background:var(--out)"></div>
+              <div style="height:60px;padding:0 20px;display:flex;align-items:center;gap:16px"><span style="font-family:'Material Symbols Rounded';font-size:24px;color:var(--dim)">height</span><span style="flex:1;font-size:16px;font-weight:600">Højde</span><span style="font-size:15px;color:var(--dim)">Ikke angivet</span></div>
+            </div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:8px">
+            <span style="padding:0 8px;font-size:13px;font-weight:700;letter-spacing:.06em;color:var(--pri)">SIKKERHED</span>
+            <div style="border-radius:24px;background:var(--surf);border:1px solid var(--out);overflow:hidden">
+              <div style="min-height:76px;padding:14px 20px;display:flex;align-items:center;gap:16px"><span style="font-family:'Material Symbols Rounded';font-size:24px;color:var(--dim)">lock</span><div style="flex:1;display:flex;flex-direction:column;gap:2px"><span style="font-size:16px;font-weight:600">App-lås</span><span style="font-size:13px;color:var(--dim);line-height:1.35;text-wrap:pretty">Kræv pinkode når Ponvia åbnes</span></div><div style="width:52px;height:32px;border-radius:16px;background:var(--out);border:2px solid var(--dim);display:flex;align-items:center;justify-content:flex-start;padding:0 6px;box-sizing:border-box"><div style="width:16px;height:16px;border-radius:50%;background:var(--dim)"></div></div></div>
+              <div style="height:1px;margin-left:60px;background:var(--out)"></div>
+              <div style="min-height:76px;padding:14px 20px 14px 60px;display:flex;align-items:center;gap:16px;opacity:.38"><span style="font-family:'Material Symbols Rounded';font-size:24px;color:var(--dim)">fingerprint</span><div style="flex:1;display:flex;flex-direction:column;gap:2px"><span style="font-size:16px;font-weight:600">Fingeraftryk</span><span style="font-size:13px;color:var(--dim);line-height:1.35;text-wrap:pretty">Slå app-lås til først</span></div><div style="width:52px;height:32px;border-radius:16px;background:var(--out);border:2px solid var(--dim);display:flex;align-items:center;justify-content:flex-start;padding:0 6px;box-sizing:border-box"><div style="width:16px;height:16px;border-radius:50%;background:var(--dim)"></div></div></div>
+            </div>
+            <div style="padding:8px 8px 0;display:flex;gap:8px;align-items:flex-start"><span style="font-family:'Material Symbols Rounded';font-size:16px;color:var(--dim);line-height:1.4">phone_android</span><span style="font-size:13px;line-height:1.45;color:var(--dim);text-wrap:pretty">Pinkoden gemmes kun på din telefon. Ponvia sender intet videre, og der er ingen konto at gendanne den med.</span></div>
+          </div>
+        </div>
+      </div><span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#59635F">settings.security-off.dark.da.png · fingerprint disabled until the lock is on</span></div>
+
+      <div style="display:flex;flex-direction:column;gap:12px"><div style="--bg:#F6F8F7;--surf:#FFFFFF;--surf2:#EAEFEC;--on:#171D1B;--dim:#59635F;--out:#D3DBD8;--pri:#1F6A5C;--onpri:#FFFFFF;--pric:#B3EEDD;--err:#BA1A1A;--errc:#FFDAD6;position:relative;width:390px;height:844px;border-radius:36px;overflow:hidden;background:var(--bg);color:var(--on);font-family:Manrope,sans-serif;box-shadow:0 12px 32px rgba(16,32,28,.14);display:flex;flex-direction:column">
+        <div style="height:44px;flex:none;display:flex;align-items:center;justify-content:space-between;padding:0 26px;font-size:13px;font-weight:600"><span>9:41</span><span style="font-family:'Material Symbols Rounded';font-size:16px">signal_cellular_alt wifi battery_full</span></div>
+        <div style="height:56px;flex:none;padding:0 12px;display:flex;align-items:center;gap:8px"><span style="font-family:'Material Symbols Rounded';font-size:24px;color:var(--on);padding:0 12px">arrow_back</span><span style="font-size:20px;font-weight:800;letter-spacing:-0.02em">Vælg en pinkode</span></div>
+        <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0 40px">
+          <h3 style="margin:0;font-size:20px;font-weight:800;letter-spacing:-.02em;text-align:center">Bekræft pinkoden</h3>
+          <p style="margin:8px 0 0;font-size:14px;color:var(--dim);text-align:center;text-wrap:pretty">Indtast de samme fire cifre igen.</p>
+          <div style="margin-top:28px"><div style="display:flex;gap:20px"><div style="width:14px;height:14px;border-radius:50%;background:var(--pri)"></div><div style="width:14px;height:14px;border-radius:50%;background:var(--pri)"></div><div style="width:14px;height:14px;border-radius:50%;border:1.5px solid var(--out);box-sizing:border-box"></div><div style="width:14px;height:14px;border-radius:50%;border:1.5px solid var(--out);box-sizing:border-box"></div></div></div>
+          <div style="margin-top:18px;min-height:20px"></div>
+        </div>
+        <div style="flex:none;padding:0 24px 34px;display:flex;flex-direction:column;align-items:center;gap:18px">
+          <div style="width:100%;display:grid;grid-template-columns:repeat(3,1fr);gap:12px">
+            <div style="height:64px;border-radius:22px;background:var(--surf);border:1px solid var(--out);display:flex;align-items:center;justify-content:center;font-size:26px;font-weight:700;font-variant-numeric:tabular-nums">1</div>
+            <div style="height:64px;border-radius:22px;background:var(--surf);border:1px solid var(--out);display:flex;align-items:center;justify-content:center;font-size:26px;font-weight:700;font-variant-numeric:tabular-nums">2</div>
+            <div style="height:64px;border-radius:22px;background:var(--surf);border:1px solid var(--out);display:flex;align-items:center;justify-content:center;font-size:26px;font-weight:700;font-variant-numeric:tabular-nums">3</div>
+            <div style="height:64px;border-radius:22px;background:var(--surf);border:1px solid var(--out);display:flex;align-items:center;justify-content:center;font-size:26px;font-weight:700;font-variant-numeric:tabular-nums">4</div>
+            <div style="height:64px;border-radius:22px;background:var(--surf);border:1px solid var(--out);display:flex;align-items:center;justify-content:center;font-size:26px;font-weight:700;font-variant-numeric:tabular-nums">5</div>
+            <div style="height:64px;border-radius:22px;background:var(--surf);border:1px solid var(--out);display:flex;align-items:center;justify-content:center;font-size:26px;font-weight:700;font-variant-numeric:tabular-nums">6</div>
+            <div style="height:64px;border-radius:22px;background:var(--surf);border:1px solid var(--out);display:flex;align-items:center;justify-content:center;font-size:26px;font-weight:700;font-variant-numeric:tabular-nums">7</div>
+            <div style="height:64px;border-radius:22px;background:var(--surf);border:1px solid var(--out);display:flex;align-items:center;justify-content:center;font-size:26px;font-weight:700;font-variant-numeric:tabular-nums">8</div>
+            <div style="height:64px;border-radius:22px;background:var(--surf);border:1px solid var(--out);display:flex;align-items:center;justify-content:center;font-size:26px;font-weight:700;font-variant-numeric:tabular-nums">9</div>
+            <div></div>
+            <div style="height:64px;border-radius:22px;background:var(--surf);border:1px solid var(--out);display:flex;align-items:center;justify-content:center;font-size:26px;font-weight:700;font-variant-numeric:tabular-nums">0</div>
+            <div style="height:64px;border-radius:22px;display:flex;align-items:center;justify-content:center;color:var(--dim)"><span style="font-family:'Material Symbols Rounded';font-size:26px">backspace</span></div>
+          </div>
+        </div>
+      </div><span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#59635F">applock.set-pin-confirm.light.da.png · step 2 of 2</span></div>
+
+      <div style="display:flex;flex-direction:column;gap:16px;max-width:420px;padding-top:8px">
+        <div style="padding:20px 22px;border-radius:20px;background:#EEF3F1;border:1px solid #D3DBD8;display:flex;flex-direction:column;gap:10px">
+          <span style="font-size:13px;font-weight:700;letter-spacing:.06em;color:#59635F">TURNING IT ON</span>
+          <p style="margin:0;font-size:14px;line-height:1.6;color:#3D4744;text-wrap:pretty"><strong>App-lås →</strong> pushes "Vælg en pinkode": 4 dots + the shared keypad, no submit. Entering four digits advances to "Bekræft pinkoden"; a mismatch shakes the dots, clears them and returns to step 1 with "Pinkoderne er ikke ens. Prøv igen." Success pops back to Settings with the switch on and the standard undo snackbar suppressed — this one is not undoable copy, it's a state change the user can see.</p>
+          <p style="margin:0;font-size:14px;line-height:1.6;color:#3D4744;text-wrap:pretty"><strong>Fingeraftryk →</strong> fires the OS prompt immediately; the switch only moves once it succeeds, and cancelling leaves it off with no error. If the device has no enrolled biometrics the row stays disabled with "Ingen fingeraftryk på denne telefon".</p>
+          <p style="margin:0;font-size:14px;line-height:1.6;color:#3D4744;text-wrap:pretty"><strong>Turning App-lås off</strong> requires the current PIN, clears the stored hash and switches fingerprint off with it.</p>
+        </div>
+        <div style="padding:20px 22px;border-radius:20px;background:#EEF3F1;border:1px solid #D3DBD8;display:flex;flex-direction:column;gap:8px">
+          <span style="font-size:13px;font-weight:700;letter-spacing:.06em;color:#59635F">STATES</span>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:12px;line-height:1.9;color:#171D1B">off + off&nbsp;&nbsp;&nbsp;&nbsp;no lock, launch goes to Home<br>on&nbsp;+ off&nbsp;&nbsp;&nbsp;&nbsp;PIN view on launch<br>on&nbsp;+ on&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PIN view + auto fingerprint prompt<br>off + on&nbsp;&nbsp;&nbsp;&nbsp;impossible — nested, cleared with parent</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
 <section style="padding:72px 72px 56px;display:flex;flex-direction:column;gap:56px;background:#C7D5D0;font-family:Manrope,sans-serif;color:#171D1B;border-bottom:1px solid #D3DBD8">
   <header style="display:flex;flex-direction:column;gap:16px;max-width:860px">
     <div style="display:flex;align-items:center;gap:12px"><span style="font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:500;padding:4px 10px;border-radius:999px;background:#1F6A5C;color:#fff">8</span><span style="font-size:13px;font-weight:700;letter-spacing:.08em;color:#59635F">GOAL REACHED · MODAL SHEET</span></div>

@@ -26,6 +26,45 @@
       "da": "Nyt mål"
     }
   },
+  "height": {
+    "label": { "en": "Height", "da": "Højde" },
+    "sublabel": { "en": "Optional — unlocks BMI on Home", "da": "Valgfri — låser op for BMI på forsiden" },
+    "unset": { "en": "Not set", "da": "Ikke angivet" },
+    "sheetNote": { "en": "Only used to work out BMI, on your phone.", "da": "Bruges kun til at beregne BMI på din telefon." },
+    "save": { "en": "Save", "da": "Gem" },
+    "remove": { "en": "Remove height", "da": "Fjern højde" },
+    "storedAs": { "en": "Stored as {cm} cm", "da": "Gemmes som {cm} cm" }
+  },
+  "bmi": {
+    "label": { "en": "BMI", "da": "BMI" },
+    "bandBelow": { "en": "Below the normal range", "da": "Under normalområdet" },
+    "bandNormal": { "en": "Normal range", "da": "Normalområdet" },
+    "bandAbove": { "en": "Above the normal range", "da": "Over normalområdet" }
+  },
+  "appLock": {
+    "group": { "en": "Security", "da": "Sikkerhed" },
+    "toggle": { "en": "App lock", "da": "App-lås" },
+    "toggleSub": { "en": "Require a PIN when Ponvia opens", "da": "Kræv pinkode når Ponvia åbnes" },
+    "biometricToggle": { "en": "Fingerprint", "da": "Fingeraftryk" },
+    "biometricSub": { "en": "Unlock with your fingerprint instead of the PIN", "da": "Lås op med fingeraftryk i stedet for pinkoden" },
+    "biometricNeedsLock": { "en": "Turn on app lock first", "da": "Slå app-lås til først" },
+    "biometricUnavailable": { "en": "No fingerprints on this phone", "da": "Ingen fingeraftryk på denne telefon" },
+    "changePin": { "en": "Change PIN", "da": "Skift pinkode" },
+    "onDeviceNote": { "en": "The PIN is stored only on your phone. Ponvia sends nothing anywhere, and there is no account to recover it with.", "da": "Pinkoden gemmes kun på din telefon. Ponvia sender intet videre, og der er ingen konto at gendanne den med." },
+    "choosePin": { "en": "Choose a PIN", "da": "Vælg en pinkode" },
+    "confirmPin": { "en": "Confirm the PIN", "da": "Bekræft pinkoden" },
+    "confirmPinBody": { "en": "Enter the same four digits again.", "da": "Indtast de samme fire cifre igen." },
+    "pinMismatch": { "en": "The PINs don't match. Try again.", "da": "Pinkoderne er ikke ens. Prøv igen." },
+    "enterPin": { "en": "Enter your PIN", "da": "Indtast din pinkode" },
+    "fourDigits": { "en": "4 digits", "da": "4 cifre" },
+    "waitingForFingerprint": { "en": "Waiting for fingerprint…", "da": "Venter på fingeraftryk…" },
+    "wrongPin": { "en": "Wrong PIN. Try again.", "da": "Forkert pinkode. Prøv igen." },
+    "unlocking": { "en": "Unlocking", "da": "Låser op" },
+    "forgotPin": { "en": "Forgotten your PIN?", "da": "Glemt din pinkode?" },
+    "forgotPinBody": { "en": "Your PIN exists only on this phone, so we can't reset it. The only way back in is to clear Ponvia's data — your weigh-ins go with it unless you have an export.", "da": "Din pinkode findes kun på denne telefon, så vi kan ikke nulstille den. Den eneste vej ind er at slette Ponvias data — dine vejninger går med, medmindre du har en eksport." },
+    "biometricPromptTitle": { "en": "Unlock Ponvia", "da": "Lås Ponvia op" },
+    "footer": { "en": "Everything stays on your phone", "da": "Alt bliver på din telefon" }
+  },
   "goalReached": {
     "title": {
       "en": "You reached it",
